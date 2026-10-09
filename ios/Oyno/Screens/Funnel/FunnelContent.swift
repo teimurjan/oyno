@@ -44,7 +44,7 @@ struct FunnelContent: Decodable {
         let branch: Branch?
 
         enum Kind: String, Decodable {
-            case question, underpriced, note, buckets, shelf, contrast, recap, account
+            case question, statement, evening, planet, recap, account
         }
 
         struct Question: Decodable {
@@ -71,12 +71,8 @@ struct FunnelCopy: Decodable {
     let chrome: Chrome
     let questions: [String: QuestionWords]
     let steps: [String: StatementWords]
-    let units: Units
-    let underpriced: Underpriced
-    let orderNote: OrderNote
-    let buckets: Buckets
-    let contrast: Contrast
-    let shelf: Shelf
+    let evening: Evening
+    let planet: Planet
     let recap: Recap
     let paywall: Paywall
     let account: Account
@@ -104,70 +100,24 @@ struct FunnelCopy: Decodable {
         let variants: [String: StatementWords]?
     }
 
-    struct Units: Decodable {
-        let g: String
-        let h: String
-    }
-
-    struct Underpriced: Decodable {
-        let print: String
-        let ruleOfThumb: String
-        let withOyno: String
-        let lose: String
-        let keep: String
-    }
-
-    struct OrderNote: Decodable {
-        let order: String
-        let filament: String
-        let power: String
-        let time: String
-        let reserve: String
-        let fee: String
-        let charge: String
-        let keep: String
-    }
-
-    struct Buckets: Decodable {
-        let losing: Bucket
-        let thin: Bucket
-        let healthy: Bucket
-        let orders: [String: String]
-
-        struct Bucket: Decodable {
-            let name: String
-            let hint: String
-        }
-    }
-
-    struct Contrast: Decodable {
-        let now: String
-        let morning: String
-        let notes: [String]
-        let drone: String
-        let organiser: String
-        let helmet: String
-        let reprice: String
-        let blue: String
-    }
-
-    struct Shelf: Decodable {
-        let printer: Place
-        let shelf: Place
-        let dryBox: Place
-        let rolls: [String: String]
-        let finishes: String
-        let spare: String
-        let runsOut: String
-        let short: String
+    /// Widget A's words: an example evening, the phone eating it.
+    struct Evening: Decodable {
         let caption: String
-        let dragPlace: String
-        let loadRoll: String
+        let phone: String
+        let kid: String
+        let start: String
+        let end: String
+        let summary: String
+        let minutes: String
+    }
 
-        struct Place: Decodable {
-            let name: String
-            let empty: String
-        }
+    /// Widget B's words: the planet and its worlds.
+    struct Planet: Decodable {
+        let open: String
+        let close: String
+        let yours: String
+        let unlocksAt: String
+        let worlds: [String: String]
     }
 
     struct Recap: Decodable {
@@ -179,16 +129,13 @@ struct FunnelCopy: Decodable {
         let pros: [String]
         let monthly: String
         let yearly: String
-        let lifetime: String
         let perMonth: String
         let perYear: String
         let perDay: String
-        let once: String
         let cancelAnytime: String
         let billedYearly: String
         let save: String
-        let forever: String
-        let weekly: String
+        let guarantee: String
         let `continue`: String
     }
 
@@ -242,7 +189,7 @@ extension FunnelCopy {
                 return
             }
             var span = AttributedString(String(entry.element[..<close]))
-            span.foregroundColor = Palette.accent
+            span.foregroundColor = Palette.highlight
             out += span
             out += AttributedString(String(entry.element[entry.element.index(after: close)...]))
         }

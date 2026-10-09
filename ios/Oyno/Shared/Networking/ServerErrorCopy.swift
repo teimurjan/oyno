@@ -18,7 +18,7 @@ enum ServerErrorCopy {
         // subscribing later flushes what was recorded in the meantime.
         case "requires_pro": "Syncing needs an active subscription. Everything you've entered is still on this device."
         case "unauthorized": "Your session expired. Sign in again to keep going."
-        case "not_found": "That isn't in your shop anymore."
+        case "not_found": "That isn't on your account anymore."
         case "bad_request": "The server couldn't read that request."
         case "purchase_unavailable": "Subscriptions are unavailable right now."
         case "invalid_transaction": "That purchase couldn't be verified."

@@ -19,7 +19,9 @@
     "screenshots:capture": "node appstore/scripts/capture-simulator-screens.mjs",
     "screenshots:composite": "node appstore/scripts/generate-app-store-screenshots.mjs",
     "creatives:render": "node appstore/scripts/generate-creative-assets.mjs",
-    "creatives:push": "node appstore/scripts/push-creative-assets.mjs"
+    "creatives:push": "node appstore/scripts/push-creative-assets.mjs",
+    "art:build": "bun scripts/build-art.ts",
+    "icons:build": "bun scripts/build-icons.ts"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.45.8",
@@ -46,6 +48,7 @@
     "@types/react-dom": "^19.2.2",
     "oxlint": "^1.70.0",
     "playwright": "^1.61.1",
+    "sharp": "0.35.4",
     "tailwindcss": "4",
     "typescript": "^5.6.2",
     "wawoff2": "^2.0.1"

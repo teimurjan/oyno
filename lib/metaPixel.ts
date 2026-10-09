@@ -1,7 +1,7 @@
 /**
  * Meta Pixel runtime helpers — the browser half of the purchase signal.
  *
- * Its server counterpart is `lib/meta.ts`, fired from the Paddle webhook. The two share an
+ * Its server counterpart is `lib/meta.ts`, fired from the Dodo webhook. The two share an
  * `event_id` per purchase so Meta collapses them into one conversion.
  *
  * Kept apart from `components/MetaPixel.tsx` because these are called from client
@@ -10,7 +10,7 @@
 
 export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "";
 
-/** Inert until configured, the same shape as `isPaddleCheckoutConfigured`. A dev machine or
+/** Inert until configured, the same shape as `isDodoCheckoutConfigured`. A dev machine or
  * a preview deploy therefore never pollutes live ad data. */
 export const isMetaPixelConfigured = Boolean(META_PIXEL_ID);
 
@@ -149,8 +149,8 @@ export function flushMetaQueue(): void {
 
 /**
  * Read a first-party cookie the Pixel sets. `_fbp` identifies the browser and `_fbc` the ad
- * click that landed here; the funnel forwards both through Paddle so the server event can
- * carry them, because a webhook call from Paddle is not the reader's browser.
+ * click that landed here; the funnel forwards both through Dodo so the server event can
+ * carry them, because a webhook call from Dodo is not the reader's browser.
  *
  * These are also what populate the purchasers Custom Audience that every campaign excludes.
  * Dropping them from the CAPI payload would break that exclusion, not just match quality.

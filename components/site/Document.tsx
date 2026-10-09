@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { inter, plexMono, spaceGrotesk } from "@/app/fonts";
+import { figtree } from "@/app/fonts";
 import { AnalyticsBoot } from "@/components/AnalyticsBoot";
 import { MetaPixel } from "@/components/MetaPixel";
 import type { Lang } from "@/lib/i18n";
@@ -17,9 +17,7 @@ import type { Lang } from "@/lib/i18n";
  * it would have opted every page on the site into dynamic rendering — including `/start`,
  * whose whole design is that it paints from the CDN with no JavaScript.
  *
- * The stylesheet is the caller's. The site and the funnel share `app/globals.css`; the app
- * under `app/app/` has `app/app/app.css`, with shadcn's tokens in it and the marketing
- * sources scanned out — so each root layout imports its own, and this shell imports none.
+ * The stylesheet is the caller's: each root layout imports `app/globals.css`.
  *
  * `surface` is the one thing that differs in the body: the app is signed into, not
  * advertised to, so it carries no Meta pixel. Amplitude rides on both.
@@ -34,7 +32,7 @@ export function Document({
   children: React.ReactNode;
 }) {
   return (
-    <html lang={lang} className={`${inter.variable} ${plexMono.variable} ${spaceGrotesk.variable}`}>
+    <html lang={lang} className={figtree.variable}>
       <body className="font-sans antialiased" data-surface={surface}>
         {children}
         {/* Both are inert until their key is set — a bare clone and a preview deploy

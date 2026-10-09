@@ -5,16 +5,13 @@ import SwiftUI
 /// through StoreKit.
 ///
 /// **The web's page, with the App Store's rules on it.** The same headline, the same three
-/// lines of what the money buys, the same three plan cards opening on the yearly, on the same
-/// blue wash, in the web deck's words (`FunnelContent`). Where it differs, a rule decided it:
+/// lines of what the money buys, the same two plan cards opening on the yearly, on the same
+/// sky, in the web deck's words (`FunnelContent`). Where it differs, a rule decided it:
 /// - the billed amount is the big figure on each card and the price per day sits under the
 ///   plan's name. The web leads with the per-day figure; App Review rejects a subscription
 ///   whose calculated price is more prominent than the one it bills (3.1.2).
 /// - no money-back guarantee: an App Store purchase is refunded by Apple, so the promise is
 ///   not ours to make here.
-/// - no count of lifetime unlocks left, and no count of this week's subscribers. The cap is
-///   on the web's own unlocks (`paddle_lifetime_entitlements`), and a weekly figure compiled
-///   into a binary stops being true the week after it ships.
 /// What Apple requires at the point of sale is added instead: the trial's terms, Restore, and
 /// the renewal disclosure with the licence and the privacy policy.
 ///
@@ -22,15 +19,13 @@ import SwiftUI
 /// it, it carries a grabber that says "flick me away", and on a first run it would sit on
 /// top of a sign-in screen the operator has just finished with. This is the whole screen
 /// instead, in both of the places it appears — the first run, straight after signing in,
-/// and any later moment the shop is told it cannot be changed. Same screen, same weight,
+/// and any later moment a round or Kid hours is refused. Same screen, same weight,
 /// one difference: `context`, which is what tells a plan somebody went looking for from a
 /// plan somebody was turned away by.
 ///
 /// **It has a way out, deliberately.** There is no free tier, but the wall stands in
-/// front of *changing* the shop rather than in front of opening it: the records already
-/// on the device are that business's books and they go on opening. So "not now" is a real
-/// answer — it leaves the operator looking at their own shop, which is the honest reply
-/// to a wall they can already see the other side of.
+/// front of *playing* rather than in front of opening the app: the planet and past rounds go
+/// on opening. So "not now" is a real answer.
 struct PaywallScreen: View {
     /// Why the reader is looking at this, for the funnel. A refused edit and a lapse are
     /// the same sheet and a different event.
@@ -42,7 +37,7 @@ struct PaywallScreen: View {
     @Environment(PurchaseStore.self) private var purchases
     @Environment(\.dismiss) private var dismiss
 
-    /// The yearly, the middle card, as on the web.
+    /// The yearly, the first card, as on the web.
     @State private var plan = Plan.yearly
     @State private var restoreMessage: LocalizedStringResource?
 
@@ -57,13 +52,12 @@ struct PaywallScreen: View {
     private static let days: [Plan: Decimal] = [.monthly: 30, .yearly: 365]
 
     private enum Plan: CaseIterable {
-        case monthly, yearly, lifetime
+        case yearly, monthly
 
-        var unit: Product.SubscriptionPeriod.Unit? {
+        var unit: Product.SubscriptionPeriod.Unit {
             switch self {
             case .monthly: .month
             case .yearly: .year
-            case .lifetime: nil
             }
         }
     }
@@ -111,7 +105,7 @@ struct PaywallScreen: View {
         VStack(alignment: .leading, spacing: 10) {
             ForEach(Array(zip(words.pros, Self.proSymbols)), id: \.0) { line, symbol in
                 HStack(spacing: Metric.Space.m) {
-                    Glyph(symbol: symbol, size: 17, color: Palette.accent)
+                    Glyph(symbol: symbol, size: 17, color: Palette.highlight)
                         .frame(width: 22)
                         .accessibilityHidden(true)
                     Text(verbatim: line)
@@ -124,8 +118,8 @@ struct PaywallScreen: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    /// One per line of `paywall.pros`, in order — the web's Lucide tag, disc and phone.
-    private static let proSymbols = ["tag", "smallcircle.filled.circle", "iphone"]
+    /// One per line of `paywall.pros`, in order: a paused phone, a game, the planet.
+    private static let proSymbols = ["iphone.slash", "sparkles", "globe.europe.africa"]
 
     @ViewBuilder
     private func plans(_ words: FunnelCopy.Paywall) -> some View {
@@ -149,7 +143,6 @@ struct PaywallScreen: View {
         let (label, term): (String, String) = switch plan {
         case .monthly: (words.monthly, words.perMonth)
         case .yearly: (words.yearly, words.perYear)
-        case .lifetime: (words.lifetime, words.once)
         }
         let saving = plan == .yearly ? yearlySaving : nil
         return PlanCard(
@@ -167,13 +160,12 @@ struct PaywallScreen: View {
     /// The trial's terms where there is one — Apple requires the price after it on the card
     /// that sells it — and the web's line where there is not.
     private func note(_ plan: Plan, _ product: Product, _ words: FunnelCopy.Paywall) -> String {
-        if plan != .lifetime, purchases.isEligibleForIntroOffer {
+        if purchases.isEligibleForIntroOffer {
             return String(interface: "3 days free, then \(product.displayPrice)")
         }
         return switch plan {
         case .monthly: words.cancelAnytime
         case .yearly: words.billedYearly
-        case .lifetime: words.forever
         }
     }
 
@@ -181,7 +173,7 @@ struct PaywallScreen: View {
     /// as the same number on two cards.
     private func perDay(_ product: Product, days: Decimal, words: FunnelCopy.Paywall) -> AttributedString {
         var figure = AttributedString((product.price / days).formatted(product.priceFormatStyle))
-        figure.font = Typeface.mono(16, .medium, relativeTo: .body)
+        figure.font = Typeface.figures(16, .medium, relativeTo: .body)
         figure.foregroundColor = Palette.ink
         var label = AttributedString(" \(words.perDay)")
         label.foregroundColor = Palette.muted
@@ -358,13 +350,13 @@ private struct PlanCard: View {
                 VStack(alignment: .trailing, spacing: 0) {
                     if let was {
                         Text(verbatim: was)
-                            .font(Typeface.mono(13, .regular, relativeTo: .footnote))
+                            .font(Typeface.figures(13, .regular, relativeTo: .footnote))
                             .monospacedDigit()
                             .strikethrough()
                             .foregroundStyle(Palette.faint)
                     }
                     Text(verbatim: price)
-                        .font(Typeface.mono(26, .semibold, relativeTo: .title2))
+                        .font(Typeface.figures(26, .semibold, relativeTo: .title2))
                         .monospacedDigit()
                         .tracking(-0.52)
                         .foregroundStyle(Palette.ink)
@@ -415,7 +407,7 @@ private struct PlanTag: View {
 
     var body: some View {
         Text(verbatim: text)
-            .font(Typeface.mono(10, .semibold, relativeTo: .caption2))
+            .font(Typeface.figures(10, .semibold, relativeTo: .caption2))
             .tracking(0.6)
             .textCase(.uppercase)
             .lineLimit(1)
@@ -426,40 +418,9 @@ private struct PlanTag: View {
     }
 }
 
-/// The offer's own ground: two soft pools of the brand blue on white — `.paywall-page` in
-/// `app/globals.css`, the only full-bleed background either funnel has.
+/// The offer's own ground: the sky, `.paywall-page` in `app/globals.css`.
 private struct PaywallWash: View {
     var body: some View {
-        GeometryReader { geometry in
-            let size = geometry.size
-            ZStack {
-                Palette.surface
-                pool(
-                    at: CGPoint(x: 0, y: size.height * 0.04),
-                    radii: CGSize(width: size.width * 0.75, height: size.height * 0.52),
-                    stops: [(0.38, 0), (0.14, 0.42), (0, 0.70)]
-                )
-                pool(
-                    at: CGPoint(x: size.width, y: size.height * 0.60),
-                    radii: CGSize(width: size.width * 0.72, height: size.height * 0.50),
-                    stops: [(0.32, 0), (0.11, 0.44), (0, 0.72)]
-                )
-            }
-        }
-        .ignoresSafeArea()
-    }
-
-    /// An elliptical radial gradient: a circular one, squashed to the ellipse's proportions.
-    private func pool(at centre: CGPoint, radii: CGSize, stops: [(opacity: Double, location: CGFloat)]) -> some View {
-        Circle()
-            .fill(RadialGradient(
-                stops: stops.map { .init(color: Palette.accent.opacity($0.opacity), location: $0.location) },
-                center: .center,
-                startRadius: 0,
-                endRadius: radii.width
-            ))
-            .frame(width: radii.width * 2, height: radii.width * 2)
-            .scaleEffect(x: 1, y: radii.height / radii.width)
-            .position(centre)
+        Palette.sky.ignoresSafeArea()
     }
 }

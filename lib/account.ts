@@ -2,12 +2,10 @@ import "server-only";
 import { createAdminClient, isServiceConfigured } from "./supabase/admin";
 
 /**
- * Erase an operator permanently — the account and everything the shop owns.
+ * Erase a parent permanently: the account and every round it owns.
  *
- * One call does all of it. Every table in the ERP schema keys `user_id` with
- * `on delete cascade`, and the child tables cascade from their parents, so the
- * printers, spools, jobs, customers, orders and the whole spool ledger go with
- * the identity.
+ * One call does all of it. Every table keys `user_id` with `on delete cascade`, so the
+ * rounds go with the identity.
  *
  * `entitlements.user_id` is `on delete set null` instead, and that is the whole
  * of what happens to a subscription here: it belongs to the Apple ID rather than

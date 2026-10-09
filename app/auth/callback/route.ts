@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { createServerClient } from "@/lib/supabase/server";
-import { isAppHost } from "@/lib/appHost";
 
 /** The types an emailed link may carry. Checked rather than forwarded: `EmailOtpType`
  * widens to `string`, so an unvalidated `?type=` would reach the auth server verbatim. */
@@ -30,14 +29,10 @@ const isEmailOtpType = (value: string): value is EmailOtpType =>
  *
  * `code` is still handled, and handled second: a template left on Supabase's default
  * `{{ .ConfirmationURL }}` keeps arriving that way.
- *
- * The same route answers on the app host, where a round trip that names no `next` lands on
- * the app's front door rather than the funnel's — and where a failed one has to say so on
- * a page that exists on that host.
  */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const home = isAppHost(request.headers) ? "/" : "/start";
+  const home = "/start";
   // Same-origin paths only. `${origin}${next}` would turn `//evil.com` into a
   // protocol-relative URL, so anything that is not a single-slash path is discarded rather
   // than sanitized.

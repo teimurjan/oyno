@@ -25,7 +25,7 @@ export function ProsePage({
     <SiteShell lang={lang} page={page}>
       <div className="max-w-3xl">
         <p className="eyebrow">{text.eyebrow}</p>
-        <h1 className="mt-3 text-[32px] font-semibold leading-tight tracking-[-0.03em] text-ink">
+        <h1 className="mt-3 text-[34px] font-extrabold leading-tight tracking-[-0.03em] text-ink">
           {text.heading}
         </h1>
         {text.updated && (

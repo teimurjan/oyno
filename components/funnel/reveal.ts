@@ -6,8 +6,8 @@ import { useEffect, useState } from "preact/hooks";
  * hydrates the first paint.
  */
 
-export const prefersReducedMotion = (): boolean =>
-  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+export { prefersReducedMotion } from "@/lib/motion";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /** After the step's own entry animation has settled. */
 export const REVEAL_DELAY_MS = 950;

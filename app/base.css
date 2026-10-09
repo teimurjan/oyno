@@ -1,37 +1,35 @@
 /*
- * The web half of the design system in ios/Oyno/Shared/DesignSystem/ — the tokens and
- * the handful of classes every surface draws. Imported by both Tailwind entry sheets
- * (`app/globals.css` for the site and the funnel, `app/app/app.css` for the app) and never
- * by itself: it carries no `@import "tailwindcss"`.
+ * The web half of the design system in ios/Oyno/Shared/DesignSystem/: the Little Planet
+ * tokens and the handful of classes every surface draws. Imported by `app/globals.css` and
+ * never by itself: it carries no `@import "tailwindcss"`.
  *
- * Same palette, same two faces, same rule: one accent, spent once per section on the one
- * thing that section wants, and red only where money is being lost. Everything else is
- * greyscale so the numbers carry the page.
- *
- * Two names are spelled twice on purpose. shadcn/ui also calls its hover surface `--accent`
- * and its quiet surface `--muted`, and its components are written against those names, so
- * the brand blue and the muted ink live here as `--brand` and `--ink-muted` — names nobody
- * else claims — and each entry sheet decides what `--accent` and `--muted` mean on its
- * surface. This sheet gives them the site's meanings; the app's sheet reassigns them.
+ * Ink on a warm sky, glass cards, one accent fill (the ink pill) per screen, and red only
+ * where something is costing the reader. Same values as `Palette.swift`.
  */
 
 :root {
-  --ink: #0a0a0a;
-  --slate: #525252;
-  --ink-muted: #737373;
-  --faint: #a3a3a3;
-  --chevron: #d4d4d4;
-  --hairline: #e5e5e5;
-  --divider: #f0f0f0;
-  --track: #ededed;
+  --ink: #18202e;
+  --slate: #364152;
+  --ink-muted: #4e5869;
+  --faint: #7d8696;
+  --chevron: #c3c9d2;
+  --hairline: #dfe3e9;
+  --divider: #eef0f3;
+  --track: #e6e9ee;
   --surface: #ffffff;
-  --canvas: #fafafa;
-  --brand: #0f62fe;
-  --accent-pressed: #0043ce;
-  --alert: #da1e28;
-  /* Carbon's support green and yellow: how full a roll is, and where a quote has got to. */
-  --good: #24a148;
-  --caution: #f1c21b;
+  --canvas: #fff8ef;
+  --brand: #18202e;
+  --accent-pressed: #2b3546;
+  --highlight: #2f5e9e;
+  --alert: #c2412d;
+  --good: #5e9a6b;
+  --caution: #e0952b;
+  --lavender: #9c86d8;
+
+  --glass: rgba(255, 255, 255, 0.62);
+  --glass-edge: rgba(255, 255, 255, 0.95);
+  --glass-shadow: 0 10px 30px rgba(48, 80, 130, 0.12);
+  --sky: linear-gradient(180deg, #a2c8ef 0%, #d3e6f8 34%, #fff1db 64%, #fff8ef 100%);
 
   --accent: var(--brand);
   --muted: var(--ink-muted);
@@ -51,18 +49,16 @@
   --color-brand: var(--brand);
   --color-accent: var(--accent);
   --color-accent-pressed: var(--accent-pressed);
+  --color-highlight: var(--highlight);
   --color-alert: var(--alert);
   --color-good: var(--good);
   --color-caution: var(--caution);
+  --color-lavender: var(--lavender);
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
-  /* The wordmark's face and no one else's — see `components/Logo.tsx`. Named for the job
-     rather than the family so a heading never quietly borrows it. */
-  --font-wordmark: var(--font-space-grotesk), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 
-  --radius-card: 8px;
-  --radius-control: 6px;
+  --radius-card: 22px;
+  --radius-control: 999px;
 }
 
 html {
@@ -74,31 +70,31 @@ body {
   color: var(--ink);
 }
 
-/* The all-caps mono rule above a block — the same eyebrow the app draws over every card.
-   Wide tracking is what makes 10–11px legible. `--ink-muted` and not `--muted`: the app's
-   sheet hands `--muted` to shadcn's quiet surface, and an eyebrow painted in the surface
-   colour is an eyebrow nobody sees. */
+/* The small label above a block. */
 .eyebrow {
-  font-family: var(--font-mono), monospace;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
   color: var(--ink-muted);
 }
 
-/* Every number on the page. `tabular-nums` is the load-bearing part: a column of costs
-   whose digits change width is a column nobody can compare down. */
+/* Every number on the page: Figtree's tabular figures keep a changing number's width. */
 .num {
-  font-family: var(--font-mono), monospace;
   font-variant-numeric: tabular-nums;
 }
 
-/* The one card shape, matching `Card.swift`: white on canvas, hairline border, 8px. */
+/* The one card shape, matching `Card.swift`: glass floating on the sky. */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--hairline);
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
   border-radius: var(--radius-card);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* The sky behind a screen. */
+.sky {
+  background: var(--sky);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -126,7 +122,7 @@ body {
   background-color: #ffffff;
   background-image: none;
   border: 1px solid #747775;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-control);
   box-sizing: border-box;
   color: #1f1f1f;
   cursor: pointer;
@@ -216,7 +212,7 @@ body {
 /* Apple's own button, black fill and their mark, per the HIG. Above the Google button and,
    like it, one of the two places on this site the one-accent palette does not apply — Apple
    specifies the surface, the mark and the wording. Only the geometry is ours: the 46px height
-   and the 8px card radius the fields above it use, so the sign-in stack reads as one group. */
+   and the pill radius the fields above it use, so the sign-in stack reads as one group. */
 .brand-signin-button {
   display: flex;
   align-items: center;
@@ -224,7 +220,7 @@ body {
   gap: 8px;
   width: 100%;
   height: 46px;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-control);
   border: 1px solid transparent;
   font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 15px;
@@ -274,8 +270,7 @@ body {
   border-radius: var(--radius-control);
   background: var(--ink);
   color: var(--surface);
-  font-family: var(--font-mono), monospace;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
   line-height: 1;

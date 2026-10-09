@@ -15,7 +15,7 @@
  * Not to be confused with `lib/metaPixel.ts`, which is an ad-optimization signal pipe. Meta
  * gets told what to bid on; Amplitude is where the funnel is read.
  *
- * Nothing here records a shop's own figures — no spool prices, no order totals, no customer
+ * Nothing here records a family's own details — no child's name, no app usage, no customer
  * names. That would contradict `/privacy` and the App Privacy label, exactly as it would on
  * iOS.
  */
@@ -25,7 +25,7 @@ import type { InAppBrowser } from "./inAppBrowser";
 export const AMPLITUDE_API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "";
 
 /** Inert until configured, the same shape as `isMetaPixelConfigured` and
- * `isPaddleCheckoutConfigured`. A dev machine or a preview deploy therefore never has to be
+ * `isDodoCheckoutConfigured`. A dev machine or a preview deploy therefore never has to be
  * filtered out of the numbers by hand. */
 export const isAmplitudeConfigured = Boolean(AMPLITUDE_API_KEY);
 
@@ -111,8 +111,6 @@ export type AnalyticsEvent =
   | { name: "account_deleted" }
   /** A step on Home's setup card opened. Finishing it is the event the step already emits. */
   | { name: "setup_step_opened"; step: string }
-  | { name: "printer_added"; model: string }
-  | { name: "spool_added"; material: string }
   | { name: "settings_changed"; field: string }
   | { name: "quote_saved"; material: string; channel: string }
   | { name: "quote_shared" }
@@ -124,11 +122,11 @@ export type AnalyticsEvent =
   | {
       name: "purchase_completed";
       plan: string;
-      /** What Paddle actually charged, in the buyer's own currency — not the list price. */
+      /** What Dodo actually charged, in the buyer's own currency — not the list price. */
       value: number;
       currency: string;
       /** The same uuid the Meta browser and CAPI events dedupe on, so one conversion can
-       * be followed across Amplitude, the Pixel and Paddle. */
+       * be followed across Amplitude, the Pixel and Dodo. */
       transaction_id: string;
     };
 
@@ -209,7 +207,7 @@ export function initAnalytics(): void {
  * `insertId` is for an event that can be observed more than once but happened once — a
  * registration seen from two tabs. Amplitude keeps the first event under an id and drops
  * the rest for seven days, wherever they came from; the same job `notificationUUID` and
- * Paddle's `event_id` do for the webhooks.
+ * Dodo's `event_id` do for the webhooks.
  */
 export function track(event: AnalyticsEvent, options?: { insertId: string }): void {
   if (!isAmplitudeConfigured || suppressed) return;

@@ -3,16 +3,16 @@ import { onIdle } from "@/lib/idle";
 /**
  * Fetch the offer ahead of the reader.
  *
- * The paywall and the checkout are `lazy()` chunks, and behind them sit Paddle.js from
- * Paddle's own CDN and a price preview round trip — three serial waits a reader would
+ * The paywall and the checkout are `lazy()` chunks, and behind them sit Dodo's checkout SDK
+ * and a price preview round trip — three serial waits a reader would
  * otherwise start paying for at the moment they arrive, on the one screen that is asking them
  * for a decision. Started on the first idle moment after the reader answers something: not at
  * the first paint, which has the wire to itself, and not a step or two out, because the last
  * step before the price is an account step a signed-in reader passes straight through.
  *
  * **Every load here is a dynamic `import()`** — this module is reached from `FunnelShell`,
- * which is the bundle that hydrates the first paint, so a static Paddle import would put
- * Paddle.js in front of step 0 rather than behind it.
+ * which is the bundle that hydrates the first paint, so a static biller import would put
+ * the checkout SDK in front of step 0 rather than behind it.
  */
 
 let started = false;
@@ -23,8 +23,8 @@ export function prewarmOffer(): void {
   onIdle(() => {
     warm(import("./PaywallStep"));
     warm(import("./CheckoutStep"));
-    // The chunks are the smaller half of the wait: this is what puts Paddle.js and this
-    // visitor's own prices on the wire.
+    // The chunks are the smaller half of the wait: this puts this visitor's own prices on
+    // the wire.
     warm(import("./planQuote").then((module) => module.planQuote()));
   });
 }

@@ -8,7 +8,7 @@ export interface FunnelLocation {
 }
 
 /**
- * Three forms: `#step-4` is the shell's own; `#step-1.problem=filament` is what the prerendered
+ * Three forms: `#step-4` is the shell's own; `#step-1.problem=scroll` is what the prerendered
  * first screen's plain anchors write, so a tap landing before the bundle still carries its
  * answer; `?step=13` arrives from off-site through `/auth/callback`'s `next`. Clamped, so a
  * hand-edited `#step-99` lands on the last step.

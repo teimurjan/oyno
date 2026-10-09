@@ -47,21 +47,16 @@ const BASE = "/funnel";
 /** Only what the first screen draws is preloaded; everything else is fetched on demand
  * under `font-display: swap`. */
 const FACES = [
-  { family: "Inter", weight: 400, file: "Inter-Regular.ttf", preload: true },
-  { family: "Inter", weight: 500, file: "Inter-Medium.ttf", preload: true },
-  { family: "Inter", weight: 600, file: "Inter-SemiBold.ttf", preload: true },
-  { family: "Inter", weight: 700, file: "Inter-Bold.ttf", preload: false },
-  { family: "IBM Plex Mono", weight: 400, file: "IBMPlexMono-Regular.ttf", preload: false },
-  { family: "IBM Plex Mono", weight: 500, file: "IBMPlexMono-Medium.ttf", preload: false },
-  { family: "IBM Plex Mono", weight: 600, file: "IBMPlexMono-SemiBold.ttf", preload: false },
-  { family: "Space Grotesk", weight: 600, file: "SpaceGrotesk-SemiBold.ttf", preload: true },
+  { family: "Figtree", weight: 400, file: "Figtree-Regular.ttf", preload: true },
+  { family: "Figtree", weight: 500, file: "Figtree-Medium.ttf", preload: false },
+  { family: "Figtree", weight: 600, file: "Figtree-SemiBold.ttf", preload: true },
+  { family: "Figtree", weight: 700, file: "Figtree-Bold.ttf", preload: false },
+  { family: "Figtree", weight: 800, file: "Figtree-ExtraBold.ttf", preload: true },
 ] as const;
 
 /** The `--font-*` variables `app/globals.css` builds its families from. */
 const FONT_VARIABLES: Record<string, string> = {
-  "--font-inter": "Inter",
-  "--font-plex-mono": "IBM Plex Mono",
-  "--font-space-grotesk": "Space Grotesk",
+  "--font-figtree": "Figtree",
 };
 
 const PAGES: Record<string, { page: string; body: () => VNode }> = {
@@ -155,11 +150,6 @@ const PUBLIC_ENV = [
   "NEXT_PUBLIC_AMPLITUDE_API_KEY",
   "NEXT_PUBLIC_VERCEL_ENV",
   "NEXT_PUBLIC_APP_STORE_ID",
-  "NEXT_PUBLIC_PADDLE_CLIENT_TOKEN",
-  "NEXT_PUBLIC_PADDLE_ENVIRONMENT",
-  "NEXT_PUBLIC_PADDLE_PRICE_MONTHLY",
-  "NEXT_PUBLIC_PADDLE_PRICE_YEARLY",
-  "NEXT_PUBLIC_PADDLE_PRICE_LIFETIME",
 ];
 
 async function emitBundle(): Promise<string> {
@@ -242,7 +232,7 @@ function document(
     .join("");
 
   // **`maximum-scale=1` is the iOS focus-zoom fix**: Safari zooms in on a field under 16px
-  // and does not zoom back out, and the card fields are Paddle's, inside their iframe. Pinch
+  // and does not zoom back out, and the card fields are Dodo's, inside their iframe. Pinch
   // still works — Safari ignores the restriction for deliberate gestures.
   return (
     `<!doctype html><html lang="${lang}"><head>` +

@@ -22,8 +22,8 @@ export type SignUpResult =
   | { status: "error"; error: AuthFailure };
 
 /** The OAuth providers the funnel offers. The app (`SupabaseAuth.swift`) also offers these;
- * every path lands on one Supabase user id, which is what the entitlement, the Paddle
- * `customData` and `/api/sync` are keyed on. */
+ * every path lands on one Supabase user id, which is what the entitlement and the Dodo
+ * `metadata` are keyed on. */
 export type OAuthProvider = "facebook" | "apple" | "google";
 
 interface AuthValue {

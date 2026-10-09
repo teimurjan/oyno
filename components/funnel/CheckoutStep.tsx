@@ -1,199 +1,169 @@
 import type { ComponentChildren } from "preact";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { CheckoutEventNames, type PaddleEventData } from "@paddle/paddle-js";
+import type { CheckoutBreakdownData, CheckoutEvent, CheckoutMode } from "dodopayments-checkout";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { track } from "@/lib/analytics";
+import type { BrowserContext, CheckoutSessionResult } from "@/lib/checkoutSession";
+import { onDodoCheckoutEvent } from "@/lib/dodoCheckout";
+import { funnelPath } from "@/lib/i18n";
 import { metaCookie, metaTrack } from "@/lib/metaPixel";
-import { onPaddleEvent } from "@/lib/paddleClient";
-import {
-  isPaddleCheckoutConfigured,
-  paddlePriceIds,
-  planForPriceId,
-  type PaddlePlan,
-} from "@/lib/paddlePrices";
-import { funnelPath, type Lang } from "@/lib/i18n";
+import { fromMinorUnits, planListQuote, type Plan, type PlanQuote } from "@/lib/plans";
 import { InlineCheckout } from "./InlineCheckout";
 import { useLocale } from "./locale";
-import { readClickId, readDiscount, type Attribution } from "./session";
+import { planQuote } from "./planQuote";
+import { readClickId, rememberPurchase, type Attribution } from "./session";
 import { ACCOUNT_STEP_INDEX, type FunnelAnswers } from "./steps";
 
+interface OpenCheckout {
+  checkoutUrl: string;
+  mode: CheckoutMode;
+}
+
+async function requestCheckout(
+  accessToken: string,
+  plan: Plan,
+  browser: BrowserContext,
+): Promise<CheckoutSessionResult> {
+  try {
+    const response = await fetch("/api/funnel/checkout", {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify({ plan, browser }),
+    });
+    if (!response.ok) return { ok: false, error: response.status === 503 ? "unconfigured" : "failed" };
+    const session = (await response.json()) as { checkoutUrl: string; mode: "live" | "test" };
+    return { ok: true, ...session };
+  } catch {
+    return { ok: false, error: "failed" };
+  }
+}
+
 /**
- * The card field, and only the card field — the plan was picked on the step before.
+ * The card field, and only the card field: the plan was picked on the step before, because a
+ * Dodo session is minted server-side for one product and cannot change it.
  *
- * Mounted by the shell from the offer onwards and only *shown* on the checkout step: the frame
- * opens hidden while the reader is still weighing the plans, so Continue reveals a form that is
- * already there. Hidden means clipped, invisible and `inert`, so nothing in it takes a tab.
- *
- * Two things are stamped into `customData`: the Supabase uid, which is how the webhook knows
- * whose entitlement this is, and an `eventId` uuid, which is how the browser Pixel and the
- * server CAPI event deduplicate into one conversion. The `_fbp`/`_fbc` cookies and the buyer's
- * IP ride along because Paddle calls the webhook and Paddle is not the buyer's browser; `fbc`
- * falls back to the click saved off the landing URL when the Pixel was blocked.
+ * Two things ride into the session's `metadata`: the Supabase uid, which the route reads off
+ * the bearer token so a buyer cannot claim to be somebody else, and an `eventId` minted once
+ * per mount, which the browser Pixel and the server CAPI event dedupe on. Dodo emits no
+ * completion event; success is the redirect to `/start/done`, so the amount is written down
+ * here for `PurchaseReport` to read there.
  */
 export function CheckoutStep({
-  visible,
   plan,
   answers,
   attribution,
+  funnel,
 }: {
-  visible: boolean;
-  plan: PaddlePlan;
+  plan: Plan;
   answers: FunnelAnswers;
   attribution: Attribution;
+  funnel: string;
 }) {
   const { user, accessToken } = useAuth();
   const { copy, lang } = useLocale();
   const words = copy.checkout;
-  /** One id per conversion, which is what Meta dedupes on. */
   const [eventId] = useState(() => crypto.randomUUID());
-  const [loaded, setLoaded] = useState(false);
-  /** Back to the plans and Continue again is the same checkout; the funnel starts once. */
+  const [quote, setQuote] = useState<PlanQuote>(planListQuote);
+  const [checkout, setCheckout] = useState<OpenCheckout | null>(null);
+  const [state, setState] = useState<"opening" | "failed" | "unconfigured" | "open">("opening");
   const started = useRef(false);
-  /** From the reminder email's link, if that is how the reader came back. */
-  const [discountCode] = useState(readDiscount);
-  const ip = useClientIp();
+
+  useEffect(() => {
+    void planQuote().then((live) => live && setQuote(live));
+  }, []);
 
   const handleCheckoutEvent = useCallback(
-    (event: PaddleEventData) => {
-      if (event.name === CheckoutEventNames.CHECKOUT_LOADED) setLoaded(true);
-
-      // Read off the event, not off `plan`: the frame holds the transaction. The selection
-      // stands in for a checkout Paddle sends no items with.
-      const eventPlan = planForPriceId(event.data?.items[0]?.price_id) ?? plan;
-
-      // Purchase fires here, not on the success page: this is the only place the amount
-      // actually charged is known, and Paddle quotes in the buyer's own currency.
-      if (event.name === CheckoutEventNames.CHECKOUT_COMPLETED && event.data) {
-        metaTrack(
-          "Purchase",
-          { value: event.data.totals.total, currency: event.data.currency_code },
-          eventId,
-        );
-        track({
-          name: "purchase_completed",
-          plan: eventPlan,
-          value: event.data.totals.total,
-          currency: event.data.currency_code,
-          transaction_id: eventId,
-        });
+    (event: CheckoutEvent) => {
+      if (event.event_type === "checkout.opened") {
+        if (!started.current) {
+          started.current = true;
+          metaTrack("InitiateCheckout", { content_name: plan });
+          track({ name: "checkout_started", plan });
+        }
+        // Provisional, at the list price: a missed conversion is worse than one a few cents
+        // out. The breakdown below overwrites it with the charged total.
+        rememberPurchase({ eventId, plan, value: quote[plan], currency: quote.currency });
+      }
+      if (event.event_type === "checkout.breakdown") {
+        const breakdown = event.data as CheckoutBreakdownData | undefined;
+        const minor = breakdown?.finalTotal ?? breakdown?.total;
+        const currency = breakdown?.finalTotalCurrency ?? breakdown?.currency;
+        if (minor != null && currency) {
+          rememberPurchase({ eventId, plan, value: fromMinorUnits(minor, currency), currency });
+        }
       }
     },
-    [eventId, plan],
+    [eventId, plan, quote],
   );
 
-  useEffect(() => onPaddleEvent(handleCheckoutEvent), [handleCheckoutEvent]);
+  useEffect(() => onDodoCheckoutEvent(handleCheckoutEvent), [handleCheckoutEvent]);
 
-  // Not on `checkout.loaded`: that now lands while the frame is still hidden behind the offer,
-  // and every paywall view would count as a checkout. It starts when the reader sees a form.
-  useEffect(() => {
-    if (!visible || !loaded || started.current) return;
-    started.current = true;
-    metaTrack("InitiateCheckout", { content_name: plan });
-    track({ name: "checkout_started", plan });
-    void reportCheckoutStart(accessToken, plan, lang);
-  }, [visible, loaded, plan]);
-
-  // Null until the user is known, which is also what keeps `navigator` off the server, and until
-  // the IP lookup settles: Paddle reads `customData` once, when the frame opens.
-  const checkout = user && ip !== undefined && {
-    items: [{ priceId: paddlePriceIds[plan], quantity: 1 }],
-    customer: user.email ? { email: user.email } : undefined,
-    customData: {
-      userId: user.id,
+  const open = useCallback(async () => {
+    setState("opening");
+    const token = await accessToken().catch(() => null);
+    if (!token) {
+      setState("failed");
+      return;
+    }
+    const result = await requestCheckout(token, plan, {
       eventId,
-      fbp: metaCookie("_fbp") ?? "",
-      fbc: metaCookie("_fbc") ?? readClickId() ?? "",
+      fbp: metaCookie("_fbp") ?? undefined,
+      fbc: metaCookie("_fbc") ?? readClickId(),
       ua: navigator.userAgent,
-      ip,
-      ...answers,
-      // Last, so a question keyed `ad` can never shadow the creative id.
-      ...attribution,
-    },
-    discountCode,
-    successPath: funnelPath(lang, "done"),
-    // The site ships one appearance, so the frame is told which rather than following the
-    // reader's system preference into a dark form inside a white page.
-    theme: "light" as const,
-  };
+      answers,
+      attribution,
+      funnel,
+    });
+    if (!result.ok) {
+      setState(result.error === "unconfigured" ? "unconfigured" : "failed");
+      return;
+    }
+    setCheckout({ checkoutUrl: result.checkoutUrl, mode: result.mode });
+    setState("open");
+  }, [accessToken, answers, attribution, eventId, funnel, plan]);
+
+  useEffect(() => {
+    if (user) void open();
+  }, [user?.id]);
 
   function payment() {
-    if (!isPaddleCheckoutConfigured) {
-      return <Unavailable>{words.notConfigured}</Unavailable>;
-    }
     // Reachable signed-out only by deep link. Say why there is no form rather than show an inert one.
-    if (!checkout) {
+    if (!user) {
       return (
         <Unavailable>
           {words.needsAccount}{" "}
-          <a
-            href={`${funnelPath(lang)}#step-${ACCOUNT_STEP_INDEX}`}
-            className="font-medium underline underline-offset-4"
-          >
+          <a href={`${funnelPath(lang)}#step-${ACCOUNT_STEP_INDEX}`} className="font-semibold underline underline-offset-4">
             {words.createYours}
           </a>
         </Unavailable>
       );
     }
-    return <InlineCheckout {...checkout} />;
+    if (state === "unconfigured") return <Unavailable>{words.notConfigured}</Unavailable>;
+    if (state === "failed") {
+      return (
+        <Unavailable>
+          {words.retry}{" "}
+          <button onClick={() => void open()} className="font-semibold underline underline-offset-4">
+            {words.tryAgain}
+          </button>
+        </Unavailable>
+      );
+    }
+    if (!checkout) return <Unavailable>{words.opening}</Unavailable>;
+    return <InlineCheckout key={checkout.checkoutUrl} {...checkout} plan={plan} quote={quote} />;
   }
 
   return (
-    <div
-      className={visible ? "mt-4 flex flex-col gap-4" : "invisible h-0 overflow-hidden"}
-      inert={!visible}
-      aria-hidden={!visible}
-    >
-      {/* Above the card field: a buyer who finds out the platforms after paying is a refund. */}
-      <p className="text-center text-[13px] leading-[1.5] opacity-55">
-        {words.platforms} {plan === "lifetime" ? words.oneTime : words.cancelAnytime}
+    <div className="flex flex-col gap-4">
+      {/* Above the card field: a buyer who finds out the platform after paying is a refund. */}
+      <p className="text-center text-[13px] leading-[1.5] text-muted">
+        {words.platforms} {words.cancelAnytime}
       </p>
-
       {payment()}
     </div>
   );
 }
 
-/** Times the abandoned-checkout reminder. Fire and forget: a reminder that failed to schedule
- * is not worth a card field that waits on it. */
-async function reportCheckoutStart(
-  accessToken: () => Promise<string | null>,
-  plan: PaddlePlan,
-  lang: Lang,
-): Promise<void> {
-  const token = await accessToken().catch(() => null);
-  if (!token) return;
-  await fetch("/api/checkout/started", {
-    method: "POST",
-    headers: { authorization: `Bearer ${token}`, "content-type": "application/json" },
-    body: JSON.stringify({ plan, lang }),
-  }).catch(() => undefined);
-}
-
 function Unavailable({ children }: { children: ComponentChildren }) {
-  return (
-    <p className="card px-4 py-3.5 text-center text-[14px] leading-snug opacity-70">{children}</p>
-  );
-}
-
-/** How long the card field waits on the IP before opening without it. */
-const IP_LOOKUP_MS = 1500;
-
-/** The reader's IP as our server sees it: `undefined` while asking, `""` when there is no
- * answer, so a slow lookup costs the server Purchase a match key and never the card field. */
-function useClientIp(): string | undefined {
-  const [ip, setIp] = useState<string>();
-  useEffect(() => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), IP_LOOKUP_MS);
-    fetch("/api/client-ip", { signal: controller.signal, cache: "no-store" })
-      .then((response) => (response.ok ? response.json() : null))
-      .then((body: { ip?: unknown } | null) => setIp(typeof body?.ip === "string" ? body.ip : ""))
-      .catch(() => setIp(""))
-      .finally(() => clearTimeout(timer));
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
-  }, []);
-  return ip;
+  return <p className="card px-4 py-3.5 text-center text-[14px] leading-snug text-muted">{children}</p>;
 }

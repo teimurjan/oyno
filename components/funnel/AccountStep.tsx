@@ -29,7 +29,7 @@ const asOAuthProvider = (value: unknown): OAuthProvider | null =>
 
 /**
  * The account step. It exists because the entitlement has to land on a Supabase user id: the
- * funnel stamps that uid into Paddle's `customData`, the webhook reads it back, and both
+ * funnel stamps that uid into Dodo's `metadata`, the webhook reads it back, and both
  * clients find the subscription by signing into the same account.
  *
  * Placed after the recap and before the price, so the commitment is made before the number is.

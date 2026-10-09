@@ -10,9 +10,8 @@ import SwiftUI
 /// way past the survey for somebody who already has an account; and the account step, which
 /// is the app's sign-in rather than the web's forms. The offer after it is `PaywallScreen`.
 ///
-/// The widgets run `Costing` through `FunnelExample`, which is `lib/demoShop.ts` term for
-/// term: the print that loses money on the second screen is the one written up on the fourth
-/// and sorted into a bucket on the seventh, at the figures the web quotes for the same market.
+/// The two widgets are the web's: `EveningDemo` is `EveningStep.tsx`, and the planet is the
+/// same `PlanetScene` Home draws, with the worlds behind a press.
 struct FunnelScreen: View {
     let spine: FunnelContent.Spine
     let copy: FunnelCopy
@@ -55,7 +54,7 @@ struct FunnelScreen: View {
 
             footer
         }
-        .background(Palette.canvas.ignoresSafeArea())
+        .background(Palette.sky.ignoresSafeArea())
         .keyboardDismissBar()
         .signingInOverlay()
         .onAppear { arrive(at: index) }
@@ -75,9 +74,10 @@ struct FunnelScreen: View {
                     .resizable()
                     .scaledToFit()
                     .frame(height: 26)
-                Text(verbatim: "Oyno")
-                    .font(Typeface.wordmark(17))
-                    .tracking(-0.17)
+                    .clipShape(.rect(cornerRadius: 7))
+                Text(verbatim: "oyno")
+                    .font(Typeface.wordmark(20))
+                    .tracking(-0.8)
                     .foregroundStyle(Palette.ink)
             }
             .accessibilityElement(children: .combine)
@@ -219,13 +219,6 @@ struct FunnelScreen: View {
             let statement = FunnelStatement(words: copy.statement(for: step, answers: answers))
             statement
             demo.funnelEntrance(statement.parts)
-            if step.kind == .shelf {
-                Text(verbatim: copy.shelf.caption)
-                    .font(Typeface.ui(12, .regular, relativeTo: .caption))
-                    .foregroundStyle(Palette.faint)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .funnelEntrance(statement.parts + 1)
-            }
         }
     }
 
@@ -233,12 +226,9 @@ struct FunnelScreen: View {
     private var demo: some View {
         let animated = firstVisit && !reduceMotion
         switch step.kind {
-        case .underpriced: UnderpricedDemo(copy: copy, animated: animated)
-        case .note: OrderNoteDemo(copy: copy, animated: animated)
-        case .buckets: BucketsDemo(copy: copy, animated: animated)
-        case .shelf: ShelfDemo(copy: copy)
-        case .contrast: ContrastDemo(copy: copy)
-        case .question, .recap, .account: EmptyView()
+        case .evening: EveningDemo(words: copy.evening, animated: animated)
+        case .planet: FunnelPlanet(words: copy.planet)
+        case .question, .statement, .recap, .account: EmptyView()
         }
     }
 
@@ -311,7 +301,7 @@ private struct FunnelProgress: View {
                 .frame(height: 3)
                 .layoutPriority(1)
             Text(verbatim: "\(step)/\(count)")
-                .font(Typeface.mono(12, .regular, relativeTo: .caption))
+                .font(Typeface.figures(12, .regular, relativeTo: .caption))
                 .monospacedDigit()
                 .foregroundStyle(Palette.faint)
         }

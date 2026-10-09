@@ -1,48 +1,52 @@
 import SwiftUI
 
-/// The whole palette, and it is deliberately small.
-///
-/// One accent, spent once per screen on the single action that screen exists for — save
-/// the quote, log the print, reorder the spool. Everything else is greyscale, so the eye
-/// goes to the number that costs money rather than to decoration. `alert` is the only
-/// other colour and it means one thing: this number is losing you money (a spool under
-/// its reorder point, a month's failed prints).
-///
-/// Filament swatches are the exception. They are not from this palette — they are the
-/// actual colour of the plastic, which is what a maker recognises a roll by at a glance.
+/// The Little Planet palette: ink on a warm sky, glass cards, and one accent fill, the ink
+/// pill, spent once per screen on the action that screen exists for. `alert` means only
+/// "this is costing you". `good` and `caution` live inside a gauge. Mirrors `app/base.css`.
 enum Palette {
-    /// Headings, values, anything the reader is meant to act on.
-    static let ink = Color(hex: 0x0A0A0A)
-    /// Body copy inside a breakdown row.
-    static let slate = Color(hex: 0x525252)
-    /// Labels, captions, secondary metadata.
-    static let muted = Color(hex: 0x737373)
-    /// Mono annotations that sit beside a value — "180 g @ $22.00/kg".
-    static let faint = Color(hex: 0xA3A3A3)
-    /// Disclosure chevrons.
-    static let chevron = Color(hex: 0xD4D4D4)
+    static let ink = Color(hex: 0x18202E)
+    static let slate = Color(hex: 0x364152)
+    static let muted = Color(hex: 0x4E5869)
+    static let faint = Color(hex: 0x7D8696)
+    static let chevron = Color(hex: 0xC3C9D2)
 
-    /// Card and control borders.
-    static let hairline = Color(hex: 0xE5E5E5)
-    /// The lighter rule between rows inside one card.
-    static let divider = Color(hex: 0xF0F0F0)
-    /// The unfilled part of a progress bar.
-    static let track = Color(hex: 0xEDEDED)
+    static let hairline = Color(hex: 0xDFE3E9)
+    static let divider = Color(hex: 0xEEF0F3)
+    static let track = Color(hex: 0xE6E9EE)
 
     static let surface = Color.white
-    /// Every screen's background. A half-step off white so white cards read as raised.
-    static let canvas = Color(hex: 0xFAFAFA)
+    static let canvas = Color(hex: 0xFFF8EF)
 
-    static let accent = Color(hex: 0x0F62FE)
-    static let accentPressed = Color(hex: 0x0043CE)
-
-    static let alert = Color(hex: 0xDA1E28)
-    /// Carbon's support green and yellow, for `LevelBar` and nowhere else: a full roll or a
-    /// healthy margin, and one getting thin, where `alert` is the empty one.
-    static let good = Color(hex: 0x24A148)
-    static let caution = Color(hex: 0xF1C21B)
-
+    /// The ink pill. The one accent fill.
+    static let accent = Color(hex: 0x18202E)
+    static let accentPressed = Color(hex: 0x2B3546)
     static let onAccent = Color.white
+
+    /// The span a headline sets apart.
+    static let highlight = Color(hex: 0x2F5E9E)
+
+    static let alert = Color(hex: 0xC2412D)
+    static let good = Color(hex: 0x5E9A6B)
+    static let caution = Color(hex: 0xE0952B)
+    /// The second parent's colour in the mark, and the "phone down" stat.
+    static let lavender = Color(hex: 0x9C86D8)
+
+    /// A card floating on the sky.
+    static let glass = Color.white.opacity(0.62)
+    static let glassEdge = Color.white.opacity(0.95)
+    static let glassShadow = Color(hex: 0x305082).opacity(0.12)
+
+    /// The day sky behind every screen, top to bottom.
+    static let sky = LinearGradient(
+        stops: [
+            .init(color: Color(hex: 0xA2C8EF), location: 0),
+            .init(color: Color(hex: 0xD3E6F8), location: 0.34),
+            .init(color: Color(hex: 0xFFF1DB), location: 0.64),
+            .init(color: Color(hex: 0xFFF8EF), location: 1),
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+    )
 }
 
 extension Color {
@@ -56,17 +60,4 @@ extension Color {
         )
     }
 
-    /// Filament colours arrive from the database as `#RRGGBB` typed by the user, so this
-    /// takes a string and tolerates a missing hash and a bad value — a mistyped swatch
-    /// should show grey, not crash a spool list at the machine.
-    init(filamentHex: String?) {
-        guard let raw = filamentHex?.trimmingCharacters(in: .whitespaces).replacingOccurrences(of: "#", with: ""),
-              raw.count == 6,
-              let value = UInt32(raw, radix: 16)
-        else {
-            self.init(hex: 0x9E9E9E)
-            return
-        }
-        self.init(hex: value)
-    }
 }

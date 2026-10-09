@@ -4,8 +4,8 @@ import Foundation
 /// guideline 5.1.1(v) requires of an app you have to sign in to use.
 ///
 /// Kept apart from `AuthStore`, which talks to Supabase Auth directly: this is
-/// one call to our own backend, which is what knows how to take the shop's printers,
-/// spools, jobs and orders down with the identity. The session is dropped by the caller, and only once the
+/// one call to our own backend, which takes everything stored against the account down
+/// with the identity. The session is dropped by the caller, and only once the
 /// server has said the account is gone.
 struct AccountService: Sendable {
     var client = HTTPClient()

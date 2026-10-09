@@ -164,33 +164,6 @@ private struct FunnelTick: View {
     }
 }
 
-/// How the funnel prints a figure: money in the example's currency, weights and hours in the
-/// deck's own units.
-struct FunnelFigures {
-    let units: FunnelCopy.Units
-    let currency: String
-
-    func money(_ value: Decimal) -> String { Format.money(value, currency: currency) }
-
-    /// The formatter's minus sits inside the currency symbol in some locales, and these are
-    /// read as losses, so the sign goes outside.
-    func signed(_ value: Decimal) -> String { value < 0 ? "−" + money(-value) : money(value) }
-
-    func grams(_ value: Decimal) -> String { units.grams(value) }
-
-    func hours(_ value: Decimal) -> String { units.hours(value) }
-}
-
-extension FunnelCopy.Units {
-    func grams(_ value: Decimal) -> String {
-        FunnelCopy.fill(g, ["n": Format.number(value, digits: 0)])
-    }
-
-    func hours(_ value: Decimal) -> String {
-        FunnelCopy.fill(h, ["n": Format.number(value, digits: 0)])
-    }
-}
-
 /// Where a staggered widget's reveal starts: after the step's own entrance has settled.
 enum FunnelReveal {
     static let delay: Duration = .milliseconds(950)

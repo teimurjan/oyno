@@ -6,7 +6,7 @@ import SwiftUI
 struct PrimaryButton: View {
     private let label: Text
     private let enabled: Bool
-    /// Red instead of the accent, for the one commit that loses the shop a record.
+    /// Red instead of the accent, for the one commit that deletes something.
     private let destructive: Bool
     private let action: () -> Void
 
@@ -32,7 +32,7 @@ struct PrimaryButton: View {
             action()
         }) {
             label
-                .font(Typeface.ui(16, .medium, relativeTo: .headline))
+                .font(Typeface.ui(17, .bold, relativeTo: .headline))
                 .foregroundStyle(Palette.onAccent)
                 .frame(maxWidth: .infinity)
                 .frame(height: Metric.primaryButton)
@@ -49,10 +49,8 @@ private struct FilledAccentStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(
-                configuration.isPressed ? pressed : fill,
-                in: .rect(cornerRadius: Metric.Radius.card)
-            )
+            .background(configuration.isPressed ? pressed : fill, in: .capsule)
+            .shadow(color: fill.opacity(0.22), radius: 12, y: 10)
     }
 }
 
@@ -322,122 +320,6 @@ struct Chip: View {
     }
 }
 
-/// A −/value/+ row whose value can also be typed.
-///
-/// Two taps beat a keyboard for the common nudge, which is why the buttons lead. But a
-/// slicer reports 187 g and 6 h 43 m, and reaching those by tapping a 10-gram step
-/// nineteen times is not a shortcut — so the number itself is a field. Tap it and the
-/// keypad comes up on the figure that is already there.
-///
-/// The number is as wide as the number, with a gutter either side, and the −/+ group takes
-/// its own width rather than whatever is left over beside the title. The slot used to be
-/// pinned at three digits so the buttons never moved; it is not any more, because a fixed
-/// slot is dead space on a stepper counting 1, 2, 3 and a cramped one on a stepper counting
-/// print minutes — and the padding is what keeps the digits off the buttons either way.
-///
-/// The −/+ squares are 38pt rather than the 44 every other control in the app gets. They
-/// are the one place a smaller target is the right call: they sit either side of the number
-/// they change, so the three of them read as one control, and a 44pt pair around a
-/// four-digit figure asked for more width than a card on a 4.7" phone has.
-///
-/// **The words yield, never the control.** The −/value/+ group is about 150 points wide
-/// and a card on a 4.7"/5.8" phone has barely 300 to give, so a full-size label beside a
-/// long subtitle asked for more room than the row had — and an `HStack` short of room
-/// takes it out of whatever will give, which was the trailing 44pt button. Its border came
-/// back as a broken line beside the number, which is what the shop floor reported. So the
-/// label shrinks and the control is fixed: a title rendered a fifth smaller is still
-/// readable, and a stepper you cannot aim at is not a stepper.
-struct StepperRow: View {
-    let title: LocalizedStringResource
-    var subtitle: LocalizedStringResource?
-    @Binding var value: Decimal
-    var suffix: FieldSuffix?
-    var step: Decimal = 10
-    var minimum: Decimal = 0
-    /// Digits the typed figure is kept to. Grams are whole; hours are not.
-    var decimals: Int = 0
-
-    @FocusState private var focused: Bool
-    @State private var draft = ""
-
-    /// One font for the field and for the hidden digits that size it. Two declarations
-    /// would let the slot and the number it holds drift apart.
-    private static let numberFont = Typeface.mono(19, .medium, relativeTo: .title3)
-    private static let stepSide: CGFloat = 38
-
-    var body: some View {
-        HStack(spacing: Metric.Space.m) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title).oynoRowTitle()
-                if let subtitle { Text(subtitle).oynoCaption() }
-            }
-            .lineLimit(1)
-            .minimumScaleFactor(0.7)
-            .allowsTightening(true)
-            Spacer(minLength: Metric.Space.s)
-            HStack(spacing: 2) {
-                IconButton(symbol: "minus", side: Self.stepSide) { value = max(minimum, value - step) }
-                HStack(spacing: 3) {
-                    // The hidden copy of the figure is what sizes the slot, so it scales
-                    // with the face and with Dynamic Type instead of a measured constant.
-                    // The field is overlaid on it and inherits that width — a greedy
-                    // TextField is what made the group stretch to the leftovers beside the
-                    // title. An empty draft still measures one digit, or the caret would
-                    // have nowhere to stand.
-                    Text(verbatim: draft.isEmpty ? "0" : draft)
-                        .font(Self.numberFont)
-                        .monospacedDigit()
-                        .fixedSize()
-                        .hidden()
-                        .overlay {
-                            TextField(text: $draft) { EmptyView() }
-                                .keyboardType(.decimalPad)
-                                .multilineTextAlignment(.trailing)
-                                .font(Self.numberFont)
-                                .monospacedDigit()
-                                .foregroundStyle(Palette.ink)
-                                .focused($focused)
-                        }
-                    if let suffix {
-                        suffix.text
-                            .font(Typeface.mono(13, .regular, relativeTo: .footnote))
-                            .foregroundStyle(Palette.faint)
-                    }
-                }
-                .padding(.horizontal, 10)
-                .frame(minHeight: Metric.tapTarget)
-                .contentShape(.rect)
-                .onTapGesture { focused = true }
-                IconButton(symbol: "plus", side: Self.stepSide) { value += step }
-            }
-            .fixedSize()
-        }
-        .padding(.horizontal, Metric.cardPadding)
-        .padding(.vertical, 14)
-        // The field mirrors the value while it is not being edited, so the ± buttons and
-        // anything else that moves the number are reflected. It stops mirroring the
-        // moment the operator starts typing, or a half-entered "1" would be rewritten to
-        // "1" and the cursor thrown to the end on every keystroke.
-        .onAppear { draft = Self.text(value, decimals: decimals) }
-        .onChange(of: value) { if !focused { draft = Self.text(value, decimals: decimals) } }
-        .onChange(of: draft) { if focused { value = max(minimum, .fromEditable(draft)) } }
-        .onChange(of: focused) { if !focused { draft = Self.text(value, decimals: decimals) } }
-    }
-
-    /// Plain digits with a decimal point, not the locale's separators. This is a field
-    /// somebody types into, and `Decimal.fromEditable` — which reads it back — accepts a
-    /// comma or a point either way.
-    private static func text(_ value: Decimal, decimals: Int) -> String {
-        let rounded = NSDecimalNumber(decimal: value).rounding(
-            accordingToBehavior: NSDecimalNumberHandler(
-                roundingMode: .plain, scale: Int16(decimals),
-                raiseOnExactness: false, raiseOnOverflow: false,
-                raiseOnUnderflow: false, raiseOnDivideByZero: false
-            )
-        )
-        return decimals == 0 ? String(rounded.intValue) : rounded.stringValue
-    }
-}
 
 /// A thin fill bar — a spool's remaining plastic, a cost's share of the month. On these
 /// screens the number is the datum and the bar is only a hint of proportion.
@@ -479,119 +361,5 @@ struct LevelBar: View {
         }
         .frame(width: 24, height: 5)
         .accessibilityHidden(true)
-    }
-}
-
-/// The window in bars: what the shop kept stacked on what it spent, one column per bucket.
-///
-/// Unlabelled on the vertical axis on purpose — this is a shape, and the numbers that need
-/// reading exactly sit above and below it. What it does carry is the horizontal axis, so a
-/// column the eye lands on can be placed in time without counting backwards from today.
-///
-/// Selection is the one thing that makes it more than an ornament: a column answers "what
-/// about that day" where the headline above it only answers "what about the week". Tapping
-/// the selected column again clears it.
-struct PeriodBars: View {
-    let bars: [PeriodSummary.Bar]
-    var height: CGFloat = 62
-    /// The kept half. Accent on both screens that draw one: the strip is the same shape
-    /// made of the same numbers, and it has to be recognisable as such across a tab.
-    var tint: Color = Palette.accent
-    var showsLabels = true
-    var selection: Binding<Int?>?
-
-    var body: some View {
-        VStack(spacing: 6) {
-            HStack(alignment: .bottom, spacing: spacing) {
-                ForEach(bars) { bar in
-                    column(bar)
-                }
-            }
-            .frame(height: height)
-            // The columns stand on a rule when they are labelled, because a bucket with
-            // nothing in it draws nothing at all — and a label under an empty stretch of
-            // canvas reads as a chart that failed to load rather than as a quiet Tuesday.
-            .overlay(alignment: .bottom) {
-                if showsLabels {
-                    Rectangle().fill(Palette.hairline).frame(height: 1)
-                }
-            }
-
-            if showsLabels {
-                HStack(spacing: spacing) {
-                    ForEach(bars) { bar in
-                        Text(verbatim: bar.showsLabel ? bar.label : " ")
-                            .font(Typeface.mono(10, .regular, relativeTo: .caption2))
-                            .monospacedDigit()
-                            .foregroundStyle(isSelected(bar) ? Palette.ink : Palette.faint)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.6)
-                            .frame(maxWidth: .infinity)
-                    }
-                }
-            }
-        }
-    }
-
-    /// Tighter as the strip gets longer: six points between seven days, one between thirty.
-    private var spacing: CGFloat {
-        bars.count <= 8 ? 6 : (bars.count <= 16 ? 4 : 2)
-    }
-
-    private func isSelected(_ bar: PeriodSummary.Bar) -> Bool {
-        selection?.wrappedValue == bar.id
-    }
-
-    private func column(_ bar: PeriodSummary.Bar) -> some View {
-        let dimmed = selection?.wrappedValue != nil && !isSelected(bar)
-
-        return VStack(spacing: 2) {
-            Spacer(minLength: 0)
-            UnevenRoundedRectangle(topLeadingRadius: 2, topTrailingRadius: 2)
-                .fill(tint)
-                .frame(height: max(0, bar.net) * (height - 4))
-            UnevenRoundedRectangle(bottomLeadingRadius: 2, bottomTrailingRadius: 2)
-                .fill(Palette.hairline)
-                .frame(height: max(0, bar.cost) * (height - 4))
-        }
-        .opacity(dimmed ? 0.35 : 1)
-        .frame(maxWidth: .infinity)
-        // The whole column height, not just the drawn part — a quiet day is a two-point
-        // sliver, and a two-point tap target is no target at all.
-        .contentShape(.rect)
-        .onTapGesture {
-            guard let selection else { return }
-            Haptics.tap()
-            selection.wrappedValue = selection.wrappedValue == bar.id ? nil : bar.id
-        }
-    }
-}
-
-/// One line of a cost breakdown: label on the left, an optional mono note, then the value
-/// right-aligned in a fixed slot so a column of them lines up.
-struct BreakdownRow: View {
-    let label: String
-    var note: String?
-    let value: String
-    var tint: Color = Palette.slate
-    var valueTint: Color = Palette.ink
-
-    var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: Metric.Space.m) {
-            Text(label)
-                .font(Typeface.ui(14, .regular, relativeTo: .subheadline))
-                .foregroundStyle(tint)
-                .lineLimit(2)
-                .minimumScaleFactor(0.9)
-                .allowsTightening(true)
-                .fixedSize(horizontal: false, vertical: true)
-            Spacer(minLength: Metric.Space.s)
-            if let note {
-                Text(note).oynoNote().lineLimit(1)
-            }
-            Text(value)
-                .oynoValue(14, color: valueTint)
-                .frame(minWidth: 62, alignment: .trailing)
-        }
     }
 }

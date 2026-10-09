@@ -47,35 +47,3 @@ struct JSONCodingTests {
         }
     }
 }
-
-/// Records written by an older build still open. A `shop.json` the decoder cannot read
-/// is set aside with the outbox in it, so every field added since has to read as
-/// something when its key is missing.
-struct RecordCompatibilityTests {
-    @Test func anOrderStillMarkedPaidReadsAsCompleted() throws {
-        var order = Order()
-        order.status = .completed
-        var json = String(decoding: try JSONCoding.encoder.encode(order), as: UTF8.self)
-        json = json.replacingOccurrences(of: #""status":"completed""#, with: #""status":"paid""#)
-        let decoded = try JSONCoding.decoder.decode(Order.self, from: Data(json.utf8))
-        #expect(decoded.status == .completed)
-    }
-
-    @Test func anOrderWithoutTheDepositFieldsDecodes() throws {
-        let order = Order()
-        var object = try #require(JSONSerialization.jsonObject(with: JSONCoding.encoder.encode(order)) as? [String: Any])
-        object["advance"] = nil
-        object["completedAt"] = nil
-        let data = try JSONSerialization.data(withJSONObject: object)
-        let decoded = try JSONCoding.decoder.decode(Order.self, from: data)
-        #expect(decoded.advanceTaken == 0)
-        #expect(decoded.completedAt == nil)
-    }
-
-    @Test func anUnknownStageStillRefusesToDecode() {
-        let json = #"{"status":"teleported"}"#
-        #expect(throws: DecodingError.self) {
-            try JSONCoding.decoder.decode([String: OrderStatus].self, from: Data(json.utf8))
-        }
-    }
-}

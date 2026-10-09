@@ -24,8 +24,8 @@ export interface PlanQuote {
  * sees and a placeholder for everyone else — never the number they're charged. */
 export const planListQuote: PlanQuote = {
   currency: "USD",
-  monthly: 15.99,
-  yearly: 99.99,
+  monthly: 9.99,
+  yearly: 49.99,
 };
 
 /** Dodo quotes every amount in the currency's lowest denomination — as a number in the API,

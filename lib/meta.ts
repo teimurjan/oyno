@@ -6,15 +6,15 @@ import { logFields } from "./log";
 /**
  * Meta Conversions API for web events — the server-side half of the purchase signal.
  *
- * The browser Pixel fires `Purchase` from Paddle's `checkout.completed`; this covers the
+ * The browser Pixel fires `Purchase` from the `/start/done` page; this covers the
  * purchases that event never reaches Meta for (tab closed on the redirect, ad-blocker,
  * Safari dropping the script). Both carry the same `event_id` — a uuid the funnel mints
- * before opening checkout and hands to Paddle as `customData`, so the browser reads it
+ * before opening checkout and hands to Dodo as `metadata`, so the browser reads it
  * back off the success URL and the webhook reads it off the transaction. Meta collapses
  * the pair into one conversion without either side coordinating.
  *
  * Everything here is best-effort. A failed send must never fail the subscription write or
- * make the webhook return non-2xx, which would have Paddle redeliver an event we already
+ * make the webhook return non-2xx, which would have Dodo redeliver an event we already
  * applied.
  */
 
@@ -30,15 +30,15 @@ const GRAPH_API_VERSION = process.env.META_GRAPH_API_VERSION ?? "v25.0";
 export const isMetaConfigured = Boolean(DATASET_ID && ACCESS_TOKEN);
 
 /**
- * Browser identity, collected at checkout time and carried through Paddle's `customData`.
+ * Browser identity, collected at checkout time and carried through Dodo's `metadata`.
  *
  * Meta matches a website event to an ad click through the `_fbp` (browser) and `_fbc`
- * (click) cookies, and a webhook call from Paddle carries neither — it isn't the user's
+ * (click) cookies, and a webhook call from Dodo carries neither — it isn't the user's
  * browser. So the funnel reads them before opening checkout and forwards them, the same
  * problem the app-events integration solved with a stored device descriptor.
  *
- * `clientIpAddress` is the buyer's, as `/api/client-ip` saw it at checkout — never the
- * request's own, which on the webhook is Paddle's. With the Pixel blocked it is, beside the
+ * `clientIpAddress` is the buyer's when the checkout carried it — never the
+ * request's own, which on the webhook is Dodo's. With the Pixel blocked it is, beside the
  * email, most of what Meta has to match the sale to an ad on.
  */
 export interface MetaBrowserIdentity {
@@ -48,7 +48,7 @@ export interface MetaBrowserIdentity {
   clientIpAddress: string | null;
 }
 
-/** Read the browser identity back off Paddle's `custom_data`. Every field is optional —
+/** Read the browser identity back off Dodo's `metadata`. Every field is optional —
  * a checkout opened with cookies blocked has neither cookie, which is a weaker match
  * rather than a reason to drop the event. */
 export function parseMetaBrowserIdentity(value: unknown): MetaBrowserIdentity {
@@ -87,8 +87,8 @@ export interface MetaPurchaseEvent {
   browser: MetaBrowserIdentity;
   /** Where the purchase happened, for Meta's URL-level reporting. */
   eventSourceUrl: string;
-  /** Minor units, as Paddle reports totals (11999 → 119.99). */
-  amountMinorUnits: string | undefined;
+  /** Minor units, as the biller reports totals (11999 → 119.99). */
+  amountMinorUnits: number | string | undefined;
   currency: string | undefined;
   /** Unix seconds. */
   eventAtSeconds: number;
@@ -167,7 +167,7 @@ export async function sendMetaPurchase(event: MetaPurchaseEvent): Promise<void> 
     });
   } catch (cause) {
     // Meta being unreachable costs one optimization signal, nothing more. Swallow it so
-    // the webhook still returns 2xx and Paddle doesn't redeliver an event we applied.
+    // the webhook still returns 2xx and Dodo doesn't redeliver an event we applied.
     console.error("meta capi send failed", cause);
     logFields({ metaCapi: "unreachable" });
   }
@@ -175,7 +175,7 @@ export async function sendMetaPurchase(event: MetaPurchaseEvent): Promise<void> 
 
 /** Value and currency are what make this the optimization event rather than a counter.
  * Omitted together when the total couldn't be read — a zero would be a claim.
- * Paddle's `grandTotal` is what the customer was actually charged, tax included, which
+ * Dodo's charged total is what the customer was actually charged, tax included, which
  * is what Meta's `value` means. */
 function customData(event: MetaPurchaseEvent) {
   const minor = Number(event.amountMinorUnits);

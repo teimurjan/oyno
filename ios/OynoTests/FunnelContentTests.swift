@@ -24,10 +24,10 @@ struct FunnelContentTests {
     @Test func theRecapLeadsWithTheProblemAndKeepsItsFollowUp() {
         let content = FunnelContent.bundled
         let answers = [
-            "problem": "filament", "brought": "guessing", "earned": "rarely", "volume": "six",
-            "tracking": "head", "orderbook": "messages", "tools": "sheet", "searching": "years",
+            "problem": "scroll", "age": "toddler", "hardest": "afterwork", "pickups": "often",
+            "partner": "yes", "tried": "limits",
         ]
         let lines = content.copy(for: "en").recapLines(answers: answers, spine: content.spine, limit: 3)
-        #expect(lines.map(\.key) == ["problem", "brought", "tracking"])
+        #expect(lines.map(\.key) == ["problem", "age", "pickups"])
     }
 }

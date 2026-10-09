@@ -16,34 +16,13 @@ const OUT = "ios/Oyno/Resources/Funnel.json";
 
 /** The step kinds `FunnelScreen.swift` has a view for. A kind added on the web fails here,
  * not as a funnel the app cannot decode on somebody's first launch. */
-const IOS_KINDS = new Set([
-  "question",
-  "underpriced",
-  "note",
-  "buckets",
-  "shelf",
-  "contrast",
-  "recap",
-  "account",
-]);
+const IOS_KINDS = new Set(["question", "statement", "evening", "planet", "recap", "account"]);
 
-/** The parts of a deck the phone reads. The rest is the web's own — its sign-in forms, Paddle's
+/** The parts of a deck the phone reads. The rest is the web's own — its sign-in forms, Dodo's
  * checkout, the page after it. */
-const SECTIONS = [
-  "chrome",
-  "questions",
-  "steps",
-  "units",
-  "underpriced",
-  "orderNote",
-  "buckets",
-  "contrast",
-  "shelf",
-  "recap",
-  "paywall",
-] as const;
+const SECTIONS = ["chrome", "questions", "steps", "evening", "planet", "recap", "paywall"] as const;
 
-// `FUNNEL`'s order, not the web's: the app opens on the four-way question, which can name pricing first.
+// The app opens on the four-way question; the web's opener is its yes/no.
 const accountIndex = FUNNEL.steps.findIndex((step) => step.kind === "account");
 const steps = FUNNEL.steps.slice(0, accountIndex + 1);
 const unknown = steps.filter((step) => !IOS_KINDS.has(step.kind));

@@ -90,7 +90,7 @@ struct Screen<Content: View>: View {
         // Past every safe area, the keyboard's included. The keypad's backdrop is
         // translucent, so a canvas that stops at the keyboard shows the window's black
         // through it — and the home indicator strip below it with nothing painted at all.
-        .background(Palette.canvas.ignoresSafeArea())
+        .background(Palette.sky.ignoresSafeArea())
         .background { SwipeBackGesture() }
         .toolbar(.hidden, for: .navigationBar)
         .keyboardDismissBar()

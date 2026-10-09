@@ -15,8 +15,8 @@ enum Metric {
     }
 
     enum Radius {
-        static let card: CGFloat = 8
-        static let control: CGFloat = 6
+        static let card: CGFloat = 22
+        static let control: CGFloat = 999
         static let swatch: CGFloat = 3
         static let bar: CGFloat = 2
     }

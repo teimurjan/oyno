@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
-import { SignInOrOpen } from "@/components/site/BuyOrOpen";
 import { copyFor } from "@/components/site/copy";
-import { LOCALE_NAMES, LOCALES, pathFor, type Lang, type SitePage } from "@/lib/i18n";
+import { funnelPath, LOCALE_NAMES, LOCALES, pathFor, type Lang, type SitePage } from "@/lib/i18n";
 
 /**
  * The frame every non-funnel page sits in.
@@ -26,7 +25,7 @@ export function SiteShell({
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-hairline bg-canvas/90 backdrop-blur-md">
+      <header className="sticky top-0 z-20 border-b border-hairline bg-canvas/85 backdrop-blur-md">
         <div className="shell flex items-center justify-between py-4">
           <Link href={pathFor(lang, "home")}>
             <Logo />
@@ -35,7 +34,9 @@ export function SiteShell({
             <Link href={pathFor(lang, "pricing")} className="text-[13px] text-muted hover:text-ink">
               {copy.nav.pricing}
             </Link>
-            <SignInOrOpen signIn={copy.nav.signIn} open={copy.nav.open} />
+            <Link href={funnelPath(lang)} className="inline-flex h-10 items-center rounded-full bg-accent px-4 text-[14px] font-bold text-white hover:bg-accent-pressed">
+              {copy.nav.start}
+            </Link>
           </div>
         </div>
       </header>
@@ -50,7 +51,6 @@ export function SiteShell({
             <Link href={pathFor(lang, "support")} className="hover:text-ink">{copy.nav.support}</Link>
             <Link href={pathFor(lang, "privacy")} className="hover:text-ink">{copy.nav.privacy}</Link>
             <Link href={pathFor(lang, "terms")} className="hover:text-ink">{copy.nav.terms}</Link>
-            <Link href={pathFor(lang, "refund")} className="hover:text-ink">{copy.nav.refund}</Link>
             <LanguageSwitch lang={lang} page={page} />
           </nav>
         </div>
@@ -75,6 +75,7 @@ export function SiteShell({
  * wrong language where the way out is.
  */
 export function LanguageSwitch({ lang, page }: { lang: Lang; page: SitePage }) {
+  if (LOCALES.length < 2) return null;
   const copy = copyFor(lang);
   return (
     <details className="group relative">

@@ -6,9 +6,8 @@ import SwiftUI
 /// Facebook leads, because the paid traffic is Meta's. Apple sits above Google per Apple's
 /// HIG, and guideline 4.8 requires it alongside any other provider anyway.
 ///
-/// An ERP syncs across a phone, an iPad and a workshop laptop, and the subscription is
-/// keyed on the account as well, so the copy says what the account is for rather than
-/// "sign in to continue": the books on every device you work from.
+/// The subscription and the family's planet are keyed on the account, so the copy says what
+/// the account is for rather than "sign in to continue".
 struct SignInScreen: View {
     @State private var showEmail = false
 
@@ -18,12 +17,12 @@ struct SignInScreen: View {
 
             VStack(alignment: .leading, spacing: Metric.Space.m) {
                 Text("Oyno").oynoEyebrow()
-                Text("An ERP for your print farm, in your pocket")
-                    .font(Typeface.ui(27, .semibold, relativeTo: .largeTitle))
+                Text("Save your family's planet")
+                    .font(Typeface.ui(28, .extrabold, relativeTo: .largeTitle))
                     .tracking(-0.68)
                     .foregroundStyle(Palette.ink)
                     .fixedSize(horizontal: false, vertical: true)
-                Text("Sign in so your printers, spools and orders are on every device you work from — the phone at the machine and the laptop at the desk.")
+                Text("Sign in so your plan and your planet stay with you, and a subscription bought on the web finds you here.")
                     .font(Typeface.ui(14, .regular, relativeTo: .subheadline))
                     .foregroundStyle(Palette.muted)
                     .fixedSize(horizontal: false, vertical: true)
@@ -146,7 +145,7 @@ struct SignInProviders: View {
                     .keyboardType(.numberPad)
                     .textContentType(.oneTimeCode)
                     .multilineTextAlignment(.center)
-                    .font(Typeface.mono(22, .medium, relativeTo: .title2))
+                    .font(Typeface.figures(22, .medium, relativeTo: .title2))
                     .tracking(6)
                     .padding(.vertical, 14)
                     .onChange(of: code) { _, typed in
@@ -234,11 +233,11 @@ private struct SigningInOverlay: ViewModifier {
     /// The seconds after the provider hands control back.
     ///
     /// Apple's sheet and Google's browser both close the moment they are done, and what
-    /// follows is a round trip to Supabase over whatever signal the workshop has. Without
+    /// follows is a round trip to Supabase over whatever signal there is. Without
     /// this, the screen the operator lands back on is the sign-in screen they thought they
     /// had just finished with — buttons and all, and nothing saying the tap worked. The
     /// same page `RestoringScreen` is, one step earlier: this one is getting the account,
-    /// that one is getting the shop.
+    /// that one is getting the plan.
     private var exchanging: some View {
         ZStack {
             Palette.canvas.opacity(0.96).ignoresSafeArea()

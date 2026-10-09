@@ -3,7 +3,7 @@ import { Accented } from "./locale";
 /** `[bracketed]` marks the span that gets the accent. */
 export function Headline({ text }: { text: string }) {
   return (
-    <h1 className="mb-8 text-center font-semibold leading-[1.15] tracking-[-0.02em] text-ink text-[clamp(26px,6.8vw,34px)]">
+    <h1 className="mb-8 text-center font-extrabold leading-[1.1] tracking-[-0.03em] text-ink text-[clamp(26px,6.8vw,34px)]">
       <Accented text={text} />
     </h1>
   );
@@ -13,7 +13,7 @@ export function Headline({ text }: { text: string }) {
  * own headline, so the page still has one title. */
 export function SectionTitle({ text }: { text: string }) {
   return (
-    <h2 className="text-center font-semibold leading-[1.15] tracking-[-0.02em] text-ink text-[clamp(22px,5.6vw,28px)]">
+    <h2 className="text-center font-extrabold leading-[1.15] tracking-[-0.03em] text-ink text-[clamp(22px,5.6vw,28px)]">
       {text}
     </h2>
   );

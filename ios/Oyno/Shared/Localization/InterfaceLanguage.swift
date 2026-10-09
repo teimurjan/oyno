@@ -31,10 +31,7 @@ enum InterfaceLanguage {
     /// Ordered by market rather than alphabetically, which is the order the picker draws
     /// and the same order `LOCALES` in `appstore/scripts/lib/locales.mjs` prints in — the
     /// two lists are one set, and a market only really exists when both name it.
-    static let supported = [
-        "en", "es", "es-MX", "fr", "de", "pt-BR", "pt-PT", "it", "nl",
-        "sv", "da", "nb", "fi", "pl", "cs", "tr", "ru", "uk",
-    ]
+    static let supported = ["en"]
 
     /// The language's own name for itself — "Русский", not "Russian". The only spelling
     /// that works in a picker, because somebody who has the app in a language they cannot

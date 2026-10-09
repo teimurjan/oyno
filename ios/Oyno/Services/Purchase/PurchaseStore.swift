@@ -28,6 +28,9 @@ final class PurchaseStore {
     /// subscription bought on another phone) and withhold what a local sandbox
     /// purchase shows in a way production shouldn't.
     private(set) var serverPaid: Bool?
+    /// Who bills this account, from the server: "app_store" or "dodo". Decides whether
+    /// "Manage subscription" opens StoreKit's sheet or Dodo's customer portal.
+    private(set) var provider: String?
     var isPaid: Bool { serverPaid ?? localPaid }
     /// The App Store subscription group, read off a loaded product. Scopes the
     /// manage-subscriptions sheet to this app — StoreKit's unscoped sheet can
@@ -67,14 +70,9 @@ final class PurchaseStore {
     /// request was issued must not overwrite the newer answer.
     @ObservationIgnored private var serverRefreshGeneration = 0
 
-    /// Two subscriptions and one perpetual unlock. The lifetime option exists because the
-    /// audience is suspicious of renting software — makers who self-host Spoolman rather
-    /// than pay a subscription are a large part of the market — and because the category's
-    /// incumbents all sell one. It is a non-consumable, so its entitlement carries a null
-    /// expiry, which `apply_entitlement_event` already reads as perpetual.
+    /// Two subscriptions in one group, each with the 3-day introductory offer.
     init(productIDs: [String] = ["com.teimurjan.oyno.fullaccess.monthly",
-                                 "com.teimurjan.oyno.fullaccess.yearly",
-                                 "com.teimurjan.oyno.fullaccess.lifetime"],
+                                 "com.teimurjan.oyno.fullaccess.yearly"],
          client: HTTPClient = HTTPClient(),
          baseURL: URL = AppConfig.apiBaseURL,
          accessToken: @escaping AccessTokenProvider = { nil },
@@ -300,13 +298,28 @@ final class PurchaseStore {
               generation == serverRefreshGeneration
         else { return }
         serverPaid = decoded.paid
+        provider = decoded.provider
         Self.cacheServerPaid(decoded.paid, for: uid)
+    }
+
+    /// The Dodo customer portal for a web subscriber, minted by the server. Nil when it
+    /// could not be opened, which the caller reports rather than opening nothing silently.
+    func webPortalURL() async -> URL? {
+        guard let token = await accessToken() else { return nil }
+        let response = try? await client.post(
+            baseURL.appendingPathComponent("api/subscription/portal"),
+            body: EmptyBody(),
+            headers: BackendAuth.headers(token: token),
+            as: PortalResponse.self
+        )
+        return response.flatMap { URL(string: $0.url) }
     }
 
     /// Sign-out. The last account's answer must not outlive its session — it is what let a
     /// signed-out phone keep writing as if it were paid.
     func forgetAccount() {
         serverRefreshGeneration += 1
+        provider = nil
         seedCachedServerPaid(for: nil)
     }
 
@@ -375,17 +388,12 @@ final class PurchaseStore {
         return nil
     }
 
-    /// The plan billed every `unit` — a month, a year, or `nil` for the perpetual unlock.
+    /// The plan billed every `unit`: a month or a year.
     func product(billedEvery unit: Product.SubscriptionPeriod.Unit?) -> Product? {
         products.first { $0.subscription?.subscriptionPeriod.unit == unit }
     }
 
-    /// Sort key: yearly (0) ahead of monthly (1), with the lifetime non-consumable last
-    /// — it has no `subscription` at all, so it falls into the default.
-    ///
-    /// Yearly leading also keeps `subscriptionGroupID` pointing at a real subscription:
-    /// it reads `products.first`, and a non-consumable in that slot would silently
-    /// disable the intro-offer eligibility check and hide the free trial.
+    /// Sort key: yearly (0) ahead of monthly (1), so the better-value plan reads first.
     private func periodRank(_ product: Product) -> Int {
         switch product.subscription?.subscriptionPeriod.unit {
         case .year: 0
@@ -398,4 +406,12 @@ final class PurchaseStore {
 /// The `/api/entitlement` and `/api/subscription/sync` response shape.
 private struct EntitlementResponse: Decodable {
     let paid: Bool
+    /// Absent on `/api/subscription/sync`.
+    let provider: String?
 }
+
+private struct PortalResponse: Decodable {
+    let url: String
+}
+
+private struct EmptyBody: Encodable {}

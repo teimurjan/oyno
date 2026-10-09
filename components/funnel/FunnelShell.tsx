@@ -3,19 +3,16 @@ import { lazy, Suspense } from "preact/compat";
 import { useEffect, useRef, useState } from "preact/hooks";
 import { track, trackOnExit } from "@/lib/analytics";
 import { metaTrack } from "@/lib/metaPixel";
-import type { PaddlePlan } from "@/lib/paddlePrices";
+import type { Plan } from "@/lib/plans";
 import { AccountStep } from "./AccountStep";
-import { BucketsStep } from "./BucketsStep";
-import { ContrastStep } from "./ContrastStep";
+import { EveningStep } from "./EveningStep";
 import { FunnelHeader } from "./FunnelChrome";
-import { OrderNoteStep } from "./OrderNoteStep";
+import { PlanetStep } from "./PlanetStep";
 import { prewarmOffer } from "./prewarm";
 import { QuestionCard } from "./QuestionCard";
 import { RecapStep } from "./RecapStep";
-import { ShelfStep } from "./ShelfStep";
 import { StatementStep } from "./StatementStep";
-import { UnderpricedStep } from "./UnderpricedStep";
-import { useFunnelSession } from "./session";
+import { useFunnelSession, type Attribution } from "./session";
 import {
   WEB_FUNNEL,
   stepAt,
@@ -27,23 +24,19 @@ import {
 import { goto, useFunnelLocation } from "./location";
 import { useLocale } from "./locale";
 
-/** **Nothing above the paywall may import `lib/paddleClient.ts`** — these two and `planQuote`
- * are the only Paddle consumers, and `lazy()` is what keeps `@paddle/paddle-js` out of the
- * chunk that hydrates the first paint. Neither is ever prerendered; the build renders step 0
- * only. `prewarm.ts` fetches both chunks mid-survey, so arriving here is not a download. */
+/** **Nothing above the paywall may import `lib/dodoCheckout.ts`**: `lazy()` is what keeps
+ * `dodopayments-checkout` out of the chunk that hydrates the first paint. Neither is ever
+ * prerendered; the build renders step 0 only. `prewarm.ts` fetches both chunks mid-survey. */
 const PaywallStep = lazy(() => import("./PaywallStep").then((m) => ({ default: m.PaywallStep })));
 const CheckoutStep = lazy(() => import("./CheckoutStep").then((m) => ({ default: m.CheckoutStep })));
 
-/** The demos, which all take exactly the step and the reader's answers. The other five kinds
- * each need something of their own and stay written out in `StepBody`. */
+/** The widgets, which all take exactly the step and the reader's answers. The other kinds each
+ * need something of their own and stay written out in `StepBody`. */
 const DEMOS: Partial<
   Record<FunnelStepKind, ComponentType<{ step: FunnelStep; answers: FunnelAnswers }>>
 > = {
-  underpriced: UnderpricedStep,
-  note: OrderNoteStep,
-  buckets: BucketsStep,
-  shelf: ShelfStep,
-  contrast: ContrastStep,
+  evening: EveningStep,
+  planet: PlanetStep,
 };
 
 /**
@@ -60,7 +53,7 @@ export function FunnelShell() {
   const { copy, lang } = useLocale();
   /** Held here because the paywall and the checkout are two steps: inside the paywall it
    * would reset to the default every time somebody backed out to look at the prices again. */
-  const [plan, setPlan] = useState<PaddlePlan>("yearly");
+  const [plan, setPlan] = useState<Plan>("yearly");
   const trackedSteps = useRef(new Set<string>());
   /** The step column scrolls inside `main`, so a tall step is scrolled back to the top on the
    * way in rather than opening half-read. */
@@ -124,18 +117,8 @@ export function FunnelShell() {
    * survey over it, no Back under it, and its own action inside it. */
   const bare = step.kind === "paywall";
 
-  // Safari before 26 tints the status bar from `theme-color`; 26 samples `.paywall-tint`.
-  useEffect(() => {
-    if (!bare) return;
-    const meta = document.createElement("meta");
-    meta.name = "theme-color";
-    meta.content = getComputedStyle(document.documentElement).getPropertyValue("--paywall-tint").trim();
-    document.head.append(meta);
-    return () => meta.remove();
-  }, [bare]);
-  const offer = bare || step.kind === "checkout";
   const multi = step.question?.multi ?? false;
-  // A generic "Continue" beside a "Create account" button, or above Paddle's own Pay button,
+  // A generic "Continue" beside a "Create account" button, or above Dodo's own Pay button,
   // is two buttons competing for one tap. A single-answer question advances on the option.
   const ownsItsAction =
     bare || step.kind === "account" || step.kind === "checkout" || (step.kind === "question" && !multi);
@@ -148,8 +131,7 @@ export function FunnelShell() {
   // a column whose height is only a minimum resolves to the content's own height — so a tall
   // step grew the column past the viewport and took the footer's button with it.
   return (
-    <div className="flex h-dvh flex-col">
-      {bare && <div aria-hidden className="paywall-tint" />}
+    <div className="sky flex h-dvh flex-col">
       {!bare && <FunnelHeader index={index} count={SURVEY_LENGTH} label={copy.chrome.progress} />}
 
       {/* `min-h-0` keeps the chrome fixed and lets `main` scroll its own content. The gutter
@@ -174,26 +156,13 @@ export function FunnelShell() {
               step={step}
               index={index}
               answers={answers}
+              attribution={attribution}
               plan={plan}
               onSelectPlan={setPlan}
               onPick={pick}
               onAdvance={advance}
             />
           </div>
-
-          {/* Paddle's frame opens, hidden, while the reader is still on the offer, so Continue
-              reveals a form that is already there. It sits outside the keyed column because an
-              iframe moved in the DOM reloads, and it stays mounted between the two steps. */}
-          {offer && (
-            <Suspense key="checkout" fallback={null}>
-              <CheckoutStep
-                visible={step.kind === "checkout"}
-                plan={plan}
-                answers={answers}
-                attribution={attribution}
-              />
-            </Suspense>
-          )}
         </div>
       </main>
 
@@ -241,8 +210,9 @@ interface StepProps {
   step: FunnelStep;
   index: number;
   answers: FunnelAnswers;
-  plan: PaddlePlan;
-  onSelectPlan: (plan: PaddlePlan) => void;
+  attribution: Attribution;
+  plan: Plan;
+  onSelectPlan: (plan: Plan) => void;
   onPick: (value: string) => void;
   /** Used by the steps whose primary control is their own. */
   onAdvance: () => void;
@@ -252,6 +222,7 @@ function StepBody({
   step,
   index,
   answers,
+  attribution,
   plan,
   onSelectPlan,
   onPick,
@@ -268,7 +239,7 @@ function StepBody({
 
   // Its note is drawn under the buttons rather than under the headline, so it lays out its own.
   if (step.kind === "account") {
-    return <AccountStep headline={step.headline ?? ""} note={step.note} answers={answers} />;
+    return <AccountStep headline={step.headline ?? ""} answers={answers} />;
   }
 
   // Every remaining kind opens with the step's own copy, which is what `StatementStep` draws.
@@ -285,6 +256,17 @@ function StepBody({
     );
   }
 
-  // The card field below it is `CheckoutStep`, mounted by the shell since the offer.
+  if (step.kind === "checkout") {
+    // A fragment around a block, not a fragment of siblings: the frame is one piece.
+    return (
+      <>
+        {heading}
+        <Suspense fallback={null}>
+          <CheckoutStep plan={plan} answers={answers} attribution={attribution} funnel={WEB_FUNNEL.id} />
+        </Suspense>
+      </>
+    );
+  }
+
   return heading;
 }

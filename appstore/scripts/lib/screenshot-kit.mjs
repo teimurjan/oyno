@@ -3,8 +3,8 @@
 // system.
 //
 // The fonts are read directly out of the iOS bundle (ios/Oyno/Resources/Fonts), so
-// marketing can never drift from what ships: if the app's numbers are set in IBM Plex
-// Mono, the caption above the phone is too. The phone mockup (appstore/source/frame.png)
+// marketing can never drift from what ships: the caption above the phone is set in the
+// app's own Figtree. The phone mockup (appstore/source/frame.png)
 // is brand-neutral device photography, not app-specific art.
 
 import { execFileSync } from "node:child_process";
@@ -87,39 +87,30 @@ export const WEB_FRAME = { w: 480, h: 1040, quality: 0.82 };
  * the blue marks the one thing that matters in a caption, the red marks money being lost.
  * Everything else is the greyscale the app is built from. */
 export const PALETTE = {
-  ink: "#0A0A0A",
-  slate: "#525252",
-  muted: "#737373",
-  faint: "#A3A3A3",
-  hairline: "#E5E5E5",
+  ink: "#18202E",
+  slate: "#364152",
+  muted: "#4E5869",
+  faint: "#7D8696",
+  hairline: "#DFE3E9",
   surface: "#FFFFFF",
-  /** The store canvas sits a step warmer than the app's own #FAFAFA so the phone reads as
-   * an object on a surface rather than a screenshot pasted on white. */
-  canvas: "#F0EFEC",
-  accent: "#0F62FE",
-  alert: "#DA1E28",
+  canvas: "#FFF8EF",
+  accent: "#2F5E9E",
+  alert: "#C2412D",
 };
 
-/** Mirrors Shared/DesignSystem/Typeface.swift: Inter carries language, IBM Plex Mono
- * carries every number. Both cover Latin and Cyrillic, so unlike the sister project
- * there is no second face set to switch between — one stack serves every locale. */
+/** Mirrors Shared/DesignSystem/Typeface.swift: Figtree for everything, tabular figures for numbers. */
 export const FACES = {
-  heading: "'Inter-SemiBold'",
-  body: "'Inter-Regular'",
-  label: "'Inter-Medium'",
-  mono: "'IBMPlexMono-SemiBold'",
-  monoBody: "'IBMPlexMono-Regular'",
+  heading: "'Figtree-ExtraBold'",
+  body: "'Figtree-Regular'",
+  label: "'Figtree-SemiBold'",
+  mono: "'Figtree-Bold'",
+  monoBody: "'Figtree-Medium'",
 };
 
-const FONT_FILES = [
-  { family: "Inter-Regular", file: "Inter-Regular.ttf" },
-  { family: "Inter-Medium", file: "Inter-Medium.ttf" },
-  { family: "Inter-SemiBold", file: "Inter-SemiBold.ttf" },
-  { family: "Inter-Bold", file: "Inter-Bold.ttf" },
-  { family: "IBMPlexMono-Regular", file: "IBMPlexMono-Regular.ttf" },
-  { family: "IBMPlexMono-Medium", file: "IBMPlexMono-Medium.ttf" },
-  { family: "IBMPlexMono-SemiBold", file: "IBMPlexMono-SemiBold.ttf" },
-];
+const FONT_FILES = ["Regular", "Medium", "SemiBold", "Bold", "ExtraBold"].map((weight) => ({
+  family: `Figtree-${weight}`,
+  file: `Figtree-${weight}.ttf`,
+}));
 
 export function pad2(n) {
   return String(n).padStart(2, "0");

@@ -5,13 +5,12 @@
  *
  * **Nothing here is in a language.** The words live in `copy/<tag>.ts`, keyed by step id,
  * question key and option value, and `stepAt` puts the two together for one reader. Keys and
- * values are what analytics, `sessionStorage` and the Paddle transaction record, so they stay
+ * values are what analytics, `sessionStorage` and the Dodo subscription record, so they stay
  * the same in every language and are never reworded once an ad points at them.
  *
  * The app's first run is this funnel too: `bun run funnel:export-ios` writes these steps and every
  * deck into its bundle, so a step of a new `kind` needs a view in `FunnelScreen.swift` before
- * the script will write it. The arithmetic is shared the other way: the widget steps run
- * `lib/costing.ts` through `lib/demoShop.ts`, and the app runs `Costing.swift`.
+ * the script will write it.
  */
 
 import type { FunnelCopy } from "./copy/types";
@@ -19,22 +18,19 @@ import { validateFunnel, type FunnelSpine } from "./steps.validate";
 
 export type FunnelStepKind =
   | "question"
-  /** The rule of thumb holding still while the real cost climbs past it. */
-  | "underpriced"
-  /** One order assembling itself into a priced note. */
-  | "note"
-  /** The order book sorted into three buckets by margin. */
-  | "buckets"
-  | "shelf"
-  /** Scribbled notes beside one clean morning. Static. */
-  | "contrast"
+  /** A headline and a line or two, read rather than answered. */
+  | "statement"
+  /** An example evening, the phone eating it minute by minute. Self-running. */
+  | "evening"
+  /** The planet: press it, it grows, the worlds open. Tours itself until touched. */
+  | "planet"
   | "recap"
   | "account"
   | "paywall"
   | "checkout";
 
 export interface OptionShape {
-  /** Stored, reported, and stamped onto the Paddle transaction. Never reworded once an ad
+  /** Stored, reported, and stamped onto the Dodo subscription. Never reworded once an ad
    * points at it. */
   value: string;
   /** Kept off the title on purpose: the title is what a chart, a recap line and a transaction
@@ -44,7 +40,7 @@ export interface OptionShape {
 
 export interface QuestionShape {
   /** Names the answer in `sessionStorage`, as an Amplitude user property, as a key on the
-   * Paddle transaction, and as the question's entry in every copy deck. Never translated. */
+   * Dodo subscription, and as the question's entry in every copy deck. Never translated. */
   key: QuestionKey;
   /** Several answers at once, stored as a `MULTI_SEPARATOR`-joined string. A multi question
    * cannot auto-advance, so it keeps the footer's Continue. */
@@ -112,17 +108,17 @@ export interface RecapLine {
 export const MULTI_SEPARATOR = "|";
 
 /** The four problems the ads name and step 0 asks between. */
-export const PROBLEMS = ["cost", "filament", "orders", "earnings"] as const;
+export const PROBLEMS = ["scroll", "ideas", "asks", "both"] as const;
 
 export type Problem = (typeof PROBLEMS)[number];
 
 const PROBLEM: QuestionShape = {
   key: "problem",
   options: [
-    { value: "cost", emoji: "🎲" },
-    { value: "filament", emoji: "🧵" },
-    { value: "orders", emoji: "📥" },
-    { value: "earnings", emoji: "📉" },
+    { value: "scroll", emoji: "📱" },
+    { value: "ideas", emoji: "🥱" },
+    { value: "asks", emoji: "🙋" },
+    { value: "both", emoji: "👀" },
   ],
 };
 
@@ -130,17 +126,16 @@ const PROBLEM: QuestionShape = {
  * step falls back to the opener's own problem rather than to the default copy. */
 const OPENER_DECLINED = "none";
 
-/** The problem the one opener asks about: the winning ads' (tap the roll, not the keyboard). */
-const OPENER_PROBLEM: Problem = "filament";
+/** The problem the one opener asks about: the phone eating the evening. */
+const OPENER_PROBLEM: Problem = "scroll";
 
-/** Names the opener in Amplitude's `opener` user property, apart from the earlier ones
- * (`spools`, and the per-ad ones before it). */
-export const OPENER_ID = "sheet";
+/** Names the opener in Amplitude's `opener` user property. */
+export const OPENER_ID = "evening";
 
 /**
- * Step 0 for every web visit: one yes/no on the filament sheet. Same `key` as `PROBLEM` and "Yes" is
- * `filament`, so the branch, the recap line and the Amplitude join read as a four-way answer
- * would. The app's first run keeps the four-way question (`FUNNEL`'s own step 0).
+ * Step 0 for every web visit: one yes/no on the phone eating the evening. Same `key` as
+ * `PROBLEM` and "Yes" is `scroll`, so the branch, the recap line and the Amplitude join read
+ * as a four-way answer would. The app's first run keeps the four-way question.
  */
 function opener(copy: FunnelCopy): FunnelQuestion {
   return {
@@ -167,98 +162,89 @@ const question = (
   options: options.map(([value, emoji]) => ({ value, emoji })),
 });
 
-const BROUGHT = question("brought", [
-  ["guessing", "🔄"],
-  ["clean", "✨"],
-  ["broke", "🌋"],
-  ["works", "🔋"],
-  ["unsure", "❓"],
+const AGE = question("age", [
+  ["toddler", "🧸"],
+  ["preschool", "🖍️"],
+  ["school", "🚲"],
+  ["older", "🎒"],
 ]);
 
-const EARNED = question("earned", [
-  ["yes", "✅"],
-  ["sometimes", "🤔"],
-  ["rarely", "😕"],
-  ["avoid", "🙈"],
+const HARDEST = question("hardest", [
+  ["afterwork", "🌇"],
+  ["dinner", "🍝"],
+  ["weekend", "🛋️"],
+  ["bedtime", "🌙"],
 ]);
 
-const MOTIVATION = question(
-  "motivation",
+const PICKUPS = question("pickups", [
+  ["rare", "🙂"],
+  ["few", "🤏"],
+  ["often", "🔁"],
+  ["lost", "🌀"],
+]);
+
+const APPS = question(
+  "apps",
   [
-    ["control", "🎛️"],
-    ["price", "🚀"],
-    ["calm", "🧘"],
-    ["which", "🔭"],
-    ["evenings", "⏳"],
+    ["instagram", "📸"],
+    ["tiktok", "🎵"],
+    ["youtube", "▶️"],
+    ["news", "📰"],
+    ["work", "💼"],
+    ["games", "🎮"],
   ],
   true,
 );
 
-const VOLUME = question("volume", [
-  ["six", "🤯"],
-  ["four", "🤔"],
-  ["two", "😐"],
-  ["one", "🙂"],
+const ENERGY = question("energy", [
+  ["low", "🪫"],
+  ["okay", "🔋"],
+  ["full", "⚡"],
 ]);
 
-const TRACKING = question("tracking", [
-  ["scale", "⚖️"],
-  ["labels", "🏷️"],
-  ["sheet", "💻"],
-  ["head", "🧠"],
-  ["look", "👀"],
+const PARTNER = question("partner", [
+  ["yes", "👫"],
+  ["sometimes", "🔀"],
+  ["no", "🧍"],
 ]);
 
-const ORDERBOOK = question("orderbook", [
-  ["marketplace", "🛍️"],
-  ["messages", "💬"],
-  ["notes", "📝"],
-  ["postits", "📌"],
-  ["whiteboard", "📋"],
-  ["head", "🧠"],
+const TRIED = question("tried", [
+  ["limits", "⏱️"],
+  ["room", "🚪"],
+  ["delete", "🗑️"],
+  ["nothing", "🤷"],
 ]);
 
-const FEEL = question("feel", [
-  ["everything", "💯"],
-  ["lot", "👍"],
+const MINUTES = question("minutes", [
+  ["ten", "🌱"],
+  ["twenty", "🌿"],
+  ["thirty", "🌳"],
+]);
+
+const SOON = question("soon", [
+  ["tonight", "🌙"],
+  ["week", "📅"],
+  ["month", "🗓️"],
   ["unsure", "🤔"],
-  ["already", "✅"],
-]);
-
-const TOOLS = question("tools", [
-  ["notes", "📱"],
-  ["dashboard", "📊"],
-  ["paper", "📓"],
-  ["sheet", "💻"],
-  ["head", "🧠"],
-  ["gaveup", "👻"],
-]);
-
-const SEARCHING = question("searching", [
-  ["new", "🆕"],
-  ["weeks", "📅"],
-  ["months", "🔄"],
-  ["years", "⏳"],
 ]);
 
 export const FUNNEL: { id: string; steps: StepShape[] } = {
-  id: "seller",
+  id: "evenings",
   steps: [
     { id: "problem", kind: "question", question: PROBLEM },
-    { id: "why", kind: "underpriced", branch: { on: "problem" } },
-    { id: "brought", kind: "question", question: BROUGHT },
-    { id: "note", kind: "note" },
-    { id: "earned", kind: "question", question: EARNED },
-    { id: "motivation", kind: "question", question: MOTIVATION },
-    { id: "buckets", kind: "buckets" },
-    { id: "volume", kind: "question", question: VOLUME },
-    { id: "tracking", kind: "question", question: TRACKING },
-    { id: "shelf", kind: "shelf" },
-    { id: "orderbook", kind: "question", question: ORDERBOOK },
-    { id: "feel", kind: "question", question: FEEL },
-    { id: "contrast", kind: "contrast" },
-    { id: "tools", kind: "question", question: TOOLS },
-    { id: "searching", kind: "question", question: SEARCHING },
+    { id: "evening", kind: "evening" },
+    { id: "why", kind: "statement", branch: { on: "problem" } },
+    { id: "age", kind: "question", question: AGE },
+    { id: "hardest", kind: "question", question: HARDEST },
+    { id: "pickups", kind: "question", question: PICKUPS },
+    { id: "apps", kind: "question", question: APPS },
+    { id: "energy", kind: "question", question: ENERGY },
+    { id: "partner", kind: "question", question: PARTNER },
+    { id: "tried", kind: "question", question: TRIED },
+    { id: "planet", kind: "planet" },
+    { id: "minutes", kind: "question", question: MINUTES },
+    { id: "enough", kind: "statement" },
+    { id: "soon", kind: "question", question: SOON },
     { id: "recap", kind: "recap" },
     { id: "account", kind: "account" },
     { id: "paywall", kind: "paywall" },
@@ -266,25 +252,8 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
   ],
 };
 
-/**
- * The web's order of `FUNNEL`'s steps. Every web visit opens on the filament sheet, so the
- * shelf answers it straight away, and the pricing widget waits for "what brought you here".
- * The app keeps `FUNNEL`'s order, because its four-way opener can name pricing first.
- */
-const WEB_ORDER = [
-  "problem", "shelf", "brought", "why", "note", "earned", "motivation", "buckets", "volume",
-  "tracking", "orderbook", "feel", "contrast", "tools", "searching", "recap", "account",
-  "paywall", "checkout",
-];
-
-export const WEB_FUNNEL: { id: string; steps: StepShape[] } = {
-  id: FUNNEL.id,
-  steps: WEB_ORDER.flatMap((id) => FUNNEL.steps.filter((step) => step.id === id)).map((step) =>
-    // Unbranched: every web reader is on the filament variant, which put a filament headline
-    // over a pricing widget.
-    step.id === "why" ? { id: step.id, kind: step.kind } : step,
-  ),
-};
+/** The web walks the app's order: the ads name the same pain the app's opener does. */
+export const WEB_FUNNEL = FUNNEL;
 
 /** The words a deck has for a statement step, by id. */
 export type StepCopy = FunnelCopy["steps"][keyof FunnelCopy["steps"]];
@@ -347,10 +316,10 @@ export function stepAt(index: number, copy: FunnelCopy): FunnelStep {
 /** The question each problem is the short form of. Its line is pinned into the recap beside
  * the problem's own, or the questions late in the spine never survive the cap. */
 const FOLLOW_UP: Record<string, QuestionKey> = {
-  cost: "tools",
-  filament: "tracking",
-  orders: "orderbook",
-  earnings: "earned",
+  scroll: "pickups",
+  ideas: "energy",
+  asks: "tried",
+  both: "partner",
 };
 
 /**
@@ -406,8 +375,4 @@ export const SPINE: FunnelSpine = {
 
 if (process.env.NODE_ENV !== "production") {
   validateFunnel(SPINE);
-  validateFunnel({ ...SPINE, steps: WEB_FUNNEL.steps });
-  if (WEB_FUNNEL.steps.length !== FUNNEL.steps.length) {
-    throw new Error("WEB_ORDER leaves out or misnames a step of FUNNEL");
-  }
 }

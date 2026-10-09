@@ -11,15 +11,13 @@ import {
   type SitePage,
 } from "@/lib/i18n";
 import { updateSession } from "@/lib/supabase/middleware";
-import { APP_PASSTHROUGH, APP_SEGMENT, isAppHost, isAppSegment, requestHost } from "@/lib/appHost";
 
 /**
- * Next 16's `proxy` convention, formerly `middleware`. Four jobs.
+ * Next 16's `proxy` convention, formerly `middleware`. Three jobs.
  *
- * 1. Serve the web app from the `app.` host by rewriting onto `app/app/`.
- * 2. Refresh the Supabase cookie session on `/pay` and the auth callback.
- * 3. Withhold the Meta Pixel where setting `_fbp` without prior consent would be unlawful.
- * 4. Send a reader to the site in the language they are going to want.
+ * 1. Refresh the Supabase cookie session on the auth callback.
+ * 2. Withhold the Meta Pixel where setting `_fbp` without prior consent would be unlawful.
+ * 3. Send a reader to the site in the language they are going to want.
  *
  * `/start` is deliberately absent: the funnel is now a static file (`public/funnel/`,
  * served by the rewrite in `next.config.mjs`), so there is no function on the path and no
@@ -77,60 +75,10 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const app = appHostRouting(request);
-  if (app) return app;
-
   const marketing = pageForPath(request.nextUrl.pathname);
   if (marketing) return languageRedirect(request, marketing);
 
   return updateSession(request);
-}
-
-/**
- * The web app lives at `app.<domain>` and is the route tree under `app/app/`.
- *
- * A rewrite rather than a second project: the app talks to the same `/api/sync` the phone
- * does and signs in through the same `/auth/callback`, so it is the same deployment
- * answering on a second name. The `app/` segment is an implementation detail the address
- * bar never shows — `/filament` on the app host is `app/app/filament/page.tsx`, and every
- * link inside the app is written root-relative on that host.
- *
- * Two consequences are enforced here rather than left to chance. The internal segment is
- * not a second address for the same page: `app.example/app/x` canonicalises to `/x`, and
- * `example/app/x` on the marketing host is sent to the app host — one origin, one cookie
- * jar, one place a bookmark can point. And everything that is one path for the whole
- * deployment — the API, the auth callback, Next's assets, files under `public/` — passes
- * through untouched, with the auth callback still getting its session refresh.
- */
-function appHostRouting(request: NextRequest): NextResponse | null {
-  const { pathname } = request.nextUrl;
-  // Off the request's own `Host`, not `nextUrl`, which a server started with a hostname
-  // reports as that hostname whatever the request said — and a redirect to the wrong host
-  // is a redirect to a different site.
-  const host = requestHost(request.headers);
-
-  if (isAppHost(request.headers)) {
-    if (APP_PASSTHROUGH.test(pathname)) {
-      return pathname.startsWith("/auth") ? null : NextResponse.next();
-    }
-    const url = request.nextUrl.clone();
-    if (isAppSegment(pathname)) {
-      url.host = host;
-      url.pathname = pathname.slice(APP_SEGMENT.length) || "/";
-      return NextResponse.redirect(url, 308);
-    }
-    url.pathname = pathname === "/" ? APP_SEGMENT : `${APP_SEGMENT}${pathname}`;
-    return NextResponse.rewrite(url);
-  }
-
-  if (isAppSegment(pathname)) {
-    const url = request.nextUrl.clone();
-    url.host = `app.${host}`;
-    url.pathname = pathname.slice(APP_SEGMENT.length) || "/";
-    return NextResponse.redirect(url, 308);
-  }
-
-  return null;
 }
 
 /**
@@ -198,28 +146,15 @@ export const config = {
   // globbed, because `/<tag>/start` is the funnel — a static file with no function in front
   // of it, and a session refresh there would put one back.
   //
-  // The app's routes are listed as the paths they have on the app host, because a matcher
-  // sees the path and not the host — the same entries are what let the marketing host
-  // bounce `/app/*` to the app host. A page added under `app/app/` is added here too.
   matcher: [
     "/",
     "/pricing",
     "/support",
     "/privacy",
     "/terms",
-    "/refund",
     "/:locale([a-z]{2}|[a-z]{2}-[A-Z]{2})",
-    "/:locale([a-z]{2}|[a-z]{2}-[A-Z]{2})/:page(pricing|support|privacy|terms|refund)",
-    "/pay",
+    "/:locale([a-z]{2}|[a-z]{2}-[A-Z]{2})/:page(pricing|support|privacy|terms)",
     "/auth/:path*",
     "/scripts/pixel.js",
-    "/app",
-    "/app/:path*",
-    "/filament",
-    "/quotes",
-    "/orders",
-    "/customers",
-    "/stats",
-    "/profile",
   ],
 };

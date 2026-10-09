@@ -1,0 +1,533 @@
+{
+  "spine": {
+    "steps": [
+      {
+        "id": "problem",
+        "kind": "question",
+        "question": {
+          "key": "problem",
+          "options": [
+            {
+              "value": "scroll",
+              "emoji": "📱"
+            },
+            {
+              "value": "ideas",
+              "emoji": "🥱"
+            },
+            {
+              "value": "asks",
+              "emoji": "🙋"
+            },
+            {
+              "value": "both",
+              "emoji": "👀"
+            }
+          ]
+        }
+      },
+      {
+        "id": "evening",
+        "kind": "evening"
+      },
+      {
+        "id": "why",
+        "kind": "statement",
+        "branch": {
+          "on": "problem"
+        }
+      },
+      {
+        "id": "age",
+        "kind": "question",
+        "question": {
+          "key": "age",
+          "options": [
+            {
+              "value": "toddler",
+              "emoji": "🧸"
+            },
+            {
+              "value": "preschool",
+              "emoji": "🖍️"
+            },
+            {
+              "value": "school",
+              "emoji": "🚲"
+            },
+            {
+              "value": "older",
+              "emoji": "🎒"
+            }
+          ]
+        }
+      },
+      {
+        "id": "hardest",
+        "kind": "question",
+        "question": {
+          "key": "hardest",
+          "options": [
+            {
+              "value": "afterwork",
+              "emoji": "🌇"
+            },
+            {
+              "value": "dinner",
+              "emoji": "🍝"
+            },
+            {
+              "value": "weekend",
+              "emoji": "🛋️"
+            },
+            {
+              "value": "bedtime",
+              "emoji": "🌙"
+            }
+          ]
+        }
+      },
+      {
+        "id": "pickups",
+        "kind": "question",
+        "question": {
+          "key": "pickups",
+          "options": [
+            {
+              "value": "rare",
+              "emoji": "🙂"
+            },
+            {
+              "value": "few",
+              "emoji": "🤏"
+            },
+            {
+              "value": "often",
+              "emoji": "🔁"
+            },
+            {
+              "value": "lost",
+              "emoji": "🌀"
+            }
+          ]
+        }
+      },
+      {
+        "id": "apps",
+        "kind": "question",
+        "question": {
+          "key": "apps",
+          "multi": true,
+          "options": [
+            {
+              "value": "instagram",
+              "emoji": "📸"
+            },
+            {
+              "value": "tiktok",
+              "emoji": "🎵"
+            },
+            {
+              "value": "youtube",
+              "emoji": "▶️"
+            },
+            {
+              "value": "news",
+              "emoji": "📰"
+            },
+            {
+              "value": "work",
+              "emoji": "💼"
+            },
+            {
+              "value": "games",
+              "emoji": "🎮"
+            }
+          ]
+        }
+      },
+      {
+        "id": "energy",
+        "kind": "question",
+        "question": {
+          "key": "energy",
+          "options": [
+            {
+              "value": "low",
+              "emoji": "🪫"
+            },
+            {
+              "value": "okay",
+              "emoji": "🔋"
+            },
+            {
+              "value": "full",
+              "emoji": "⚡"
+            }
+          ]
+        }
+      },
+      {
+        "id": "partner",
+        "kind": "question",
+        "question": {
+          "key": "partner",
+          "options": [
+            {
+              "value": "yes",
+              "emoji": "👫"
+            },
+            {
+              "value": "sometimes",
+              "emoji": "🔀"
+            },
+            {
+              "value": "no",
+              "emoji": "🧍"
+            }
+          ]
+        }
+      },
+      {
+        "id": "tried",
+        "kind": "question",
+        "question": {
+          "key": "tried",
+          "options": [
+            {
+              "value": "limits",
+              "emoji": "⏱️"
+            },
+            {
+              "value": "room",
+              "emoji": "🚪"
+            },
+            {
+              "value": "delete",
+              "emoji": "🗑️"
+            },
+            {
+              "value": "nothing",
+              "emoji": "🤷"
+            }
+          ]
+        }
+      },
+      {
+        "id": "planet",
+        "kind": "planet"
+      },
+      {
+        "id": "minutes",
+        "kind": "question",
+        "question": {
+          "key": "minutes",
+          "options": [
+            {
+              "value": "ten",
+              "emoji": "🌱"
+            },
+            {
+              "value": "twenty",
+              "emoji": "🌿"
+            },
+            {
+              "value": "thirty",
+              "emoji": "🌳"
+            }
+          ]
+        }
+      },
+      {
+        "id": "enough",
+        "kind": "statement"
+      },
+      {
+        "id": "soon",
+        "kind": "question",
+        "question": {
+          "key": "soon",
+          "options": [
+            {
+              "value": "tonight",
+              "emoji": "🌙"
+            },
+            {
+              "value": "week",
+              "emoji": "📅"
+            },
+            {
+              "value": "month",
+              "emoji": "🗓️"
+            },
+            {
+              "value": "unsure",
+              "emoji": "🤔"
+            }
+          ]
+        }
+      },
+      {
+        "id": "recap",
+        "kind": "recap"
+      },
+      {
+        "id": "account",
+        "kind": "account"
+      }
+    ],
+    "surveyLength": 15,
+    "followUp": {
+      "scroll": "pickups",
+      "ideas": "energy",
+      "asks": "tried",
+      "both": "partner"
+    },
+    "separator": "|"
+  },
+  "decks": {
+    "en": {
+      "chrome": {
+        "continue": "Continue",
+        "letsGo": "Let's go",
+        "intro": "A few questions · about a minute",
+        "back": "Back",
+        "progress": "Progress"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Which of these [sounds like your evenings]?",
+          "options": {
+            "scroll": "I scroll when I meant to play",
+            "ideas": "I'm too tired to think of a game",
+            "asks": "My kid asks for my phone",
+            "both": "We're both on our phones"
+          },
+          "recap": {
+            "scroll": "You pick up the phone for a second, and the evening goes with it.",
+            "ideas": "You want to play, but there's nothing left to think of a game with.",
+            "asks": "Your kid asks for the thing in your hand.",
+            "both": "Two parents on two phones, and a kid watching."
+          }
+        },
+        "age": {
+          "headline": "How old is your youngest?",
+          "options": {
+            "toddler": "2–3",
+            "preschool": "4–5",
+            "school": "6–8",
+            "older": "9 or older"
+          },
+          "recap": {
+            "toddler": "A two-year-old who wants you, not your screen.",
+            "preschool": "A preschooler with more energy than your evening.",
+            "school": "A school kid who still asks you to play."
+          }
+        },
+        "hardest": {
+          "headline": "When does the phone [win most]?",
+          "options": {
+            "afterwork": "Right after work",
+            "dinner": "Around dinner",
+            "weekend": "Weekend mornings",
+            "bedtime": "Before bedtime"
+          },
+          "recap": {
+            "afterwork": "The hour after work, when you're home but not really there.",
+            "dinner": "Dinner, with a phone face-down that doesn't stay face-down.",
+            "weekend": "Weekend mornings that slip into the feed.",
+            "bedtime": "Bedtime, with one eye on the phone."
+          }
+        },
+        "pickups": {
+          "headline": "How often do you pick it up [in an hour] with them?",
+          "options": {
+            "rare": "Hardly ever",
+            "few": "Once or twice",
+            "often": "Every few minutes",
+            "lost": "I lose count"
+          },
+          "recap": {
+            "few": "A couple of pickups an hour, each one longer than you meant.",
+            "often": "A pickup every few minutes, so no game gets to the end.",
+            "lost": "Too many pickups to count, which is the problem."
+          }
+        },
+        "apps": {
+          "headline": "Which apps [pull you back]?",
+          "description": "Choose all that apply",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "News",
+            "work": "Email and Slack",
+            "games": "Games"
+          }
+        },
+        "energy": {
+          "headline": "How much energy is left [at 6 PM]?",
+          "options": {
+            "low": "Low battery",
+            "okay": "Okay",
+            "full": "Plenty"
+          },
+          "recap": {
+            "low": "Low battery by six, so the games have to be easy.",
+            "okay": "Some energy left, if the game is ready to go."
+          }
+        },
+        "partner": {
+          "headline": "Is there a co-parent home in the evening?",
+          "options": {
+            "yes": "Yes, most evenings",
+            "sometimes": "Sometimes",
+            "no": "No, it's just me"
+          },
+          "recap": {
+            "yes": "Two adults home, and both of you reach for a phone.",
+            "sometimes": "Some evenings solo, some evenings two of you.",
+            "no": "Solo evenings, so the ten minutes have to be easy."
+          }
+        },
+        "tried": {
+          "headline": "What have you [already tried]?",
+          "options": {
+            "limits": "Screen Time limits",
+            "room": "Phone in another room",
+            "delete": "Deleting apps",
+            "nothing": "Nothing yet"
+          },
+          "recap": {
+            "limits": "Screen Time limits you tap past with \"Ignore\".",
+            "room": "The phone in another room, until a buzz calls it back.",
+            "delete": "Deleted apps that were back by Friday."
+          }
+        },
+        "minutes": {
+          "headline": "How many minutes [a day] could you give?",
+          "options": {
+            "ten": "10 minutes",
+            "twenty": "20 minutes",
+            "thirty": "30 minutes or more"
+          },
+          "recap": {
+            "ten": "Ten minutes a day, phone down.",
+            "twenty": "Twenty minutes a day, phone down.",
+            "thirty": "Half an hour a day, phone down."
+          }
+        },
+        "soon": {
+          "headline": "When do you want your evenings back?",
+          "options": {
+            "tonight": "Tonight",
+            "week": "This week",
+            "month": "This month",
+            "unsure": "Not sure yet"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "It's not you. Apps are [built to pull you back].",
+          "body": "Every app on your phone has a team paid to win your next minute. Willpower at 6 PM is not a fair fight.",
+          "variants": {
+            "ideas": {
+              "headline": "It's not you. Nobody has [game ideas] after a full day.",
+              "body": "So the easiest thing in the room wins, and the easiest thing in the room is a screen."
+            },
+            "asks": {
+              "headline": "It's not you. Kids want [what you're looking at].",
+              "body": "A phone in your hand is the most interesting thing in the room. Put it down, and you are."
+            },
+            "both": {
+              "headline": "It's not you. Two phones make [a quiet room].",
+              "body": "Each of you waits for the other to put theirs down first. Nobody has to wait if both phones pause at once."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Where an evening [goes]."
+        },
+        "planet": {
+          "headline": "Every round together [grows your planet].",
+          "body": "Tap it. Your family unlocks a new world as you play."
+        },
+        "enough": {
+          "headline": "Ten minutes is [enough].",
+          "body": "Kids remember the parent who got down on the floor, not how long the game lasted. Oyno picks one that fits ten minutes and the energy you have left."
+        },
+        "recap": {
+          "headline": "Your evenings, as you told it"
+        },
+        "account": {
+          "headline": "Your plan is ready. [Save it] to see your price."
+        },
+        "paywall": {
+          "headline": "Get your [evenings] back."
+        },
+        "checkout": {
+          "headline": "Payment details."
+        }
+      },
+      "evening": {
+        "caption": "An example evening, 4:30 to 7:30 PM.",
+        "phone": "On the phone",
+        "kid": "With your kid",
+        "start": "4:30",
+        "end": "7:30",
+        "summary": "{kid} with your kid, {phone} on the phone.",
+        "minutes": "{n} min"
+      },
+      "planet": {
+        "open": "Open your worlds",
+        "close": "Close worlds",
+        "yours": "Yours now",
+        "unlocksAt": "Unlocks at bloom {n}",
+        "worlds": {
+          "home": "Home Planet",
+          "meadow": "Meadow",
+          "snow": "Snow Globe",
+          "ocean": "Ocean Isle",
+          "moon": "Moon Camp",
+          "dune": "Desert Dune"
+        }
+      },
+      "recap": {
+        "closing": "Oyno gives you [ten phone-free minutes] every evening.",
+        "answers": [
+          "Your apps paused during Kid hours",
+          "One easy game, sized to your energy",
+          "A planet that grows every time you play"
+        ]
+      },
+      "paywall": {
+        "pros": [
+          "Your apps paused during Kid hours",
+          "One easy game every evening",
+          "Your family's planet, growing"
+        ],
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "perMonth": "/ month",
+        "perYear": "/ year",
+        "perDay": "per day",
+        "cancelAnytime": "Cancel anytime",
+        "billedYearly": "Billed once a year",
+        "save": "Save {percent}",
+        "guarantee": "Not for you? Ask for a full refund within 14 days.",
+        "continue": "Continue"
+      },
+      "account": {
+        "signIn": "Sign in",
+        "haveAccount": "Already have an account? Sign in",
+        "fix": {
+          "scroll": "Your apps pause during Kid hours, so the phone stays down.",
+          "ideas": "One easy game a day, picked for the energy you have.",
+          "asks": "Ten minutes where the most interesting thing in the room is you.",
+          "both": "Both phones pause at once, for both of you."
+        }
+      }
+    }
+  }
+}

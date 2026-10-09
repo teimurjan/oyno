@@ -1,16 +1,6 @@
 @import "tailwindcss";
-/* The site's and the funnel's sheet. The app under `app/app/` has its own entry
-   (`app/app/app.css`) and its own component tree, and the funnel's stylesheet is built from
-   this file by `scripts/build-funnel.tsx` with the whole repository as its source scan — so
-   the app's sources are excluded here, or every shadcn utility the app uses would land in
-   the funnel's CSS. */
-@source not "../components/ui";
-@source not "../components/app";
-@source not "./app";
-@source not "../hooks";
-/* The ad tooling — its sheets carry inline styles and its creatives are prose — is not a
-   source of class names for any stylesheet. */
-@source not "../meta";
+/* The site's and the funnel's sheet. `scripts/build-funnel.tsx` builds the funnel's
+   stylesheet from this file with the whole repository as its source scan. */
 @import "./base.css";
 
 /* The site's measure, and the one place it is written down. Content inside can be narrower;
@@ -22,17 +12,9 @@
   padding-inline: 1.25rem;
 }
 
-/* The grid behind the hero — the same one the App Store frames are composited on. */
-.grid-rule {
-  background-image:
-    linear-gradient(rgba(10, 10, 10, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10, 10, 10, 0.045) 1px, transparent 1px);
-  background-size: 44px 44px;
-}
-
 /* Emphasis inside a headline. Never a highlighter block — it has to read as a value. */
 .hl {
-  color: var(--accent);
+  color: var(--highlight);
 }
 
 /* --- Funnel components: the shapes the app draws, as classes ------------- */
@@ -44,10 +26,11 @@
   justify-content: center;
   width: 100%;
   height: 52px;
-  border-radius: var(--radius-card);
+  border-radius: var(--radius-control);
   background: var(--accent);
   color: #fff;
-  font-weight: 500;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(24, 32, 46, 0.22);
   transition: background-color 120ms ease;
 }
 
@@ -70,9 +53,9 @@
   width: 100%;
   height: 48px;
   padding: 0 14px;
-  border: 1px solid var(--hairline);
-  border-radius: var(--radius-card);
-  background: var(--surface);
+  border: 1px solid var(--glass-edge);
+  border-radius: 16px;
+  background: var(--glass);
   color: var(--ink);
   font-size: 15px;
 }
@@ -90,9 +73,10 @@
 /* A selectable row — the funnel's question options and the checkout's plan cards. */
 .choice {
   width: 100%;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--glass-edge);
   border-radius: var(--radius-card);
-  background: var(--surface);
+  background: var(--glass);
+  box-shadow: 0 6px 18px rgba(48, 80, 130, 0.08);
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -101,43 +85,8 @@
   box-shadow: inset 0 0 0 1px var(--accent);
 }
 
-/* Anything carried on the shelf demo. **`touch-action: none` is what lets a finger carry
-   one** — with panning allowed the browser takes the touch on the first vertical move and the
-   drag never starts. Only the rows and the grips give up scrolling. */
-.grab {
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
-  cursor: grab;
-}
-
-/* A lifted row travels as a card of its own, **hit-transparent so `elementFromPoint` finds
-   the place under it**. */
-.roll[data-lifted] {
-  position: relative;
-  z-index: 10;
-  pointer-events: none;
-  cursor: grabbing;
-  border-radius: var(--radius-card);
-  border-color: transparent;
-  background: var(--surface);
-  box-shadow: 0 6px 16px rgba(10, 10, 10, 0.12);
-}
-
-/* A lifted place travels on a plate of the canvas, reaching 8px past the cards. */
-.place[data-lifted] {
-  position: relative;
-  z-index: 10;
-  border-radius: var(--radius-card);
-  background: var(--canvas);
-  box-shadow:
-    0 0 0 8px var(--canvas),
-    0 6px 16px 8px rgba(10, 10, 10, 0.12);
-}
-
 /* The platform's own colour faces rather than a 1 MB webfont. The chain is needed: without
-   it a glyph the system has no colour face for is drawn by Inter, as a hollow rectangle. */
+   it a glyph the system has no colour face for is drawn by Figtree, as a hollow rectangle. */
 .emoji {
   font-family:
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
@@ -212,42 +161,189 @@
   .anim-step > *:nth-child(n + 10) { animation-delay: 1770ms; }
 }
 
-/* Safari 26 paints the strip behind the status bar one flat colour, sampled from a fixed
-   element on the top edge or else the page background, never from the page's pixels. So the
-   wash's top edge is one flat tint, and `.paywall-tint` hands Safari the same one: no seam.
-   `--brand` at 14% over white, written out because `theme-color` needs a resolved colour. */
-:root {
-  --paywall-tint: #dde9ff;
-}
-
-.paywall-tint {
-  position: fixed;
-  inset-inline: 0;
-  top: 0;
-  height: 4px;
-  background-color: var(--paywall-tint);
-  pointer-events: none;
-}
-
-/* The paywall's own surface, and the only full-bleed background in the funnel. On `main`
-   rather than the step's column so the wash reaches the edges of the phone.
- *
- * **The blue is `--brand`, not `--accent`**: this file points the second at the first, but a
-   shared surface that assumes so breaks the moment the app's sheet reassigns it. */
+/* The paywall's own surface, the full sky behind the offer. On `main` rather than the
+   step's column so it reaches the edges of the phone. */
 .paywall-page {
-  background:
-    linear-gradient(var(--paywall-tint), transparent 120px),
-    radial-gradient(
-      75% 52% at 0% 4%,
-      color-mix(in srgb, var(--brand) 38%, transparent) 0%,
-      color-mix(in srgb, var(--brand) 14%, transparent) 42%,
-      transparent 70%
-    ),
-    radial-gradient(
-      72% 50% at 100% 60%,
-      color-mix(in srgb, var(--brand) 32%, transparent) 0%,
-      color-mix(in srgb, var(--brand) 11%, transparent) 44%,
-      transparent 72%
-    ),
-    var(--surface);
+  background: var(--sky);
+}
+
+/* --- The planet scene (`lib/planet/`): the landing hero and the funnel widget ---------- */
+
+/* Layer boxes come from `layerBox()`; the transforms read the custom properties
+   `lib/planet/dom.ts` writes. */
+.planet-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.planet-layer {
+  position: absolute;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  transition: transform 160ms ease-out;
+}
+
+.planet-sky {
+  transform: translate(var(--sky-x, 0px), var(--sky-y, 0px)) scale(var(--sky-s, 1));
+  mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
+  transition-duration: 520ms;
+}
+
+.planet-planet {
+  transform: translate(var(--planet-x, 0px), var(--planet-y, 0px));
+}
+
+.planet-family {
+  transform: translate(var(--family-x, 0px), var(--family-y, 0px));
+}
+
+.planet-body {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 61.8%;
+  transform: scale(var(--body-s, 1));
+  transition: transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+.planet-stage[data-phase="pressed"] .planet-body {
+  transition-duration: 140ms;
+  transition-timing-function: ease-out;
+}
+
+.planet-stage[data-phase="grown"] .planet-body {
+  transform: translateY(-4%) scale(var(--body-s, 1));
+}
+
+/* The tap target: the planet and the family, not the sky around them. */
+.planet-hit {
+  position: absolute;
+  left: 18%;
+  top: 4%;
+  width: 64%;
+  height: 82%;
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.planet-hit:focus-visible {
+  outline: 2px solid var(--highlight);
+  outline-offset: 4px;
+}
+
+/* The gallery of worlds, over the stage it grew out of. */
+.planet-gallery {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.planet-strip {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  padding-inline: 18%;
+}
+
+.planet-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.planet-card {
+  flex: 0 0 64%;
+  scroll-snap-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  transform: scale(var(--card-scale, 1));
+  opacity: var(--card-opacity, 1);
+  transition: transform 80ms linear, opacity 80ms linear;
+}
+
+.planet-card-art {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+.planet-card-art img {
+  position: absolute;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .planet-float {
+    position: absolute;
+    inset: 0;
+    animation: planet-float 5.5s ease-in-out infinite;
+  }
+
+  .planet-gallery {
+    animation: planet-gallery-in 420ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet-float {
+    position: absolute;
+    inset: 0;
+  }
+
+  .planet-gallery {
+    animation: planet-fade-in 200ms ease-out both;
+  }
+}
+
+@keyframes planet-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.2%);
+  }
+}
+
+@keyframes planet-gallery-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes planet-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Once the worlds are open, the grown body hands over to the gallery's first card. */
+.planet-float {
+  transition: opacity 260ms ease;
+}
+
+.planet-stage[data-phase="grown"] .planet-float {
+  opacity: 0;
+  transition-delay: 240ms;
 }

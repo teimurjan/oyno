@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
-import { requestHost } from "@/lib/appHost";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL, isSupabaseConfigured } from "./config";
 import { sessionCookieOptions } from "./cookie";
 
@@ -18,7 +17,7 @@ export async function updateSession(request: NextRequest): Promise<NextResponse>
   if (!isSupabaseConfigured) return response;
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-    cookieOptions: sessionCookieOptions(requestHost(request.headers)),
+    cookieOptions: sessionCookieOptions,
     cookies: {
       getAll() {
         return request.cookies.getAll();

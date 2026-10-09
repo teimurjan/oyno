@@ -20,10 +20,7 @@
  * listing for an English app.
  */
 
-export const LOCALES = [
-  "en", "es", "es-MX", "fr", "de", "pt-BR", "pt-PT", "it", "nl",
-  "sv", "da", "nb", "fi", "pl", "cs", "tr", "ru", "uk",
-] as const;
+export const LOCALES = ["en"] as const;
 export type Lang = (typeof LOCALES)[number];
 
 export const DEFAULT_LANG: Lang = "en";
@@ -49,23 +46,6 @@ export function isPrefixedLocale(value: unknown): value is Lang {
  * word they would write it with, not for its English name. */
 export const LOCALE_NAMES: Record<Lang, string> = {
   en: "English",
-  es: "Español (España)",
-  "es-MX": "Español (México)",
-  fr: "Français",
-  de: "Deutsch",
-  "pt-BR": "Português (Brasil)",
-  "pt-PT": "Português (Portugal)",
-  it: "Italiano",
-  nl: "Nederlands",
-  sv: "Svenska",
-  da: "Dansk",
-  nb: "Norsk bokmål",
-  fi: "Suomi",
-  pl: "Polski",
-  cs: "Čeština",
-  tr: "Türkçe",
-  ru: "Русский",
-  uk: "Українська",
 };
 
 /** Every page the site has, addressed by name rather than by path.
@@ -74,7 +54,7 @@ export const LOCALE_NAMES: Record<Lang, string> = {
  * `/lang` safe: it maps a name from this list to a path and can therefore never be talked
  * into redirecting somewhere else. A `?next=` carrying a URL would be an open redirect on
  * a domain that also runs a checkout. */
-export const SITE_PAGES = ["home", "pricing", "support", "privacy", "terms", "refund"] as const;
+export const SITE_PAGES = ["home", "pricing", "support", "privacy", "terms"] as const;
 export type SitePage = (typeof SITE_PAGES)[number];
 
 export function isSitePage(value: unknown): value is SitePage {
@@ -87,7 +67,6 @@ const SUFFIX: Record<SitePage, string> = {
   support: "/support",
   privacy: "/privacy",
   terms: "/terms",
-  refund: "/refund",
 };
 
 export function pathFor(lang: Lang, page: SitePage): string {
@@ -125,19 +104,10 @@ export function pageForPath(pathname: string): { lang: Lang; page: SitePage } | 
 export const LANG_COOKIE = "oyno.lang";
 export const LANG_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
-/**
- * The locale a single language tag asks for, or nothing when the site has no such language.
- *
- * Region subtags mostly drop away — `de-AT` is German — except where the site keeps two
- * translations of one language. Spanish outside Spain reads the Mexican deck (`es-419`,
- * `es-AR`, `es-US` are all Latin American usage), Portuguese is Brazilian unless it names
- * Portugal, and the three spellings of Norwegian are the one Bokmål deck.
- */
+/** The locale a single language tag asks for, or nothing when the site has no such language.
+ * Region subtags drop away: `en-GB` is English. */
 export function localeForTag(tag: string): Lang | undefined {
-  const [base, region] = tag.trim().toLowerCase().split("-");
-  if (base === "es") return region && region !== "es" ? "es-MX" : "es";
-  if (base === "pt") return region === "pt" ? "pt-PT" : "pt-BR";
-  if (base === "no" || base === "nn" || base === "nb") return "nb";
+  const [base] = tag.trim().toLowerCase().split("-");
   return isLang(base) ? base : undefined;
 }
 
@@ -166,45 +136,13 @@ export function languageFromAcceptHeader(header: string | null | undefined): Lan
     .find((lang) => lang !== undefined);
 }
 
-/** The locale a reader in a given country is most likely to want, keyed by the country
- * code the platform puts on the request. A country not named here gets the default.
- *
- * Consulted only when the browser's own languages name none the site has — a Kazakh-only
- * header, a bot, a bare `curl`. A language a reader set on their device is a decision;
- * where their packets come from is a guess about where they are standing, and the guess
- * must not overrule the decision.
- *
- * Russian is wider than Russia on purpose: Kazakhstan, Kyrgyzstan and Belarus are markets
- * where a maker's suppliers, invoices and marketplace listings are in Russian, which is
- * why the app bills in tenge and som as well as roubles. Countries with two languages of
- * their own (Belgium, Switzerland) are left out rather than guessed at: this only decides
- * which page loads first, and every one of them carries a switcher. */
-export const LOCALE_BY_COUNTRY: Partial<Record<string, Lang>> = {
-  ES: "es",
-  MX: "es-MX", AR: "es-MX", CO: "es-MX", CL: "es-MX", PE: "es-MX", VE: "es-MX", EC: "es-MX",
-  GT: "es-MX", BO: "es-MX", DO: "es-MX", HN: "es-MX", PY: "es-MX", SV: "es-MX", NI: "es-MX",
-  CR: "es-MX", PA: "es-MX", UY: "es-MX", CU: "es-MX",
-  FR: "fr", MC: "fr",
-  DE: "de", AT: "de", LI: "de",
-  BR: "pt-BR",
-  PT: "pt-PT", AO: "pt-PT", MZ: "pt-PT",
-  IT: "it", SM: "it",
-  NL: "nl",
-  SE: "sv",
-  DK: "da",
-  NO: "nb",
-  FI: "fi",
-  PL: "pl",
-  CZ: "cs",
-  TR: "tr",
-  UA: "uk",
-  RU: "ru", BY: "ru", KZ: "ru", KG: "ru", UZ: "ru", TJ: "ru", TM: "ru", AM: "ru", AZ: "ru",
-  MD: "ru",
-};
+/** The locale a reader in a given country is most likely to want, consulted only when the
+ * browser's own languages name none the site has. Empty while the site is English only. */
+export const LOCALE_BY_COUNTRY: Partial<Record<string, Lang>> = {};
 
 /** The canonical origin, for the absolute URLs `hreflang` requires.
  *
- * The same `SITE_URL` the Paddle webhook builds its success redirect from, not a
+ * The same `SITE_URL` the Dodo checkout builds its return url from, not a
  * `NEXT_PUBLIC_` twin: `alternates` is resolved when the page's metadata is generated,
  * which is on the server. A second variable holding the same value is a second variable
  * to forget to set on a new deployment. */

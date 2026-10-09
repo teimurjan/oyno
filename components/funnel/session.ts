@@ -13,7 +13,7 @@ import { OPENER_ID, WEB_FUNNEL, type FunnelAnswers } from "./steps";
  */
 
 /** Read by name rather than by sweeping the query string: the URL is whatever a stranger
- * pastes, and everything read here lands on a Paddle transaction. */
+ * pastes, and everything read here lands on a Dodo subscription. */
 const ATTRIBUTION_KEYS = ["ad", "adset", "campaign"] as const;
 
 export type Attribution = Partial<Record<(typeof ATTRIBUTION_KEYS)[number], string>>;
@@ -26,11 +26,8 @@ const ANSWERS_KEY = "oyno.funnel.answers";
 const ATTRIBUTION_KEY = "oyno.funnel.attribution";
 const REGISTERED_KEY = "oyno.funnel.registered";
 const ATTEMPT_KEY = "oyno.funnel.attempt";
-const DISCOUNT_KEY = "oyno.funnel.discount";
 const CLICK_KEY = "oyno.funnel.click";
-
-/** The shape `lib/checkoutReminder` mints. Anything else in `?discount=` is ignored. */
-const DISCOUNT_CODE = /^[A-Z0-9]{4,32}$/;
+const PURCHASE_KEY = "oyno.funnel.purchase";
 
 /** A param that is present wins (two ads in one tab is last-click); one that is absent leaves
  * the stored value alone — the return from `/auth/callback` carries no query at all. */
@@ -48,15 +45,6 @@ export function captureAttribution(): Attribution {
   if (Object.keys(merged).length) write(ATTRIBUTION_KEY, merged);
   return merged;
 }
-
-/** The reminder email's code, kept because the account step's sign-in round trip comes back
- * with no query string, and the card field is on the far side of it. */
-export function captureDiscount(): void {
-  const code = new URLSearchParams(window.location.search).get("discount");
-  if (code && DISCOUNT_CODE.test(code)) write(DISCOUNT_KEY, { code });
-}
-
-export const readDiscount = (): string | undefined => read(DISCOUNT_KEY).code;
 
 /** What Meta appends to an ad's link. Bounded so a hand-edited URL cannot fill the transaction. */
 const FBCLID = /^[\w-]{1,500}$/;
@@ -78,6 +66,48 @@ export const readClickId = (): string | undefined => read(CLICK_KEY).fbc;
 export const readAnswers = (): FunnelAnswers => read(ANSWERS_KEY);
 
 export const storeAnswers = (answers: FunnelAnswers): void => write(ANSWERS_KEY, answers);
+
+/** What `/start/done` needs to report the conversion. Dodo emits no completion event, so the
+ * checkout writes this down and the success page reads it back. `value` is in `currency`. */
+export interface PendingPurchase {
+  /** The uuid the server's CAPI event carries too, so Meta collapses the pair. */
+  eventId: string;
+  plan: string;
+  value: number;
+  currency: string;
+}
+
+/** Overwritten on every breakdown, so the last one before the redirect, tax included, lands. */
+export function rememberPurchase(purchase: PendingPurchase): void {
+  try {
+    window.sessionStorage.setItem(PURCHASE_KEY, JSON.stringify(purchase));
+  } catch {
+    /* The server's CAPI event still reports the purchase. */
+  }
+}
+
+/** Read once and cleared, so reloading the success page cannot report a second conversion. */
+export function takePurchase(): PendingPurchase | null {
+  try {
+    const raw = window.sessionStorage.getItem(PURCHASE_KEY);
+    window.sessionStorage.removeItem(PURCHASE_KEY);
+    const parsed: unknown = raw ? JSON.parse(raw) : null;
+    return isPendingPurchase(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+const isPendingPurchase = (value: unknown): value is PendingPurchase => {
+  if (typeof value !== "object" || value === null) return false;
+  const record = value as Record<string, unknown>;
+  return (
+    typeof record.eventId === "string" &&
+    typeof record.plan === "string" &&
+    typeof record.value === "number" &&
+    typeof record.currency === "string"
+  );
+};
 
 /**
  * Whether this browser has yet to report `userId`, claiming it on the way out.
@@ -190,7 +220,6 @@ export function useFunnelSession({
     }
     const captured = captureAttribution();
     setAttribution(captured);
-    captureDiscount();
     captureClickId();
     setUserProperties({
       ...captured,

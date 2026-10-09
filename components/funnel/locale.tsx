@@ -6,7 +6,7 @@ import type { FunnelCopy } from "./copy/types";
 
 /**
  * Which language one page of the funnel is in, and everything that follows from it: the deck,
- * and the market its demo prints are priced in.
+ * and the market its prices are written for.
  *
  * Provided once at the root — by the build from the deck it is rendering, and in the browser
  * from the same deck written into the page (`readPageLocale`) — so the first render is the
@@ -18,19 +18,15 @@ export interface FunnelLocale {
   market: Market;
   /** Money in the market's own currency, at its own precision. */
   money: (value: number) => string;
-  /** A weight in grams, grouped the way this language groups digits. */
-  grams: (value: number) => string;
 }
 
 export function funnelLocale(lang: Lang, copy: FunnelCopy): FunnelLocale {
   const market = MARKETS[lang];
-  const number = new Intl.NumberFormat(market.numberLocale);
   return {
     lang,
     copy,
     market,
     money: moneyFormatter(market),
-    grams: (value) => fill(copy.units.g, { n: number.format(value) }),
   };
 }
 

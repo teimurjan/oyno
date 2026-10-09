@@ -1,7 +1,6 @@
 import "server-only";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { createServerClient as createSsrServerClient, type CookieOptions } from "@supabase/ssr";
-import { requestHost } from "@/lib/appHost";
 import { SUPABASE_PUBLISHABLE_KEY, SUPABASE_URL } from "./config";
 import { sessionCookieOptions } from "./cookie";
 
@@ -11,9 +10,9 @@ type CookieToSet = { name: string; value: string; options: CookieOptions };
  * auth callback. Not used by `app/api/**` — those authenticate the iOS app by bearer
  * token through `auth.ts`, and must keep doing so. */
 export async function createServerClient() {
-  const [cookieStore, headerStore] = await Promise.all([cookies(), headers()]);
+  const cookieStore = await cookies();
   return createSsrServerClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-    cookieOptions: sessionCookieOptions(requestHost(headerStore)),
+    cookieOptions: sessionCookieOptions,
     cookies: {
       getAll() {
         return cookieStore.getAll();

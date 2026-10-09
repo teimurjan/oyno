@@ -9,7 +9,7 @@ export const isServiceConfigured = Boolean(SUPABASE_URL && SECRET_KEY);
  * Server-only; never expose the key.
  *
  * Reserved for the tables that have no user in hand: the two entitlement tables, written
- * by the App Store and Paddle webhooks against ids the biller supplies rather than a
+ * by the App Store and Dodo webhooks against ids the biller supplies rather than a
  * signed-in account. Everything in the ERP schema is reached with the user's own JWT and
  * guarded by RLS — reaching for this client there would quietly disable that. */
 export const createAdminClient = () =>

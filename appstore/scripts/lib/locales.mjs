@@ -28,23 +28,6 @@ import { readFileSync } from "node:fs";
 /** Ordered by market priority, which is the order every report prints in. */
 export const LOCALES = [
   { tag: "en", sim: "en_US", asc: "en-US" },
-  { tag: "es", sim: "es_ES", asc: "es-ES" },
-  { tag: "es-MX", sim: "es_MX", asc: "es-MX" },
-  { tag: "fr", sim: "fr_FR", asc: "fr-FR" },
-  { tag: "de", sim: "de_DE", asc: "de-DE" },
-  { tag: "pt-BR", sim: "pt_BR", asc: "pt-BR" },
-  { tag: "pt-PT", sim: "pt_PT", asc: "pt-PT" },
-  { tag: "it", sim: "it_IT", asc: "it" },
-  { tag: "nl", sim: "nl_NL", asc: "nl-NL" },
-  { tag: "sv", sim: "sv_SE", asc: "sv" },
-  { tag: "da", sim: "da_DK", asc: "da" },
-  { tag: "nb", sim: "nb_NO", asc: "no" },
-  { tag: "fi", sim: "fi_FI", asc: "fi" },
-  { tag: "pl", sim: "pl_PL", asc: "pl" },
-  { tag: "cs", sim: "cs_CZ", asc: "cs" },
-  { tag: "tr", sim: "tr_TR", asc: "tr" },
-  { tag: "ru", sim: "ru_RU", asc: "ru" },
-  { tag: "uk", sim: "uk_UA", asc: "uk" },
 ];
 
 export const APP_TAGS = LOCALES.map((locale) => locale.tag);

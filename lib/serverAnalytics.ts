@@ -6,7 +6,7 @@ import { logFields } from "./log";
  * and `Services/Analytics/` in the app.
  *
  * It exists for the events no client of ours is present for. A subscription is cancelled
- * in iOS Settings or in Paddle's customer portal, and it lapses on a date nobody opens the
+ * in iOS Settings or in Dodo's customer portal, and it lapses on a date nobody opens the
  * app on, so the biller's webhook is the only thing that ever learns about either. Every
  * other event in this product is emitted by the surface the person was looking at.
  *
@@ -26,7 +26,7 @@ import { logFields } from "./log";
  * leak: it is already public by construction. */
 const API_KEY = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY ?? "";
 
-/** Inert until configured, the same shape as `isMetaConfigured` and `isPaddleConfigured`,
+/** Inert until configured, the same shape as `isMetaConfigured` and `isDodoConfigured`,
  * so a dev machine or a preview deploy never has to be filtered out of the numbers. */
 export const isServerAnalyticsConfigured = Boolean(API_KEY);
 
@@ -41,21 +41,21 @@ const ENVIRONMENT =
   process.env.VERCEL_ENV ?? (process.env.NODE_ENV === "production" ? "production" : "development");
 
 /** What every subscription lifecycle event carries, whichever biller sent it. Uniform on
- * purpose: one chart should be able to read Apple and Paddle churn side by side and split
+ * purpose: one chart should be able to read Apple and Dodo churn side by side and split
  * them on `provider` rather than on which properties happen to exist. */
 interface SubscriptionProperties {
-  provider: "app_store" | "paddle";
+  provider: "app_store" | "dodo";
   /** Whether the period being given up is a free trial. The headline property: it is what
    * separates someone cancelling before we ever charged them from someone leaving a
-   * subscription they paid for. Structurally false on Paddle — the web sells no trial. */
+   * subscription they paid for. Structurally false on Dodo — the web sells no trial. */
   in_trial: boolean;
-  /** Apple's product id, or Paddle's price id. Raw rather than mapped to a plan name:
+  /** Apple's product id, or Dodo's price id. Raw rather than mapped to a plan name:
    * both already encode the term, and only one of the two has a mapper. */
   product_id: string;
   /** When access actually ends. Null for a grant with no expiry left to honour. */
   expires_at: string | null;
   /** The *biller's* environment — "Sandbox"/"Production" from StoreKit, "sandbox"/
-   * "production" from Paddle. Named as iOS names it on `purchase_completed`, and
+   * "production" from Dodo. Named as iOS names it on `purchase_completed`, and
    * deliberately not `environment`, which above means the deployment. */
   transaction_environment: string;
 }
@@ -82,7 +82,7 @@ export interface ServerAnalyticsContext {
   userId: string;
   /** What makes this event one event. Amplitude drops a repeat of an `insert_id` it has
    * seen in the last 7 days, and both webhooks have their own way of arriving twice:
-   * either is retried on a non-2xx, and Paddle additionally re-reports a standing
+   * either is retried on a non-2xx, and Dodo additionally re-reports a standing
    * scheduled cancellation on every unrelated `subscription.updated`. So each caller
    * passes whichever key its duplicates share — the biller's message id where redelivery
    * is the only risk, the state being reported where it isn't. Getting this wrong
@@ -99,7 +99,7 @@ export interface ServerAnalyticsContext {
  * Best-effort, exactly like `sendMetaPurchase`: a failure here costs one row in a chart,
  * while a thrown error or a non-2xx would have the biller redeliver an entitlement event
  * that already landed. Awaited rather than deferred to `after()` for the reason given in
- * `app/api/paddle/webhook/route.ts` — `after()` runs outside the AsyncLocalStorage context
+ * `app/api/dodo/webhook/route.ts` — `after()` runs outside the AsyncLocalStorage context
  * `withLogging` establishes, which would silently no-op every `logFields` below.
  */
 export async function trackServerEvent(
@@ -135,7 +135,7 @@ export async function trackServerEvent(
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
-      // Analytics must never be what holds a webhook open. Apple and Paddle both retry on
+      // Analytics must never be what holds a webhook open. Apple and Dodo both retry on
       // a timeout of their own, and the `insert_id` above makes that retry free.
       signal: AbortSignal.timeout(3000),
     });
