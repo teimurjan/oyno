@@ -17,22 +17,24 @@ export function HomePage({ lang }: { lang: Lang }) {
   const start = funnelPath(lang);
 
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-hairline bg-canvas/85 backdrop-blur-md">
-        <div className="shell flex items-center justify-between py-3.5">
-          <Logo />
-          <div className="flex items-center gap-5">
-            <Link href={pathFor(lang, "pricing")} className="text-[14px] font-semibold text-muted hover:text-ink">
-              {copy.nav.pricing}
-            </Link>
-            <Link href={start} className="inline-flex h-10 items-center rounded-full bg-accent px-4 text-[14px] font-bold text-white hover:bg-accent-pressed">
-              {copy.nav.start}
-            </Link>
+    <div className="sky min-h-screen">
+      <header className="sticky top-0 z-20 pt-3">
+        <div className="shell">
+          <div className="glass-bar flex items-center justify-between py-2 pl-5 pr-2">
+            <Logo className="h-[25px] w-auto" />
+            <div className="flex items-center gap-5">
+              <Link href={pathFor(lang, "pricing")} className="text-[14px] font-semibold text-muted hover:text-ink">
+                {copy.nav.pricing}
+              </Link>
+              <Link href={start} className="inline-flex h-10 items-center rounded-full bg-accent px-4 text-[14px] font-bold text-white hover:bg-accent-pressed">
+                {copy.nav.start}
+              </Link>
+            </div>
           </div>
         </div>
       </header>
 
-      <section className="sky overflow-hidden">
+      <section className="overflow-hidden">
         <div className="shell grid items-center gap-6 py-12 sm:py-16 md:grid-cols-[1.05fr_1fr]">
           <div>
             <p className="eyebrow">{home.eyebrow}</p>
@@ -67,7 +69,7 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
       </section>
 
-      <section id="pricing" className="sky">
+      <section id="pricing">
         <div className="shell py-16">
           <h2 className="text-[30px] font-extrabold tracking-[-0.03em] text-ink">{home.closer.heading}</h2>
           <p className="mt-3 max-w-2xl text-[16px] text-muted">{home.closer.body}</p>

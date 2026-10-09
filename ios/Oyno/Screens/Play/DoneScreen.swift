@@ -27,7 +27,7 @@ struct DoneScreen: View {
             }
             .padding(.top, Metric.Space.xl)
 
-            PlanetScene(grown: tapped, accessibilityLabel: String(interface: "Tap the planet")) {
+            PlanetScene(grown: tapped, bloom: oyno.bloom, accessibilityLabel: String(interface: "Tap the planet")) {
                 guard !tapped else { return }
                 Haptics.success()
                 Analytics.shared.track(.planetTapped(bloom: oyno.bloom))

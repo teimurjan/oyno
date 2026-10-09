@@ -26,6 +26,9 @@ export interface NavCopy {
 export interface PlanetCopy {
   open: string;
   close: string;
+  /** The gallery's arrows, shown only where there is a mouse. */
+  previous: string;
+  next: string;
   yours: string;
   /** `{n}` is the bloom level. A string, because the copy crosses into a client component. */
   unlocksAt: string;

@@ -67,7 +67,7 @@ struct PaywallScreen: View {
 
         ScrollView {
             VStack(spacing: Metric.Space.s) {
-                FunnelHeadline(text: copy.steps["paywall"]?.headline ?? "")
+                PaywallHeadline(text: copy.steps["paywall"]?.headline ?? "")
                 pros(copy.paywall)
                     .padding(.bottom, Metric.Space.s)
                 plans(copy.paywall)
@@ -422,5 +422,22 @@ private struct PlanTag: View {
 private struct PaywallWash: View {
     var body: some View {
         Palette.sky.ignoresSafeArea()
+    }
+}
+
+/// The page's headline, centred, with its `[bracketed]` span in the accent — the web's
+/// `Headline.tsx`.
+private struct PaywallHeadline: View {
+    let text: String
+
+    var body: some View {
+        Text(FunnelCopy.accented(text))
+            .font(Typeface.ui(27, .semibold, relativeTo: .largeTitle))
+            .tracking(-0.54)
+            .foregroundStyle(Palette.ink)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.bottom, 32)
     }
 }

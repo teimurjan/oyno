@@ -2,21 +2,28 @@ import { useEffect, useRef, useState } from "preact/hooks";
 import { ART } from "@/lib/art/manifest";
 import { fallbackSrc, srcSet } from "@/lib/art/srcSet";
 import { prefersReducedMotion } from "@/lib/motion";
-import { bindFalloff, bindPress, scrollToCard, setOffset, setPhase } from "@/lib/planet/dom";
-import { cardBox, layerBox, tintFilter, WORLDS } from "@/lib/planet/scene";
+import { bindPress, bindStrip, scrollToSlide, setOffset, setPhase } from "@/lib/planet/dom";
+import { layerBox, STRIP_STYLE, tintFilter, WORLDS } from "@/lib/planet/scene";
 import { fill, useLocale } from "./locale";
 import { StatementStep } from "./StatementStep";
 import type { FunnelAnswers, FunnelStep } from "./steps";
 
 /** The stage's widest, in CSS pixels: what `sizes` asks the renditions for. */
 const STAGE_PX = 260;
+const PLANET_SIZES = `${Math.round(STAGE_PX * 0.6)}px`;
+const FAMILY_SIZES = `${Math.round(STAGE_PX * 0.44)}px`;
 
-/** The tour, in ms from its start: press, grow, browse two worlds, close, rest, repeat. */
-const TOUR = { press: 900, open: 1300, next: 2700, after: 3900, close: 5400, loop: 7400 };
+/** The world the planet rests on: the reader has played no rounds, so the home planet. */
+const REST = 0;
+
+/** The tour, in ms from its start: press, shrink into the worlds, browse two, come home, grow back, rest, repeat. */
+const TOUR = { press: 900, open: 1300, next: 2700, after: 3900, back: 5300, close: 6300, loop: 8300 };
 
 /**
  * Widget B: the reward. Press the planet and the layers lean away from the finger; let go and
- * the planet and the family grow, then the worlds open in a strip that scrolls sideways.
+ * the planet and the family shrink in place into a strip of worlds that scrolls sideways.
+ * Tapping the centred planet scrolls back home and grows it. The planet is the strip's first
+ * slide, never swapped for another element.
  *
  * It tours itself on a loop until the first touch, so a reader who never taps still sees the
  * worlds. Nothing here is unlocked yet but the home planet: the reader has played no rounds.
@@ -28,19 +35,28 @@ export function PlanetStep({ step, answers }: { step: FunnelStep; answers: Funne
   const strip = useRef<HTMLDivElement>(null);
   const stopTour = useRef<(() => void) | null>(null);
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(REST);
 
   useEffect(() => {
-    if (!stage.current || !hit.current) return;
+    if (!stage.current || !hit.current || !strip.current) return;
     setPhase(stage.current, "rest");
-    return bindPress(stage.current, hit.current);
+    const unbindPress = bindPress(stage.current, hit.current);
+    const unbindStrip = bindStrip(strip.current, setSelected);
+    return () => {
+      unbindPress();
+      unbindStrip();
+    };
   }, []);
 
   useEffect(() => {
-    if (stage.current) setPhase(stage.current, open ? "grown" : "rest");
-    if (!open || !strip.current) return;
-    scrollToCard(strip.current, 0, false);
-    return bindFalloff(strip.current);
+    if (stage.current) setPhase(stage.current, open ? "open" : "rest");
   }, [open]);
+
+  const go = (index: number) => strip.current && scrollToSlide(strip.current, index);
+  const close = () => {
+    setOpen(false);
+    go(REST);
+  };
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
@@ -55,9 +71,10 @@ export function PlanetStep({ step, answers }: { step: FunnelStep; answers: Funne
         setOffset(target, { x: rect.left + rect.width * 0.75, y: rect.top + rect.height * 0.35 });
       });
       at(TOUR.open, () => setOpen(true));
-      at(TOUR.next, () => strip.current && scrollToCard(strip.current, 1));
-      at(TOUR.after, () => strip.current && scrollToCard(strip.current, 2));
-      at(TOUR.close, () => setOpen(false));
+      at(TOUR.next, () => go(1));
+      at(TOUR.after, () => go(2));
+      at(TOUR.back, () => go(REST));
+      at(TOUR.close, close);
       at(TOUR.loop, tour);
     };
     const stop = () => {
@@ -86,25 +103,54 @@ export function PlanetStep({ step, answers }: { step: FunnelStep; answers: Funne
             decoding="async"
           />
           <div className="planet-float">
-            <div className="planet-body">
-              <img
-                className="planet-layer planet-planet"
-                src={fallbackSrc(ART.planet)}
-                srcset={srcSet(ART.planet)}
-                sizes={`${Math.round(STAGE_PX * 0.6 * 1.18)}px`}
-                style={layerBox("planet")}
-                alt=""
-                decoding="async"
-              />
-              <img
-                className="planet-layer planet-family"
-                src={fallbackSrc(ART.family)}
-                srcset={srcSet(ART.family)}
-                sizes={`${Math.round(STAGE_PX * 0.44 * 1.18)}px`}
-                style={layerBox("family")}
-                alt=""
-                decoding="async"
-              />
+            <div ref={strip} className="planet-strip" style={STRIP_STYLE} role="list" aria-label={words.open}>
+              {WORLDS.map((world, index) => {
+                const locked = world.unlocksAt > 0;
+                const atRest = index === REST;
+                return (
+                  <figure key={world.id} role="listitem" className="planet-slide m-0" data-rest={atRest || undefined}>
+                    <div className="planet-slide-stage">
+                      <div className="planet-body">
+                        <img
+                          className="planet-layer planet-planet"
+                          src={fallbackSrc(ART.planet)}
+                          srcset={srcSet(ART.planet)}
+                          sizes={PLANET_SIZES}
+                          style={{ ...layerBox("planet"), filter: tintFilter(world.tint, locked), opacity: locked ? 0.7 : 1 }}
+                          alt=""
+                          decoding="async"
+                        />
+                        {!locked && (
+                          <img
+                            className="planet-layer planet-family"
+                            src={fallbackSrc(ART.family)}
+                            srcset={srcSet(ART.family)}
+                            sizes={FAMILY_SIZES}
+                            style={layerBox("family")}
+                            alt=""
+                            decoding="async"
+                          />
+                        )}
+                        <button
+                          type="button"
+                          className="planet-hit"
+                          aria-label={index === selected ? words.close : words.worlds[world.id]}
+                          tabIndex={open ? 0 : -1}
+                          onClick={() => (index === selected ? close() : go(index))}
+                        />
+                      </div>
+                    </div>
+                    <figcaption className="planet-caption">
+                      <span className="text-[15px] font-extrabold tracking-[-0.02em] text-ink">
+                        {words.worlds[world.id]}
+                      </span>
+                      <span className="text-[12.5px] font-semibold text-muted">
+                        {locked ? fill(words.unlocksAt, { n: world.unlocksAt }) : words.yours}
+                      </span>
+                    </figcaption>
+                  </figure>
+                );
+              })}
             </div>
           </div>
 
@@ -118,59 +164,28 @@ export function PlanetStep({ step, answers }: { step: FunnelStep; answers: Funne
             onClick={() => setOpen(true)}
           />
 
-          {open && (
-            <div className="planet-gallery">
-              <div ref={strip} className="planet-strip" role="list" aria-label={words.open}>
-                {WORLDS.map((world) => {
-                  const locked = world.unlocksAt > 0;
-                  return (
-                    <figure key={world.id} role="listitem" className="planet-card m-0">
-                      <div className="planet-card-art">
-                        <img
-                          src={fallbackSrc(ART.planet)}
-                          srcset={srcSet(ART.planet)}
-                          sizes={`${Math.round(STAGE_PX * 0.64 * 0.56)}px`}
-                          style={{ ...cardBox("planet"), filter: tintFilter(world.tint, locked), opacity: locked ? 0.7 : 1 }}
-                          alt=""
-                          decoding="async"
-                        />
-                        {!locked && (
-                          <img
-                            src={fallbackSrc(ART.family)}
-                            srcset={srcSet(ART.family)}
-                            sizes={`${Math.round(STAGE_PX * 0.64 * 0.41)}px`}
-                            style={cardBox("family")}
-                            alt=""
-                            decoding="async"
-                          />
-                        )}
-                      </div>
-                      <figcaption className="flex flex-col">
-                        <span className="text-[15px] font-extrabold tracking-[-0.02em] text-ink">
-                          {words.worlds[world.id]}
-                        </span>
-                        <span className="text-[12.5px] font-semibold text-muted">
-                          {locked ? fill(words.unlocksAt, { n: world.unlocksAt }) : words.yours}
-                        </span>
-                      </figcaption>
-                    </figure>
-                  );
-                })}
-              </div>
-              <button
-                type="button"
-                aria-label={words.close}
-                onClick={() => setOpen(false)}
-                className="card absolute right-0 top-0 flex size-11 items-center justify-center text-ink"
-              >
-                <svg aria-hidden width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
-                  <path d="M6 6l12 12M18 6L6 18" />
-                </svg>
-              </button>
-            </div>
+          {open && selected > 0 && <Arrow side="left" label={words.previous} onClick={() => go(selected - 1)} />}
+          {open && selected < WORLDS.length - 1 && (
+            <Arrow side="right" label={words.next} onClick={() => go(selected + 1)} />
           )}
         </div>
       </div>
     </>
+  );
+}
+
+/** One world over. Shown only where there is a mouse: a finger swipes. */
+function Arrow({ side, label, onClick }: { side: "left" | "right"; label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className={`planet-arrow card size-11 items-center justify-center text-ink ${side === "left" ? "left-0" : "right-0"}`}
+    >
+      <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d={side === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
+      </svg>
+    </button>
   );
 }

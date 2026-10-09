@@ -1,39 +1,54 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { PlanetCopy } from "@/components/site/copy/types";
 import { ART } from "@/lib/art/manifest";
 import { fallbackSrc, srcSet } from "@/lib/art/srcSet";
-import { bindFalloff, bindPress, scrollToCard, setPhase } from "@/lib/planet/dom";
-import { cardBox, layerBox, tintFilter, WORLDS } from "@/lib/planet/scene";
+import { bindPress, bindStrip, scrollToSlide, setPhase } from "@/lib/planet/dom";
+import { layerBox, STRIP_STYLE, tintFilter, WORLDS } from "@/lib/planet/scene";
 
 /** The stage's widest, in CSS pixels: what `sizes` asks the renditions for. */
 const STAGE_PX = 440;
+const PLANET_SIZES = `(max-width: 480px) 60vw, ${Math.round(STAGE_PX * 0.6)}px`;
+const FAMILY_SIZES = `(max-width: 480px) 44vw, ${Math.round(STAGE_PX * 0.44)}px`;
+
+/** The world the planet rests on: a visitor has played no rounds, so the home planet. */
+const REST = 0;
 
 /**
  * The landing hero's planet: press it and the layers lean away from the finger, let go and the
- * planet and the family grow, then the worlds open in a strip that scrolls sideways. The same
- * scene as the funnel's `PlanetStep`, bound through `lib/planet/dom.ts`. No tour here: the
- * hint line asks for the press instead.
+ * planet and the family shrink in place into a strip of worlds that scrolls sideways. Tapping
+ * the centred planet scrolls back home and grows it. The planet is the strip's first slide,
+ * never swapped for another element. The same scene as the funnel's `PlanetStep`, bound
+ * through `lib/planet/dom.ts`. No tour here: the hint line asks for the press instead.
  */
 export function PlanetHero({ words }: { words: PlanetCopy }) {
   const stage = useRef<HTMLDivElement>(null);
   const hit = useRef<HTMLButtonElement>(null);
   const strip = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(REST);
 
   useEffect(() => {
-    if (!stage.current || !hit.current) return;
+    if (!stage.current || !hit.current || !strip.current) return;
     setPhase(stage.current, "rest");
-    return bindPress(stage.current, hit.current);
+    const unbindPress = bindPress(stage.current, hit.current);
+    const unbindStrip = bindStrip(strip.current, setSelected);
+    return () => {
+      unbindPress();
+      unbindStrip();
+    };
   }, []);
 
   useEffect(() => {
-    if (stage.current) setPhase(stage.current, open ? "grown" : "rest");
-    if (!open || !strip.current) return;
-    scrollToCard(strip.current, 0, false);
-    return bindFalloff(strip.current);
+    if (stage.current) setPhase(stage.current, open ? "open" : "rest");
   }, [open]);
+
+  const go = (index: number) => strip.current && scrollToSlide(strip.current, index);
+  const close = () => {
+    setOpen(false);
+    go(REST);
+  };
 
   return (
     <div className="mx-auto w-full" style={{ maxWidth: STAGE_PX }}>
@@ -49,26 +64,55 @@ export function PlanetHero({ words }: { words: PlanetCopy }) {
           fetchPriority="high"
         />
         <div className="planet-float">
-          <div className="planet-body">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="planet-layer planet-planet"
-              src={fallbackSrc(ART.planet)}
-              srcSet={srcSet(ART.planet)}
-              sizes={`(max-width: 480px) 71vw, ${Math.round(STAGE_PX * 0.6 * 1.18)}px`}
-              style={layerBox("planet")}
-              alt=""
-              fetchPriority="high"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              className="planet-layer planet-family"
-              src={fallbackSrc(ART.family)}
-              srcSet={srcSet(ART.family)}
-              sizes={`(max-width: 480px) 52vw, ${Math.round(STAGE_PX * 0.44 * 1.18)}px`}
-              style={layerBox("family")}
-              alt="A parent, a child and another parent holding hands on a small clay planet"
-            />
+          <div ref={strip} className="planet-strip" style={STRIP_STYLE as CSSProperties} role="list" aria-label={words.open}>
+            {WORLDS.map((world, index) => {
+              const locked = world.unlocksAt > 0;
+              const atRest = index === REST;
+              return (
+                <figure key={world.id} role="listitem" className="planet-slide m-0" data-rest={atRest || undefined}>
+                  <div className="planet-slide-stage">
+                    <div className="planet-body">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        className="planet-layer planet-planet"
+                        src={fallbackSrc(ART.planet)}
+                        srcSet={srcSet(ART.planet)}
+                        sizes={PLANET_SIZES}
+                        style={{ ...layerBox("planet"), filter: tintFilter(world.tint, locked), opacity: locked ? 0.7 : 1 }}
+                        alt=""
+                        fetchPriority={atRest ? "high" : undefined}
+                      />
+                      {!locked && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          className="planet-layer planet-family"
+                          src={fallbackSrc(ART.family)}
+                          srcSet={srcSet(ART.family)}
+                          sizes={FAMILY_SIZES}
+                          style={layerBox("family")}
+                          alt={atRest ? "A parent, a child and another parent holding hands on a small clay planet" : ""}
+                        />
+                      )}
+                      <button
+                        type="button"
+                        className="planet-hit"
+                        aria-label={index === selected ? words.close : words.worlds[world.id]}
+                        tabIndex={open ? 0 : -1}
+                        onClick={() => (index === selected ? close() : go(index))}
+                      />
+                    </div>
+                  </div>
+                  <figcaption className="planet-caption">
+                    <span className="text-[17px] font-extrabold tracking-[-0.02em] text-ink">
+                      {words.worlds[world.id]}
+                    </span>
+                    <span className="text-[13px] font-semibold text-muted">
+                      {locked ? words.unlocksAt.replace("{n}", String(world.unlocksAt)) : words.yours}
+                    </span>
+                  </figcaption>
+                </figure>
+              );
+            })}
           </div>
         </div>
 
@@ -82,61 +126,33 @@ export function PlanetHero({ words }: { words: PlanetCopy }) {
           onClick={() => setOpen(true)}
         />
 
-        {open && (
-          <div className="planet-gallery">
-            <div ref={strip} className="planet-strip" role="list" aria-label={words.open}>
-              {WORLDS.map((world) => {
-                const locked = world.unlocksAt > 0;
-                return (
-                  <figure key={world.id} role="listitem" className="planet-card m-0">
-                    <div className="planet-card-art">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={fallbackSrc(ART.planet)}
-                        srcSet={srcSet(ART.planet)}
-                        sizes={`${Math.round(STAGE_PX * 0.64 * 0.56)}px`}
-                        style={{ ...cardBox("planet"), filter: tintFilter(world.tint, locked), opacity: locked ? 0.7 : 1 }}
-                        alt=""
-                      />
-                      {!locked && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={fallbackSrc(ART.family)}
-                          srcSet={srcSet(ART.family)}
-                          sizes={`${Math.round(STAGE_PX * 0.64 * 0.41)}px`}
-                          style={cardBox("family")}
-                          alt=""
-                        />
-                      )}
-                    </div>
-                    <figcaption className="flex flex-col">
-                      <span className="text-[17px] font-extrabold tracking-[-0.02em] text-ink">
-                        {words.worlds[world.id]}
-                      </span>
-                      <span className="text-[13px] font-semibold text-muted">
-                        {locked ? words.unlocksAt.replace("{n}", String(world.unlocksAt)) : words.yours}
-                      </span>
-                    </figcaption>
-                  </figure>
-                );
-              })}
-            </div>
-            <button
-              type="button"
-              aria-label={words.close}
-              onClick={() => setOpen(false)}
-              className="card absolute right-0 top-0 flex size-11 items-center justify-center text-ink"
-            >
-              <svg aria-hidden width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round">
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
-            </button>
-          </div>
+        {open && selected > 0 && <Arrow side="left" label={words.previous} onClick={() => go(selected - 1)} />}
+        {open && selected < WORLDS.length - 1 && (
+          <Arrow side="right" label={words.next} onClick={() => go(selected + 1)} />
         )}
       </div>
-      <p className="mt-1 text-center text-[13px] font-semibold text-muted" aria-hidden>
-        {open ? " " : words.hint}
+      <p
+        className={`mt-1 text-center text-[13px] font-semibold text-muted transition-opacity ${open ? "opacity-0" : ""}`}
+        aria-hidden
+      >
+        {words.hint}
       </p>
     </div>
+  );
+}
+
+/** One world over. Shown only where there is a mouse: a finger swipes. */
+function Arrow({ side, label, onClick }: { side: "left" | "right"; label: string; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onClick={onClick}
+      className={`planet-arrow card size-11 items-center justify-center text-ink ${side === "left" ? "left-0" : "right-0"}`}
+    >
+      <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+        <path d={side === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
+      </svg>
+    </button>
   );
 }

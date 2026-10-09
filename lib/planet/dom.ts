@@ -1,5 +1,5 @@
 import { prefersReducedMotion } from "@/lib/motion";
-import { DEPTH, SCALE, layerOffset, neighborStyle, type LayerName, type Phase, type Point } from "./scene";
+import { BODY_SCALE, DEPTH, layerOffset, slideFocus, type LayerName, type Phase, type Point } from "./scene";
 
 /**
  * The planet scene's browser half, framework-free so the React hero and the Preact widget
@@ -9,12 +9,10 @@ import { DEPTH, SCALE, layerOffset, neighborStyle, type LayerName, type Phase, t
 
 const NAMES: LayerName[] = ["sky", "planet", "family"];
 
-
-/** Sets the stage's phase and the scale every layer has in it. */
+/** Sets the stage's phase and the body's scale in it. */
 export function setPhase(stage: HTMLElement, phase: Phase): void {
   stage.dataset.phase = phase;
-  stage.style.setProperty("--sky-s", String(SCALE[phase].sky));
-  stage.style.setProperty("--body-s", String(SCALE[phase].body));
+  stage.style.setProperty("--body-s", String(BODY_SCALE[phase]));
   if (phase !== "pressed") setOffset(stage, null);
 }
 
@@ -64,18 +62,29 @@ export function bindPress(stage: HTMLElement, target: HTMLElement): () => void {
   };
 }
 
-/** Scales and fades each gallery card by its distance from the strip's centre. */
-export function bindFalloff(strip: HTMLElement): () => void {
+/**
+ * Focuses each of the strip's slides by its distance from the strip's centre, and reports the
+ * centred slide's index whenever it changes.
+ */
+export function bindStrip(strip: HTMLElement, onSelect: (index: number) => void): () => void {
   let frame = 0;
+  let selected = -1;
   const paint = () => {
     frame = 0;
     const centre = strip.scrollLeft + strip.clientWidth / 2;
-    for (const card of Array.from(strip.children) as HTMLElement[]) {
-      const distance = (card.offsetLeft + card.offsetWidth / 2 - centre) / card.offsetWidth;
-      const { scale, opacity } = neighborStyle(distance);
-      card.style.setProperty("--card-scale", String(scale));
-      card.style.setProperty("--card-opacity", String(opacity));
-    }
+    let nearest = 0;
+    let nearestDistance = Infinity;
+    (Array.from(strip.children) as HTMLElement[]).forEach((slide, index) => {
+      const distance = (slide.offsetLeft + slide.offsetWidth / 2 - centre) / slide.offsetWidth;
+      slide.style.setProperty("--focus", String(slideFocus(distance)));
+      if (Math.abs(distance) < nearestDistance) {
+        nearest = index;
+        nearestDistance = Math.abs(distance);
+      }
+    });
+    if (nearest === selected) return;
+    selected = nearest;
+    onSelect(nearest);
   };
   const schedule = () => {
     if (!frame) frame = requestAnimationFrame(paint);
@@ -90,12 +99,12 @@ export function bindFalloff(strip: HTMLElement): () => void {
   };
 }
 
-/** Scrolls the strip so card `index` is centred. */
-export function scrollToCard(strip: HTMLElement, index: number, smooth = true): void {
-  const card = strip.children[index] as HTMLElement | undefined;
-  if (!card) return;
+/** Scrolls the strip so slide `index` is centred. */
+export function scrollToSlide(strip: HTMLElement, index: number, smooth = true): void {
+  const slide = strip.children[index] as HTMLElement | undefined;
+  if (!slide) return;
   strip.scrollTo({
-    left: card.offsetLeft + card.offsetWidth / 2 - strip.clientWidth / 2,
+    left: slide.offsetLeft + slide.offsetWidth / 2 - strip.clientWidth / 2,
     behavior: smooth && !prefersReducedMotion() ? "smooth" : "auto",
   });
 }

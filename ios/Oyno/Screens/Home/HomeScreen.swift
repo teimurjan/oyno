@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// D2 on the canvas: the family on its planet, today's minutes together, and the one easy
-/// thing to do next. Pressing the planet grows it and opens the worlds.
+/// thing to do next. Pressing the planet shrinks it into the worlds.
 struct HomeScreen: View {
     /// Switches to Play with the suggested game.
     let play: () -> Void
@@ -18,16 +18,12 @@ struct HomeScreen: View {
             VStack(spacing: Metric.Space.l) {
                 header
 
-                ZStack {
-                    PlanetScene(grown: worldsOpen) { open() }
-                        .opacity(worldsOpen ? 0 : 1)
-                        .animation(.easeOut(duration: 0.26).delay(worldsOpen ? 0.24 : 0), value: worldsOpen)
-                    if worldsOpen {
-                        WorldsGallery(bloom: oyno.bloom) { worldsOpen = false }
-                    }
+                PlanetScene(open: worldsOpen, bloom: oyno.bloom) {
+                    open()
+                } onClose: {
+                    worldsOpen = false
                 }
                 .frame(maxWidth: 300)
-                .animation(.spring(response: 0.45, dampingFraction: 0.8), value: worldsOpen)
 
                 today
                 stats
@@ -48,17 +44,8 @@ struct HomeScreen: View {
 
     private var header: some View {
         HStack {
-            HStack(spacing: Metric.Space.s) {
-                Image("AppMark")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .clipShape(.rect(cornerRadius: 8))
-                Text(verbatim: "oyno")
-                    .font(Typeface.wordmark(22))
-                    .tracking(-0.8)
-                    .foregroundStyle(Palette.ink)
-            }
-            .accessibilityElement(children: .combine)
+            Image("Wordmark")
+                .accessibilityLabel(Text(verbatim: "Oyno"))
             Spacer()
             HStack(spacing: 6) {
                 Image(systemName: "sun.max.fill").foregroundStyle(Palette.caution)

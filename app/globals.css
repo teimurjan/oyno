@@ -12,6 +12,33 @@
   padding-inline: 1.25rem;
 }
 
+/* The landing header: a liquid-glass bar the width of the shell, floating on the sky. */
+.glass-bar {
+  background: rgba(255, 255, 255, 0.42);
+  border-radius: var(--radius-control);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+/* Frosts over the first 160px of scroll so the bar stays readable over the page. No JS:
+   browsers without scroll timelines keep the resting bar. */
+@supports (animation-timeline: scroll()) {
+  .glass-bar {
+    animation: glass-bar-frost linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 160px;
+  }
+}
+
+@keyframes glass-bar-frost {
+  to {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(36px) saturate(180%);
+    -webkit-backdrop-filter: blur(36px) saturate(180%);
+  }
+}
+
 /* Emphasis inside a headline. Never a highlighter block — it has to read as a value. */
 .hl {
   color: var(--highlight);
@@ -175,6 +202,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 5;
+  container-type: inline-size;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
@@ -188,11 +216,13 @@
   transition: transform 160ms ease-out;
 }
 
+/* Fades in from nothing at its top edge, and out at its sides and foot. */
 .planet-sky {
-  transform: translate(var(--sky-x, 0px), var(--sky-y, 0px)) scale(var(--sky-s, 1));
-  mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
-  -webkit-mask-image: radial-gradient(closest-side, #000 62%, transparent 100%);
-  transition-duration: 520ms;
+  transform: translate(var(--sky-x, 0px), var(--sky-y, 0px));
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%), radial-gradient(closest-side, #000 62%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent, #000 45%), radial-gradient(closest-side, #000 62%, transparent 100%);
+  mask-composite: intersect;
 }
 
 .planet-planet {
@@ -203,10 +233,12 @@
   transform: translate(var(--family-x, 0px), var(--family-y, 0px));
 }
 
+/* The planet and the family, scaled as one about the planet's foot (`BODY_ORIGIN`), so they
+   stay over the painted shadow. Every slide's body reads the stage's `--body-s`. */
 .planet-body {
   position: absolute;
   inset: 0;
-  transform-origin: 50% 61.8%;
+  transform-origin: 50% 84.8%;
   transform: scale(var(--body-s, 1));
   transition: transform 520ms cubic-bezier(0.34, 1.4, 0.64, 1);
 }
@@ -216,8 +248,9 @@
   transition-timing-function: ease-out;
 }
 
-.planet-stage[data-phase="grown"] .planet-body {
-  transform: translateY(-4%) scale(var(--body-s, 1));
+/* Shrinking into the strip settles without overshoot; growing back springs. */
+.planet-stage[data-phase="open"] .planet-body {
+  transition: transform 460ms cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 /* The tap target: the planet and the family, not the sky around them. */
@@ -238,51 +271,102 @@
   outline-offset: 4px;
 }
 
-/* The gallery of worlds, over the stage it grew out of. */
-.planet-gallery {
+.planet-stage[data-phase="open"] > .planet-hit {
+  visibility: hidden;
+}
+
+/* The strip of worlds, always there. Each slide holds a whole stage, wider than the slide, so
+   the rest slide's planet is the stage's planet. At rest only that slide shows and the strip
+   is still; open, the bodies shrink in place, the neighbours fade in at the edges, and the
+   strip scrolls. `--slide` comes from `SLIDE_WIDTH`, `--focus` from `bindStrip()`. Sizes are
+   in `cqw`, stage widths: a flex basis in % would resolve against the padded content box. The
+   neighbours fade in from nothing at the stage's sides. */
+.planet-strip {
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
-}
-
-.planet-strip {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  overflow-x: auto;
+  overflow-x: hidden;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
-  padding-inline: 18%;
+  padding-inline: calc((1 - var(--slide)) * 50cqw);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+.planet-stage[data-phase="open"] .planet-strip {
+  overflow-x: auto;
+  pointer-events: auto;
 }
 
 .planet-strip::-webkit-scrollbar {
   display: none;
 }
 
-.planet-card {
-  flex: 0 0 64%;
+.planet-slide {
+  position: relative;
+  flex: 0 0 calc(var(--slide) * 100cqw);
   scroll-snap-align: center;
+}
+
+.planet-slide-stage {
+  position: absolute;
+  inset-block: 0;
+  left: 50%;
+  width: 100cqw;
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
+}
+
+.planet-slide[data-rest] .planet-slide-stage {
+  opacity: 1;
+}
+
+.planet-stage[data-phase="open"] .planet-slide-stage {
+  opacity: calc(0.5 + 0.5 * var(--focus, 0));
+}
+
+.planet-slide .planet-hit {
+  visibility: hidden;
+}
+
+.planet-stage[data-phase="open"] .planet-slide .planet-hit {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.planet-caption {
+  position: absolute;
+  top: 6%;
+  inset-inline: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
   text-align: center;
-  transform: scale(var(--card-scale, 1));
-  opacity: var(--card-opacity, 1);
-  transition: transform 80ms linear, opacity 80ms linear;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms ease-out;
 }
 
-.planet-card-art {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
+.planet-stage[data-phase="open"] .planet-caption {
+  opacity: var(--focus, 0);
 }
 
-.planet-card-art img {
+/* Only where there is a mouse: a finger swipes. Centred on the open planet. */
+.planet-arrow {
   position: absolute;
-  height: auto;
+  top: 68.7%;
+  display: none;
+  transform: translateY(-50%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .planet-arrow {
+    display: flex;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -292,8 +376,8 @@
     animation: planet-float 5.5s ease-in-out infinite;
   }
 
-  .planet-gallery {
-    animation: planet-gallery-in 420ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  .planet-arrow {
+    animation: planet-fade-in 220ms ease-out 300ms both;
   }
 }
 
@@ -303,8 +387,8 @@
     inset: 0;
   }
 
-  .planet-gallery {
-    animation: planet-fade-in 200ms ease-out both;
+  .planet-stage[data-phase] .planet-body {
+    transition: none;
   }
 }
 
@@ -318,17 +402,6 @@
   }
 }
 
-@keyframes planet-gallery-in {
-  from {
-    opacity: 0;
-    transform: scale(0.92);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
 @keyframes planet-fade-in {
   from {
     opacity: 0;
@@ -336,14 +409,4 @@
   to {
     opacity: 1;
   }
-}
-
-/* Once the worlds are open, the grown body hands over to the gallery's first card. */
-.planet-float {
-  transition: opacity 260ms ease;
-}
-
-.planet-stage[data-phase="grown"] .planet-float {
-  opacity: 0;
-  transition-delay: 240ms;
 }

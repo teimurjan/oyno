@@ -1,9 +1,10 @@
 import SwiftUI
 
-/// The web funnel, as the phone reads it: `components/funnel/steps.ts` for the shape and
-/// `components/funnel/copy/<tag>.ts` for the words, written into `Funnel.json` by
-/// `bun run funnel:export-ios`. Never edited by hand — the file exists so the two funnels cannot
-/// drift, and a question reworded on one side only is exactly that drift.
+/// The web funnel's decks, as the phone reads them: `components/funnel/steps.ts` for the shape
+/// and `components/funnel/copy/<tag>.ts` for the words, written into `Funnel.json` by
+/// `bun run funnel:export-ios`. Never edited by hand. `PaywallScreen` reads its words from
+/// here, so the offer says on the phone what it says on the web; the first run itself is
+/// `FunnelScreen`, native and its own.
 struct FunnelContent: Decodable {
     let spine: Spine
     let decks: [String: FunnelCopy]
@@ -150,80 +151,23 @@ struct FunnelCopy: Decodable {
 // MARK: - Reading a deck
 
 extension FunnelCopy {
-    /// A statement step's words for this reader: the variant under their answer laid over the
-    /// step's own, line by line.
-    func statement(for step: FunnelContent.Step, answers: [String: String]) -> StatementWords {
-        let own = steps[step.id]
-        let variant = step.branch.flatMap { answers[$0.on] }.flatMap { own?.variants?[$0] }
-        return StatementWords(
-            headline: variant?.headline ?? own?.headline,
-            body: variant?.body ?? own?.body,
-            note: variant?.note ?? own?.note,
-            variants: nil
-        )
-    }
-
     /// `{name}` filled in. A name with no value is left showing, so a typo in a deck is
     /// visible rather than silently blank.
     static func fill(_ template: String, _ values: [String: String]) -> String {
         values.reduce(template) { $0.replacingOccurrences(of: "{\($1.key)}", with: $1.value) }
     }
 
-    /// `fill`, for a value set in its own face — a figure in mono inside a sentence whose word
-    /// order is the language's.
-    static func fill(_ template: String, _ name: String, with value: AttributedString) -> AttributedString {
-        let parts = template.components(separatedBy: "{\(name)}")
-        var out = AttributedString(parts[0])
-        for part in parts.dropFirst() {
-            out += value
-            out += AttributedString(part)
-        }
-        return out
-    }
-
-    /// `[bracketed]` spans in the accent.
-    static func accented(_ text: String) -> AttributedString {
+    /// `[bracketed]` spans in `tint`.
+    static func accented(_ text: String, tint: Color = Palette.highlight) -> AttributedString {
         text.components(separatedBy: "[").enumerated().reduce(into: AttributedString()) { out, entry in
             guard entry.offset > 0, let close = entry.element.firstIndex(of: "]") else {
                 out += AttributedString(entry.element)
                 return
             }
             var span = AttributedString(String(entry.element[..<close]))
-            span.foregroundColor = Palette.highlight
+            span.foregroundColor = tint
             out += span
             out += AttributedString(String(entry.element[entry.element.index(after: close)...]))
         }
-    }
-
-    /// The account step's card: the problem the reader named and the line of the plan that
-    /// answers it. Nil for an answer that names no problem. `problemFix` in `steps.ts`.
-    func problemFix(answers: [String: String]) -> (problem: String, fix: String)? {
-        guard let answer = answers["problem"],
-              let problem = questions["problem"]?.recap?[answer],
-              let fix = account.fix[answer] else { return nil }
-        return (problem, fix)
-    }
-
-    /// The lines the recap reads back, in step order and capped — except the problem's line
-    /// and its follow-up's, which survive whatever the cap. The problem's goes first: the
-    /// recap draws the first card in red, and it has to be theirs. `recapLines` in `steps.ts`.
-    func recapLines(
-        answers: [String: String],
-        spine: FunnelContent.Spine,
-        limit: Int
-    ) -> [(key: String, line: String)] {
-        let problem = "problem"
-        let all = spine.steps.compactMap { step -> (key: String, line: String)? in
-            guard let key = step.question?.key,
-                  let answer = answers[key],
-                  let line = questions[key]?.recap?[answer] else { return nil }
-            return (key, line)
-        }
-        let pinned: Set<String> = [problem, answers[problem].flatMap { spine.followUp[$0] } ?? ""]
-        let kept = all.filter { pinned.contains($0.key) }
-        let rest = all.filter { !pinned.contains($0.key) }.prefix(max(0, limit - kept.count))
-        let keep = Set(kept.map(\.key) + rest.map(\.key))
-        let lines = all.filter { keep.contains($0.key) }
-        return lines.filter { $0.key == problem } + lines.filter { $0.key != problem }
     }
 }

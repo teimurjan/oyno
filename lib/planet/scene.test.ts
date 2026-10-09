@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DEPTH, LAYERS, MAX_OFFSET, layerOffset, neighborStyle, tintFilter, WORLDS } from "./scene";
+import { BODY_SCALE, DEPTH, LAYERS, MAX_OFFSET, PEEK, SLIDE_WIDTH, layerOffset, slideFocus, tintFilter, WORLDS } from "./scene";
 
 const stage = { left: 0, top: 0, width: 200, height: 250 };
 
@@ -29,14 +29,15 @@ describe("layerOffset", () => {
   });
 });
 
-describe("neighborStyle", () => {
-  test("the centred card is full size and opaque", () => {
-    expect(neighborStyle(0)).toEqual({ scale: 1, opacity: 1 });
+describe("slideFocus", () => {
+  test("the centred slide is in full focus", () => {
+    expect(slideFocus(0)).toBe(1);
   });
 
-  test("falloff stops one card away", () => {
-    expect(neighborStyle(-1)).toEqual(neighborStyle(3));
-    expect(neighborStyle(1)).toEqual({ scale: 0.8, opacity: 0.5 });
+  test("focus falls off to nothing one slide away", () => {
+    expect(slideFocus(-0.5)).toBe(0.5);
+    expect(slideFocus(1)).toBe(0);
+    expect(slideFocus(-3)).toBe(0);
   });
 });
 
@@ -45,6 +46,12 @@ describe("layout", () => {
     const familyBottom = LAYERS.family.y + LAYERS.family.width * LAYERS.family.aspect;
     expect(familyBottom).toBeGreaterThan(LAYERS.planet.y);
     expect(familyBottom - LAYERS.planet.y).toBeLessThan(0.05);
+  });
+
+  test("the gallery shows the promised share of each neighbour's planet", () => {
+    const planet = LAYERS.planet.width * BODY_SCALE.open;
+    const neighbourLeft = 0.5 + SLIDE_WIDTH - planet / 2;
+    expect((1 - neighbourLeft) / planet).toBeCloseTo(PEEK);
   });
 });
 

@@ -215,6 +215,8 @@ export const en = {
   planet: {
     open: "Open your worlds",
     close: "Close worlds",
+    previous: "Previous world",
+    next: "Next world",
     yours: "Yours now",
     unlocksAt: "Unlocks at bloom {n}",
     worlds: {

@@ -39,12 +39,6 @@ enum Typeface {
         ui(size, weight, relativeTo: style)
     }
 
-    /// The wordmark. A fixed size: a mark is a shape, not text Dynamic Type should scale.
-    static func wordmark(_ size: CGFloat) -> Font {
-        register()
-        return .custom(postScriptName(.extrabold), fixedSize: size)
-    }
-
     #if DEBUG
     static func assertFontsResolve() {
         register()

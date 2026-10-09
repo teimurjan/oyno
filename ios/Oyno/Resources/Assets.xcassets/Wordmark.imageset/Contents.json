@@ -1,8 +1,9 @@
 {
   "images": [
     {
-      "filename": "app-mark.png",
-      "idiom": "universal"
+      "filename": "wordmark.png",
+      "idiom": "universal",
+      "scale": "3x"
     }
   ],
   "info": {

@@ -1,216 +1,688 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "%@ battery? Try %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@ battery? Try %2$@"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ battery? Try %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ battery? Try %2$@"
           }
         }
       }
     },
-    "%lld apps and categories": {},
-    "%lld apps and categories picked": {},
-    "%lld min": {},
-    "%lld minutes %lld seconds left": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$lld minutes %2$lld seconds left"
+    "%lld apps and categories" : {
+
+    },
+    "%lld apps and categories picked" : {
+
+    },
+    "%lld evenings" : {
+
+    },
+    "%lld hours" : {
+
+    },
+    "%lld min" : {
+
+    },
+    "%lld minutes %lld seconds left" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld minutes %2$lld seconds left"
           }
         }
       }
     },
-    "%lld more rounds": {},
-    "%lld rounds to a new world": {},
-    "+%lld minutes together": {},
-    "1 more round": {},
-    "1 round to a new world": {},
-    "3 days free, then %@": {},
-    "Allow Screen Time": {},
-    "Animal Race": {},
-    "Anyone who wobbles is in charge next.": {},
-    "Apple couldn't complete that. Check that an Apple Account is signed in under iOS Settings, then try again.": {},
-    "Apple couldn't complete that. Try again in a moment, or use Google or email.": {},
-    "Apple didn't return an identity token.": {},
-    "Apple returned a sign-in this app couldn't read. Try again, or use Google or email.": {},
-    "At the summit, the mountain rumbles. Repeat.": {},
-    "Back": {},
-    "Back as a frog. Then a bear. Then a snake.": {},
-    "Bloom level %lld": {},
-    "Build a course: under a chair, over a cushion, around the table.": {},
-    "Chairs": {},
-    "Checking your subscription on this account.": {},
-    "Choose apps": {},
-    "Close worlds": {},
-    "Continue with Facebook": {},
-    "Cross the room without touching the water.": {},
-    "Cushions": {},
-    "Delete account": {},
-    "Delete everything": {},
-    "Delete your account?": {},
-    "Desert Dune": {},
-    "Different idea": {},
-    "Done": {},
-    "Email": {},
-    "Ends": {},
-    "Energy": {},
-    "Every round together is one bloom.": {},
-    "Every round, take one island away.": {},
-    "Every story starts with \"Once, a tiny dragon…\".": {},
-    "Face each other. Your kid moves, you copy, slowly.": {},
-    "Facebook couldn't complete that. Try again, or use another way in.": {},
-    "Finding your plan": {},
-    "Freeze Dance": {},
-    "Full": {},
-    "Google didn't return an identity token.": {},
-    "Hallway": {},
-    "Hand the phone to your kid for this part.": {},
-    "Hide five rolled-up socks while your kid counts to twenty.": {},
-    "Hold for not now (%lld min)": {},
-    "Home": {},
-    "Home Planet": {},
-    "Human Mountain": {},
-    "Keep playing": {},
-    "Kid hours": {},
-    "Kid hours are off": {},
-    "Kid hours pick back up on their own.": {},
-    "Kid hours · until %@": {},
-    "Let Oyno pause apps": {},
-    "Lie on your back on the rug. You're a sleeping mountain.": {},
-    "Living-Room Obstacle Course": {},
-    "Low": {},
-    "Lying down": {},
-    "Make it harder: faces, then sounds, then silly walks.": {},
-    "Manage subscription": {},
-    "Meadow": {},
-    "Minutes": {},
-    "Mirror, Mirror": {},
-    "Moon Camp": {},
-    "Music": {},
-    "New to Oyno? Any of these creates your account.": {},
-    "Not now": {},
-    "Nothing picked yet": {},
-    "Nothing to grab": {},
-    "Now": {},
-    "OK": {},
-    "Ocean Isle": {},
-    "Off": {},
-    "Okay": {},
-    "On now": {},
-    "On now · ends %@": {},
-    "One easy thing": {},
-    "One room": {},
-    "Open your worlds": {},
-    "Oyno": {},
-    "Password": {},
-    "Pause apps during Kid hours": {},
-    "Paused during Kid hours": {},
-    "Phone, Messages and Maps are never paused.": {},
-    "Pillow Islands": {},
-    "Plans aren't available right now. Check your connection and try again.": {},
-    "Play": {},
-    "Profile": {},
-    "Put on one song. Dance as wildly as you can.": {},
-    "Quiet": {},
-    "Race down the hallway as a crab.": {},
-    "Restore": {},
-    "Restore purchases": {},
-    "Rounds": {},
-    "Save your family's planet": {},
-    "Say \"warm\" or \"cold\" as they search.": {},
-    "Scatter cushions on the floor. The floor is the sea.": {},
-    "Schedule": {},
-    "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them.": {},
-    "Send another code": {},
-    "Send another in %lld s": {},
-    "Send me a code": {},
-    "Sign in": {},
-    "Sign in so your plan and your planet stay with you, and a subscription bought on the web finds you here.": {},
-    "Sign in with Google": {},
-    "Sign out": {},
-    "Sign-in failed (%lld).": {},
-    "Sign-in failed: %@": {},
-    "Sign-in isn't set up yet.": {},
-    "Signing you in": {},
-    "Sitting": {},
-    "Sleepy Lion": {},
-    "Snow Globe": {},
-    "Sock Hunt": {},
-    "Socks": {},
-    "Standing": {},
-    "Start %lld min": {},
-    "Start %lld minutes": {},
-    "Start 3-day free trial": {},
-    "Starts": {},
-    "Starts %@": {},
-    "Step %lld of %lld": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Step %1$lld of %2$lld"
+    "%lld more rounds" : {
+
+    },
+    "%lld rounds to a new world" : {
+
+    },
+    "%lld+ hours" : {
+
+    },
+    "+%lld minutes together" : {
+
+    },
+    "1 more round" : {
+
+    },
+    "1 round to a new world" : {
+
+    },
+    "3 days free, then %@" : {
+
+    },
+    "A planet that grows" : {
+
+    },
+    "A planet this small only grows when its family shows up." : {
+
+    },
+    "A preview of the Screen Time permission sheet, with an arrow on Continue" : {
+
+    },
+    "Allow Screen Time" : {
+
+    },
+    "Almost there. [Save your plan] to start." : {
+
+    },
+    "Animal Race" : {
+
+    },
+    "Anyone who wobbles is in charge next." : {
+
+    },
+    "Apple couldn't complete that. Check that an Apple Account is signed in under iOS Settings, then try again." : {
+
+    },
+    "Apple couldn't complete that. Try again in a moment, or use Google or email." : {
+
+    },
+    "Apple didn't return an identity token." : {
+
+    },
+    "Apple returned a sign-in this app couldn't read. Try again, or use Google or email." : {
+
+    },
+    "At the summit, the mountain rumbles. Repeat." : {
+
+    },
+    "Back" : {
+
+    },
+    "Back as a frog. Then a bear. Then a snake." : {
+
+    },
+    "Based on your answer, with Kid hours on every evening." : {
+
+    },
+    "Bloom level %lld" : {
+
+    },
+    "Build a course: under a chair, over a cushion, around the table." : {
+
+    },
+    "Chairs" : {
+
+    },
+    "Checking your subscription on this account." : {
+
+    },
+    "Choose apps" : {
+
+    },
+    "Close worlds" : {
+
+    },
+    "Closer…" : {
+
+    },
+    "Continue" : {
+
+    },
+    "Continue with Facebook" : {
+
+    },
+    "Cross the room without touching the water." : {
+
+    },
+    "Cushions" : {
+
+    },
+    "Delete account" : {
+
+    },
+    "Delete everything" : {
+
+    },
+    "Delete your account?" : {
+
+    },
+    "Desert Dune" : {
+
+    },
+    "Different idea" : {
+
+    },
+    "Dimmed by a feed, a ping, and everything else pulling at you." : {
+
+    },
+    "Done" : {
+
+    },
+    "Don’t Allow" : {
+
+    },
+    "Email" : {
+
+    },
+    "Ends" : {
+
+    },
+    "Energy" : {
+
+    },
+    "Every few minutes" : {
+
+    },
+    "Every round together blooms your family's little planet." : {
+
+    },
+    "Every round together is one bloom." : {
+
+    },
+    "Every round, take one island away." : {
+
+    },
+    "Every story starts with \"Once, a tiny dragon…\"." : {
+
+    },
+    "Face each other. Your kid moves, you copy, slowly." : {
+
+    },
+    "Facebook couldn't complete that. Try again, or use another way in." : {
+
+    },
+    "Finding your plan" : {
+
+    },
+    "Fix this" : {
+
+    },
+    "Freeze Dance" : {
+
+    },
+    "Full" : {
+
+    },
+    "Get [%lld minutes] back every single evening" : {
+
+    },
+    "Get my evenings back" : {
+
+    },
+    "Google didn't return an identity token." : {
+
+    },
+    "Hallway" : {
+
+    },
+    "Hand the phone to your kid for this part." : {
+
+    },
+    "Hardly ever" : {
+
+    },
+    "Hide five rolled-up socks while your kid counts to twenty." : {
+
+    },
+    "High five" : {
+
+    },
+    "Hold for not now (%lld min)" : {
+
+    },
+    "Home" : {
+
+    },
+    "Home Planet" : {
+
+    },
+    "How often do you pick it up [in an hour] with them?" : {
+
+    },
+    "Human Mountain" : {
+
+    },
+    "I lose count" : {
+
+    },
+    "Keep playing" : {
+
+    },
+    "Kid hours" : {
+
+    },
+    "Kid hours are off" : {
+
+    },
+    "Kid hours pause the apps you pick, every evening, on the schedule you set." : {
+
+    },
+    "Kid hours pick back up on their own." : {
+
+    },
+    "Kid hours · until %@" : {
+
+    },
+    "Let Oyno pause apps" : {
+
+    },
+    "Let's connect Oyno to Screen Time. Securely." : {
+
+    },
+    "Let's seal it with a high five" : {
+
+    },
+    "Lie on your back on the rug. You're a sleeping mountain." : {
+
+    },
+    "Living-Room Obstacle Course" : {
+
+    },
+    "Low" : {
+
+    },
+    "Lying down" : {
+
+    },
+    "Make it harder: faces, then sounds, then silly walks." : {
+
+    },
+    "Manage subscription" : {
+
+    },
+    "Meadow" : {
+
+    },
+    "Meaning that this year you're on track to lose" : {
+
+    },
+    "Minutes" : {
+
+    },
+    "Mirror, Mirror" : {
+
+    },
+    "Moon Camp" : {
+
+    },
+    "Music" : {
+
+    },
+    "New to Oyno? Any of these creates your account." : {
+
+    },
+    "No payment due now" : {
+
+    },
+    "Not now" : {
+
+    },
+    "Nothing picked yet" : {
+
+    },
+    "Nothing to grab" : {
+
+    },
+    "Now" : {
+
+    },
+    "OK" : {
+
+    },
+    "Ocean Isle" : {
+
+    },
+    "Off" : {
+
+    },
+    "Okay" : {
+
+    },
+    "On now" : {
+
+    },
+    "On now · ends %@" : {
+
+    },
+    "Once or twice" : {
+
+    },
+    "One easy game" : {
+
+    },
+    "One easy thing" : {
+
+    },
+    "One room" : {
+
+    },
+    "Open your worlds" : {
+
+    },
+    "Oyno" : {
+
+    },
+    "Oyno will give you back [%lld+ hours] a year with your kid" : {
+
+    },
+    "Password" : {
+
+    },
+    "Pause apps during Kid hours" : {
+
+    },
+    "Paused during Kid hours" : {
+
+    },
+    "Phone, Messages and Maps are never paused." : {
+
+    },
+    "Pillow Islands" : {
+
+    },
+    "Plans aren't available right now. Check your connection and try again." : {
+
+    },
+    "Play" : {
+
+    },
+    "Profile" : {
+
+    },
+    "Projection from your answer: %lld phone minutes in an evening from 4:30 to 7:30 PM, every day of the year." : {
+
+    },
+    "Providing “Oyno” access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps & websites." : {
+
+    },
+    "Put on one song. Dance as wildly as you can." : {
+
+    },
+    "Quiet" : {
+
+    },
+    "Race down the hallway as a crab." : {
+
+    },
+    "Restore" : {
+
+    },
+    "Restore purchases" : {
+
+    },
+    "Rounds" : {
+
+    },
+    "Save your family's planet" : {
+
+    },
+    "Say \"warm\" or \"cold\" as they search." : {
+
+    },
+    "Scatter cushions on the floor. The floor is the sea." : {
+
+    },
+    "Schedule" : {
+
+    },
+    "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them." : {
+
+    },
+    "Send another code" : {
+
+    },
+    "Send another in %lld s" : {
+
+    },
+    "Send me a code" : {
+
+    },
+    "Show me how" : {
+
+    },
+    "Sign in" : {
+
+    },
+    "Sign in so your plan and your planet stay with you, and a subscription bought on the web finds you here." : {
+
+    },
+    "Sign in with Google" : {
+
+    },
+    "Sign out" : {
+
+    },
+    "Sign-in failed (%lld)." : {
+
+    },
+    "Sign-in failed: %@" : {
+
+    },
+    "Sign-in isn't set up yet." : {
+
+    },
+    "Signing you in" : {
+
+    },
+    "Sitting" : {
+
+    },
+    "Sleepy Lion" : {
+
+    },
+    "Snow Globe" : {
+
+    },
+    "Sock Hunt" : {
+
+    },
+    "Socks" : {
+
+    },
+    "Some not-so-good news, and some good news." : {
+
+    },
+    "Standing" : {
+
+    },
+    "Start %lld min" : {
+
+    },
+    "Start %lld minutes" : {
+
+    },
+    "Start 3-day free trial" : {
+
+    },
+    "Start with 3 days free, and spend them on the floor with your kid." : {
+
+    },
+    "Starts" : {
+
+    },
+    "Starts %@" : {
+
+    },
+    "Step %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Step %1$lld of %2$lld"
           }
         }
       }
     },
-    "Subscribe": {},
-    "Subscription": {},
-    "Subscriptions are unavailable right now.": {},
-    "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy).": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy)."
+    "Subscribe" : {
+
+    },
+    "Subscription" : {
+
+    },
+    "Subscriptions are unavailable right now." : {
+
+    },
+    "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy)." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy)."
           }
         }
       }
     },
-    "Swap who leads every two minutes.": {},
-    "Swap: now they hide, you hunt.": {},
-    "Syncing needs an active subscription. Everything you've entered is still on this device.": {},
-    "Take turns adding three words to a story.": {},
-    "Tap the planet": {},
-    "Tap the planet together": {},
-    "That isn't on your account anymore.": {},
-    "That purchase couldn't be verified.": {},
-    "That sign-in expired. Try again.": {},
-    "The end has to be after the start.": {},
-    "The last turn has to end it. Then start a new one.": {},
-    "The server couldn't read that request.": {},
-    "The server lost its place. Try again.": {},
-    "The server turned the request down. (%lld)": {},
-    "The subscription page didn't open. Try again, or use the link in your receipt email.": {},
-    "The winner picks the next animal.": {},
-    "They change one obstacle, then time you.": {},
-    "Three-Word Story": {},
-    "Time your kid with a slow count out loud.": {},
-    "Together today": {},
-    "Unlock my apps": {},
-    "Unlocked": {},
-    "Unlocks at bloom %lld": {},
-    "Use a password instead": {},
-    "Use email instead": {},
-    "We sent a six-digit code to %@.": {},
-    "We're done": {},
-    "When they touch your paw, wake up roaring. Swap roles.": {},
-    "Whoever is in charge shouts \"Freeze!\" at any moment.": {},
-    "World": {},
-    "You're a lion asleep on the sofa. Snore loudly.": {},
-    "Your account is still here — that didn't go through. Try again.": {},
-    "Your apps can open for %lld min": {},
-    "Your kid climbs. Narrate the expedition in a whisper.": {},
-    "Your kid sneaks up. If you hear a sound, open one eye.": {},
-    "Your planet just grew": {},
-    "Your rounds and your planet go with it. This cannot be undone. An active subscription keeps running until you cancel it.": {},
-    "Your session expired. Sign in again to keep going.": {},
-    "Your subscription is active again.": {},
-    "Yours now": {},
-    "left of %@": {}
+    "Swap who leads every two minutes." : {
+
+    },
+    "Swap: now they hide, you hunt." : {
+
+    },
+    "Syncing needs an active subscription. Everything you've entered is still on this device." : {
+
+    },
+    "Take turns adding three words to a story." : {
+
+    },
+    "Tap the planet" : {
+
+    },
+    "Tap the planet together" : {
+
+    },
+    "Tap to continue" : {
+
+    },
+    "Ten minutes, sized to the energy you have left, picked for you." : {
+
+    },
+    "That isn't on your account anymore." : {
+
+    },
+    "That purchase couldn't be verified." : {
+
+    },
+    "That sign-in expired. Try again." : {
+
+    },
+    "The bad news is that your phone takes about [%lld minutes] of every evening with your kid." : {
+
+    },
+    "The end has to be after the start." : {
+
+    },
+    "The good news is that Oyno can give you back" : {
+
+    },
+    "The last turn has to end it. Then start a new one." : {
+
+    },
+    "The server couldn't read that request." : {
+
+    },
+    "The server lost its place. Try again." : {
+
+    },
+    "The server turned the request down. (%lld)" : {
+
+    },
+    "The subscription page didn't open. Try again, or use the link in your receipt email." : {
+
+    },
+    "The winner picks the next animal." : {
+
+    },
+    "They change one obstacle, then time you." : {
+
+    },
+    "Three-Word Story" : {
+
+    },
+    "Time your kid with a slow count out loud." : {
+
+    },
+    "Together today" : {
+
+    },
+    "Unlock my apps" : {
+
+    },
+    "Unlocked" : {
+
+    },
+    "Unlocks at bloom %lld" : {
+
+    },
+    "Use a password instead" : {
+
+    },
+    "Use email instead" : {
+
+    },
+    "We sent a six-digit code to %@." : {
+
+    },
+    "We're done" : {
+
+    },
+    "When they touch your paw, wake up roaring. Swap roles." : {
+
+    },
+    "Whoever is in charge shouts \"Freeze!\" at any moment." : {
+
+    },
+    "World" : {
+
+    },
+    "You're a lion asleep on the sofa. Snore loudly." : {
+
+    },
+    "Your account is still here — that didn't go through. Try again." : {
+
+    },
+    "Your apps can open for %lld min" : {
+
+    },
+    "Your apps, paused" : {
+
+    },
+    "Your evenings are like this too." : {
+
+    },
+    "Your kid climbs. Narrate the expedition in a whisper." : {
+
+    },
+    "Your kid sneaks up. If you hear a sound, open one eye." : {
+
+    },
+    "Your plan and your family's planet are tied to your account." : {
+
+    },
+    "Your planet just grew" : {
+
+    },
+    "Your rounds and your planet go with it. This cannot be undone. An active subscription keeps running until you cancel it." : {
+
+    },
+    "Your session expired. Sign in again to keep going." : {
+
+    },
+    "Your subscription is active again." : {
+
+    },
+    "Yours now" : {
+
+    },
+    "a year with your kid, phone down, ten minutes at a time." : {
+
+    },
+    "left of %@" : {
+
+    },
+    "to a screen, with your kid right there. Yep, you read this right." : {
+
+    },
+    "“Oyno” Would Like to Access Screen Time" : {
+
+    }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

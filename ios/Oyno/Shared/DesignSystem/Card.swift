@@ -42,11 +42,17 @@ struct RowDivider: View {
 
 extension View {
     /// Frosted white over the sky, a bright edge and, when raised, a soft blue shadow.
+    /// The shadow is cast by the card's shape only: on the whole view it would blur a ghost
+    /// under every line of text inside.
     func glassCard(raised: Bool = false, radius: CGFloat = Metric.Radius.card) -> some View {
-        background(.ultraThinMaterial, in: .rect(cornerRadius: radius))
-            .background(Palette.glass, in: .rect(cornerRadius: radius))
-            .overlay(RoundedRectangle(cornerRadius: radius).strokeBorder(Palette.glassEdge, lineWidth: 1))
-            .shadow(color: raised ? Palette.glassShadow : .clear, radius: 15, y: 10)
+        let shape = RoundedRectangle(cornerRadius: radius)
+        return background(.ultraThinMaterial, in: shape)
+            .background(
+                shape
+                    .fill(Palette.glass)
+                    .shadow(color: raised ? Palette.glassShadow : .clear, radius: 15, y: 10)
+            )
+            .overlay(shape.strokeBorder(Palette.glassEdge, lineWidth: 1))
     }
 }
 

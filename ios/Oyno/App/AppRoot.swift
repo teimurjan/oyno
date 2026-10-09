@@ -28,7 +28,6 @@ struct AppRoot: View {
     @State private var paywall: PaywallContext?
     @AppStorage("oyno.didOnboard") private var didFinishFirstRun = false
     @AppStorage("oyno.didFunnel") private var didFunnel = false
-    @AppStorage(InterfaceLanguage.overrideKey) private var language = "en"
     @AppStorage("oyno.didAskForReview") private var didAskForReview = false
 
     init() {
@@ -125,7 +124,7 @@ struct AppRoot: View {
     private var content: some View {
         if !didLoad || !splashDone {
             // A branch rather than an overlay, so nothing underneath fires analytics early.
-            SplashScreen { withAnimation(.easeOut(duration: 0.35)) { splashDone = true } }
+            SplashScreen(isReady: didLoad) { withAnimation(.easeOut(duration: 0.35)) { splashDone = true } }
                 .transition(.opacity)
                 .zIndex(1)
         } else {
@@ -136,13 +135,7 @@ struct AppRoot: View {
     @ViewBuilder
     private var launched: some View {
         if !didFinishFirstRun && !didFunnel {
-            FunnelScreen(
-                spine: FunnelContent.bundled.spine,
-                copy: FunnelContent.bundled.copy(for: language),
-                onSignIn: { didFunnel = true },
-                onFinish: { didFunnel = true }
-            )
-            .id(language)
+            FunnelScreen(onSignIn: { didFunnel = true }, onFinish: { didFunnel = true })
         } else if !auth.isSignedIn {
             SignInScreen()
         } else if isRestoring || isAwaitingAccount {

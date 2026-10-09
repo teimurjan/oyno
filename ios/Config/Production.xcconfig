@@ -18,15 +18,15 @@ APP_ENVIRONMENT = production
 // than committed with a placeholder that looks real: `AppConfig.isSupabaseConfigured`
 // reads blank as "sign-in not set up", which is a legible state, while a wrong key is a
 // 401 nobody can explain.
-SUPABASE_URL = https:/$()/
-SUPABASE_PUBLISHABLE_KEY =
+SUPABASE_URL = https:/$()/pheluvilmtpttosqqjrq.supabase.co
+SUPABASE_PUBLISHABLE_KEY = sb_publishable_I9FRlUjgIgVoR3lTewsEXA_GOw31O5f
 
 // Amplitude write key for the Oyno project. Client-safe (it is a write-only ingest key),
 // and blank in Debug/Local so Xcode runs never reach the production project — `Analytics`
 // no-ops on an empty key.
-AMPLITUDE_API_KEY =
+AMPLITUDE_API_KEY = 233e8a9f8316c91438c17214f3fd020b
 
 // Google Sign-In. The bare client id, without the `.apps.googleusercontent.com` suffix —
 // Info.plist appends it for `GIDClientID` and reverses it for the callback URL scheme, so
 // the two spellings cannot disagree. Client-safe: an iOS OAuth client has no secret.
-GOOGLE_IOS_CLIENT_ID =
+GOOGLE_IOS_CLIENT_ID = 777850276994-r1smlv6fcbu1komcbipf78n08avtqavc.apps.googleusercontent.com

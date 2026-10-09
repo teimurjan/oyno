@@ -8,9 +8,9 @@
  * values are what analytics, `sessionStorage` and the Dodo subscription record, so they stay
  * the same in every language and are never reworded once an ad points at them.
  *
- * The app's first run is this funnel too: `bun run funnel:export-ios` writes these steps and every
- * deck into its bundle, so a step of a new `kind` needs a view in `FunnelScreen.swift` before
- * the script will write it.
+ * The app reads these decks too: `bun run funnel:export-ios` writes them into its bundle for
+ * `PaywallScreen.swift`, so a step of a new `kind` needs `FunnelContent.swift` to decode it
+ * before the script will write it.
  */
 
 import type { FunnelCopy } from "./copy/types";
@@ -22,7 +22,7 @@ export type FunnelStepKind =
   | "statement"
   /** An example evening, the phone eating it minute by minute. Self-running. */
   | "evening"
-  /** The planet: press it, it grows, the worlds open. Tours itself until touched. */
+  /** The planet: press it and it shrinks into the worlds. Tours itself until touched. */
   | "planet"
   | "recap"
   | "account"

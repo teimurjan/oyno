@@ -1,11 +1,11 @@
 /**
  * Writes the web funnel's shape and words into the iOS bundle (`ios/Oyno/Resources/Funnel.json`),
- * so the app's first run asks what `/start` asks, in the same words, in every language.
+ * so the app's paywall says what `/start`'s offer says, in the same words, in every language.
  *
  * Generated rather than mirrored: `steps.ts` and `copy/<tag>.ts` stay the one source, and a
- * reworded question reaches the phone on the next run of this script. The steps stop at the
- * account step — the offer and the card are StoreKit's on the phone (`PaywallScreen.swift`),
- * which reads its words from the same decks.
+ * reworded line reaches the phone on the next run of this script. The app's first run itself
+ * is native (`FunnelScreen.swift`) and reads none of this; `PaywallScreen.swift` reads the
+ * paywall deck.
  */
 import { writeFileSync } from "node:fs";
 import { FUNNEL_COPY } from "@/components/funnel/copy";
@@ -14,8 +14,8 @@ import { validateCopy } from "@/components/funnel/steps.validate";
 
 const OUT = "ios/Oyno/Resources/Funnel.json";
 
-/** The step kinds `FunnelScreen.swift` has a view for. A kind added on the web fails here,
- * not as a funnel the app cannot decode on somebody's first launch. */
+/** The step kinds `FunnelContent.swift` decodes. A kind added on the web fails here, not as a
+ * bundle the app cannot decode when the paywall opens. */
 const IOS_KINDS = new Set(["question", "statement", "evening", "planet", "recap", "account"]);
 
 /** The parts of a deck the phone reads. The rest is the web's own — its sign-in forms, Dodo's
@@ -28,7 +28,7 @@ const steps = FUNNEL.steps.slice(0, accountIndex + 1);
 const unknown = steps.filter((step) => !IOS_KINDS.has(step.kind));
 if (unknown.length > 0) {
   throw new Error(
-    `FunnelScreen.swift has no view for: ${unknown.map((step) => `${step.id} (${step.kind})`).join(", ")}`,
+    `FunnelContent.swift cannot decode: ${unknown.map((step) => `${step.id} (${step.kind})`).join(", ")}`,
   );
 }
 

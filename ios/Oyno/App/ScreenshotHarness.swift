@@ -30,13 +30,17 @@ struct ScreenshotHarness: View {
 
     @ViewBuilder private var seeded: some View {
         switch screen {
-        case "splash": SplashScreen()
+        case "splash": SplashScreen(isReady: false)
         case "signin": SignInScreen()
         case "paywall": PaywallScreen(context: .onboarding)
         case "play": PlayScreen(path: $playPath)
         case "timer": TimerScreen(activity: Activity.all[0]) { _ in }
         case "done": DoneScreen(minutes: 10) {}
         case "kidhours": KidHoursScreen()
+        // `funnel:<step>` opens the first run at that `FunnelStep`, `funnel` at the start.
+        case let name where name.hasPrefix("funnel"):
+            let step = FunnelStep(rawValue: String(name.dropFirst("funnel:".count))) ?? .hookPlanet
+            FunnelScreen(startingAt: step, onSignIn: {}, onFinish: {})
         default: HomeScreen(play: {})
         }
     }

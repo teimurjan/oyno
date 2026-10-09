@@ -18,9 +18,10 @@ open for free. Starting a round and turning Kid hours on need a live entitlement
 `refusedActions` is a counter, not a flag.
 
 **The first run is one sequence**, decided in `AppRoot`: `FunnelScreen` → `SignInScreen` (hard
-wall, no skip) → `PaywallScreen` → main, all keyed on `didFinishFirstRun`. `FunnelScreen` is the web
-funnel: `bun run funnel:export-ios` writes `Resources/Funnel.json`, which is generated and
-committed, never edited.
+wall, no skip) → `PaywallScreen` → main, all keyed on `didFinishFirstRun`. `FunnelScreen` is native
+and its own. `FunnelStep` lists the screens in order, and each step's words live in its view. The
+one answer (`Pickups`) is what the news screens sum. Only `PaywallScreen` still reads the web deck: `bun run funnel:export-ios`
+writes `Resources/Funnel.json`, which is generated and committed, never edited.
 
 **The paywall is a page, never a sheet**: a step in the first run, and a `fullScreenCover` over a
 refused write. The billed amount is the big figure (3.1.2). The trial is a 3-day App Store intro

@@ -26,45 +26,34 @@ export const DEPTH: Record<LayerName, number> = { sky: 0.15, planet: 0.5, family
 export const MAX_OFFSET = 10;
 
 /**
- * How the scene scales in each phase of a tap. The planet and the family scale together as
- * one body, about the planet's centre, so the family stays on its feet.
+ * How the planet and the family scale in each phase, as one body about the planet's foot, so
+ * the body stays over its painted shadow. Open is the body shrunk into the gallery's centred
+ * slide, which draws the same planet at the same scale and place.
  */
-export const SCALE = {
-  rest: { sky: 1, body: 1 },
-  pressed: { sky: 1, body: 0.98 },
-  grown: { sky: 1.06, body: 1.18 },
-} as const satisfies Record<string, { sky: number; body: number }>;
+export const BODY_SCALE = { rest: 1, pressed: 0.98, open: 0.7 } as const satisfies Record<string, number>;
 
-/** The planet's centre on the stage, as fractions of its width and height: the body's scale origin. */
+export type Phase = keyof typeof BODY_SCALE;
+
+/** The planet's foot on the stage, as fractions of its width and height: the body's scale origin. */
 export const BODY_ORIGIN = {
   x: LAYERS.planet.x + LAYERS.planet.width / 2,
-  y: (LAYERS.planet.y + (LAYERS.planet.width * LAYERS.planet.aspect) / 2) / STAGE_RATIO,
+  y: (LAYERS.planet.y + LAYERS.planet.width * LAYERS.planet.aspect) / STAGE_RATIO,
 };
 
-export type Phase = keyof typeof SCALE;
+/** How much of each neighbour's planet the gallery shows at the stage's edges. */
+export const PEEK = 0.15;
+
+/** A gallery slide's width in stage widths: the gap between two planets' centres. */
+export const SLIDE_WIDTH = 0.5 + LAYERS.planet.width * BODY_SCALE.open * (0.5 - PEEK);
+
+/** The strip's inline style: the CSS reads the slide width from it, before any script runs. */
+export const STRIP_STYLE = { "--slide": String(SLIDE_WIDTH) };
 
 /** A layer's box as CSS percentages of the stage. `top` is a share of the stage's height. */
 export function layerBox(name: LayerName): { left: string; top: string; width: string } {
   const layer = LAYERS[name];
   const percent = (value: number) => `${+(value * 100).toFixed(3)}%`;
   return { left: percent(layer.x), top: percent(layer.y / STAGE_RATIO), width: percent(layer.width) };
-}
-
-/**
- * A layer's box inside a square gallery card, as CSS percentages. Planets sit at the same
- * height on every card, and the home planet's family stands on it as it does on the stage.
- */
-export function cardBox(name: "planet" | "family"): { left: string; top: string; width: string } {
-  const planetWidth = 0.56;
-  const unit = planetWidth / LAYERS.planet.width;
-  const top = 0.04 - LAYERS.family.y * unit;
-  const layer = LAYERS[name];
-  const percent = (value: number) => `${+(value * 100).toFixed(3)}%`;
-  return {
-    left: percent((1 - layer.width * unit) / 2),
-    top: percent(top + layer.y * unit),
-    width: percent(layer.width * unit),
-  };
 }
 
 export interface Point {
@@ -92,12 +81,11 @@ export function layerOffset(pointer: Point, rect: Rect, depth: number, max = MAX
 }
 
 /**
- * A gallery card's look by its distance from the centre of the strip, in card widths. The
- * centred card is full size; a neighbour one card away is at 80% and half opacity.
+ * How much a gallery slide is in focus by its distance from the strip's centre, in slide
+ * widths: 1 when centred, 0 from one slide away.
  */
-export function neighborStyle(distance: number): { scale: number; opacity: number } {
-  const away = Math.min(Math.abs(distance), 1);
-  return { scale: 1 - 0.2 * away, opacity: 1 - 0.5 * away };
+export function slideFocus(distance: number): number {
+  return 1 - Math.min(Math.abs(distance), 1);
 }
 
 /** A colour shift that turns the one planet painting into another world. */
