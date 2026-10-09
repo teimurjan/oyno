@@ -29,4 +29,4 @@ AMPLITUDE_API_KEY = 233e8a9f8316c91438c17214f3fd020b
 // Google Sign-In. The bare client id, without the `.apps.googleusercontent.com` suffix —
 // Info.plist appends it for `GIDClientID` and reverses it for the callback URL scheme, so
 // the two spellings cannot disagree. Client-safe: an iOS OAuth client has no secret.
-GOOGLE_IOS_CLIENT_ID = 777850276994-r1smlv6fcbu1komcbipf78n08avtqavc.apps.googleusercontent.com
+GOOGLE_IOS_CLIENT_ID = 777850276994-r1smlv6fcbu1komcbipf78n08avtqavc
