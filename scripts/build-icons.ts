@@ -4,15 +4,13 @@ import sharp from "sharp";
 import { markSvg } from "@/lib/mark";
 
 /**
- * Renders the favicon set, the iOS `AppMark` image and a flat `AppIcon` from `lib/mark.ts`.
- * The flat icon stands in until the layered Icon Composer document (`ios/Oyno/AppIcon.icon`)
- * is made by hand; delete the `.appiconset` when that lands.
+ * Renders the favicon set and the iOS `AppMark` image from `lib/mark.ts`. The app icon is the
+ * Icon Composer document `ios/Oyno/AppIcon.icon`, made by hand, with the same sky gradient.
  */
 
 const ROOT = path.resolve(import.meta.dir, "..");
 const ASSETS = path.join(ROOT, "ios/Oyno/Resources/Assets.xcassets");
 const MARK_SET = path.join(ASSETS, "AppMark.imageset");
-const ICON_SET = path.join(ASSETS, "AppIcon.appiconset");
 
 const WEB_ICONS = [
   { out: "public/ico/icon-32.png", size: 32 },
@@ -59,15 +57,3 @@ await Bun.write(
 );
 console.log("  AppMark.imageset  1024×1024");
 
-await rm(ICON_SET, { recursive: true, force: true });
-await mkdir(ICON_SET, { recursive: true });
-// The App Store rejects an icon with an alpha channel.
-await Bun.write(
-  path.join(ICON_SET, "icon-1024.png"),
-  await sharp(Buffer.from(markSvg(1024))).flatten({ background: "#FFFFFF" }).removeAlpha().png().toBuffer(),
-);
-await Bun.write(
-  path.join(ICON_SET, "Contents.json"),
-  `${JSON.stringify({ images: [{ filename: "icon-1024.png", idiom: "universal", platform: "ios", size: "1024x1024" }], info: { author: "xcode", version: 1 } }, null, 2)}\n`,
-);
-console.log("  AppIcon.appiconset  1024×1024");
