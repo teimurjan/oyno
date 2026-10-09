@@ -1,0 +1,41 @@
+Oyno is a pocket ERP for 3D printing businesses. Quote a job at the machine, log what came off the plate, and see what your month actually earned — after filament, power, machine wear, purge waste and the marketplace's cut.
+
+WHY "THREE TIMES FILAMENT" LOSES YOU MONEY
+
+That rule prices the plastic and nothing else. A 20-hour ASA print draws roughly three times the power of the same print in PLA. Your printer wears out after a finite number of hours. A multi-colour plate can purge more filament into the waste bin than it puts into the model. Etsy takes its cut off the whole order, shipping included.
+
+Oyno prices all of it, in one screen, in about ten seconds.
+
+QUOTE AT THE MACHINE
+• Pick a material, set grams and hours with two steppers — no keyboard
+• Every cost itemised: filament, electricity, depreciation, purge, reprint reserve, platform fee
+• The list price, and what you actually net after the fee
+• Share the breakdown when a customer asks why it isn't ten dollars
+
+FILAMENT TRACKED TO THE GRAM
+• Every spool with its colour, brand, shelf and grams remaining
+• A warning before a roll is too short to finish the print you're about to start
+• A reorder list you can send to your supplier
+• Weigh-ins recorded as adjustments, so you find out when your slicer estimates run light
+
+LOG A PRINT IN THREE TAPS
+• Pick the job, pick the spool, confirm — the defaults are already right
+• Works with no signal. Everything syncs when you're back in range
+• Failed prints are logged too, because the plastic is gone either way
+
+THE MONTH, HONESTLY
+• Gross and net side by side, so the gap is the first thing you see
+• Where it goes: filament, platform fees, shipping, failed prints, power and wear
+• Net margin, and whether it's moving up or down
+• Orders with the marketplace's cut already taken out
+
+BUILT FOR THE SHOP FLOOR
+No Docker, no self-hosting, no spreadsheet that mutates into a monster. Your shop syncs across your phone, iPad and any device you sign in on.
+
+OYNO PRO
+A 3-day free trial, then monthly or yearly — or a one-time lifetime unlock. One mispriced commission costs more than a year of it.
+
+Subscriptions renew automatically unless cancelled at least 24 hours before the period ends. Manage or cancel in your Apple ID settings.
+
+Terms of use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy policy: https://oyno.app/privacy

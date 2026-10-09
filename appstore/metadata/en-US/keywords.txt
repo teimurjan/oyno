@@ -1,0 +1,1 @@
+spool,calculator,printer,printing,pricing,inventory,resin,bambu,tag,rfid,log,farm,manager,profit

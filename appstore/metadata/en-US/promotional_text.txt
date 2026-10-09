@@ -1,0 +1,1 @@
+New: three-tap print logging that works with no signal, so your inventory is right before you walk away from the machine.

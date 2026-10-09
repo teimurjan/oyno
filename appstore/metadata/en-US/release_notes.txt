@@ -1,0 +1,9 @@
+Two plastics on one plate: a quote can now carry more than one material. Tap Add a material for the TPU beside the PLA, give each its own weight, and the quote, its PDF and the Quotes list read "PLA + TPU". Logging the print takes each plastic off its own roll — tap Add a roll for the second.
+
+A delivery in several colours goes in at once. Add more than one spool, choose Different colours, and give each colour its swatch, code and count; the button says how many spools it adds.
+
+Picking a roll opens your shelf instead of a list: your places in your order, a search across them, the tag reader beside it, and Add a spool at the bottom when the roll is not there yet.
+
+Stats now says the margin in words — "You kept 38% of revenue" — then how many points it moved since last month, and the one cost that moved it most: "Filament fell from 31% to 24% of revenue." The period menu adds This year, compared against last year.
+
+The Filament list scrolls again with your finger on a roll, not only in the gaps between them.

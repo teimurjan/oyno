@@ -1,0 +1,465 @@
+import StoreKit
+import SwiftUI
+
+/// The one place the app asks for money — the web funnel's offer (`PaywallStep.tsx`), sold
+/// through StoreKit.
+///
+/// **The web's page, with the App Store's rules on it.** The same headline, the same three
+/// lines of what the money buys, the same three plan cards opening on the yearly, on the same
+/// blue wash, in the web deck's words (`FunnelContent`). Where it differs, a rule decided it:
+/// - the billed amount is the big figure on each card and the price per day sits under the
+///   plan's name. The web leads with the per-day figure; App Review rejects a subscription
+///   whose calculated price is more prominent than the one it bills (3.1.2).
+/// - no money-back guarantee: an App Store purchase is refunded by Apple, so the promise is
+///   not ours to make here.
+/// - no count of lifetime unlocks left, and no count of this week's subscribers. The cap is
+///   on the web's own unlocks (`paddle_lifetime_entitlements`), and a weekly figure compiled
+///   into a binary stops being true the week after it ships.
+/// What Apple requires at the point of sale is added instead: the trial's terms, Restore, and
+/// the renewal disclosure with the licence and the privacy policy.
+///
+/// **A page, never a sheet.** A sheet is a detour: it arrives over the screen underneath
+/// it, it carries a grabber that says "flick me away", and on a first run it would sit on
+/// top of a sign-in screen the operator has just finished with. This is the whole screen
+/// instead, in both of the places it appears — the first run, straight after signing in,
+/// and any later moment the shop is told it cannot be changed. Same screen, same weight,
+/// one difference: `context`, which is what tells a plan somebody went looking for from a
+/// plan somebody was turned away by.
+///
+/// **It has a way out, deliberately.** There is no free tier, but the wall stands in
+/// front of *changing* the shop rather than in front of opening it: the records already
+/// on the device are that business's books and they go on opening. So "not now" is a real
+/// answer — it leaves the operator looking at their own shop, which is the honest reply
+/// to a wall they can already see the other side of.
+struct PaywallScreen: View {
+    /// Why the reader is looking at this, for the funnel. A refused edit and a lapse are
+    /// the same sheet and a different event.
+    var context: PaywallContext = .writeBlocked
+    /// What "not now" does when this screen is a step in the first run rather than
+    /// something presented over the app. Absent inside the cover, which closes itself.
+    var onSkip: (() -> Void)?
+
+    @Environment(PurchaseStore.self) private var purchases
+    @Environment(\.dismiss) private var dismiss
+
+    /// The yearly, the middle card, as on the web.
+    @State private var plan = Plan.yearly
+    @State private var restoreMessage: LocalizedStringResource?
+
+    /// Apple's standard licence. A subscription sold inside an app has to link a EULA at
+    /// the point of sale, and an app that does not ship one of its own falls under this
+    /// document — App Review checks the link is here and that it works.
+    private static let termsURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
+    private static let privacyURL = URL(string: "https://oyno.app/privacy")!
+
+    /// A month is 30 days and not 30.44: the figure illustrates scale, and a buyer checking
+    /// it will divide by 30.
+    private static let days: [Plan: Decimal] = [.monthly: 30, .yearly: 365]
+
+    private enum Plan: CaseIterable {
+        case monthly, yearly, lifetime
+
+        var unit: Product.SubscriptionPeriod.Unit? {
+            switch self {
+            case .monthly: .month
+            case .yearly: .year
+            case .lifetime: nil
+            }
+        }
+    }
+
+    var body: some View {
+        let copy = FunnelContent.bundled.copy()
+
+        ScrollView {
+            VStack(spacing: Metric.Space.s) {
+                FunnelHeadline(text: copy.steps["paywall"]?.headline ?? "")
+                pros(copy.paywall)
+                    .padding(.bottom, Metric.Space.s)
+                plans(copy.paywall)
+                commit(copy.paywall)
+                    .padding(.top, Metric.Space.s)
+            }
+            .frame(maxWidth: 520)
+            .padding(.horizontal, Metric.gutter)
+            .padding(.vertical, 32)
+            .containerRelativeFrame(.horizontal)
+        }
+        .scrollIndicators(.hidden)
+        .background(PaywallWash())
+        .task {
+            Analytics.shared.track(.paywallViewed(context: context))
+            await purchases.loadProducts()
+        }
+        .onChange(of: purchases.isPaid) { _, paid in
+            if paid { close() }
+        }
+        .alert(
+            "Restore",
+            isPresented: .init(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })
+        ) {
+            Button("OK", role: .cancel) { restoreMessage = nil }
+        } message: {
+            if let restoreMessage { Text(restoreMessage) }
+        }
+    }
+
+    /// What the money buys, above what it costs: a reader decides what a plan is worth before
+    /// they read what one costs. Accent marks against ink words, so the button is still the
+    /// only accent fill on the page.
+    private func pros(_ words: FunnelCopy.Paywall) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(Array(zip(words.pros, Self.proSymbols)), id: \.0) { line, symbol in
+                HStack(spacing: Metric.Space.m) {
+                    Glyph(symbol: symbol, size: 17, color: Palette.accent)
+                        .frame(width: 22)
+                        .accessibilityHidden(true)
+                    Text(verbatim: line)
+                        .font(Typeface.ui(15.5, .regular, relativeTo: .body))
+                        .foregroundStyle(Palette.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    /// One per line of `paywall.pros`, in order — the web's Lucide tag, disc and phone.
+    private static let proSymbols = ["tag", "smallcircle.filled.circle", "iphone"]
+
+    @ViewBuilder
+    private func plans(_ words: FunnelCopy.Paywall) -> some View {
+        if !purchases.didLoadProducts {
+            ProgressView().frame(maxWidth: .infinity).padding(.vertical, Metric.Space.xl)
+        } else if purchases.products.isEmpty {
+            Text("Plans aren't available right now. Check your connection and try again.")
+                .oynoCaption()
+        } else {
+            VStack(spacing: 10) {
+                ForEach(Plan.allCases, id: \.self) { plan in
+                    if let product = purchases.product(billedEvery: plan.unit) {
+                        card(plan, product, words)
+                    }
+                }
+            }
+        }
+    }
+
+    private func card(_ plan: Plan, _ product: Product, _ words: FunnelCopy.Paywall) -> some View {
+        let (label, term): (String, String) = switch plan {
+        case .monthly: (words.monthly, words.perMonth)
+        case .yearly: (words.yearly, words.perYear)
+        case .lifetime: (words.lifetime, words.once)
+        }
+        let saving = plan == .yearly ? yearlySaving : nil
+        return PlanCard(
+            label: label,
+            price: product.displayPrice,
+            term: term,
+            perDay: Self.days[plan].map { perDay(product, days: $0, words: words) },
+            was: saving == nil ? nil : yearOfMonthly,
+            badge: saving.map { FunnelCopy.fill(words.save, ["percent": Format.percent(Decimal($0), decimals: 0)]) },
+            note: note(plan, product, words),
+            selected: self.plan == plan
+        ) { self.plan = plan }
+    }
+
+    /// The trial's terms where there is one — Apple requires the price after it on the card
+    /// that sells it — and the web's line where there is not.
+    private func note(_ plan: Plan, _ product: Product, _ words: FunnelCopy.Paywall) -> String {
+        if plan != .lifetime, purchases.isEligibleForIntroOffer {
+            return String(interface: "3 days free, then \(product.displayPrice)")
+        }
+        return switch plan {
+        case .monthly: words.cancelAnytime
+        case .yearly: words.billedYearly
+        case .lifetime: words.forever
+        }
+    }
+
+    /// Keeps the currency's own precision: a per-day figure rounded to whole units would read
+    /// as the same number on two cards.
+    private func perDay(_ product: Product, days: Decimal, words: FunnelCopy.Paywall) -> AttributedString {
+        var figure = AttributedString((product.price / days).formatted(product.priceFormatStyle))
+        figure.font = Typeface.mono(16, .medium, relativeTo: .body)
+        figure.foregroundColor = Palette.ink
+        var label = AttributedString(" \(words.perDay)")
+        label.foregroundColor = Palette.muted
+        return figure + label
+    }
+
+    /// The yearly's saving against twelve months, in whole percent — nil unless it is
+    /// actually cheaper, because a struck figure lower than the one beside it reads as a
+    /// mistake.
+    private var yearlySaving: Int? {
+        guard let monthly = purchases.product(billedEvery: .month),
+              let yearly = purchases.product(billedEvery: .year),
+              monthly.price > 0 else { return nil }
+        let share = NSDecimalNumber(decimal: yearly.price / (monthly.price * 12)).doubleValue
+        let saving = Int(((1 - share) * 100).rounded())
+        return saving > 0 ? saving : nil
+    }
+
+    private var yearOfMonthly: String? {
+        guard let monthly = purchases.product(billedEvery: .month),
+              let yearly = purchases.product(billedEvery: .year) else { return nil }
+        return (monthly.price * 12).formatted(yearly.priceFormatStyle)
+    }
+
+    /// The picked plan, or the first one there is if the App Store did not return it.
+    private var selection: Product? {
+        purchases.product(billedEvery: plan.unit) ?? purchases.products.first
+    }
+
+    private func commit(_ words: FunnelCopy.Paywall) -> some View {
+        let enabled = selection != nil && !purchases.isPurchasing
+        return VStack(spacing: Metric.Space.m) {
+            if purchases.isEligibleForIntroOffer && selection?.subscription != nil {
+                PrimaryButton(title: "Start 3-day free trial", enabled: enabled) { buy() }
+            } else {
+                PrimaryButton(verbatim: words.continue, enabled: enabled) { buy() }
+            }
+
+            HStack(spacing: Metric.Space.l) {
+                Button("Restore") { restore() }
+                Spacer()
+                Button("Not now") { close() }
+            }
+            .font(Typeface.ui(13, .regular, relativeTo: .footnote))
+            .foregroundStyle(Palette.muted)
+            .buttonStyle(.plain)
+            .frame(height: Metric.tapTarget)
+
+            Text(agreement)
+                .font(Typeface.ui(11, .regular, relativeTo: .caption2))
+                .foregroundStyle(Palette.faint)
+                .tint(Palette.muted)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private func buy() {
+        guard let product = selection else { return }
+        Analytics.shared.track(.purchaseStarted(productID: product.id))
+        Task { await purchases.purchase(product) }
+    }
+
+    private func restore() {
+        Analytics.shared.track(.restoreStarted)
+        Task {
+            let outcome = await purchases.restore()
+            Analytics.shared.track(.restoreFinished(outcome: outcome.rawValue))
+            restoreMessage = switch outcome {
+            case .restored: "Your subscription is active again."
+            case .nothingToRestore: "No purchase found for this Apple ID."
+            case .failed: "Couldn't reach the server. Try again in a moment."
+            case .cancelled: nil
+            }
+        }
+    }
+
+    /// The renewal disclosure and the two documents Apple requires at the point of sale,
+    /// in one sentence. Underlined rather than accented: the accent on this screen belongs
+    /// to the button above them.
+    ///
+    /// The links are carried as Markdown in the catalog and pointed at sentinel URLs,
+    /// which are swapped for the real ones here. Matching on the English words instead
+    /// fails silently the moment the sentence is translated — no crash, no log, just two
+    /// legally required links quietly gone in seventeen languages. Sentinels also mean a
+    /// translator can move or reword the link text but can never retarget it.
+    ///
+    /// Resolved through `String(interface:)` and parsed here, rather than by
+    /// `AttributedString(localized:)`: that initializer's `locale:` steers formatting and
+    /// not which `.lproj` answers, so on a phone set to English with the app set to
+    /// Russian it would print the disclosure in the wrong language. One unbroken literal,
+    /// because a `LocalizedStringResource` has to *be* one to carry a catalog key.
+    private static let agreementText: LocalizedStringResource = "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy)."
+
+    private var agreement: AttributedString {
+        let sentence = String(interface: Self.agreementText)
+        // Inline only: this is one sentence, and the block-level parse would wrap it in a
+        // paragraph intent for no gain.
+        let options = AttributedString.MarkdownParsingOptions(interpretedSyntax: .inlineOnlyPreservingWhitespace)
+        guard var text = try? AttributedString(markdown: sentence, options: options) else {
+            assertionFailure("Paywall agreement is not valid Markdown in \(InterfaceLanguage.current)")
+            return AttributedString(sentence)
+        }
+        // Ranges collected before anything is written: `runs` is a view onto the string
+        // being mutated, and setting an attribute re-segments it underneath the loop.
+        // Indices survive an attribute change, so applying them afterwards is safe.
+        let targets = text.runs.compactMap { run -> (Range<AttributedString.Index>, URL)? in
+            switch run.link?.absoluteString {
+            case "oyno://terms": (run.range, Self.termsURL)
+            case "oyno://privacy": (run.range, Self.privacyURL)
+            default: nil
+            }
+        }
+        for (range, destination) in targets {
+            text[range].link = destination
+            text[range].underlineStyle = .single
+        }
+        assert(
+            text.runs.contains { $0.link == Self.termsURL }
+                && text.runs.contains { $0.link == Self.privacyURL },
+            "Paywall agreement lost a required disclosure link — check that this locale "
+                + "kept both oyno:// Markdown links intact."
+        )
+        return text
+    }
+
+    private func close() {
+        if let onSkip { onSkip() } else { dismiss() }
+    }
+}
+
+/// One plan: its name and what it bills on the left, the billed amount on the right. The
+/// web's `PlanCard`, with the two figures swapped for the App Store (see `PaywallScreen`).
+private struct PlanCard: View {
+    let label: String
+    /// The billed amount — the most prominent price on the card, always.
+    let price: String
+    let term: String
+    let perDay: AttributedString?
+    /// Twelve months at the monthly price, struck through above the yearly one.
+    let was: String?
+    let badge: String?
+    let note: String
+    let selected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            HStack(alignment: .top, spacing: Metric.Space.m) {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(spacing: Metric.Space.s) {
+                        Radio(selected: selected)
+                        Text(verbatim: label)
+                            .font(Typeface.ui(17, .semibold, relativeTo: .headline))
+                            .tracking(-0.34)
+                            .foregroundStyle(Palette.ink)
+                        if let badge { PlanTag(text: badge) }
+                    }
+                    if let perDay {
+                        Text(perDay)
+                            .font(Typeface.ui(14, .regular, relativeTo: .subheadline))
+                            .padding(.top, 6)
+                    }
+                    Text(verbatim: note)
+                        .font(Typeface.ui(13.5, .regular, relativeTo: .footnote))
+                        .foregroundStyle(Palette.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, Metric.Space.xs)
+                }
+                Spacer(minLength: 0)
+                VStack(alignment: .trailing, spacing: 0) {
+                    if let was {
+                        Text(verbatim: was)
+                            .font(Typeface.mono(13, .regular, relativeTo: .footnote))
+                            .monospacedDigit()
+                            .strikethrough()
+                            .foregroundStyle(Palette.faint)
+                    }
+                    Text(verbatim: price)
+                        .font(Typeface.mono(26, .semibold, relativeTo: .title2))
+                        .monospacedDigit()
+                        .tracking(-0.52)
+                        .foregroundStyle(Palette.ink)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.6)
+                    Text(verbatim: term)
+                        .font(Typeface.ui(11, .regular, relativeTo: .caption2))
+                        .tracking(0.88)
+                        .textCase(.uppercase)
+                        .foregroundStyle(Palette.muted)
+                        .padding(.top, Metric.Space.xs)
+                }
+                .layoutPriority(1)
+            }
+            .padding(.horizontal, Metric.cardPadding)
+            .padding(.vertical, 14)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Palette.surface, in: .rect(cornerRadius: Metric.Radius.card))
+            .overlay(
+                RoundedRectangle(cornerRadius: Metric.Radius.card)
+                    .strokeBorder(selected ? Palette.accent : Palette.hairline, lineWidth: selected ? 2 : 1)
+            )
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+    }
+}
+
+/// A radio, not a tick: three plans where exactly one is chosen.
+private struct Radio: View {
+    let selected: Bool
+
+    var body: some View {
+        ZStack {
+            Circle().strokeBorder(selected ? Palette.accent : Palette.chevron, lineWidth: 1.5)
+            if selected { Circle().fill(Palette.accent).frame(width: 9, height: 9) }
+        }
+        .frame(width: 17, height: 17)
+        .accessibilityHidden(true)
+    }
+}
+
+/// The mark on the plan that is the better deal — ink on white rather than the accent, which
+/// this page already spends on the picked plan and the button that takes the money.
+private struct PlanTag: View {
+    let text: String
+
+    var body: some View {
+        Text(verbatim: text)
+            .font(Typeface.mono(10, .semibold, relativeTo: .caption2))
+            .tracking(0.6)
+            .textCase(.uppercase)
+            .lineLimit(1)
+            .foregroundStyle(Palette.surface)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 3)
+            .background(Palette.ink, in: .rect(cornerRadius: Metric.Radius.control))
+    }
+}
+
+/// The offer's own ground: two soft pools of the brand blue on white — `.paywall-page` in
+/// `app/globals.css`, the only full-bleed background either funnel has.
+private struct PaywallWash: View {
+    var body: some View {
+        GeometryReader { geometry in
+            let size = geometry.size
+            ZStack {
+                Palette.surface
+                pool(
+                    at: CGPoint(x: 0, y: size.height * 0.04),
+                    radii: CGSize(width: size.width * 0.75, height: size.height * 0.52),
+                    stops: [(0.38, 0), (0.14, 0.42), (0, 0.70)]
+                )
+                pool(
+                    at: CGPoint(x: size.width, y: size.height * 0.60),
+                    radii: CGSize(width: size.width * 0.72, height: size.height * 0.50),
+                    stops: [(0.32, 0), (0.11, 0.44), (0, 0.72)]
+                )
+            }
+        }
+        .ignoresSafeArea()
+    }
+
+    /// An elliptical radial gradient: a circular one, squashed to the ellipse's proportions.
+    private func pool(at centre: CGPoint, radii: CGSize, stops: [(opacity: Double, location: CGFloat)]) -> some View {
+        Circle()
+            .fill(RadialGradient(
+                stops: stops.map { .init(color: Palette.accent.opacity($0.opacity), location: $0.location) },
+                center: .center,
+                startRadius: 0,
+                endRadius: radii.width
+            ))
+            .frame(width: radii.width * 2, height: radii.width * 2)
+            .scaleEffect(x: 1, y: radii.height / radii.width)
+            .position(centre)
+    }
+}
