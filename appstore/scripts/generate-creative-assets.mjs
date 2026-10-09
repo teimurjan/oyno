@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Renders the App Store's creative assets — the product page header and the search result
-// image — per locale, from the same captures, captions, fonts and roll as the screenshots.
+// image — per locale, from the same captures, captions, fonts and planet as the screenshots.
 //
 // Usage: node appstore/scripts/generate-creative-assets.mjs [--locales=en,de,fr]
 //
@@ -37,9 +37,8 @@ import {
   SOURCE_DIR,
 } from "./lib/screenshot-kit.mjs";
 
-/** The roll the label reader is pointed at in frame 01 — the charcoal PLA the filament
- * list on the phone beside it says has 640 g left. */
-const SPOOL_PNG = path.join(SOURCE_DIR, "spool.png");
+/** The family's planet, the same painting the app and the site draw. */
+const PLANET_PNG = path.join(ROOT, "art/source/planet.png");
 
 const PLACEMENTS = {
   // Two lines, then three: the line after that is always the emphasis breaking in half.
@@ -47,15 +46,12 @@ const PLACEMENTS = {
   search: { w: 3840, h: 2560, sizes: [250, 228, 208, 190, 172] },
 };
 
-/** Each asset borrows a caption the listing already has, so every language that has
- * screenshots has these too and nothing new needs translating. The two search images are
- * one per keyword family, for custom product pages: "filament tracker" and "3d print
- * quote" are different readers. */
+/** Each asset borrows a caption the listing already has, so nothing new needs translating.
+ * One search image per keyword family, for custom product pages. */
 const CREATIVES = [
-  { name: "header", placement: "header", caption: "tap", screen: "filament" },
-  { name: "search-filament", placement: "search", caption: "filament", screen: "filament" },
-  // The quote screen's point is the total at its foot, so that phone runs off the top instead.
-  { name: "search-quote", placement: "search", caption: "quote", screen: "quote", phoneTop: -120 },
+  { name: "header", placement: "header", caption: "home", screen: "home" },
+  { name: "search-play", placement: "search", caption: "play", screen: "play" },
+  { name: "search-kidhours", placement: "search", caption: "kidhours", screen: "kidhours" },
 ];
 
 /** A capture in the phone, leaning, with the shadow the screenshot frames give it. */
@@ -66,9 +62,9 @@ function phoneHtml({ capture, width, left, top, angle }) {
     </div>`;
 }
 
-function spoolHtml({ size, left, top, angle }) {
+function planetHtml({ size, left, top, angle }) {
   return `
-    <img src="${dataUri(SPOOL_PNG, "image/png")}" style="position:absolute; left:${left}px; top:${top}px; width:${size}px; height:${size}px; transform:rotate(${angle}deg); filter:drop-shadow(0 50px 70px rgba(10,10,10,0.28));">`;
+    <img src="${dataUri(PLANET_PNG, "image/png")}" style="position:absolute; left:${left}px; top:${top}px; width:${size}px; height:${size}px; transform:rotate(${angle}deg); filter:drop-shadow(0 50px 70px rgba(10,10,10,0.28));">`;
 }
 
 /** A soft light behind the words so they sit on a surface rather than on the grid lines. */
@@ -82,27 +78,27 @@ const headlineHtml = ({ caption, box, align }) => `
 
 const HEADER_INSET = 150;
 
-/** The header: the roll on the left, the phone that knows its weight on the right, the
- * line between them. On an iPhone's 3:2 crop the label on the roll and the top of the
- * filament list both stay in frame; on the full width the whole story reads left to right. */
+/** The header: the planet on the left, the phone on the right, the
+ * line between them. On an iPhone's 3:2 crop the planet and the top of the
+ * screen both stay in frame. On the full width the story reads left to right. */
 function headerBody({ caption, capture }) {
   const { safe } = PLACEMENTS.header;
-  // Narrower than the safe area, so the words keep clear air between the roll and the phone.
+  // Narrower than the safe area, so the words keep clear air between the planet and the phone.
   const box = { ...safe, x: safe.x + HEADER_INSET, w: safe.w - 2 * HEADER_INSET };
   return `
     ${glowHtml(50, 50)}
-    ${spoolHtml({ size: 1180, left: -60, top: 300, angle: -6 })}
+    ${planetHtml({ size: 1180, left: -60, top: 300, angle: -6 })}
     ${phoneHtml({ capture, width: 760, left: 2900, top: 310, angle: 7 })}
     ${headlineHtml({ caption, box, align: "center" })}`;
 }
 
 /** The search image: Apple's own examples are a headline on the left and a phone on the
- * right running off the bottom, read whole at about a tenth of its size. The roll peeks in
+ * right running off the bottom, read whole at about a tenth of its size. The planet peeks in
  * from the corner under the words, label first. */
 function searchBody({ caption, capture, phoneTop = 330 }) {
   return `
     ${glowHtml(26, 40)}
-    ${spoolHtml({ size: 1400, left: -380, top: 1800, angle: -4 })}
+    ${planetHtml({ size: 1400, left: -380, top: 1800, angle: -4 })}
     ${phoneHtml({ capture, width: 1240, left: 2300, top: phoneTop, angle: 4 })}
     ${headlineHtml({ caption, box: { x: 300, y: 380, w: 1820, h: 1340 }, align: "left" })}`;
 }

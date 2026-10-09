@@ -1,1 +1,1 @@
-spool,calculator,printer,printing,pricing,inventory,resin,bambu,tag,rfid,log,farm,manager,profit
+parenting,screen time,family,play,games,kids,toddler,phone,limit,focus,habit,evening,routine

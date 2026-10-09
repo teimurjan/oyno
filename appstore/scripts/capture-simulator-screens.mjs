@@ -9,7 +9,7 @@
 //
 // Usage: node appstore/scripts/capture-simulator-screens.mjs ["iPhone 17"]
 //                                                            [--locales=en,ru]
-//                                                            [--screens=filament,03]
+//                                                            [--screens=play,03]
 
 import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";

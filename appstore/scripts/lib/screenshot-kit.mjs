@@ -25,13 +25,8 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 
 /** Which seeded screen the capture run photographs, and what it is filed as.
  *
- * The order is the argument the store listing makes, not the order of the tab bar: the
- * label reader pointed at a roll first — the winning ad's "tap the roll, not the
- * keyboard" — then the quote (what does this cost?), the inventory it draws on, a new roll
- * read off its NFC tag, QR code or label, the quote going to the customer as a PDF, and the
- * month that falls out of all of it. A simulator has no camera, so `camera` names the
- * picture in `appstore/source/` the harness draws where the feed goes
- * (`--screenshot-camera`).
+ * The order is the argument the store listing makes: the planet first, then the easy game,
+ * Kid hours, and the planet growing at the end of a round.
  *
  * `nn` is what a caption's `source` points at, which is why adding a screen in the middle
  * renumbers the ones after it *and* every `appstore/captions/<tag>.json`. It lives here
@@ -39,17 +34,13 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
  * what to photograph, once for what to composite — and two copies of it would let a screen
  * exist on one of those lists and not the other. */
 export const SCREENS = [
-  { nn: "01", screen: "label", camera: "spool.png" },
-  { nn: "02", screen: "quote" },
-  { nn: "03", screen: "filament" },
-  { nn: "04", screen: "spool" },
-  { nn: "05", screen: "share" },
-  { nn: "06", screen: "month" },
-  { nn: "07", screen: "orders" },
-  { nn: "08", screen: "printer" },
+  { nn: "01", screen: "home" },
+  { nn: "02", screen: "play" },
+  { nn: "03", screen: "kidhours" },
+  { nn: "04", screen: "done" },
 ];
 
-/** A screen named the way a person names it — "filament", "03", or "3" — resolved to the
+/** A screen named the way a person names it — "play", "02", or "2" — resolved to the
  * `nn` everything downstream keys on. Null for a name no screen answers to, so the caller
  * can list what it does have rather than capture the wrong thing. */
 export function resolveScreen(name) {

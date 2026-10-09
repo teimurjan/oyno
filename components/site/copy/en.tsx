@@ -199,10 +199,10 @@ export const en: SiteCopy = {
         <h3>Your rounds</h3>
         <p>
           How many rounds you played, how long each lasted, which game it was and your
-          planet&rsquo;s bloom level. We store these against your account so they follow you to a
-          new phone. They name no child: Oyno never asks for your kid&rsquo;s name, age or photo.
-          The answers you give in the questions on this website (for example, an age range) are
-          stored with your account to pick games.
+          planet&rsquo;s bloom level. These stay on your phone. They name no child: Oyno never asks
+          for your kid&rsquo;s name, age or photo. The answers you give to the questions on this
+          website (for example, an age range) are stored with your subscription record, so we can
+          tell which questions lead to games people keep playing.
         </p>
         <h3>Your subscription</h3>
         <p>
@@ -257,9 +257,8 @@ export const en: SiteCopy = {
 
         <h2 id="delete">Deleting everything</h2>
         <p>
-          In the app: <strong>Profile → Delete account</strong>. It erases your account and every
-          round attached to it, immediately, and it cannot be undone. Kid hours stop on the phone
-          at the same moment.
+          In the app: <strong>Profile → Delete account</strong>. It erases your account and the
+          rounds on your phone, immediately, and it cannot be undone.
         </p>
         <p>
           Signed in with Facebook? You can also remove Oyno under{" "}
@@ -313,8 +312,8 @@ export const en: SiteCopy = {
 
         <h2>Your account</h2>
         <p>
-          You need an account, so your rounds follow you between phones. Keep your sign-in to
-          yourself. You can delete the account at any time from{" "}
+          You need an account, so a subscription bought on the web finds you in the app. Keep your
+          sign-in to yourself. You can delete the account at any time from{" "}
           <strong>Profile → Delete account</strong>.
         </p>
 

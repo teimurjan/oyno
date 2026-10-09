@@ -4,7 +4,7 @@
 // product page header or search result asset. They go to review with the version.
 //
 // Usage: node appstore/scripts/push-creative-assets.mjs --version=1.10
-//                                                       [--search=none|filament|quote]
+//                                                       [--search=none|play|kidhours]
 //                                                       [--locales=en,de] [--yes]
 //
 // Deliver has no notion of these, and Apple's published OpenAPI (4.5) has none of the
@@ -33,7 +33,7 @@ const PLACEMENT_TYPES = { header: "PRODUCT_PAGE_HEADER_ASSET", search: "APP_STOR
 /** The states App Store Connect lets a version's media be edited in. */
 const EDITABLE = ["PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED", "INVALID_BINARY"];
 
-const SEARCH_CHOICES = ["none", "filament", "quote"];
+const SEARCH_CHOICES = ["none", "play", "kidhours"];
 
 function parseArgs(argv) {
   const flag = (name) => argv.find((arg) => arg.startsWith(`--${name}=`))?.split("=")[1];

@@ -1,0 +1,7 @@
+Oyno helps a parent put the phone down in the evening. It pauses apps the parent picks on their own iPhone during hours they set (Screen Time API, FamilyControls with .individual authorization), suggests a short game to play with their child, and grows an illustrated planet for every round played.
+
+A demo account with an active entitlement is provided in the credentials fields. Sign in with "Use email instead" on the sign-in screen.
+
+To exercise the core flow: open the Play tab, pick an energy level, tap "Start 10 minutes", then "We're done", then tap the planet. On Home, press the planet to open the gallery of worlds.
+
+To exercise Kid hours: open the Kid hours tab, tap "Allow Screen Time", choose apps, and turn on "Pause apps during Kid hours". The schedule runs in a DeviceActivity monitor extension. Oyno never reads app usage and never collects data about the child.

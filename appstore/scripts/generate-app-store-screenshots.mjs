@@ -6,7 +6,7 @@
 // URIs, so there's no external asset serving.
 //
 // Usage: node appstore/scripts/generate-app-store-screenshots.mjs [--locales=en,de,fr]
-//                                                                 [--sources=03,filament]
+//                                                                 [--sources=03,play]
 //
 // Where each render lands:
 //   appstore/screenshots/<ASC locale>/               deliver's screenshots_path, uploaded as-is
@@ -163,7 +163,7 @@ async function writeWebFrame(webPage, pngPath, outPath) {
 }
 
 /** Args: `--sources` (or bare names) limits the run to the frames built from those
- * captures, named the way the capture script names them (`filament`, `03`, or a bare `3`).
+ * captures, named the way the capture script names them (`play`, `02`, or a bare `2`).
  * Order-independent, all optional.
  *
  * A capture rather than a frame *index*, which is what this filter used to take: a capture

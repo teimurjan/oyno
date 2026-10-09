@@ -1,44 +1,8 @@
 {
   "default": [
-    {
-      "slug": "tap",
-      "source": "01",
-      "caption": "Tap the roll, [not the keyboard]"
-    },
-    {
-      "slug": "quote",
-      "source": "02",
-      "caption": "Quote a job [in ten seconds]"
-    },
-    {
-      "slug": "filament",
-      "source": "03",
-      "caption": "Every spool, [to the gram]"
-    },
-    {
-      "slug": "spool",
-      "source": "04",
-      "caption": "NFC, QR or just the label. [No typing]"
-    },
-    {
-      "slug": "share",
-      "source": "05",
-      "caption": "Send the quote [as a PDF]"
-    },
-    {
-      "slug": "month",
-      "source": "06",
-      "caption": "What the month [actually earned]"
-    },
-    {
-      "slug": "orders",
-      "source": "07",
-      "caption": "Fees, [taken out first]"
-    },
-    {
-      "slug": "printer",
-      "source": "08",
-      "caption": "What an hour [really costs]"
-    }
+    { "slug": "home", "source": "01", "caption": "Your family's [little planet]" },
+    { "slug": "play", "source": "02", "caption": "One easy game, [ten minutes]" },
+    { "slug": "kidhours", "source": "03", "caption": "Kid hours [pause your apps]" },
+    { "slug": "done", "source": "04", "caption": "Every round [grows the planet]" }
   ]
 }

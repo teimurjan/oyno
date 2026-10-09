@@ -1,41 +1,19 @@
-Oyno is a pocket ERP for 3D printing businesses. Quote a job at the machine, log what came off the plate, and see what your month actually earned — after filament, power, machine wear, purge waste and the marketplace's cut.
+Your phone eats the evening with your kid. Oyno takes ten minutes of it back.
 
-WHY "THREE TIMES FILAMENT" LOSES YOU MONEY
+KID HOURS
+Pick the apps that pull you in and the hours you want to be present, like weekdays from 4:30 to 7:30 PM. During Kid hours those apps pause on your phone. Phone, Messages and Maps always stay open. Need a break? Press and hold Not now to open your apps for 20 minutes.
 
-That rule prices the plastic and nothing else. A 20-hour ASA print draws roughly three times the power of the same print in PLA. Your printer wears out after a finite number of hours. A multi-colour plate can purge more filament into the waste bin than it puts into the model. Etsy takes its cut off the whole order, shipping included.
+ONE EASY THING
+Tell Oyno how much battery you have left: low, okay or full. It hands you one game for ten minutes, with three simple steps and nothing to set up. Lying-down games for tired evenings, running games for the days you have energy.
 
-Oyno prices all of it, in one screen, in about ten seconds.
+YOUR LITTLE PLANET
+When the timer ends, your kid taps the planet and it blooms. Every round together grows it, and new worlds unlock as you play. A skipped day costs nothing: the planet never wilts.
 
-QUOTE AT THE MACHINE
-• Pick a material, set grams and hours with two steppers — no keyboard
-• Every cost itemised: filament, electricity, depreciation, purge, reprint reserve, platform fee
-• The list price, and what you actually net after the fee
-• Share the breakdown when a customer asks why it isn't ten dollars
+PRIVATE BY DESIGN
+Oyno uses Apple's Screen Time to pause apps. It never sees which apps you use or what you do in them, and it never asks for your child's name, age or photo.
 
-FILAMENT TRACKED TO THE GRAM
-• Every spool with its colour, brand, shelf and grams remaining
-• A warning before a roll is too short to finish the print you're about to start
-• A reorder list you can send to your supplier
-• Weigh-ins recorded as adjustments, so you find out when your slicer estimates run light
+SUBSCRIPTION
+Oyno is a subscription with a monthly and a yearly plan. New subscribers can start with a 3-day free trial. Payment is charged to your Apple ID when the trial ends, and the subscription renews automatically unless you cancel at least 24 hours before the end of the current period. Manage or cancel it in your Apple ID's subscriptions.
 
-LOG A PRINT IN THREE TAPS
-• Pick the job, pick the spool, confirm — the defaults are already right
-• Works with no signal. Everything syncs when you're back in range
-• Failed prints are logged too, because the plastic is gone either way
-
-THE MONTH, HONESTLY
-• Gross and net side by side, so the gap is the first thing you see
-• Where it goes: filament, platform fees, shipping, failed prints, power and wear
-• Net margin, and whether it's moving up or down
-• Orders with the marketplace's cut already taken out
-
-BUILT FOR THE SHOP FLOOR
-No Docker, no self-hosting, no spreadsheet that mutates into a monster. Your shop syncs across your phone, iPad and any device you sign in on.
-
-OYNO PRO
-A 3-day free trial, then monthly or yearly — or a one-time lifetime unlock. One mispriced commission costs more than a year of it.
-
-Subscriptions renew automatically unless cancelled at least 24 hours before the period ends. Manage or cancel in your Apple ID settings.
-
-Terms of use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
-Privacy policy: https://oyno.app/privacy
+Terms of Use: https://www.apple.com/legal/internet-services/itunes/dev/stdeula/
+Privacy Policy: https://oyno.app/privacy
