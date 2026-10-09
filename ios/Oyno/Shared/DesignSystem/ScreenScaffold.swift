@@ -97,6 +97,38 @@ struct Screen<Content: View>: View {
     }
 }
 
+/// The frame every sheet sits in: the system's white card, the drag indicator, a header with
+/// a close button, and the same gutter and spacing as `Screen`.
+struct SheetScreen<Content: View>: View {
+    let title: LocalizedStringResource
+    let subtitle: String
+    @ViewBuilder var content: Content
+
+    @Environment(\.dismiss) private var dismiss
+
+    /// Clears the drag indicator so the title does not sit under it.
+    private static var topInset: CGFloat { Metric.Space.xl + Metric.Space.s }
+
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: Metric.Space.l) {
+                ScreenHeader(title: title, subtitle: subtitle) {
+                    IconButton(symbol: "xmark") { dismiss() }
+                        .accessibilityLabel(Text("Close"))
+                }
+                content
+            }
+            .padding(.horizontal, Metric.gutter)
+            .padding(.top, Self.topInset)
+            .padding(.bottom, Metric.Space.xl)
+            .containerRelativeFrame(.horizontal)
+        }
+        .scrollDismissesKeyboard(.interactively)
+        .presentationDragIndicator(.visible)
+        .keyboardDismissBar()
+    }
+}
+
 /// The system's swipe-from-the-left-edge back gesture, put back.
 ///
 /// UIKit switches its interactive pop gesture off whenever the navigation bar is hidden

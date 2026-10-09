@@ -25,8 +25,8 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 
 /** Which seeded screen the capture run photographs, and what it is filed as.
  *
- * The order is the argument the store listing makes: the planet first, then the easy game,
- * Kid hours, and the planet growing at the end of a round.
+ * The order is the argument the store listing makes: the hours back first, then Kid hours,
+ * a game at each end of the energy scale, and the one tap from home.
  *
  * `nn` is what a caption's `source` points at, which is why adding a screen in the middle
  * renumbers the ones after it *and* every `appstore/captions/<tag>.json`. It lives here
@@ -34,10 +34,12 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
  * what to photograph, once for what to composite — and two copies of it would let a screen
  * exist on one of those lists and not the other. */
 export const SCREENS = [
-  { nn: "01", screen: "home" },
-  { nn: "02", screen: "play" },
-  { nn: "03", screen: "kidhours" },
-  { nn: "04", screen: "done" },
+  // The tally wheel rolls in after the lines, so it needs longer than the default to settle.
+  { nn: "01", screen: "funnel:good_news", delay: 7000 },
+  { nn: "02", screen: "kidhours" },
+  { nn: "03", screen: "play:full" },
+  { nn: "04", screen: "play:low" },
+  { nn: "05", screen: "home" },
 ];
 
 /** A screen named the way a person names it — "play", "02", or "2" — resolved to the

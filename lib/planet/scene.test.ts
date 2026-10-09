@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { BODY_SCALE, DEPTH, LAYERS, MAX_OFFSET, PEEK, SLIDE_WIDTH, layerOffset, slideFocus, tintFilter, WORLDS } from "./scene";
+import { BODY_SCALE, DEPTH, LAYERS, MAX_OFFSET, PEEK, SLIDE_WIDTH, layerOffset, slideFocus, WORLDS } from "./scene";
 
 const stage = { left: 0, top: 0, width: 200, height: 250 };
 
@@ -56,13 +56,15 @@ describe("layout", () => {
 });
 
 describe("worlds", () => {
-  test("the home planet is unlocked from the start and the rest unlock in order", () => {
-    expect(WORLDS[0].unlocksAt).toBe(0);
+  test("Earth is unlocked from the start and the rest unlock in order", () => {
+    expect(WORLDS[0]).toEqual({ id: "earth", unlocksAt: 0 });
     const thresholds = WORLDS.map((world) => world.unlocksAt);
+    expect(new Set(thresholds).size).toBe(WORLDS.length);
     expect(thresholds).toEqual([...thresholds].sort((a, b) => a - b));
   });
 
-  test("the home planet is drawn as painted", () => {
-    expect(tintFilter(WORLDS[0].tint, false)).toBe("none");
+  test("each block of six worlds costs one round more than the last", () => {
+    const at = (id: string) => WORLDS.find((world) => world.id === id)?.unlocksAt;
+    expect([at("meadow"), at("frost"), at("lavender"), at("rose"), at("pebble"), at("home")]).toEqual([3, 18, 22, 42, 47, 150]);
   });
 });

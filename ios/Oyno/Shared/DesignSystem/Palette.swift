@@ -30,6 +30,23 @@ enum Palette {
     static let caution = Color(hex: 0xE0952B)
     /// The second parent's colour in the mark, and the "phone down" stat.
     static let lavender = Color(hex: 0x9C86D8)
+    /// The timer's arc and the stars around a grown planet.
+    static let amber = Color(hex: 0xF2A93B)
+    /// The gain on an ink pill: "+10 min".
+    static let gold = Color(hex: 0xF7C46C)
+
+    /// A pastel tile and the ink that reads on it: a step's number, a schedule's icon, the
+    /// "on" pill.
+    struct Pastel {
+        let fill: Color
+        let ink: Color
+    }
+
+    static let pastelGreen = Pastel(fill: Color(hex: 0xDDEFDF), ink: Color(hex: 0x2F6B3B))
+    static let pastelLavender = Pastel(fill: Color(hex: 0xE9E2F8), ink: Color(hex: 0x5B47A3))
+    static let pastelAmber = Pastel(fill: Color(hex: 0xFCEACB), ink: Color(hex: 0x8A5A12))
+    /// In the order a numbered list wears them.
+    static let pastels = [pastelGreen, pastelLavender, pastelAmber]
 
     /// A card floating on the sky.
     static let glass = Color.white.opacity(0.62)
@@ -43,6 +60,18 @@ enum Palette {
             .init(color: Color(hex: 0xD3E6F8), location: 0.34),
             .init(color: Color(hex: 0xFFF1DB), location: 0.64),
             .init(color: Color(hex: 0xFFF8EF), location: 1),
+        ],
+        startPoint: .top,
+        endPoint: .bottom
+    )
+
+    /// The same sky at golden hour, behind the timer.
+    static let goldenSky = LinearGradient(
+        stops: [
+            .init(color: Color(hex: 0xB7CFEE), location: 0),
+            .init(color: Color(hex: 0xF2DDC8), location: 0.4),
+            .init(color: Color(hex: 0xFFE5C2), location: 0.66),
+            .init(color: Color(hex: 0xFFF4E6), location: 1),
         ],
         startPoint: .top,
         endPoint: .bottom

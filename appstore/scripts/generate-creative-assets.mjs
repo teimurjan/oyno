@@ -50,7 +50,7 @@ const PLACEMENTS = {
  * One search image per keyword family, for custom product pages. */
 const CREATIVES = [
   { name: "header", placement: "header", caption: "home", screen: "home" },
-  { name: "search-play", placement: "search", caption: "play", screen: "play" },
+  { name: "search-play", placement: "search", caption: "play", screen: "play:full" },
   { name: "search-kidhours", placement: "search", caption: "kidhours", screen: "kidhours" },
 ];
 

@@ -66,3 +66,7 @@ appstore/creatives/
 
 # oyno-shorts skill workspace: footage, scene library and rendered shorts. Large binaries, never history.
 shorts/
+
+# Scene art originals, read only by `bun run art:build`, `art:planets` and `creatives:render`.
+# The committed outputs are public/art/, lib/art/manifest.ts and the asset catalog. ~74 MB, never history.
+art/source/

@@ -1,0 +1,185 @@
+{
+  "activities": [
+    {
+      "id": "human-mountain",
+      "energy": "low",
+      "minutes": 10,
+      "tags": [
+        "nothing-to-grab",
+        "lying-down"
+      ]
+    },
+    {
+      "id": "sleepy-lion",
+      "energy": "low",
+      "minutes": 10,
+      "tags": [
+        "nothing-to-grab",
+        "lying-down"
+      ]
+    },
+    {
+      "id": "story-stones",
+      "energy": "low",
+      "minutes": 10,
+      "tags": [
+        "sitting",
+        "quiet"
+      ]
+    },
+    {
+      "id": "sock-hunt",
+      "energy": "okay",
+      "minutes": 10,
+      "tags": [
+        "one-room",
+        "socks"
+      ]
+    },
+    {
+      "id": "mirror",
+      "energy": "okay",
+      "minutes": 10,
+      "tags": [
+        "standing",
+        "nothing-to-grab"
+      ]
+    },
+    {
+      "id": "pillow-island",
+      "energy": "okay",
+      "minutes": 10,
+      "tags": [
+        "cushions",
+        "one-room"
+      ]
+    },
+    {
+      "id": "freeze-dance",
+      "energy": "full",
+      "minutes": 10,
+      "tags": [
+        "music",
+        "standing"
+      ]
+    },
+    {
+      "id": "animal-race",
+      "energy": "full",
+      "minutes": 10,
+      "tags": [
+        "hallway",
+        "nothing-to-grab"
+      ]
+    },
+    {
+      "id": "obstacle",
+      "energy": "full",
+      "minutes": 10,
+      "tags": [
+        "cushions",
+        "chairs"
+      ]
+    }
+  ],
+  "decks": {
+    "en": {
+      "tags": {
+        "nothing-to-grab": "Nothing to grab",
+        "lying-down": "Lying down",
+        "sitting": "Sitting",
+        "quiet": "Quiet",
+        "one-room": "One room",
+        "socks": "Socks",
+        "standing": "Standing",
+        "cushions": "Cushions",
+        "music": "Music",
+        "hallway": "Hallway",
+        "chairs": "Chairs"
+      },
+      "activities": {
+        "human-mountain": {
+          "title": "Human Mountain",
+          "blurb": "Good for climbing, giggles, and a parent who needs to lie down.",
+          "steps": [
+            "Lie on your back on the rug. You're a sleeping mountain.",
+            "Your kid climbs. Narrate the expedition in a whisper.",
+            "At the summit, the mountain rumbles. Repeat."
+          ]
+        },
+        "sleepy-lion": {
+          "title": "Sleepy Lion",
+          "blurb": "Good for sneaking, roaring, and a parent who can play with their eyes shut.",
+          "steps": [
+            "You're a lion asleep on the sofa. Snore loudly.",
+            "Your kid sneaks up. If you hear a sound, open one eye.",
+            "When they touch your paw, wake up roaring. Swap roles."
+          ]
+        },
+        "story-stones": {
+          "title": "Three-Word Story",
+          "blurb": "Good for the sofa, a tired voice, and a dragon that goes wherever you say.",
+          "steps": [
+            "Take turns adding three words to a story.",
+            "Every story starts with \"Once, a tiny dragon…\".",
+            "The last turn has to end it. Then start a new one."
+          ]
+        },
+        "sock-hunt": {
+          "title": "Sock Hunt",
+          "blurb": "Good for one room, a drawer of socks, and a kid who loves \"warmer, colder\".",
+          "steps": [
+            "Hide five rolled-up socks while your kid counts to twenty.",
+            "Say \"warm\" or \"cold\" as they search.",
+            "Swap: now they hide, you hunt."
+          ]
+        },
+        "mirror": {
+          "title": "Mirror, Mirror",
+          "blurb": "Good for silly faces, no mess, and a parent who can stand but not run.",
+          "steps": [
+            "Face each other. Your kid moves, you copy, slowly.",
+            "Make it harder: faces, then sounds, then silly walks.",
+            "Swap who leads every two minutes."
+          ]
+        },
+        "pillow-island": {
+          "title": "Pillow Islands",
+          "blurb": "Good for balance, a floor full of cushions, and a game that packs away in a minute.",
+          "steps": [
+            "Scatter cushions on the floor. The floor is the sea.",
+            "Cross the room without touching the water.",
+            "Every round, take one island away."
+          ]
+        },
+        "freeze-dance": {
+          "title": "Freeze Dance",
+          "blurb": "Good for one song, a wiggly kid, and a parent with one wild dance left in them.",
+          "steps": [
+            "Put on one song. Dance as wildly as you can.",
+            "Whoever is in charge shouts \"Freeze!\" at any moment.",
+            "Anyone who wobbles is in charge next."
+          ]
+        },
+        "animal-race": {
+          "title": "Animal Race",
+          "blurb": "Good for a hallway, loud animals, and a kid who has to run before bed.",
+          "steps": [
+            "Race down the hallway as a crab.",
+            "Back as a frog. Then a bear. Then a snake.",
+            "The winner picks the next animal."
+          ]
+        },
+        "obstacle": {
+          "title": "Living-Room Obstacle Course",
+          "blurb": "Good for builders, a slow count out loud, and a room you don't mind rearranging.",
+          "steps": [
+            "Build a course: under a chair, over a cushion, around the table.",
+            "Time your kid with a slow count out loud.",
+            "They change one obstacle, then time you."
+          ]
+        }
+      }
+    }
+  }
+}

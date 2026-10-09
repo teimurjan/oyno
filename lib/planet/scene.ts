@@ -88,46 +88,32 @@ export function slideFocus(distance: number): number {
   return 1 - Math.min(Math.abs(distance), 1);
 }
 
-/** A colour shift that turns the one planet painting into another world. */
-export interface Tint {
-  hue: number;
-  saturation: number;
-  brightness: number;
-  grayscale: number;
-}
-
-export const WORLD_IDS = ["home", "meadow", "snow", "ocean", "moon", "dune"] as const;
+export const WORLD_IDS = [
+  "earth", "meadow", "ember", "blossom", "lagoon", "dune", "frost", "lavender", "moss", "honey", "cloud",
+  "coral", "rose", "pebble", "orchard", "aurora", "clay", "mint", "twilight", "poppy", "pearl", "canyon",
+  "rain", "cedar", "sunlit", "berry", "glacier", "marigold", "dream", "hearth", "home",
+] as const;
 export type WorldId = (typeof WORLD_IDS)[number];
 
-/** A world's words live in each surface's copy deck, keyed by `id`. */
+/** A world's words live in each surface's copy deck, keyed by `id`. Its painting is `ART.planets[id]`. */
 export interface World {
   id: WorldId;
   /** The bloom level that unlocks it. A round together is one bloom. */
   unlocksAt: number;
-  tint: Tint;
 }
 
-const NONE: Tint = { hue: 0, saturation: 1, brightness: 1, grayscale: 0 };
+/**
+ * Rounds from the world before to the `index`th: 3 for the first six, then one more per block
+ * of six, so Home, the thirtieth, opens at bloom 150.
+ */
+const roundsToReach = (index: number): number => 3 + Math.floor((index - 1) / 6);
 
-export const WORLDS: readonly World[] = [
-  { id: "home", unlocksAt: 0, tint: NONE },
-  { id: "meadow", unlocksAt: 6, tint: { hue: -18, saturation: 1.35, brightness: 1.04, grayscale: 0 } },
-  { id: "snow", unlocksAt: 14, tint: { hue: 0, saturation: 0.5, brightness: 1.2, grayscale: 0.7 } },
-  { id: "ocean", unlocksAt: 24, tint: { hue: 28, saturation: 1.45, brightness: 1, grayscale: 0 } },
-  { id: "moon", unlocksAt: 36, tint: { hue: 0, saturation: 1, brightness: 0.92, grayscale: 1 } },
-  { id: "dune", unlocksAt: 50, tint: { hue: -32, saturation: 1.7, brightness: 1.06, grayscale: 0 } },
-];
+const unlocksAt = (index: number): number =>
+  Array.from({ length: index }, (_, step) => roundsToReach(step + 1)).reduce((sum, rounds) => sum + rounds, 0);
 
-/** The tint as a CSS `filter`. A locked world is also dimmed, so it reads as not yet yours. */
-export function tintFilter(tint: Tint, locked: boolean): string {
-  const parts = [
-    tint.hue && `hue-rotate(${tint.hue}deg)`,
-    tint.saturation !== 1 && `saturate(${tint.saturation})`,
-    tint.brightness !== 1 && `brightness(${tint.brightness})`,
-    tint.grayscale && `grayscale(${tint.grayscale})`,
-    locked && "saturate(0.55)",
-  ].filter(Boolean);
-  return parts.length ? parts.join(" ") : "none";
-}
+export const WORLDS: readonly World[] = WORLD_IDS.map((id, index) => ({ id, unlocksAt: unlocksAt(index) }));
+
+/** A locked world is dimmed, so it reads as not yet yours. */
+export const lockedStyle = (locked: boolean) => (locked ? { filter: "saturate(0.55)", opacity: 0.7 } : {});
 
 export const isUnlocked = (world: World, bloom: number): boolean => bloom >= world.unlocksAt;

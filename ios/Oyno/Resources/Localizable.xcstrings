@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ at %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ at %2$@"
+          }
+        }
+      }
+    },
     "%@ battery? Try %@" : {
       "localizations" : {
         "en" : {
@@ -11,12 +21,6 @@
         }
       }
     },
-    "%lld apps and categories" : {
-
-    },
-    "%lld apps and categories picked" : {
-
-    },
     "%lld evenings" : {
 
     },
@@ -24,6 +28,12 @@
 
     },
     "%lld min" : {
+
+    },
+    "%lld min together today" : {
+
+    },
+    "%lld minutes" : {
 
     },
     "%lld minutes %lld seconds left" : {
@@ -45,7 +55,7 @@
     "%lld+ hours" : {
 
     },
-    "+%lld minutes together" : {
+    "+%lld min" : {
 
     },
     "1 more round" : {
@@ -66,16 +76,22 @@
     "A preview of the Screen Time permission sheet, with an arrow on Continue" : {
 
     },
+    "Add" : {
+
+    },
+    "Add one with New, and pick the apps to pause below." : {
+
+    },
+    "After work" : {
+
+    },
     "Allow Screen Time" : {
 
     },
     "Almost there. [Save your plan] to start." : {
 
     },
-    "Animal Race" : {
-
-    },
-    "Anyone who wobbles is in charge next." : {
+    "Always open" : {
 
     },
     "Apple couldn't complete that. Check that an Apple Account is signed in under iOS Settings, then try again." : {
@@ -90,25 +106,34 @@
     "Apple returned a sign-in this app couldn't read. Try again, or use Google or email." : {
 
     },
-    "At the summit, the mountain rumbles. Repeat." : {
+    "Apps open until %@" : {
+
+    },
+    "Aurora" : {
 
     },
     "Back" : {
 
     },
-    "Back as a frog. Then a bear. Then a snake." : {
+    "Based on your answer, with Kid hours on every evening." : {
 
     },
-    "Based on your answer, with Kid hours on every evening." : {
+    "Bedtime" : {
+
+    },
+    "Berry" : {
 
     },
     "Bloom level %lld" : {
 
     },
-    "Build a course: under a chair, over a cushion, around the table." : {
+    "Blossom" : {
 
     },
-    "Chairs" : {
+    "Canyon" : {
+
+    },
+    "Cedar" : {
 
     },
     "Checking your subscription on this account." : {
@@ -117,10 +142,19 @@
     "Choose apps" : {
 
     },
+    "Clay" : {
+
+    },
+    "Close" : {
+
+    },
     "Close worlds" : {
 
     },
     "Closer…" : {
+
+    },
+    "Cloud" : {
 
     },
     "Continue" : {
@@ -129,10 +163,13 @@
     "Continue with Facebook" : {
 
     },
-    "Cross the room without touching the water." : {
+    "Coral" : {
 
     },
-    "Cushions" : {
+    "Daily" : {
+
+    },
+    "Days" : {
 
     },
     "Delete account" : {
@@ -141,10 +178,10 @@
     "Delete everything" : {
 
     },
-    "Delete your account?" : {
+    "Delete schedule" : {
 
     },
-    "Desert Dune" : {
+    "Delete your account?" : {
 
     },
     "Different idea" : {
@@ -159,7 +196,25 @@
     "Don’t Allow" : {
 
     },
+    "Dream" : {
+
+    },
+    "Dune" : {
+
+    },
+    "Earth" : {
+
+    },
+    "Edit" : {
+
+    },
+    "Edit schedule" : {
+
+    },
     "Email" : {
+
+    },
+    "Ember" : {
 
     },
     "Ends" : {
@@ -177,13 +232,13 @@
     "Every round together is one bloom." : {
 
     },
-    "Every round, take one island away." : {
+    "Every world is yours" : {
 
     },
-    "Every story starts with \"Once, a tiny dragon…\"." : {
+    "Face down is fine. We'll buzz at the end." : {
 
     },
-    "Face each other. Your kid moves, you copy, slowly." : {
+    "Face down is fine. We'll chime at the end." : {
 
     },
     "Facebook couldn't complete that. Try again, or use another way in." : {
@@ -192,10 +247,13 @@
     "Finding your plan" : {
 
     },
+    "Finish for today" : {
+
+    },
     "Fix this" : {
 
     },
-    "Freeze Dance" : {
+    "Frost" : {
 
     },
     "Full" : {
@@ -207,10 +265,10 @@
     "Get my evenings back" : {
 
     },
-    "Google didn't return an identity token." : {
+    "Glacier" : {
 
     },
-    "Hallway" : {
+    "Google didn't return an identity token." : {
 
     },
     "Hand the phone to your kid for this part." : {
@@ -219,31 +277,34 @@
     "Hardly ever" : {
 
     },
-    "Hide five rolled-up socks while your kid counts to twenty." : {
+    "Hearth" : {
 
     },
     "High five" : {
 
     },
-    "Hold for not now (%lld min)" : {
+    "Hold 2 sec" : {
+
+    },
+    "Hold for not now" : {
 
     },
     "Home" : {
 
     },
-    "Home Planet" : {
+    "Honey" : {
 
     },
     "How often do you pick it up [in an hour] with them?" : {
-
-    },
-    "Human Mountain" : {
 
     },
     "I lose count" : {
 
     },
     "Keep playing" : {
+
+    },
+    "Kept, but not running." : {
 
     },
     "Kid hours" : {
@@ -255,10 +316,19 @@
     "Kid hours pause the apps you pick, every evening, on the schedule you set." : {
 
     },
-    "Kid hours pick back up on their own." : {
+    "Kid hours pick back up at %@" : {
+
+    },
+    "Kid hours · %@" : {
 
     },
     "Kid hours · until %@" : {
+
+    },
+    "Lagoon" : {
+
+    },
+    "Lavender" : {
 
     },
     "Let Oyno pause apps" : {
@@ -270,22 +340,13 @@
     "Let's seal it with a high five" : {
 
     },
-    "Lie on your back on the rug. You're a sleeping mountain." : {
-
-    },
-    "Living-Room Obstacle Course" : {
-
-    },
     "Low" : {
 
     },
-    "Lying down" : {
-
-    },
-    "Make it harder: faces, then sounds, then silly walks." : {
-
-    },
     "Manage subscription" : {
+
+    },
+    "Marigold" : {
 
     },
     "Meadow" : {
@@ -294,16 +355,25 @@
     "Meaning that this year you're on track to lose" : {
 
     },
+    "Mint" : {
+
+    },
     "Minutes" : {
 
     },
-    "Mirror, Mirror" : {
+    "More" : {
 
     },
-    "Moon Camp" : {
+    "Moss" : {
 
     },
-    "Music" : {
+    "Name" : {
+
+    },
+    "New" : {
+
+    },
+    "New schedule" : {
 
     },
     "New to Oyno? Any of these creates your account." : {
@@ -312,22 +382,16 @@
     "No payment due now" : {
 
     },
+    "No schedule yet" : {
+
+    },
     "Not now" : {
-
-    },
-    "Nothing picked yet" : {
-
-    },
-    "Nothing to grab" : {
 
     },
     "Now" : {
 
     },
     "OK" : {
-
-    },
-    "Ocean Isle" : {
 
     },
     "Off" : {
@@ -342,6 +406,12 @@
     "On now · ends %@" : {
 
     },
+    "On now · ends in %@" : {
+
+    },
+    "On the days above." : {
+
+    },
     "Once or twice" : {
 
     },
@@ -351,10 +421,19 @@
     "One easy thing" : {
 
     },
-    "One room" : {
+    "Only during Kid hours" : {
+
+    },
+    "Open until %@" : {
 
     },
     "Open your worlds" : {
+
+    },
+    "Opens your apps for %lld minutes" : {
+
+    },
+    "Orchard" : {
 
     },
     "Oyno" : {
@@ -366,22 +445,31 @@
     "Password" : {
 
     },
-    "Pause apps during Kid hours" : {
+    "Pause" : {
 
     },
     "Paused during Kid hours" : {
 
     },
-    "Phone, Messages and Maps are never paused." : {
+    "Pauses apps" : {
 
     },
-    "Pillow Islands" : {
+    "Pearl" : {
+
+    },
+    "Pebble" : {
+
+    },
+    "Pick at least one day." : {
 
     },
     "Plans aren't available right now. Check your connection and try again." : {
 
     },
     "Play" : {
+
+    },
+    "Poppy" : {
 
     },
     "Profile" : {
@@ -393,13 +481,7 @@
     "Providing “Oyno” access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps & websites." : {
 
     },
-    "Put on one song. Dance as wildly as you can." : {
-
-    },
-    "Quiet" : {
-
-    },
-    "Race down the hallway as a crab." : {
+    "Rain" : {
 
     },
     "Restore" : {
@@ -408,19 +490,22 @@
     "Restore purchases" : {
 
     },
+    "Resume" : {
+
+    },
+    "Rose" : {
+
+    },
     "Rounds" : {
+
+    },
+    "Save" : {
 
     },
     "Save your family's planet" : {
 
     },
-    "Say \"warm\" or \"cold\" as they search." : {
-
-    },
-    "Scatter cushions on the floor. The floor is the sea." : {
-
-    },
-    "Schedule" : {
+    "Schedules" : {
 
     },
     "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them." : {
@@ -433,6 +518,9 @@
 
     },
     "Send me a code" : {
+
+    },
+    "Share with a co-parent" : {
 
     },
     "Show me how" : {
@@ -462,25 +550,10 @@
     "Signing you in" : {
 
     },
-    "Sitting" : {
-
-    },
-    "Sleepy Lion" : {
-
-    },
-    "Snow Globe" : {
-
-    },
-    "Sock Hunt" : {
-
-    },
-    "Socks" : {
-
-    },
     "Some not-so-good news, and some good news." : {
 
     },
-    "Standing" : {
+    "Soon" : {
 
     },
     "Start %lld min" : {
@@ -530,22 +603,16 @@
         }
       }
     },
-    "Swap who leads every two minutes." : {
-
-    },
-    "Swap: now they hide, you hunt." : {
+    "Sunlit" : {
 
     },
     "Syncing needs an active subscription. Everything you've entered is still on this device." : {
 
     },
-    "Take turns adding three words to a story." : {
-
-    },
     "Tap the planet" : {
 
     },
-    "Tap the planet together" : {
+    "Tap the planet!" : {
 
     },
     "Tap to continue" : {
@@ -566,13 +633,10 @@
     "The bad news is that your phone takes about [%lld minutes] of every evening with your kid." : {
 
     },
-    "The end has to be after the start." : {
+    "The end has to be at least %lld minutes after the start." : {
 
     },
     "The good news is that Oyno can give you back" : {
-
-    },
-    "The last turn has to end it. Then start a new one." : {
 
     },
     "The server couldn't read that request." : {
@@ -587,19 +651,16 @@
     "The subscription page didn't open. Try again, or use the link in your receipt email." : {
 
     },
-    "The winner picks the next animal." : {
-
-    },
-    "They change one obstacle, then time you." : {
-
-    },
-    "Three-Word Story" : {
-
-    },
-    "Time your kid with a slow count out loud." : {
-
-    },
     "Together today" : {
+
+    },
+    "Turn the chime off" : {
+
+    },
+    "Turn the chime on" : {
+
+    },
+    "Twilight" : {
 
     },
     "Unlock my apps" : {
@@ -623,16 +684,13 @@
     "We're done" : {
 
     },
-    "When they touch your paw, wake up roaring. Swap roles." : {
+    "Weekdays" : {
 
     },
-    "Whoever is in charge shouts \"Freeze!\" at any moment." : {
+    "Weekends" : {
 
     },
     "World" : {
-
-    },
-    "You're a lion asleep on the sofa. Snore loudly." : {
 
     },
     "Your account is still here — that didn't go through. Try again." : {
@@ -644,13 +702,10 @@
     "Your apps, paused" : {
 
     },
+    "Your battery right now" : {
+
+    },
     "Your evenings are like this too." : {
-
-    },
-    "Your kid climbs. Narrate the expedition in a whisper." : {
-
-    },
-    "Your kid sneaks up. If you hear a sound, open one eye." : {
 
     },
     "Your plan and your family's planet are tied to your account." : {
@@ -674,10 +729,19 @@
     "a year with your kid, phone down, ten minutes at a time." : {
 
     },
+    "at %@" : {
+
+    },
     "left of %@" : {
 
     },
+    "min" : {
+
+    },
     "to a screen, with your kid right there. Yep, you read this right." : {
+
+    },
+    "tomorrow at %@" : {
 
     },
     "“Oyno” Would Like to Access Screen Time" : {

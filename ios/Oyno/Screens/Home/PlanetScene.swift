@@ -54,7 +54,7 @@ extension View {
     }
 }
 
-/// The planet, tinted to `world`, and the family standing on it, at their places on a stage
+/// `world`'s planet and the family standing on it, at their places on a stage
 /// `width` wide. The scene draws it at full size and the worlds gallery at the open scale.
 struct PlanetBody: View {
     let world: World
@@ -65,15 +65,11 @@ struct PlanetBody: View {
     var familyShift: CGSize = .zero
 
     var body: some View {
-        let tint = world.tint
         ZStack(alignment: .topLeading) {
-            Image("Planet")
+            Image(world.imageName)
                 .resizable()
                 .scaledToFit()
-                .hueRotation(.degrees(tint.hue))
-                .saturation(tint.saturation * (locked ? 0.55 : 1))
-                .brightness((tint.brightness - 1) * 0.6)
-                .grayscale(tint.grayscale)
+                .saturation(locked ? 0.55 : 1)
                 .opacity(locked ? 0.7 : 1)
                 .place(PlanetLayout.planet, width: width)
                 .offset(planetShift)
@@ -100,13 +96,13 @@ struct PlanetBody: View {
 /// fades its neighbours in at the edges, and the strip scrolls. Tapping the centred world
 /// calls `onClose`, and closing scrolls back to the current world as it grows.
 struct PlanetScene: View {
-    var grown = false
-    var open = false
+    let grown: Bool
+    let open: Bool
     /// The bloom level whose worlds the strip holds.
-    var bloom = 0
-    var accessibilityLabel: String = String(interface: "Open your worlds")
+    let bloom: Int
+    let accessibilityLabel: String
     let onTap: () -> Void
-    var onClose: () -> Void = {}
+    let onClose: () -> Void
 
     @GestureState private var press: CGPoint?
     @State private var floating = false
@@ -114,6 +110,24 @@ struct PlanetScene: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var current: World { Bloom.currentWorld(at: bloom) }
+
+    init(
+        grown: Bool = false,
+        open: Bool = false,
+        bloom: Int = 0,
+        accessibilityLabel: String = String(interface: "Open your worlds"),
+        onTap: @escaping () -> Void,
+        onClose: @escaping () -> Void = {}
+    ) {
+        self.grown = grown
+        self.open = open
+        self.bloom = bloom
+        self.accessibilityLabel = accessibilityLabel
+        self.onTap = onTap
+        self.onClose = onClose
+        // Seeded, not set on appear: set before the strip's first layout, it stays on the first world.
+        _position = State(initialValue: Bloom.currentWorld(at: bloom).id)
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -190,7 +204,6 @@ struct PlanetScene: View {
                 .allowsHitTesting(false)
         }
         .onAppear {
-            position = current.id
             guard !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 2.75).repeatForever(autoreverses: true)) { floating = true }
         }
@@ -198,6 +211,8 @@ struct PlanetScene: View {
             guard !isOpen else { return }
             withAnimation(.snappy) { position = current.id }
         }
+        // Home stays alive under the Play tab, so a round there can move the family to a new world.
+        .onChange(of: current) { _, world in position = world.id }
         // A tick per world snapped to while browsing.
         .onChange(of: position) { previous, id in
             if open, previous != nil, id != nil { Haptics.tap() }

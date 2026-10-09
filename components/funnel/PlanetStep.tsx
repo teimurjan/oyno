@@ -3,7 +3,7 @@ import { ART } from "@/lib/art/manifest";
 import { fallbackSrc, srcSet } from "@/lib/art/srcSet";
 import { prefersReducedMotion } from "@/lib/motion";
 import { bindPress, bindStrip, scrollToSlide, setOffset, setPhase } from "@/lib/planet/dom";
-import { layerBox, STRIP_STYLE, tintFilter, WORLDS } from "@/lib/planet/scene";
+import { layerBox, lockedStyle, STRIP_STYLE, WORLDS } from "@/lib/planet/scene";
 import { fill, useLocale } from "./locale";
 import { StatementStep } from "./StatementStep";
 import type { FunnelAnswers, FunnelStep } from "./steps";
@@ -113,12 +113,13 @@ export function PlanetStep({ step, answers }: { step: FunnelStep; answers: Funne
                       <div className="planet-body">
                         <img
                           className="planet-layer planet-planet"
-                          src={fallbackSrc(ART.planet)}
-                          srcset={srcSet(ART.planet)}
+                          src={fallbackSrc(ART.planets[world.id])}
+                          srcset={srcSet(ART.planets[world.id])}
                           sizes={PLANET_SIZES}
-                          style={{ ...layerBox("planet"), filter: tintFilter(world.tint, locked), opacity: locked ? 0.7 : 1 }}
+                          style={{ ...layerBox("planet"), ...lockedStyle(locked) }}
                           alt=""
                           decoding="async"
+                          loading={atRest ? undefined : "lazy"}
                         />
                         {!locked && (
                           <img

@@ -18,9 +18,7 @@ struct ProfileScreen: View {
     @State private var paywall: PaywallContext?
 
     var body: some View {
-        Screen {
-            ScreenHeader(title: "Profile", subtitle: auth.currentUser?.email ?? "", onBack: { dismiss() })
-
+        SheetScreen(title: "Profile", subtitle: auth.currentUser?.email ?? "") {
             RowCard(raised: true) {
                 subscriptionRow
                 RowDivider(inset: 0)

@@ -1,189 +1,221 @@
 import FamilyControls
 import SwiftUI
 
-/// D7 on the canvas: when Kid hours run, which apps pause, and the hold-to-skip "Not now".
-/// Turning Kid hours on is gated like any other write; looking at them is free.
+/// D7 on the canvas: the schedules Kid hours run on, what pauses, what stays open, and the
+/// held "Not now". Turning a schedule on is gated like any other write; looking is free.
 struct KidHoursScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(OynoStore.self) private var oyno
-    @State private var picking = false
-    @State private var selection = FamilyActivitySelection()
+    @State private var editing: ScheduleDraft?
+    @State private var picking: Picking?
+    @State private var pickerDraft = FamilyActivitySelection()
+
+    /// Which list the one Screen Time picker is open for.
+    private enum Picking { case paused, alwaysOpen }
 
     var body: some View {
         Screen {
-            ScreenHeader(title: "Kid hours", subtitle: status)
+            ScreenHeader(title: "Kid hours", subtitle: status) {
+                if kidHours.isAuthorized { NewButton { editing = .new } }
+            }
 
             if !kidHours.isAuthorized {
-                Card(raised: true) {
-                    VStack(alignment: .leading, spacing: Metric.Space.s) {
-                        Text("Let Oyno pause apps").oynoRowTitle()
-                        Text("Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them.")
-                            .oynoCaption()
-                            .fixedSize(horizontal: false, vertical: true)
-                        PrimaryButton(title: "Allow Screen Time") {
-                            Task { await kidHours.requestAuthorization() }
-                        }
-                        .padding(.top, Metric.Space.s)
-                    }
-                }
+                permission
             } else {
-                toggle
-                schedule
+                featured
+                schedules
                 paused
-                if kidHours.isOnNow { NotNowButton { kidHours.takeBreak() } }
-            }
-
-            Text("Phone, Messages and Maps are never paused.")
-                .oynoCaption()
-        }
-        .familyActivityPicker(isPresented: $picking, selection: $selection)
-        .onChange(of: picking) { _, open in
-            if open { selection = kidHours.settings.selection } else { kidHours.update(selection: selection) }
-        }
-    }
-
-    private var status: String {
-        let schedule = kidHours.settings.schedule
-        if !kidHours.settings.isEnabled { return String(interface: "Off") }
-        if kidHours.isOnNow { return String(interface: "On now · ends \(Format.timeOfDay(minutes: schedule.end))") }
-        return String(interface: "Starts \(Format.timeOfDay(minutes: schedule.start))")
-    }
-
-    private var toggle: some View {
-        Card(raised: true) {
-            Toggle(isOn: Binding(
-                get: { kidHours.settings.isEnabled },
-                set: { enabled in
-                    // Turning on is the paid part; turning off never is.
-                    guard !enabled || oyno.requireEntitlement() else { return }
-                    kidHours.setEnabled(enabled)
-                }
-            )) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Pause apps during Kid hours").oynoRowTitle()
-                    Text("\(kidHours.settings.pausedCount) apps and categories picked").oynoCaption()
+                alwaysOpen
+                RowCard {
+                    HoldRow(title: "Not now", hint: notNowHint, enabled: kidHours.isOnNow) { kidHours.takeBreak() }
+                    RowDivider(inset: 0)
+                    soonRow
                 }
             }
-            .tint(Palette.good)
         }
-    }
-
-    private var schedule: some View {
-        let current = kidHours.settings.schedule
-        return Card {
-            VStack(alignment: .leading, spacing: Metric.Space.m) {
-                Text("Schedule").oynoEyebrow()
-                DatePicker("Starts", selection: timeBinding(\.start), displayedComponents: .hourAndMinute)
-                    .font(Typeface.ui(15, .semibold, relativeTo: .body))
-                DatePicker("Ends", selection: timeBinding(\.end), displayedComponents: .hourAndMinute)
-                    .font(Typeface.ui(15, .semibold, relativeTo: .body))
-                HStack(spacing: 6) {
-                    ForEach(Self.weekdayOrder, id: \.self) { weekday in
-                        let on = current.weekdays.contains(weekday)
-                        Button {
-                            Haptics.tap()
-                            var next = current
-                            if on { next.weekdays.remove(weekday) } else { next.weekdays.insert(weekday) }
-                            kidHours.update(schedule: next)
-                        } label: {
-                            Text(verbatim: Self.symbol(weekday))
-                                .font(Typeface.ui(13, .bold, relativeTo: .caption))
-                                .foregroundStyle(on ? Palette.onAccent : Palette.ink)
-                                .frame(width: 38, height: 38)
-                                .background(on ? Palette.accent : Palette.surface.opacity(0.7), in: .circle)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(Text(verbatim: Calendar.current.weekdaySymbols[weekday - 1]))
-                        .accessibilityAddTraits(on ? .isSelected : [])
-                    }
-                }
-                if current.start >= current.end {
-                    Text("The end has to be after the start.")
-                        .oynoCaption(Palette.alert)
-                }
+        .sheet(item: $editing) { draft in
+            ScheduleSheet(schedule: draft.schedule, isNew: draft.isNew, onSave: save, onDelete: draft.isNew ? nil : {
+                kidHours.remove(draft.schedule)
+            })
+        }
+        .familyActivityPicker(isPresented: Binding(get: { picking != nil }, set: { if !$0 { picking = nil } }), selection: $pickerDraft)
+        .onChange(of: picking) { closed, opened in
+            switch (closed, opened) {
+            case (_, .paused): pickerDraft = kidHours.settings.selection
+            case (_, .alwaysOpen): pickerDraft = kidHours.settings.alwaysOpen
+            case (.paused, nil): kidHours.update(selection: pickerDraft)
+            case (.alwaysOpen, nil): kidHours.update(alwaysOpen: pickerDraft)
+            case (nil, nil): break
             }
         }
     }
 
-    private var paused: some View {
-        Card {
-            VStack(alignment: .leading, spacing: Metric.Space.s) {
-                Text("Paused during Kid hours").oynoEyebrow()
-                Text(kidHours.settings.pausedCount == 0
-                     ? String(interface: "Nothing picked yet")
-                     : String(interface: "\(kidHours.settings.pausedCount) apps and categories"))
-                    .oynoRowTitle()
-                Button {
-                    Haptics.tap()
-                    picking = true
-                } label: {
-                    Text("Choose apps")
-                        .font(Typeface.ui(15, .bold, relativeTo: .subheadline))
-                        .foregroundStyle(Palette.ink)
-                        .frame(height: Metric.tapTarget)
-                }
-                .buttonStyle(.plain)
-            }
-        }
+    /// A schedule saved on is the paid part. Refused, it is kept off rather than lost.
+    private func save(_ schedule: KidHoursSchedule) {
+        var kept = schedule
+        kept.isEnabled = schedule.isEnabled && oyno.requireEntitlement()
+        kidHours.save(kept)
     }
 
-    /// Minutes after midnight, as a `Date` today, for the time pickers.
-    private func timeBinding(_ keyPath: WritableKeyPath<KidHoursSchedule, Int>) -> Binding<Date> {
+    private func enabledBinding(_ schedule: KidHoursSchedule) -> Binding<Bool> {
         Binding(
-            get: {
-                let minutes = kidHours.settings.schedule[keyPath: keyPath]
-                return Calendar.current.date(bySettingHour: minutes / 60, minute: minutes % 60, second: 0, of: .now) ?? .now
-            },
-            set: { date in
-                let parts = Calendar.current.dateComponents([.hour, .minute], from: date)
-                var next = kidHours.settings.schedule
-                next[keyPath: keyPath] = (parts.hour ?? 0) * 60 + (parts.minute ?? 0)
-                kidHours.update(schedule: next)
+            get: { schedule.isEnabled },
+            set: { enabled in
+                // Turning on is the paid part; turning off never is.
+                guard !enabled || oyno.requireEntitlement() else { return }
+                kidHours.setEnabled(enabled, for: schedule)
             }
         )
     }
 
-    /// Monday first, the way a week of evenings reads.
-    private static let weekdayOrder = [2, 3, 4, 5, 6, 7, 1]
+    // MARK: Words
 
-    private static func symbol(_ weekday: Int) -> String {
-        Calendar.current.veryShortWeekdaySymbols[weekday - 1]
+    private var status: String {
+        if let current = kidHours.current {
+            return String(interface: "On now · ends \(Format.timeOfDay(minutes: current.end))")
+        }
+        if let ends = kidHours.breakEndsAt {
+            return String(interface: "Apps open until \(Format.timeOfDay(date: ends))")
+        }
+        guard let schedule = kidHours.featured else { return String(interface: "No schedule yet") }
+        guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
+        return String(interface: "Starts \(Format.dayAndTime(next))")
+    }
+
+    private func pill(_ schedule: KidHoursSchedule) -> String {
+        if schedule.id == kidHours.current?.id, let ends = schedule.end(on: .now) {
+            return String(interface: "On now · ends in \(Format.remaining(until: ends))")
+        }
+        if let ends = kidHours.breakEndsAt, schedule.contains(.now) {
+            return String(interface: "Apps open until \(Format.timeOfDay(date: ends))")
+        }
+        guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
+        return String(interface: "Starts \(Format.dayAndTime(next))")
+    }
+
+    private var notNowHint: String {
+        if let ends = kidHours.breakEndsAt { return String(interface: "Open until \(Format.timeOfDay(date: ends))") }
+        return kidHours.isOnNow ? String(interface: "Hold 2 sec") : String(interface: "Only during Kid hours")
+    }
+
+    private static func summary(_ schedule: KidHoursSchedule) -> String {
+        "\(Format.weekdays(schedule.weekdays)) · \(Format.timeRange(start: schedule.start, end: schedule.end))"
+    }
+
+    // MARK: Blocks
+
+    private var permission: some View {
+        Card(raised: true) {
+            VStack(alignment: .leading, spacing: Metric.Space.s) {
+                Text("Let Oyno pause apps").oynoRowTitle()
+                Text("Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them.")
+                    .oynoCaption()
+                    .fixedSize(horizontal: false, vertical: true)
+                PrimaryButton(title: "Allow Screen Time") {
+                    Task { await kidHours.requestAuthorization() }
+                }
+                .padding(.top, Metric.Space.s)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var featured: some View {
+        if let schedule = kidHours.featured {
+            Card(raised: true) {
+                HStack(spacing: Metric.Space.m) {
+                    Button {
+                        Haptics.tap()
+                        editing = .edit(schedule)
+                    } label: {
+                        VStack(alignment: .leading, spacing: 4) {
+                            StatusPill(text: pill(schedule), on: schedule.id == kidHours.current?.id)
+                            Text(verbatim: schedule.name)
+                                .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
+                                .tracking(-0.4)
+                                .foregroundStyle(Palette.ink)
+                            Text(verbatim: Self.summary(schedule)).oynoCaption()
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .contentShape(.rect)
+                    }
+                    .buttonStyle(.plain)
+                    Toggle(isOn: enabledBinding(schedule)) { EmptyView() }
+                        .toggleStyle(.pill)
+                        .fixedSize()
+                        .accessibilityLabel(Text(verbatim: schedule.name))
+                }
+            }
+        } else {
+            Card(raised: true) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("No schedule yet").oynoRowTitle()
+                    Text("Add one with New, and pick the apps to pause below.").oynoCaption()
+                }
+            }
+        }
+    }
+
+    private var schedules: some View {
+        VStack(alignment: .leading, spacing: Metric.Space.s) {
+            SectionHeader(title: "Schedules") {
+                Text(verbatim: "\(kidHours.settings.schedules.count)").oynoCaption()
+            }
+            ScrollView(.horizontal) {
+                HStack(spacing: 10) {
+                    ForEach(kidHours.others) { schedule in
+                        ScheduleCard(schedule: schedule, summary: Self.summary(schedule)) { editing = .edit(schedule) }
+                    }
+                    AddCard(width: 110) { editing = .new }
+                }
+            }
+            .scrollIndicators(.hidden)
+        }
+    }
+
+    private var paused: some View {
+        VStack(alignment: .leading, spacing: Metric.Space.s) {
+            SectionHeader(title: "Paused during Kid hours") {
+                EditLink { picking = .paused }
+            }
+            TokenGrid(items: kidHours.paused) { picking = .paused }
+        }
+    }
+
+    /// Empty until the parent picks something: iOS keeps Phone and Messages reachable anyway.
+    private var alwaysOpen: some View {
+        VStack(alignment: .leading, spacing: Metric.Space.s) {
+            SectionHeader(title: "Always open") {
+                EditLink { picking = .alwaysOpen }
+            }
+            TokenGrid(items: kidHours.alwaysOpen) { picking = .alwaysOpen }
+        }
+    }
+
+    private var soonRow: some View {
+        HStack {
+            Text("Share with a co-parent")
+                .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                .foregroundStyle(Palette.muted)
+            Spacer()
+            Text("Soon").oynoCaption()
+        }
+        .padding(.horizontal, Metric.cardPadding)
+        .frame(height: 52)
+        .accessibilityElement(children: .combine)
     }
 }
 
-/// "Not now", held for a second and a half: a tap is too easy to make without meaning it.
-private struct NotNowButton: View {
-    let action: () -> Void
+/// A schedule on its way into the sheet. New ones start on, every day, after dinner.
+private struct ScheduleDraft: Identifiable {
+    let schedule: KidHoursSchedule
+    let isNew: Bool
 
-    @State private var progress: CGFloat = 0
+    var id: UUID { schedule.id }
 
-    var body: some View {
-        HStack(spacing: 9) {
-            ZStack {
-                Circle().stroke(Palette.ink.opacity(0.14), lineWidth: 2.2)
-                Circle()
-                    .trim(from: 0, to: progress)
-                    .stroke(Palette.ink, style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
-                    .rotationEffect(.degrees(-90))
-            }
-            .frame(width: 24, height: 24)
-            Text("Hold for not now (\(KidHoursStore.breakMinutes) min)")
-                .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
-                .foregroundStyle(Palette.muted)
-        }
-        .frame(height: Metric.tapTarget)
-        .contentShape(.rect)
-        .onLongPressGesture(minimumDuration: 1.5) {
-            Haptics.success()
-            progress = 0
-            action()
-        } onPressingChanged: { pressing in
-            withAnimation(pressing ? .linear(duration: 1.5) : .easeOut(duration: 0.2)) {
-                progress = pressing ? 1 : 0
-            }
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
-        .accessibilityAction { action() }
+    static var new: ScheduleDraft {
+        ScheduleDraft(schedule: KidHoursSchedule(name: "", start: 19 * 60, end: 20 * 60, weekdays: Set(1...7)), isNew: true)
     }
+
+    static func edit(_ schedule: KidHoursSchedule) -> ScheduleDraft { ScheduleDraft(schedule: schedule, isNew: false) }
 }

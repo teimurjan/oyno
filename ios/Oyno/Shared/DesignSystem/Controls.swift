@@ -5,22 +5,31 @@ import SwiftUI
 /// only place the accent is allowed to be a fill.
 struct PrimaryButton: View {
     private let label: Text
+    /// An SF Symbol before the words: the play on "Start 10 minutes".
+    private let symbol: String?
     private let enabled: Bool
     /// Red instead of the accent, for the one commit that deletes something.
     private let destructive: Bool
     private let action: () -> Void
 
-    init(title: LocalizedStringResource, enabled: Bool = true, destructive: Bool = false, action: @escaping () -> Void) {
-        self.init(label: Text(title), enabled: enabled, destructive: destructive, action: action)
+    init(
+        title: LocalizedStringResource,
+        symbol: String? = nil,
+        enabled: Bool = true,
+        destructive: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.init(label: Text(title), symbol: symbol, enabled: enabled, destructive: destructive, action: action)
     }
 
     /// For words that arrive already in the reader's language — the funnel's, from its deck.
     init(verbatim title: String, enabled: Bool = true, action: @escaping () -> Void) {
-        self.init(label: Text(verbatim: title), enabled: enabled, destructive: false, action: action)
+        self.init(label: Text(verbatim: title), symbol: nil, enabled: enabled, destructive: false, action: action)
     }
 
-    private init(label: Text, enabled: Bool, destructive: Bool, action: @escaping () -> Void) {
+    private init(label: Text, symbol: String?, enabled: Bool, destructive: Bool, action: @escaping () -> Void) {
         self.label = label
+        self.symbol = symbol
         self.enabled = enabled
         self.destructive = destructive
         self.action = action
@@ -31,11 +40,16 @@ struct PrimaryButton: View {
             Haptics.tap()
             action()
         }) {
-            label
-                .font(Typeface.ui(17, .bold, relativeTo: .headline))
-                .foregroundStyle(Palette.onAccent)
-                .frame(maxWidth: .infinity)
-                .frame(height: Metric.primaryButton)
+            HStack(spacing: 10) {
+                if let symbol {
+                    Glyph(symbol: symbol, size: 15, weight: .bold, color: Palette.onAccent)
+                }
+                label
+                    .font(Typeface.ui(17, .bold, relativeTo: .headline))
+                    .foregroundStyle(Palette.onAccent)
+            }
+            .frame(maxWidth: .infinity)
+            .frame(height: Metric.primaryButton)
         }
         .buttonStyle(destructive ? FilledAccentStyle(fill: Palette.alert, pressed: Palette.alert.opacity(0.85)) : FilledAccentStyle())
         .disabled(!enabled)
@@ -173,6 +187,60 @@ struct IconButton: View {
         }
         .buttonStyle(.plain)
         .onLongPressGesture(minimumDuration: 0, pressing: { pressed = $0 }, perform: {})
+    }
+}
+
+/// A round glass face holding one SF Symbol, as the canvas draws a header's buttons: the
+/// back and the bell on the timer, the profile on Home. `IconButton` is Printyard's square.
+struct GlassIconButton: View {
+    let symbol: String
+    let label: LocalizedStringResource
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            Glyph(symbol: symbol, size: 17, weight: .semibold)
+                .frame(width: Metric.tapTarget, height: Metric.tapTarget)
+                .glassCard(radius: Metric.tapTarget / 2)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(label))
+    }
+}
+
+/// The circle that fills while a finger holds a "Not now". Driven by `holdToConfirm`.
+struct HoldRing: View {
+    let progress: CGFloat
+
+    var body: some View {
+        ZStack {
+            Circle().stroke(Palette.ink.opacity(0.14), lineWidth: 2.2)
+            Circle()
+                .trim(from: 0, to: progress)
+                .stroke(Palette.ink, style: StrokeStyle(lineWidth: 2.2, lineCap: .round))
+                .rotationEffect(.degrees(-90))
+        }
+        .frame(width: 20, height: 20)
+    }
+}
+
+extension View {
+    /// Fires `action` once the finger has stayed down for two seconds — a tap is too easy to
+    /// make without meaning it — filling `progress` on the way and emptying it on a lift.
+    func holdToConfirm(progress: Binding<CGFloat>, action: @escaping () -> Void) -> some View {
+        let seconds = 2.0
+        return onLongPressGesture(minimumDuration: seconds) {
+            Haptics.success()
+            progress.wrappedValue = 0
+            action()
+        } onPressingChanged: { pressing in
+            withAnimation(pressing ? .linear(duration: seconds) : .easeOut(duration: 0.2)) {
+                progress.wrappedValue = pressing ? 1 : 0
+            }
+        }
     }
 }
 
@@ -362,4 +430,40 @@ struct LevelBar: View {
         .frame(width: 24, height: 5)
         .accessibilityHidden(true)
     }
+}
+
+/// The round switch the canvas draws: an ink pill with a white knob, grey when off. Used as
+/// `Toggle(...).toggleStyle(.pill)`, so the label, the trait and the value stay the system's.
+struct PillToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Button {
+            Haptics.tap()
+            configuration.isOn.toggle()
+        } label: {
+            HStack(spacing: Metric.Space.m) {
+                configuration.label
+                Spacer(minLength: Metric.Space.s)
+                Capsule()
+                    .fill(configuration.isOn ? Palette.ink : Palette.hairline)
+                    .frame(width: 52, height: 32)
+                    .overlay(alignment: configuration.isOn ? .trailing : .leading) {
+                        Circle()
+                            .fill(Palette.surface)
+                            .shadow(color: Palette.ink.opacity(0.12), radius: 2, y: 1)
+                            .frame(width: 26, height: 26)
+                            .padding(3)
+                    }
+                    .animation(.easeInOut(duration: 0.2), value: configuration.isOn)
+            }
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .accessibilityRepresentation {
+            Toggle(isOn: configuration.$isOn) { configuration.label }
+        }
+    }
+}
+
+extension ToggleStyle where Self == PillToggleStyle {
+    static var pill: PillToggleStyle { PillToggleStyle() }
 }

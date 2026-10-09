@@ -10,6 +10,7 @@ struct HomeScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
     @AppStorage("oyno.energy") private var energy = Energy.low
     @State private var worldsOpen = false
+    @State private var profileOpen = false
 
     private var suggestion: Activity { Activity.pick(for: energy) }
 
@@ -35,6 +36,7 @@ struct HomeScreen: View {
         .scrollIndicators(.hidden)
         .background(Palette.sky.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
+        .sheet(isPresented: $profileOpen) { ProfileScreen().tracksScreen(.profile) }
     }
 
     private func open() {
@@ -47,23 +49,8 @@ struct HomeScreen: View {
             Image("Wordmark")
                 .accessibilityLabel(Text(verbatim: "Oyno"))
             Spacer()
-            HStack(spacing: 6) {
-                Image(systemName: "sun.max.fill").foregroundStyle(Palette.caution)
-                Text(verbatim: "\(oyno.bloom)").oynoValue(14, .extrabold)
-            }
-            .padding(.horizontal, 12)
-            .frame(height: 36)
-            .glassCard(radius: 18)
-            .accessibilityElement(children: .combine)
-            .accessibilityLabel(Text("Bloom level \(oyno.bloom)"))
-            NavigationLink(value: HomeRoute.profile) {
-                Image(systemName: "person")
-                    .font(.system(size: 17, weight: .semibold))
-                    .foregroundStyle(Palette.ink)
-                    .frame(width: Metric.tapTarget, height: Metric.tapTarget)
-                    .glassCard(radius: Metric.tapTarget / 2)
-            }
-            .accessibilityLabel(Text("Profile"))
+            BloomPill(bloom: oyno.bloom)
+            GlassIconButton(symbol: "person", label: "Profile") { profileOpen = true }
         }
         .padding(.top, Metric.Space.s)
     }
@@ -110,17 +97,17 @@ struct HomeScreen: View {
                     if kidHours.isOnNow {
                         Text("On now")
                             .font(Typeface.ui(11, .extrabold, relativeTo: .caption2))
-                            .foregroundStyle(Color(hex: 0x2F6B3B))
+                            .foregroundStyle(Palette.pastelGreen.ink)
                             .padding(.horizontal, 9)
                             .frame(height: 22)
-                            .background(Color(hex: 0xDDEFDF), in: .capsule)
+                            .background(Palette.pastelGreen.fill, in: .capsule)
                     }
                 }
                 Text("\(energy.label) battery? Try \(suggestion.title)")
                     .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
                     .tracking(-0.4)
                     .foregroundStyle(Palette.ink)
-                Text(verbatim: suggestion.tags.joined(separator: " · "))
+                Text(verbatim: suggestion.tags.map(\.label).joined(separator: " · "))
                     .oynoCaption()
                 Button {
                     Haptics.tap()
@@ -140,14 +127,12 @@ struct HomeScreen: View {
     }
 
     private var kidHoursLine: String {
-        let schedule = kidHours.settings.schedule
-        let end = Format.timeOfDay(minutes: schedule.end)
-        return kidHours.settings.isEnabled
-            ? String(interface: "Kid hours · until \(end)")
-            : String(interface: "Kid hours are off")
+        if let current = kidHours.current {
+            return String(interface: "Kid hours · until \(Format.timeOfDay(minutes: current.end))")
+        }
+        if let next = kidHours.featured, next.isEnabled, let starts = next.nextStart(after: .now) {
+            return String(interface: "Kid hours · \(Format.dayAndTime(starts))")
+        }
+        return String(interface: "Kid hours are off")
     }
-}
-
-enum HomeRoute: Hashable {
-    case profile
 }

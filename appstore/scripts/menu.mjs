@@ -269,8 +269,8 @@ const ACTIONS = {
       message: "Search result slot",
       choices: [
         { name: "Leave it — the first screenshots show there", value: "none" },
-        { name: "One easy game, ten minutes", value: "play" },
-        { name: "Kid hours pause your apps", value: "kidhours" },
+        { name: "Play that helps your kid grow", value: "play" },
+        { name: "Your apps pause while you're with your kid", value: "kidhours" },
       ],
     });
     run("push-creative-assets.mjs", [`--version=${version}`, `--search=${search}`, `--locales=${locales.join(",")}`]);

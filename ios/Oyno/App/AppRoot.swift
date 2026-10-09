@@ -17,7 +17,6 @@ struct AppRoot: View {
     @State private var kidHours = KidHoursStore()
 
     @State private var tab = RootTab.home
-    @State private var homePath: [HomeRoute] = []
     @State private var playPath: [PlayRoute] = []
     @State private var didLoad = false
     @State private var splashDone = false
@@ -149,14 +148,9 @@ struct AppRoot: View {
 
     private var tabs: some View {
         TabView(selection: $tab) {
-            NavigationStack(path: $homePath) {
+            NavigationStack {
                 HomeScreen(play: { tab = .play })
                     .tracksScreen(.home)
-                    .navigationDestination(for: HomeRoute.self) { route in
-                        switch route {
-                        case .profile: ProfileScreen().tracksScreen(.profile)
-                        }
-                    }
             }
             .tabItem { Label("Home", systemImage: "globe.europe.africa.fill") }
             .tag(RootTab.home)
@@ -166,7 +160,7 @@ struct AppRoot: View {
                     .tracksScreen(.play)
                     .navigationDestination(for: PlayRoute.self, destination: play)
             }
-            .tabItem { Label("Play", systemImage: "sparkles") }
+            .tabItem { Label("Play", systemImage: "play.fill") }
             .tag(RootTab.play)
 
             NavigationStack {
@@ -190,7 +184,7 @@ struct AppRoot: View {
                 }
             }
         case let .done(_, minutes):
-            DoneScreen(minutes: minutes) {
+            DoneScreen(minutes: minutes, onKeepPlaying: { playPath = [] }) {
                 playPath = []
                 tab = .home
             }

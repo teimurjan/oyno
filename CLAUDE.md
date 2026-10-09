@@ -27,6 +27,14 @@ writes `Resources/Funnel.json`, which is generated and committed, never edited.
 refused write. The billed amount is the big figure (3.1.2). The trial is a 3-day App Store intro
 offer, never a server allowance, and store copy must not say we charge from the start.
 
+**The games are data, not Swift and not catalogue strings.** `activities/en.json` is the source.
+One translation file per locale sits beside it. `bun run activities:build` writes
+`Resources/Activities.json`, which is generated and committed, never edited.
+`bun run activities:translate` fills what a locale is missing, or holds for English that was
+reworded since, keyed by a fingerprint of the English. `bun run activities:check` fails on any gap.
+`Activity.swift` only decodes. The games stay in the bundle, not on the API. A game must show
+instantly and offline, and picking needs the rounds, which never leave the phone.
+
 ## The planet scene
 
 One scene, three renderers: the landing hero (`components/site/PlanetHero.tsx`, React), the funnel
@@ -35,14 +43,18 @@ widget (`components/funnel/PlanetStep.tsx`, Preact) and the app (`Screens/Home/P
 mirrored by `PlanetLayout` and `World.swift`. Change them together. The browser half is
 `lib/planet/dom.ts`, framework-free, and the transforms are `.planet-*` in `app/globals.css`.
 The layers come from `art/source/*.png` through `bun run art:build`, which writes `public/art/`,
-`lib/art/manifest.ts` and the `Sky`, `Planet`, `Family` image sets. Commit all three together.
+`lib/art/manifest.ts` and the `Sky`, `Family` and `Planets/Planet-<id>` image sets. Commit all three together.
+Each of the 31 worlds is its own painting. Earth is `art/source/planet.png`, the master. The rest
+are `art/source/planets/<id>.png`, painted from Earth by `bun run art:planets` (OpenAI, `OPENAI_API_KEY`).
 
 ## Kid hours (Screen Time)
 
 `KidHoursShared/` is compiled into both the app and the `OynoMonitor` DeviceActivity extension.
-The app (`KidHoursStore`) saves the selection and the schedule to the App Group. It arms one
-monitored activity per weekday. The extension shields at `intervalDidStart` and clears at
-`intervalDidEnd`.
+The app (`KidHoursStore`) saves the paused apps, the always-open apps, the schedules and the
+break to the App Group. It arms one daily activity per enabled schedule. The extension answers
+every boundary, a schedule's or the break's, by re-reading the whole state through
+`KidHoursShield.sync`. If an enabled schedule covers now and no break does, the apps are paused.
+Always-open apps are the `except` set on the shielded categories.
 The 20-minute break is a one-off `kidHours.break` activity. App tokens never leave the phone.
 Distribution needs Apple's Family Controls (Distribution) entitlement for `com.teimurjan.oyno` and
 `com.teimurjan.oyno.monitor`. Development builds work without it. Screen Time does not run in the
@@ -95,7 +107,8 @@ site deck and a funnel deck. Use
 one accent fill (the ink pill) per screen. Red means only "this is costing you". The one typeface is
 Figtree, with tabular figures for every number. It is vendored in `ios/Oyno/Resources/Fonts/`. The
 app, the site, the funnel build and the screenshot kit read it from there. The mark is `lib/mark.ts`, rendered by
-`bun run icons:build`. Tap targets are 44pt, and 52pt for the committing button.
+`bun run icons:build`. Tap targets are 44pt, and 52pt for the committing button. The bell that
+ends a round is `Resources/Chime.wav`, written by `bun run chime:build`, generated and committed.
 
 ## Error copy
 
@@ -109,4 +122,6 @@ funnel decks.
 - iOS: build Debug and Release (Release whenever payments, Kid hours or an xcconfig changed).
 - Funnel: `bun run funnel:build`. If you edit `steps.ts` or a deck, run `bun run funnel:export-ios`
   and commit `Funnel.json`. Check every step at 390×650.
+- Games: if you edit `activities/`, `bun run activities:build`, then `bun run activities:check`, and
+  commit `Activities.json`.
 - Store: `bun run metadata:check` before any deliver.

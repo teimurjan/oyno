@@ -25,11 +25,20 @@
   --good: #5e9a6b;
   --caution: #e0952b;
   --lavender: #9c86d8;
+  --amber: #f2a93b;
+  --gold: #f7c46c;
+  --pastel-green: #ddefdf;
+  --pastel-green-ink: #2f6b3b;
+  --pastel-lavender: #e9e2f8;
+  --pastel-lavender-ink: #5b47a3;
+  --pastel-amber: #fceacb;
+  --pastel-amber-ink: #8a5a12;
 
   --glass: rgba(255, 255, 255, 0.62);
   --glass-edge: rgba(255, 255, 255, 0.95);
   --glass-shadow: 0 10px 30px rgba(48, 80, 130, 0.12);
   --sky: linear-gradient(180deg, #a2c8ef 0%, #d3e6f8 34%, #fff1db 64%, #fff8ef 100%);
+  --golden-sky: linear-gradient(180deg, #b7cfee 0%, #f2ddc8 40%, #ffe5c2 66%, #fff4e6 100%);
 
   --accent: var(--brand);
   --muted: var(--ink-muted);
@@ -54,6 +63,8 @@
   --color-good: var(--good);
   --color-caution: var(--caution);
   --color-lavender: var(--lavender);
+  --color-amber: var(--amber);
+  --color-gold: var(--gold);
 
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
 

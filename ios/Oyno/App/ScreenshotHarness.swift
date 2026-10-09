@@ -16,7 +16,7 @@ struct ScreenshotHarness: View {
     @State private var oyno = ScreenshotFixtures.oyno()
     @State private var auth = ScreenshotFixtures.auth()
     @State private var purchases = ScreenshotFixtures.purchases()
-    @State private var kidHours = KidHoursStore()
+    @State private var kidHours = ScreenshotFixtures.kidHours()
     @State private var playPath: [PlayRoute] = []
 
     var body: some View {
@@ -33,9 +33,13 @@ struct ScreenshotHarness: View {
         case "splash": SplashScreen(isReady: false)
         case "signin": SignInScreen()
         case "paywall": PaywallScreen(context: .onboarding)
-        case "play": PlayScreen(path: $playPath)
+        // `play:<energy>` opens Play at that `Energy`, `play` at Low.
+        case let name where name.hasPrefix("play"):
+            let energy = Energy(rawValue: String(name.dropFirst("play:".count))) ?? .low
+            PlayScreen(path: $playPath)
+                .defaultAppStorage(ScreenshotFixtures.defaults(energy: energy))
         case "timer": TimerScreen(activity: Activity.all[0]) { _ in }
-        case "done": DoneScreen(minutes: 10) {}
+        case "done": DoneScreen(minutes: 10, onKeepPlaying: {}, onLeave: {})
         case "kidhours": KidHoursScreen()
         // `funnel:<step>` opens the first run at that `FunnelStep`, `funnel` at the start.
         case let name where name.hasPrefix("funnel"):
@@ -73,6 +77,19 @@ enum ScreenshotFixtures {
     static func purchases() -> PurchaseStore {
         let store = PurchaseStore()
         store.seedPaidForScreenshot()
+        return store
+    }
+
+    /// A store of its own, so a frame's energy never leaks into the simulator's real defaults.
+    static func defaults(energy: Energy) -> UserDefaults {
+        let defaults = UserDefaults(suiteName: "screenshot") ?? .standard
+        defaults.set(energy.rawValue, forKey: "oyno.energy")
+        return defaults
+    }
+
+    static func kidHours() -> KidHoursStore {
+        let store = KidHoursStore()
+        store.seedForScreenshot(paused: ["Instagram", "TikTok", "YouTube", "Reddit", "News", "Games"])
         return store
     }
 }

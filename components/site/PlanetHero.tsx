@@ -5,7 +5,7 @@ import type { PlanetCopy } from "@/components/site/copy/types";
 import { ART } from "@/lib/art/manifest";
 import { fallbackSrc, srcSet } from "@/lib/art/srcSet";
 import { bindPress, bindStrip, scrollToSlide, setPhase } from "@/lib/planet/dom";
-import { layerBox, STRIP_STYLE, tintFilter, WORLDS } from "@/lib/planet/scene";
+import { layerBox, lockedStyle, STRIP_STYLE, WORLDS } from "@/lib/planet/scene";
 
 /** The stage's widest, in CSS pixels: what `sizes` asks the renditions for. */
 const STAGE_PX = 440;
@@ -75,12 +75,13 @@ export function PlanetHero({ words }: { words: PlanetCopy }) {
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         className="planet-layer planet-planet"
-                        src={fallbackSrc(ART.planet)}
-                        srcSet={srcSet(ART.planet)}
+                        src={fallbackSrc(ART.planets[world.id])}
+                        srcSet={srcSet(ART.planets[world.id])}
                         sizes={PLANET_SIZES}
-                        style={{ ...layerBox("planet"), filter: tintFilter(world.tint, locked), opacity: locked ? 0.7 : 1 }}
+                        style={{ ...layerBox("planet"), ...lockedStyle(locked) }}
                         alt=""
                         fetchPriority={atRest ? "high" : undefined}
+                        loading={atRest ? undefined : "lazy"}
                       />
                       {!locked && (
                         // eslint-disable-next-line @next/next/no-img-element

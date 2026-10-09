@@ -44,7 +44,8 @@ enum AnalyticsEvent {
 
     // Kid hours.
     case kidHoursAuthorized(granted: Bool)
-    case kidHoursSaved(apps: Int, categories: Int)
+    case kidHoursSaved(apps: Int, categories: Int, alwaysOpen: Int)
+    case kidHoursScheduleSaved(schedules: Int)
     case kidHoursBreak(minutes: Int)
 
     case paywallViewed(context: PaywallContext)
@@ -70,6 +71,7 @@ enum AnalyticsEvent {
         case .worldsOpened: "worlds_opened"
         case .kidHoursAuthorized: "kid_hours_authorized"
         case .kidHoursSaved: "kid_hours_saved"
+        case .kidHoursScheduleSaved: "kid_hours_schedule_saved"
         case .kidHoursBreak: "kid_hours_break"
         case .paywallViewed: "paywall_viewed"
         case .purchaseStarted: "purchase_started"
@@ -92,7 +94,8 @@ enum AnalyticsEvent {
         case let .roundCompleted(activity, minutes): ["activity": activity, "minutes": minutes]
         case let .planetTapped(bloom), let .worldsOpened(bloom): ["bloom": bloom]
         case let .kidHoursAuthorized(granted): ["granted": granted]
-        case let .kidHoursSaved(apps, categories): ["apps": apps, "categories": categories]
+        case let .kidHoursSaved(apps, categories, alwaysOpen): ["apps": apps, "categories": categories, "always_open": alwaysOpen]
+        case let .kidHoursScheduleSaved(schedules): ["schedules": schedules]
         case let .kidHoursBreak(minutes): ["minutes": minutes]
         case let .paywallViewed(context): ["context": context.rawValue]
         case let .purchaseStarted(productID): ["product_id": productID]
