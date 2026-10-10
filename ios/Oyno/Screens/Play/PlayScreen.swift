@@ -60,14 +60,14 @@ struct PlayScreen: View {
         let paused: Bool
     }
 
-    /// "Kid hours · until 7:30 PM" while the apps are paused, "Apps open until 6:12 PM" on a
-    /// break, nothing when Kid hours are off.
+    /// "Kid hours · until 7:30 PM" while the apps are paused, "Apps open until 6:12 PM" during
+    /// an unlock, nothing when Kid hours are off.
     private var kidHoursStatus: Status? {
         if let current = kidHours.current {
             return Status(text: String(interface: "Kid hours · until \(Format.timeOfDay(minutes: current.end))"), paused: true)
         }
-        if let ends = kidHours.breakEndsAt {
-            return Status(text: String(interface: "Apps open until \(Format.timeOfDay(date: ends))"), paused: false)
+        if let end = kidHours.unlockEnd {
+            return Status(text: String(interface: "Apps open until \(Format.timeOfDay(date: end))"), paused: false)
         }
         return nil
     }
@@ -93,13 +93,17 @@ struct PlayScreen: View {
                 Text("One easy thing")
                     .font(Typeface.ui(13, .bold, relativeTo: .caption))
                     .foregroundStyle(Palette.muted)
-                Text(verbatim: activity.title)
-                    .font(Typeface.ui(48, .extrabold, relativeTo: .largeTitle))
-                    .tracking(-1.8)
-                    .foregroundStyle(Palette.ink)
-                    .lineLimit(3)
-                    .minimumScaleFactor(0.7)
-                    .fixedSize(horizontal: false, vertical: true)
+                ZStack(alignment: .topLeading) {
+                    // Two lines held open, so a short title does not pull the page up.
+                    Text(verbatim: " \n ").hidden().accessibilityHidden(true)
+                    Text(verbatim: activity.title)
+                        .lineLimit(3)
+                        .minimumScaleFactor(0.7)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .font(Typeface.ui(48, .extrabold, relativeTo: .largeTitle))
+                .tracking(-1.8)
+                .foregroundStyle(Palette.ink)
             }
             Spacer(minLength: 0)
             VStack(spacing: 0) {
@@ -247,12 +251,12 @@ struct PlayScreen: View {
         .padding(.horizontal, 6)
         .frame(height: Metric.tapTarget)
         .contentShape(.rect)
-        .holdToConfirm(progress: $holding) { kidHours.takeBreak() }
+        .holdToConfirm(progress: $holding) { kidHours.takeNotNow() }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(Text("Not now"))
-        .accessibilityHint(Text("Opens your apps for \(KidHoursStore.breakMinutes) minutes"))
-        .accessibilityAction { kidHours.takeBreak() }
+        .accessibilityHint(Text("Opens your apps for \(KidHoursStore.notNowMinutes) minutes"))
+        .accessibilityAction { kidHours.takeNotNow() }
     }
 }
 

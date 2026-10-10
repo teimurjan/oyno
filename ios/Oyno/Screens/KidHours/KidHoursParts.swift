@@ -4,9 +4,11 @@ import SwiftUI
 
 // The pieces `KidHoursScreen` is built from, in the order they appear on it.
 
-/// The header's "New": a glass pill rather than the ink one, so the switch stays the one
-/// ink fill on this screen.
-struct NewButton: View {
+/// A glass pill rather than the ink one, so the schedule switch stays the one ink fill on
+/// Kid hours: the header's "New".
+struct GlassPill: View {
+    let title: LocalizedStringResource
+    let symbol: String
     let action: () -> Void
 
     var body: some View {
@@ -15,8 +17,8 @@ struct NewButton: View {
             action()
         } label: {
             HStack(spacing: 6) {
-                Glyph(symbol: "plus", size: 13, weight: .bold)
-                Text("New")
+                Glyph(symbol: symbol, size: 13, weight: .bold)
+                Text(title)
                     .font(Typeface.ui(14, .bold, relativeTo: .subheadline))
                     .foregroundStyle(Palette.ink)
             }
@@ -150,7 +152,7 @@ struct TokenGrid: View {
     var body: some View {
         let shown = items.prefix(items.count > Self.limit ? Self.limit - 1 : Self.limit)
         LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 5), spacing: 10) {
-            ForEach(Array(shown), id: \.self) { item in TokenTile(item: item) }
+            ForEach(Array(shown), id: \.self) { item in TokenTile(item: item).frame(maxWidth: .infinity) }
             if items.count > shown.count {
                 DashedTile(text: "+\(items.count - shown.count)", caption: String(interface: "More"), action: edit)
             }
@@ -165,21 +167,21 @@ struct TokenGrid: View {
 /// the app never learns which one it is.
 struct TokenTile: View {
     let item: TokenItem
+    var size: CGFloat = 54
 
     var body: some View {
         Group {
             if case .placeholder(let name) = item {
                 Text(verbatim: String(name.prefix(1)))
-                    .font(Typeface.ui(20, .extrabold, relativeTo: .title3))
+                    .font(Typeface.ui(size * 0.37, .extrabold, relativeTo: .title3))
                     .foregroundStyle(Palette.muted)
                     .accessibilityLabel(Text(verbatim: name))
             } else {
-                Fitted(height: 40, width: 40) { icon }
+                Fitted(height: size * 0.74, width: size * 0.74) { icon }
             }
         }
-        .frame(width: 54, height: 54)
-        .glassCard(radius: 16)
-        .frame(maxWidth: .infinity)
+        .frame(width: size, height: size)
+        .glassCard(radius: size * 0.3)
     }
 
     @ViewBuilder
@@ -246,6 +248,136 @@ struct DashedTile: View {
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(verbatim: caption))
+    }
+}
+
+/// The running unlock, folded into the featured schedule: a countdown, the amber draining as it
+/// runs, and "Lock" to end it early.
+struct UnlockStrip: View {
+    let unlock: KidHoursUnlock
+    let end: Date
+    /// The countdown reached zero.
+    let onEnd: () -> Void
+    let onLock: () -> Void
+
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            let left = max(0, Int(end.timeIntervalSince(context.date).rounded(.up)))
+            HStack(spacing: 10) {
+                Glyph(symbol: "lock.open.fill", size: 13, weight: .bold, color: Palette.pastelAmber.ink)
+                Text(verbatim: Format.clock(seconds: left))
+                    .font(Typeface.figures(16, .extrabold, relativeTo: .callout))
+                    .monospacedDigit()
+                    .foregroundStyle(Palette.ink)
+                    .contentTransition(.numericText(countsDown: true))
+                    .animation(.default, value: left)
+                    .accessibilityLabel(Text("Apps open, \(left / 60) minutes \(left % 60) seconds left"))
+                bar(left: left)
+                StripButton(title: "Lock", action: onLock)
+            }
+            .strip(Palette.pastelAmber)
+            .onChange(of: left == 0) { _, done in if done { onEnd() } }
+        }
+    }
+
+    private func bar(left: Int) -> some View {
+        let total = max(1, end.timeIntervalSince(unlock.startedAt))
+        return GeometryReader { geometry in
+            ZStack(alignment: .leading) {
+                Capsule().fill(Palette.pastelAmber.ink.opacity(0.14))
+                Capsule().fill(Palette.amber).frame(width: geometry.size.width * min(1, Double(left) / total))
+            }
+        }
+        .frame(height: 5)
+        .animation(.linear(duration: 1), value: left)
+        .accessibilityHidden(true)
+    }
+}
+
+/// What the last round earned, folded into the featured schedule until it is used.
+struct EarnedStrip: View {
+    let earned: KidHoursEarned
+    let onClaim: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Glyph(symbol: "gift.fill", size: 13, weight: .bold, color: Palette.pastelGreen.ink)
+            HStack(spacing: 5) {
+                Text("\(earned.minutes) min earned").foregroundStyle(Palette.ink)
+                Text("by \(Format.timeOfDay(date: earned.expiresAt))").foregroundStyle(Palette.muted)
+            }
+            .font(Typeface.figures(14, .bold, relativeTo: .subheadline))
+            .monospacedDigit()
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
+            .accessibilityElement(children: .combine)
+            Spacer(minLength: 0)
+            StripButton(title: "Unlock", action: onClaim)
+        }
+        .strip(Palette.pastelGreen)
+    }
+}
+
+/// The small white pill at a strip's end. Drawn at 32pt, it still takes a 44pt tap.
+private struct StripButton: View {
+    let title: LocalizedStringResource
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            Text(title)
+                .font(Typeface.ui(13, .bold, relativeTo: .footnote))
+                .foregroundStyle(Palette.ink)
+                .padding(.horizontal, 12)
+                .frame(height: 32)
+                .background(Palette.surface, in: .capsule)
+                .frame(minWidth: Metric.tapTarget, minHeight: Metric.tapTarget)
+                .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
+private extension View {
+    /// A strip's tinted capsule, its button inset as far from the end as from the edges.
+    func strip(_ pastel: Palette.Pastel) -> some View {
+        padding(.leading, 14)
+            .padding(.trailing, 6)
+            .frame(height: Metric.tapTarget)
+            .background(pastel.fill, in: .capsule)
+            .accessibilityElement(children: .contain)
+    }
+}
+
+/// How long a round unlocks for, drawn like the sheet's weekday row: the picked one in ink.
+struct MinuteChips: View {
+    @Binding var selection: Int
+
+    var body: some View {
+        HStack(spacing: 6) {
+            ForEach(KidHoursSchedule.unlockChoices, id: \.self) { minutes in
+                let on = minutes == selection
+                Button {
+                    Haptics.tap()
+                    selection = minutes
+                } label: {
+                    Text("\(minutes) min")
+                        .font(Typeface.figures(13, .bold, relativeTo: .caption))
+                        .monospacedDigit()
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                        .foregroundStyle(on ? Palette.onAccent : Palette.ink)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: Metric.tapTarget)
+                        .background(on ? Palette.accent : Palette.track, in: .capsule)
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(on ? .isSelected : [])
+            }
+        }
     }
 }
 

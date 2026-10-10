@@ -46,7 +46,8 @@ enum AnalyticsEvent {
     case kidHoursAuthorized(granted: Bool)
     case kidHoursSaved(apps: Int, categories: Int, alwaysOpen: Int)
     case kidHoursScheduleSaved(schedules: Int)
-    case kidHoursBreak(minutes: Int)
+    case kidHoursBreak(minutes: Int, reason: String)
+    case kidHoursLockedEarly
 
     case paywallViewed(context: PaywallContext)
     case purchaseStarted(productID: String)
@@ -73,6 +74,7 @@ enum AnalyticsEvent {
         case .kidHoursSaved: "kid_hours_saved"
         case .kidHoursScheduleSaved: "kid_hours_schedule_saved"
         case .kidHoursBreak: "kid_hours_break"
+        case .kidHoursLockedEarly: "kid_hours_locked_early"
         case .paywallViewed: "paywall_viewed"
         case .purchaseStarted: "purchase_started"
         case .purchaseCompleted: "purchase_completed"
@@ -96,13 +98,13 @@ enum AnalyticsEvent {
         case let .kidHoursAuthorized(granted): ["granted": granted]
         case let .kidHoursSaved(apps, categories, alwaysOpen): ["apps": apps, "categories": categories, "always_open": alwaysOpen]
         case let .kidHoursScheduleSaved(schedules): ["schedules": schedules]
-        case let .kidHoursBreak(minutes): ["minutes": minutes]
+        case let .kidHoursBreak(minutes, reason): ["minutes": minutes, "reason": reason]
         case let .paywallViewed(context): ["context": context.rawValue]
         case let .purchaseStarted(productID): ["product_id": productID]
         case let .purchaseCompleted(productID, environment):
             ["product_id": productID, "transaction_environment": environment]
         case let .restoreFinished(outcome): ["outcome": outcome]
-        case .signedOut, .accountDeleted, .restoreStarted: nil
+        case .signedOut, .accountDeleted, .restoreStarted, .kidHoursLockedEarly: nil
         }
     }
 }

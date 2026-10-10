@@ -77,7 +77,9 @@ struct AppRoot: View {
                 }
             }
             .onChange(of: scenePhase) { _, phase in
-                if phase == .active { Task { await purchases.refreshServerEntitlement() } }
+                guard phase == .active else { return }
+                kidHours.refresh()
+                Task { await purchases.refreshServerEntitlement() }
             }
             // Every refusal, not just the first: the count is what makes a second one observable.
             .onChange(of: oyno.refusedActions) { _, count in
@@ -180,6 +182,7 @@ struct AppRoot: View {
                 TimerScreen(activity: activity) { minutes in
                     let round = Round(activityID: activity.id, startedAt: .now, minutes: minutes)
                     guard oyno.record(round) else { return }
+                    kidHours.earn()
                     playPath.append(.done(activityID: activity.id, minutes: minutes))
                 }
             }

@@ -1,8 +1,8 @@
 import FamilyControls
 import SwiftUI
 
-/// D7 on the canvas: the schedules Kid hours run on, what pauses, what stays open, and the
-/// held "Not now". Turning a schedule on is gated like any other write; looking is free.
+/// D7 on the canvas: the schedules Kid hours run on, with what is open right now folded into
+/// the one on top, what pauses, what stays open, and the held "Not now". Turning a schedule on is gated like any other write; looking is free.
 struct KidHoursScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(OynoStore.self) private var oyno
@@ -16,7 +16,7 @@ struct KidHoursScreen: View {
     var body: some View {
         Screen {
             ScreenHeader(title: "Kid hours", subtitle: status) {
-                if kidHours.isAuthorized { NewButton { editing = .new } }
+                if kidHours.isAuthorized { GlassPill(title: "New", symbol: "plus") { editing = .new } }
             }
 
             if !kidHours.isAuthorized {
@@ -27,7 +27,7 @@ struct KidHoursScreen: View {
                 paused
                 alwaysOpen
                 RowCard {
-                    HoldRow(title: "Not now", hint: notNowHint, enabled: kidHours.isOnNow) { kidHours.takeBreak() }
+                    HoldRow(title: "Not now", hint: notNowHint, enabled: kidHours.isOnNow) { kidHours.takeNotNow() }
                     RowDivider(inset: 0)
                     soonRow
                 }
@@ -74,8 +74,8 @@ struct KidHoursScreen: View {
         if let current = kidHours.current {
             return String(interface: "On now · ends \(Format.timeOfDay(minutes: current.end))")
         }
-        if let ends = kidHours.breakEndsAt {
-            return String(interface: "Apps open until \(Format.timeOfDay(date: ends))")
+        if let end = kidHours.unlockEnd {
+            return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
         }
         guard let schedule = kidHours.featured else { return String(interface: "No schedule yet") }
         guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
@@ -86,15 +86,15 @@ struct KidHoursScreen: View {
         if schedule.id == kidHours.current?.id, let ends = schedule.end(on: .now) {
             return String(interface: "On now · ends in \(Format.remaining(until: ends))")
         }
-        if let ends = kidHours.breakEndsAt, schedule.contains(.now) {
-            return String(interface: "Apps open until \(Format.timeOfDay(date: ends))")
+        if let end = kidHours.unlockEnd, schedule.contains(.now) {
+            return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
         }
         guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
         return String(interface: "Starts \(Format.dayAndTime(next))")
     }
 
     private var notNowHint: String {
-        if let ends = kidHours.breakEndsAt { return String(interface: "Open until \(Format.timeOfDay(date: ends))") }
+        if let end = kidHours.unlockEnd { return String(interface: "Open until \(Format.timeOfDay(date: end))") }
         return kidHours.isOnNow ? String(interface: "Hold 2 sec") : String(interface: "Only during Kid hours")
     }
 
@@ -119,32 +119,49 @@ struct KidHoursScreen: View {
         }
     }
 
+    /// The apps open right now and until when, else what the last round earned.
+    @ViewBuilder
+    private var unlock: some View {
+        if let unlock = kidHours.liveUnlock, let end = kidHours.unlockEnd {
+            UnlockStrip(unlock: unlock, end: end, onEnd: { kidHours.refresh() }, onLock: { kidHours.lockNow() })
+        } else if let earned = kidHours.claimable {
+            EarnedStrip(earned: earned) {
+                if !kidHours.claimEarned() { Haptics.warning() }
+            }
+        }
+    }
+
     @ViewBuilder
     private var featured: some View {
         if let schedule = kidHours.featured {
             Card(raised: true) {
-                HStack(spacing: Metric.Space.m) {
-                    Button {
-                        Haptics.tap()
-                        editing = .edit(schedule)
-                    } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            StatusPill(text: pill(schedule), on: schedule.id == kidHours.current?.id)
-                            Text(verbatim: schedule.name)
-                                .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
-                                .tracking(-0.4)
-                                .foregroundStyle(Palette.ink)
-                            Text(verbatim: Self.summary(schedule)).oynoCaption()
+                VStack(spacing: Metric.Space.m) {
+                    HStack(spacing: Metric.Space.m) {
+                        Button {
+                            Haptics.tap()
+                            editing = .edit(schedule)
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                StatusPill(text: pill(schedule), on: schedule.id == kidHours.current?.id)
+                                Text(verbatim: schedule.name)
+                                    .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
+                                    .tracking(-0.4)
+                                    .foregroundStyle(Palette.ink)
+                                Text(verbatim: Self.summary(schedule)).oynoCaption()
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(.rect)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(.rect)
+                        .buttonStyle(.plain)
+                        Toggle(isOn: enabledBinding(schedule)) { EmptyView() }
+                            .toggleStyle(.pill)
+                            .fixedSize()
+                            .accessibilityLabel(Text(verbatim: schedule.name))
                     }
-                    .buttonStyle(.plain)
-                    Toggle(isOn: enabledBinding(schedule)) { EmptyView() }
-                        .toggleStyle(.pill)
-                        .fixedSize()
-                        .accessibilityLabel(Text(verbatim: schedule.name))
+                    unlock
                 }
+                .animation(.snappy, value: kidHours.settings.unlock)
+                .animation(.snappy, value: kidHours.settings.earned)
             }
         } else {
             Card(raised: true) {

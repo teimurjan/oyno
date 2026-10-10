@@ -130,6 +130,9 @@ struct HomeScreen: View {
         if let current = kidHours.current {
             return String(interface: "Kid hours · until \(Format.timeOfDay(minutes: current.end))")
         }
+        if let end = kidHours.unlockEnd {
+            return String(interface: "Apps open · until \(Format.timeOfDay(date: end))")
+        }
         if let next = kidHours.featured, next.isEnabled, let starts = next.nextStart(after: .now) {
             return String(interface: "Kid hours · \(Format.dayAndTime(starts))")
         }

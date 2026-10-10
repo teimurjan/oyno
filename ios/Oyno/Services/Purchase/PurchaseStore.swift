@@ -208,11 +208,25 @@ final class PurchaseStore {
         if transaction.reason == .purchase {
             Analytics.shared.track(.purchaseCompleted(productID: transaction.productID,
                                                       environment: transaction.environment.rawValue))
+            scheduleTrialReminder(for: transaction)
         }
         await syncToBackend(jws: verification.jwsRepresentation)
         // `/api/purchase` commits the entitlement before returning, so this read
         // reflects the write.
         await refreshServerEntitlement()
+    }
+
+    /// Not awaited: the permission prompt must not hold up the backend write behind it.
+    private func scheduleTrialReminder(for transaction: Transaction) {
+        guard startsTrial(transaction),
+              let endsAt = transaction.expirationDate,
+              let price = products.first(where: { $0.id == transaction.productID })?.displayPrice else { return }
+        Task { await TrialReminder.schedule(endsAt: endsAt, price: price) }
+    }
+
+    private func startsTrial(_ transaction: Transaction) -> Bool {
+        if #available(iOS 17.2, *) { return transaction.offer?.type == .introductory }
+        return transaction.offerType == .introductory
     }
 
     /// Refresh both signals together: local resolves instantly, server overrides when

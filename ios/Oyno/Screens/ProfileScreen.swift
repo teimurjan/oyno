@@ -19,9 +19,10 @@ struct ProfileScreen: View {
 
     var body: some View {
         SheetScreen(title: "Profile", subtitle: auth.currentUser?.email ?? "") {
+            PlanBanner {
+                if purchases.isPaid { manage() } else { paywall = .settings }
+            }
             RowCard(raised: true) {
-                subscriptionRow
-                RowDivider(inset: 0)
                 row(String(interface: "Restore purchases"), busy: purchases.isRestoring) {
                     Task { await purchases.restore() }
                 }
@@ -67,25 +68,8 @@ struct ProfileScreen: View {
         }
         .manageSubscriptionsSheet(isPresented: $showsManageSheet, subscriptionGroupID: purchases.subscriptionGroupID ?? "")
         .fullScreenCover(item: $paywall) { PaywallScreen(context: $0) }
-    }
-
-    @ViewBuilder
-    private var subscriptionRow: some View {
-        if purchases.isPaid {
-            row(String(interface: "Manage subscription")) { manage() }
-        } else {
-            Button { paywall = .settings } label: {
-                HStack {
-                    Text("Subscription").oynoRowTitle()
-                    Spacer()
-                    Text("Subscribe")
-                        .font(Typeface.ui(15, .bold, relativeTo: .subheadline))
-                        .foregroundStyle(Palette.highlight)
-                }
-                .padding(Metric.cardPadding)
-                .contentShape(.rect)
-            }
-            .buttonStyle(.plain)
+        .task {
+            if !purchases.didLoadProducts { await purchases.loadProducts() }
         }
     }
 

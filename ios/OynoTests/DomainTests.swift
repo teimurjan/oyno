@@ -27,6 +27,13 @@ struct KidHoursScheduleTests {
         #expect(!schedule.contains(date(weekday: 2, hour: 19, minute: 30), calendar: calendar))
     }
 
+    @Test func aScheduleSavedBeforeUnlocksKeepsUnlockingAfterARound() throws {
+        let saved = #"{"id":"6F9619FF-8B86-D011-B42D-00C04FC964FF","name":"After work","start":990,"end":1170,"weekdays":[2,3],"isEnabled":true}"#
+        let schedule = try JSONDecoder().decode(KidHoursSchedule.self, from: Data(saved.utf8))
+        #expect(schedule.unlocksAfterRound)
+        #expect(schedule.unlockMinutes == 20)
+    }
+
     @Test func skipsDaysThatAreNotChosen() {
         #expect(!KidHoursSchedule.afterWork(named: "After work").contains(date(weekday: 1, hour: 17, minute: 0), calendar: calendar))
     }
@@ -57,12 +64,33 @@ struct KidHoursSettingsTests {
         #expect(!settings.isPaused(at: date(weekday: 3, hour: 20, minute: 30), calendar: calendar))
     }
 
-    @Test func aBreakOpensTheAppsUntilItEnds() {
+    @Test func anUnlockOpensTheAppsUntilItEnds() {
         var settings = KidHoursSettings(schedules: [afterWork])
         let now = date(weekday: 3, hour: 17, minute: 0)
-        settings.breakEndsAt = now.addingTimeInterval(20 * 60)
+        settings.unlock = KidHoursUnlock(reason: .round, startedAt: now, endsAt: now.addingTimeInterval(10 * 60))
         #expect(!settings.isPaused(at: now, calendar: calendar))
-        #expect(settings.isPaused(at: now.addingTimeInterval(21 * 60), calendar: calendar))
+        #expect(settings.isPaused(at: now.addingTimeInterval(10 * 60), calendar: calendar))
+    }
+
+    @Test func aShortUnlockIsWatchedFromThePastSoScreenTimeTakesIt() {
+        let now = date(weekday: 3, hour: 17, minute: 0)
+        let short = KidHoursUnlock(reason: .round, startedAt: now, endsAt: now.addingTimeInterval(10 * 60))
+        let long = KidHoursUnlock(reason: .notNow, startedAt: now, endsAt: now.addingTimeInterval(30 * 60))
+        #expect(short.endsAt.timeIntervalSince(short.monitoredStart) == 15 * 60)
+        #expect(long.monitoredStart == now)
+    }
+
+    @Test func anEndHeardOnTheMinuteStillEndsTheUnlock() {
+        let now = date(weekday: 3, hour: 17, minute: 0)
+        let unlock = KidHoursUnlock(reason: .round, startedAt: now, endsAt: now.addingTimeInterval(10 * 60 + 40))
+        #expect(unlock.isEnding(at: now.addingTimeInterval(10 * 60)))
+        #expect(!unlock.isEnding(at: now.addingTimeInterval(5 * 60)))
+    }
+
+    @Test func anUnlockEndsOnAWholeMinuteSoTheShortestKeepsItsMinute() {
+        let now = date(weekday: 3, hour: 17, minute: 0).addingTimeInterval(40)
+        #expect(KidHoursUnlock.end(minutes: 1, from: now) == date(weekday: 3, hour: 17, minute: 2))
+        #expect(KidHoursUnlock.end(minutes: 1, from: date(weekday: 3, hour: 17, minute: 0)) == date(weekday: 3, hour: 17, minute: 1))
     }
 
     @Test func aScheduleTurnedOffNeverPauses() {

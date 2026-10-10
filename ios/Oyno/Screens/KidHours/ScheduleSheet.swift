@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// One schedule's name, hours and days, as a sheet over Kid hours. Save is the one commit;
+/// One schedule's name, hours, days and unlock, as a sheet over Kid hours. Save is the one commit;
 /// an existing schedule can also be deleted from here.
 struct ScheduleSheet: View {
     @State private var draft: KidHoursSchedule
@@ -45,6 +45,26 @@ struct ScheduleSheet: View {
                     }
                 }
                 .toggleStyle(.pill)
+            }
+
+            Card {
+                VStack(alignment: .leading, spacing: Metric.Space.m) {
+                    Toggle(isOn: $draft.unlocksAfterRound.animation(.easeOut(duration: 0.2))) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Unlock after a round").oynoRowTitle()
+                            Text(draft.unlocksAfterRound ? "Play together, then your apps open for a while." : "Apps stay paused until Kid hours end.")
+                                .oynoCaption()
+                        }
+                    }
+                    .toggleStyle(.pill)
+                    if draft.unlocksAfterRound {
+                        VStack(alignment: .leading, spacing: Metric.Space.s) {
+                            Text("For").oynoEyebrow()
+                            MinuteChips(selection: $draft.unlockMinutes)
+                        }
+                        .transition(.opacity.combined(with: .move(edge: .top)))
+                    }
+                }
             }
 
             PrimaryButton(title: "Save", enabled: draft.isValid) {

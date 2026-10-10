@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// D5 on the canvas: the round is in, the kid taps the planet and it blooms inside a halo of
-/// rings and stars, and a sheet at the foot hands the parent their apps back when Kid hours
-/// are on.
+/// rings and stars, and a sheet at the foot hands the parent their apps back when the
+/// schedule running now rewards a round.
 struct DoneScreen: View {
     let minutes: Int
     /// Back to Play, for another round.
@@ -133,18 +133,16 @@ struct DoneScreen: View {
 
     // MARK: The sheet
 
-    private var breakEnds: Date { Date.now.addingTimeInterval(TimeInterval(KidHoursStore.breakMinutes * 60)) }
-
     private var sheet: some View {
         VStack(spacing: 14) {
-            if kidHours.isOnNow {
+            if let earned = kidHours.claimable {
                 HStack(spacing: Metric.Space.m) {
                     Glyph(symbol: "lock.open", size: 19, weight: .semibold, color: Palette.pastelAmber.ink)
                         .frame(width: Metric.tapTarget, height: Metric.tapTarget)
                         .background(Palette.pastelAmber.fill, in: .rect(cornerRadius: 14))
                     VStack(alignment: .leading, spacing: 1) {
-                        Text("Your apps can open for \(KidHoursStore.breakMinutes) min").oynoRowTitle()
-                        Text("Kid hours pick back up at \(Format.timeOfDay(date: breakEnds))")
+                        Text("Your apps can open for \(earned.minutes) min").oynoRowTitle()
+                        Text("Or later from Kid hours, until \(Format.timeOfDay(date: earned.expiresAt))")
                             .font(Typeface.ui(13, .semibold, relativeTo: .caption))
                             .foregroundStyle(Palette.muted)
                     }
@@ -153,12 +151,17 @@ struct DoneScreen: View {
                 .accessibilityElement(children: .combine)
                 VStack(spacing: 2) {
                     PrimaryButton(title: "Unlock my apps") {
-                        kidHours.takeBreak()
+                        guard kidHours.claimEarned() else { return Haptics.warning() }
                         onLeave()
                     }
                     QuietButton(title: "Keep playing", action: onKeepPlaying)
                 }
             } else {
+                if let current = kidHours.current {
+                    Text("Apps stay paused until \(Format.timeOfDay(minutes: current.end))")
+                        .font(Typeface.ui(13, .semibold, relativeTo: .caption))
+                        .foregroundStyle(Palette.muted)
+                }
                 VStack(spacing: 2) {
                     PrimaryButton(title: "Keep playing", action: onKeepPlaying)
                     QuietButton(title: "Finish for today", action: onLeave)

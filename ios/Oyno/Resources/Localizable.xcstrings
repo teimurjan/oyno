@@ -30,6 +30,9 @@
     "%lld min" : {
 
     },
+    "%lld min earned" : {
+
+    },
     "%lld min together today" : {
 
     },
@@ -64,7 +67,10 @@
     "1 round to a new world" : {
 
     },
-    "3 days free, then %@" : {
+    "3 days free" : {
+
+    },
+    "3-day free trial" : {
 
     },
     "A planet that grows" : {
@@ -107,6 +113,25 @@
 
     },
     "Apps open until %@" : {
+
+    },
+    "Apps open · until %@" : {
+
+    },
+    "Apps open, %lld minutes %lld seconds left" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Apps open, %1$lld minutes %2$lld seconds left"
+          }
+        }
+      }
+    },
+    "Apps stay paused until %@" : {
+
+    },
+    "Apps stay paused until Kid hours end." : {
 
     },
     "Aurora" : {
@@ -235,6 +260,9 @@
     "Every world is yours" : {
 
     },
+    "Everything unlocks. Nothing to pay today." : {
+
+    },
     "Face down is fine. We'll buzz at the end." : {
 
     },
@@ -251,6 +279,9 @@
 
     },
     "Fix this" : {
+
+    },
+    "For" : {
 
     },
     "Frost" : {
@@ -301,6 +332,15 @@
     "I lose count" : {
 
     },
+    "If you keep Oyno, %@ is billed then. You can cancel in Settings." : {
+
+    },
+    "In 2 days" : {
+
+    },
+    "In 3 days" : {
+
+    },
     "Keep playing" : {
 
     },
@@ -314,9 +354,6 @@
 
     },
     "Kid hours pause the apps you pick, every evening, on the schedule you set." : {
-
-    },
-    "Kid hours pick back up at %@" : {
 
     },
     "Kid hours · %@" : {
@@ -338,6 +375,9 @@
 
     },
     "Let's seal it with a high five" : {
+
+    },
+    "Lock" : {
 
     },
     "Low" : {
@@ -388,6 +428,9 @@
     "Not now" : {
 
     },
+    "Nothing today, then %@" : {
+
+    },
     "Now" : {
 
     },
@@ -433,6 +476,9 @@
     "Opens your apps for %lld minutes" : {
 
     },
+    "Or later from Kid hours, until %@" : {
+
+    },
     "Orchard" : {
 
     },
@@ -467,6 +513,15 @@
 
     },
     "Play" : {
+
+    },
+    "Play together every evening with" : {
+
+    },
+    "Play together, then your apps open for a while." : {
+
+    },
+    "Playing together every evening with" : {
 
     },
     "Poppy" : {
@@ -509,6 +564,9 @@
 
     },
     "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them." : {
+
+    },
+    "See plans" : {
 
     },
     "Send another code" : {
@@ -562,7 +620,7 @@
     "Start %lld minutes" : {
 
     },
-    "Start 3-day free trial" : {
+    "Start my free trial" : {
 
     },
     "Start with 3 days free, and spend them on the floor with your kid." : {
@@ -585,9 +643,6 @@
       }
     },
     "Subscribe" : {
-
-    },
-    "Subscription" : {
 
     },
     "Subscriptions are unavailable right now." : {
@@ -651,7 +706,13 @@
     "The subscription page didn't open. Try again, or use the link in your receipt email." : {
 
     },
+    "Today" : {
+
+    },
     "Together today" : {
+
+    },
+    "Try 3 days free" : {
 
     },
     "Turn the chime off" : {
@@ -661,6 +722,12 @@
 
     },
     "Twilight" : {
+
+    },
+    "Unlock" : {
+
+    },
+    "Unlock after a round" : {
 
     },
     "Unlock my apps" : {
@@ -678,6 +745,9 @@
     "Use email instead" : {
 
     },
+    "We remind you that your trial ends tomorrow." : {
+
+    },
     "We sent a six-digit code to %@." : {
 
     },
@@ -691,6 +761,12 @@
 
     },
     "World" : {
+
+    },
+    "You're not subscribed yet" : {
+
+    },
+    "You're subscribed" : {
 
     },
     "Your account is still here — that didn't go through. Try again." : {
@@ -708,7 +784,13 @@
     "Your evenings are like this too." : {
 
     },
+    "Your free trial ends tomorrow" : {
+
+    },
     "Your plan and your family's planet are tied to your account." : {
+
+    },
+    "Your plan starts at %@. Cancel anytime before." : {
 
     },
     "Your planet just grew" : {
@@ -732,10 +814,16 @@
     "at %@" : {
 
     },
+    "by %@" : {
+
+    },
     "left of %@" : {
 
     },
     "min" : {
+
+    },
+    "then %@" : {
 
     },
     "to a screen, with your kid right there. Yep, you read this right." : {
