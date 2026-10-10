@@ -39,7 +39,11 @@ struct AppRoot: View {
             userID: { [weak auth] in await auth?.currentUser?.id }
         )
         _purchases = State(initialValue: purchases)
-        _oyno = State(initialValue: OynoStore(isEntitled: { [weak purchases] in purchases?.isPaid ?? false }))
+        let progress = ProgressService(accessToken: { [weak auth] in await auth?.accessToken() })
+        _oyno = State(initialValue: OynoStore(
+            isEntitled: { [weak purchases] in purchases?.isPaid ?? false },
+            backup: progress.merge
+        ))
     }
 
     var body: some View {
@@ -55,6 +59,7 @@ struct AppRoot: View {
                 isRestoring = needsEntitlement
                 didLoad = true
                 await refreshEntitlement()
+                await oyno.syncBackup()
                 await purchases.loadProducts()
                 if let resolved = await AppConfig.resolveAnalyticsEnvironment() {
                     Analytics.shared.setEnvironment(resolved)
@@ -74,6 +79,8 @@ struct AppRoot: View {
                     // A subscription bought before signing in belongs to this account now.
                     await purchases.reconcileLocalEntitlement()
                     await refreshEntitlement()
+                    // A reinstall signs in here: this is where the planet comes back.
+                    await oyno.syncBackup()
                 }
             }
             .onChange(of: scenePhase) { _, phase in

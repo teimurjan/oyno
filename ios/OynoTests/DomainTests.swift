@@ -130,6 +130,43 @@ struct BloomTests {
     }
 }
 
+@MainActor
+struct ProgressBackupTests {
+    private func store(backup: Tally? = nil) -> OynoStore {
+        OynoStore(isEntitled: { true },
+                  backup: { _ in backup },
+                  fileURL: URL.temporaryDirectory.appending(path: "rounds-\(UUID()).json"))
+    }
+
+    private let round = Round(activityID: "whisper", startedAt: .now, minutes: 10)
+
+    @Test func aReinstallGetsItsPlanetBack() async {
+        let oyno = store(backup: Tally(rounds: 40, minutes: 420))
+        oyno.adopt(userID: "parent")
+        await oyno.syncBackup()
+        #expect(oyno.tally == Tally(rounds: 40, minutes: 420))
+        oyno.record(round)
+        #expect(oyno.bloom == 41)
+    }
+
+    @Test func aBackupBehindThePhoneNeverShrinksThePlanet() {
+        let oyno = store()
+        oyno.adopt(userID: "parent")
+        oyno.record(round)
+        oyno.restore(Tally(rounds: 5, minutes: 50))
+        oyno.restore(.zero)
+        #expect(oyno.tally == Tally(rounds: 5, minutes: 50))
+    }
+
+    @Test func anotherAccountStartsWithAnEmptyPlanet() {
+        let oyno = store()
+        oyno.adopt(userID: "parent")
+        oyno.restore(Tally(rounds: 40, minutes: 420))
+        oyno.adopt(userID: "neighbour")
+        #expect(oyno.tally == .zero)
+    }
+}
+
 struct CountdownTests {
     private let start = Date(timeIntervalSince1970: 1_000_000)
 

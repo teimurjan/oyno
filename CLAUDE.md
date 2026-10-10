@@ -85,7 +85,8 @@ Apple StoreKit 2 sells in the app, and Dodo sells on the web. `readEntitlement` 
 The service-role client bypasses RLS. Every table has RLS on with **no policies**, so the
 `.eq("user_id", …)` in the query *is* the access check. Routes take the user from the bearer
 token and never from the body. Rounds are stored on the device only (`OynoStore`, Application
-Support), keyed to the account that wrote them.
+Support), keyed to the account that wrote them. Only their totals are backed up (`progress`, via
+`POST /api/progress`), so a reinstall keeps the planet. The totals only grow.
 
 ## Sign-in
 

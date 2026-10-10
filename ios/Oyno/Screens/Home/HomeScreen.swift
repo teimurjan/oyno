@@ -65,8 +65,8 @@ struct HomeScreen: View {
 
     private var stats: some View {
         HStack(spacing: Metric.Space.s) {
-            stat(value: "\(oyno.rounds.count)", label: String(interface: "Rounds"))
-            stat(value: "\(oyno.rounds.totalMinutes)", label: String(interface: "Minutes"))
+            stat(value: "\(oyno.tally.rounds)", label: String(interface: "Rounds"))
+            stat(value: "\(oyno.tally.minutes)", label: String(interface: "Minutes"))
             stat(value: oyno.world.name, label: String(interface: "World"))
         }
     }

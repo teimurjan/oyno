@@ -8,27 +8,34 @@ import Observation
 /// `refusedActions` is a counter rather than a flag, so a second refusal fires `onChange` in
 /// `AppRoot` again and the paywall comes back.
 ///
-/// Kept on the device, in Application Support, keyed to the account that wrote it.
+/// Kept on the device, in Application Support, keyed to the account that wrote it. Only the
+/// totals are backed up to the account, so a reinstall keeps the planet but not the rounds.
 @MainActor
 @Observable
 final class OynoStore {
     private(set) var rounds: [Round] = []
     private(set) var refusedActions = 0
+    /// Rounds this account played that are not on this phone, restored from the backup.
+    private(set) var carried = Tally.zero
 
+    var tally: Tally { carried + rounds.tally }
     /// One round together is one bloom.
-    var bloom: Int { rounds.count }
+    var bloom: Int { tally.rounds }
     var world: World { Bloom.currentWorld(at: bloom) }
     var minutesToday: Int { rounds.minutes(on: .now) }
 
     @ObservationIgnored private let isEntitled: () -> Bool
+    @ObservationIgnored private let backup: @MainActor @Sendable (Tally) async -> Tally?
     @ObservationIgnored private let fileURL: URL
     @ObservationIgnored private var ownerID: String?
 
     init(
         isEntitled: @escaping () -> Bool,
+        backup: @escaping @MainActor @Sendable (Tally) async -> Tally? = { _ in nil },
         fileURL: URL = URL.applicationSupportDirectory.appending(path: "oyno-rounds.json")
     ) {
         self.isEntitled = isEntitled
+        self.backup = backup
         self.fileURL = fileURL
     }
 
@@ -45,6 +52,7 @@ final class OynoStore {
         guard requireEntitlement() else { return false }
         rounds.append(round)
         save()
+        Task { await syncBackup() }
         Analytics.shared.track(.roundCompleted(activity: round.activityID, minutes: round.minutes))
         return true
     }
@@ -55,19 +63,39 @@ final class OynoStore {
         else { return }
         ownerID = stored.ownerID
         rounds = stored.rounds
+        carried = stored.carried ?? .zero
     }
 
     /// Claims the rounds on this phone for `userID`. Rounds written by another account are
     /// dropped: a family that signs in on a shared phone must not inherit someone else's planet.
     func adopt(userID: String) {
-        if let ownerID, ownerID != userID { rounds = [] }
+        if let ownerID, ownerID != userID {
+            rounds = []
+            carried = .zero
+        }
         ownerID = userID
+        save()
+    }
+
+    /// Sends this phone's totals to the account and takes back what it grew elsewhere.
+    func syncBackup() async {
+        guard let owner = ownerID, let merged = await backup(tally), owner == ownerID else { return }
+        restore(merged)
+    }
+
+    /// Whatever the backup counts beyond the rounds on this phone becomes `carried`. Never
+    /// lowers it, so a reply that left before the latest round cannot shrink the planet.
+    func restore(_ backedUp: Tally) {
+        let next = carried.union(backedUp.excess(over: rounds.tally))
+        guard next != carried else { return }
+        carried = next
         save()
     }
 
     /// Account deletion and sign-out of a different account both start clean.
     func reset() {
         rounds = []
+        carried = .zero
         ownerID = nil
         try? FileManager.default.removeItem(at: fileURL)
     }
@@ -78,7 +106,7 @@ final class OynoStore {
     #endif
 
     private func save() {
-        guard let data = try? JSONCoding.encoder.encode(Stored(ownerID: ownerID, rounds: rounds)) else { return }
+        guard let data = try? JSONCoding.encoder.encode(Stored(ownerID: ownerID, rounds: rounds, carried: carried)) else { return }
         try? FileManager.default.createDirectory(
             at: fileURL.deletingLastPathComponent(),
             withIntermediateDirectories: true
@@ -89,5 +117,7 @@ final class OynoStore {
     private struct Stored: Codable {
         let ownerID: String?
         let rounds: [Round]
+        /// Absent in files written before the backup.
+        let carried: Tally?
     }
 }

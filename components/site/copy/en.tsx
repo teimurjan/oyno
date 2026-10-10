@@ -225,8 +225,9 @@ export const en: SiteCopy = {
         </p>
         <h3>Your rounds</h3>
         <p>
-          How many rounds you played, how long each lasted, which game it was and your
-          planet&rsquo;s bloom level. These stay on your phone. They name no child: Oyno never asks
+          Each round you play, how long it lasted and which game it was stay on your phone. So a
+          new phone or a reinstall keeps your planet, we back up two totals with your account: how
+          many rounds you played and how many minutes. None of it names a child: Oyno never asks
           for your kid&rsquo;s name, age or photo. The answers you give to the questions on this
           website (for example, an age range) are stored with your subscription record, so we can
           tell which questions lead to games people keep playing.
@@ -284,8 +285,8 @@ export const en: SiteCopy = {
 
         <h2 id="delete">Deleting everything</h2>
         <p>
-          In the app: <strong>Profile → Delete account</strong>. It erases your account and the
-          rounds on your phone, immediately, and it cannot be undone.
+          In the app: <strong>Profile → Delete account</strong>. It erases your account, the
+          totals we back up and the rounds on your phone, immediately, and it cannot be undone.
         </p>
         <p>
           Signed in with Facebook? You can also remove Oyno under{" "}
