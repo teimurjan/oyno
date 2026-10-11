@@ -1,3 +1,4 @@
+import FamilyControls
 import Foundation
 import Testing
 @testable import Oyno
@@ -36,6 +37,23 @@ struct KidHoursScheduleTests {
 
     @Test func skipsDaysThatAreNotChosen() {
         #expect(!KidHoursSchedule.afterWork(named: "After work").contains(date(weekday: 1, hour: 17, minute: 0), calendar: calendar))
+    }
+}
+
+struct KidHoursEarnedTests {
+    private let now = Date(timeIntervalSince1970: 1_791_000_000)
+
+    private func earned(expiringIn seconds: TimeInterval) -> KidHoursEarned {
+        KidHoursEarned(scheduleID: UUID(), minutes: 5, expiresAt: now.addingTimeInterval(seconds))
+    }
+
+    @Test func claimableOnlyInsideItsMinute() {
+        #expect(earned(expiringIn: 60).isClaimable(at: now))
+        #expect(!earned(expiringIn: 0).isClaimable(at: now))
+    }
+
+    @Test func oneBankedUntilTheScheduleEndsIsRefused() {
+        #expect(!earned(expiringIn: 268 * 60).isClaimable(at: now))
     }
 }
 
@@ -87,16 +105,39 @@ struct KidHoursSettingsTests {
         #expect(!unlock.isEnding(at: now.addingTimeInterval(5 * 60)))
     }
 
-    @Test func anUnlockEndsOnAWholeMinuteSoTheShortestKeepsItsMinute() {
-        let now = date(weekday: 3, hour: 17, minute: 0).addingTimeInterval(40)
-        #expect(KidHoursUnlock.end(minutes: 1, from: now) == date(weekday: 3, hour: 17, minute: 2))
-        #expect(KidHoursUnlock.end(minutes: 1, from: date(weekday: 3, hour: 17, minute: 0)) == date(weekday: 3, hour: 17, minute: 1))
+    @Test func settingsSavedBeforeEachScheduleHadItsAppsStillLoad() throws {
+        let empty = String(decoding: try JSONEncoder().encode(FamilyActivitySelection()), as: UTF8.self)
+        let schedule = String(decoding: try JSONEncoder().encode(afterWork), as: UTF8.self)
+        let saved = #"{"selection":\#(empty),"alwaysOpen":\#(empty),"schedules":[\#(schedule)]}"#
+        let settings = try JSONDecoder().decode(KidHoursSettings.self, from: Data(saved.utf8))
+        #expect(settings.schedules.map(\.id) == [afterWork.id])
+        #expect(settings.neverAllowed.isEmpty)
+        #expect(settings.opened.isEmpty)
     }
 
     @Test func aScheduleTurnedOffNeverPauses() {
         var off = afterWork
         off.isEnabled = false
         #expect(!KidHoursSettings(schedules: [off]).isPaused(at: date(weekday: 3, hour: 17, minute: 0), calendar: calendar))
+    }
+
+    @Test func countsTheMinutesInsideKidHoursSoFarToday() {
+        let settings = KidHoursSettings(schedules: [afterWork, bedtime])
+        #expect(settings.pausedMinutes(until: date(weekday: 3, hour: 17, minute: 10), calendar: calendar) == 40)
+        #expect(settings.pausedMinutes(until: date(weekday: 3, hour: 23, minute: 0), calendar: calendar) == 240)
+    }
+
+    @Test func leavesTheOpenedStretchesOut() {
+        var settings = KidHoursSettings(schedules: [afterWork])
+        let opened = date(weekday: 3, hour: 17, minute: 0)
+        settings.opened = [DateInterval(start: opened, duration: 20 * 60)]
+        #expect(settings.pausedMinutes(until: date(weekday: 3, hour: 18, minute: 0), calendar: calendar) == 70)
+    }
+
+    @Test func aScheduleTurnedOffPausesNoMinutes() {
+        var off = afterWork
+        off.isEnabled = false
+        #expect(KidHoursSettings(schedules: [off]).pausedMinutes(until: date(weekday: 3, hour: 23, minute: 0), calendar: calendar) == 0)
     }
 
     @Test func theNextStartSkipsDaysNotChosen() {
@@ -179,25 +220,37 @@ struct CountdownTests {
         #expect(countdown.secondsLeft(at: start + 200) == 460)
     }
 
-    @Test func stepsSplitTheRoundEvenlyAndTheLastOneHolds() {
+    @Test func theClockStopsAtZero() {
         let countdown = Countdown(total: 600, startedAt: start)
-        #expect(countdown.step(of: 3, at: start) == 0)
-        #expect(countdown.step(of: 3, at: start + 200) == 1)
-        #expect(countdown.step(of: 3, at: start + 900) == 2)
         #expect(countdown.secondsLeft(at: start + 900) == 0)
     }
 }
 
 struct ActivityTests {
-    @Test func everyEnergyHasAGame() {
-        #expect(Energy.allCases.allSatisfy { !Activity.catalogue(for: $0).isEmpty })
+    @Test func everyAgeAndEnergyHasAGame() {
+        for age in AgeBand.allCases {
+            #expect(Energy.allCases.allSatisfy { !Activity.catalogue(for: $0, age: age).isEmpty })
+        }
     }
 
-    @Test func aDifferentIdeaWrapsAroundTheSameEnergy() {
-        let games = Activity.catalogue(for: .okay)
-        let last = games[games.count - 1]
-        #expect(Activity.pick(for: .okay, after: last) == games[0])
-        #expect(Activity.pick(for: .okay, after: games[0]) == games[1])
+    /// The listing promises five hundred games, every one three sentences or fewer.
+    @Test func theDeckKeepsItsPromises() {
+        #expect(Activity.all.count >= 500)
+        #expect(Activity.all.allSatisfy { !$0.skills.isEmpty && !$0.evidence.isEmpty })
+        #expect(Activity.all.allSatisfy { (1...3).contains($0.steps.count) && (5...15).contains($0.minutes) })
+    }
+
+    @Test func theDeckTurnsOneGameADay() {
+        let day = Date(timeIntervalSince1970: 1_700_000_000)
+        let today = Activity.pick(for: .okay, age: .preschooler, on: day)
+        #expect(today != Activity.pick(for: .okay, age: .preschooler, on: day + 86_400))
+        #expect(today == Activity.pick(for: .okay, age: .preschooler, on: day + 3_600))
+    }
+
+    @Test func aDifferentIdeaWrapsAroundTheSameAgeAndEnergy() {
+        let games = Activity.catalogue(for: .okay, age: .toddler)
+        #expect(Activity.next(after: games[games.count - 1]) == games[0])
+        #expect(Activity.next(after: games[0]) == games[1])
     }
 
     @Test func everyShippedLanguageHasADeck() {

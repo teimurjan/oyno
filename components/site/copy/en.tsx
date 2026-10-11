@@ -26,7 +26,7 @@ export const en: SiteCopy = {
       description:
         "Oyno pauses your apps during kid time and hands you one easy game a day. Every round grows your family's little planet.",
     },
-    eyebrow: "For parents of 2 to 8 year olds",
+    eyebrow: "For parents of 0 to 5 year olds",
     headline: (
       <>
         Your phone eats the evening. <span className="hl">Take ten minutes back.</span>

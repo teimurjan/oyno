@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Boots a simulator, builds the Debug configuration (so the #if DEBUG
 // ScreenshotHarness is compiled in), and captures one raw PNG per seeded
-// screen. Run this first; then generate-app-store-screenshots.mjs and
-// generate-product-hunt-screenshots.mjs composite the results.
+// screen. Run this first; then generate-app-store-screenshots.mjs composites the
+// results.
 //
 // The simulator itself — boot, build, install, launch, the crash check — is
 // lib/simulator.mjs.

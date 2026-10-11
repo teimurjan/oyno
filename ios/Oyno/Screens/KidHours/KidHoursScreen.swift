@@ -2,30 +2,31 @@ import FamilyControls
 import SwiftUI
 
 /// D7 on the canvas: the schedules Kid hours run on, with what is open right now folded into
-/// the one on top, what pauses, what stays open, and the held "Not now". Turning a schedule on is gated like any other write; looking is free.
+/// the one on top, the apps always and never allowed, and the held "Not now". A schedule opens
+/// as a sheet. Turning one on is gated like any other write; looking is free.
 struct KidHoursScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(OynoStore.self) private var oyno
-    @State private var editing: ScheduleDraft?
+    @State private var open: OpenSchedule?
     @State private var picking: Picking?
     @State private var pickerDraft = FamilyActivitySelection()
 
     /// Which list the one Screen Time picker is open for.
-    private enum Picking { case paused, alwaysOpen }
+    private enum Picking { case alwaysAllowed, neverAllowed }
 
     var body: some View {
         Screen {
             ScreenHeader(title: "Kid hours", subtitle: status) {
-                if kidHours.isAuthorized { GlassPill(title: "New", symbol: "plus") { editing = .new } }
+                if kidHours.isAuthorized { GlassPill(title: "New", symbol: "plus") { open = .new } }
             }
 
             if !kidHours.isAuthorized {
                 permission
             } else {
                 featured
-                schedules
-                paused
-                alwaysOpen
+                schedules.screenshotCallout("schedules")
+                alwaysAllowed.screenshotCallout("alwaysAllowed")
+                neverAllowed.screenshotCallout("neverAllowed")
                 RowCard {
                     HoldRow(title: "Not now", hint: notNowHint, enabled: kidHours.isOnNow) { kidHours.takeNotNow() }
                     RowDivider(inset: 0)
@@ -33,18 +34,16 @@ struct KidHoursScreen: View {
                 }
             }
         }
-        .sheet(item: $editing) { draft in
-            ScheduleSheet(schedule: draft.schedule, isNew: draft.isNew, onSave: save, onDelete: draft.isNew ? nil : {
-                kidHours.remove(draft.schedule)
-            })
+        .sheet(item: $open) { open in
+            ScheduleSheet(schedule: open.schedule, isNew: open.isNew, onSave: save)
         }
         .familyActivityPicker(isPresented: Binding(get: { picking != nil }, set: { if !$0 { picking = nil } }), selection: $pickerDraft)
         .onChange(of: picking) { closed, opened in
             switch (closed, opened) {
-            case (_, .paused): pickerDraft = kidHours.settings.selection
-            case (_, .alwaysOpen): pickerDraft = kidHours.settings.alwaysOpen
-            case (.paused, nil): kidHours.update(selection: pickerDraft)
-            case (.alwaysOpen, nil): kidHours.update(alwaysOpen: pickerDraft)
+            case (_, .alwaysAllowed): pickerDraft = kidHours.settings.alwaysAllowed
+            case (_, .neverAllowed): pickerDraft = kidHours.settings.neverAllowed
+            case (.alwaysAllowed, nil): kidHours.update(alwaysAllowed: pickerDraft)
+            case (.neverAllowed, nil): kidHours.update(neverAllowed: pickerDraft)
             case (nil, nil): break
             }
         }
@@ -55,17 +54,6 @@ struct KidHoursScreen: View {
         var kept = schedule
         kept.isEnabled = schedule.isEnabled && oyno.requireEntitlement()
         kidHours.save(kept)
-    }
-
-    private func enabledBinding(_ schedule: KidHoursSchedule) -> Binding<Bool> {
-        Binding(
-            get: { schedule.isEnabled },
-            set: { enabled in
-                // Turning on is the paid part; turning off never is.
-                guard !enabled || oyno.requireEntitlement() else { return }
-                kidHours.setEnabled(enabled, for: schedule)
-            }
-        )
     }
 
     // MARK: Words
@@ -82,24 +70,9 @@ struct KidHoursScreen: View {
         return String(interface: "Starts \(Format.dayAndTime(next))")
     }
 
-    private func pill(_ schedule: KidHoursSchedule) -> String {
-        if schedule.id == kidHours.current?.id, let ends = schedule.end(on: .now) {
-            return String(interface: "On now · ends in \(Format.remaining(until: ends))")
-        }
-        if let end = kidHours.unlockEnd, schedule.contains(.now) {
-            return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
-        }
-        guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
-        return String(interface: "Starts \(Format.dayAndTime(next))")
-    }
-
     private var notNowHint: String {
         if let end = kidHours.unlockEnd { return String(interface: "Open until \(Format.timeOfDay(date: end))") }
         return kidHours.isOnNow ? String(interface: "Hold 2 sec") : String(interface: "Only during Kid hours")
-    }
-
-    private static func summary(_ schedule: KidHoursSchedule) -> String {
-        "\(Format.weekdays(schedule.weekdays)) · \(Format.timeRange(start: schedule.start, end: schedule.end))"
     }
 
     // MARK: Blocks
@@ -136,28 +109,25 @@ struct KidHoursScreen: View {
         if let schedule = kidHours.featured {
             Card(raised: true) {
                 VStack(spacing: Metric.Space.m) {
-                    HStack(spacing: Metric.Space.m) {
-                        Button {
-                            Haptics.tap()
-                            editing = .edit(schedule)
-                        } label: {
+                    Button {
+                        Haptics.tap()
+                        open = .existing(schedule)
+                    } label: {
+                        HStack(spacing: Metric.Space.m) {
                             VStack(alignment: .leading, spacing: 4) {
-                                StatusPill(text: pill(schedule), on: schedule.id == kidHours.current?.id)
+                                StatusPill(text: ScheduleWords.status(schedule, in: kidHours), on: schedule.id == kidHours.current?.id)
                                 Text(verbatim: schedule.name)
                                     .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
                                     .tracking(-0.4)
                                     .foregroundStyle(Palette.ink)
-                                Text(verbatim: Self.summary(schedule)).oynoCaption()
+                                Text(verbatim: ScheduleWords.summary(schedule)).oynoCaption()
                             }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(.rect)
+                            Spacer(minLength: 0)
+                            Glyph.disclosure
                         }
-                        .buttonStyle(.plain)
-                        Toggle(isOn: enabledBinding(schedule)) { EmptyView() }
-                            .toggleStyle(.pill)
-                            .fixedSize()
-                            .accessibilityLabel(Text(verbatim: schedule.name))
+                        .contentShape(.rect)
                     }
+                    .buttonStyle(.plain)
                     unlock
                 }
                 .animation(.snappy, value: kidHours.settings.unlock)
@@ -167,7 +137,7 @@ struct KidHoursScreen: View {
             Card(raised: true) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("No schedule yet").oynoRowTitle()
-                    Text("Add one with New, and pick the apps to pause below.").oynoCaption()
+                    Text("Add one with New, and pick the apps it pauses.").oynoCaption()
                 }
             }
         }
@@ -181,31 +151,33 @@ struct KidHoursScreen: View {
             ScrollView(.horizontal) {
                 HStack(spacing: 10) {
                     ForEach(kidHours.others) { schedule in
-                        ScheduleCard(schedule: schedule, summary: Self.summary(schedule)) { editing = .edit(schedule) }
+                        ScheduleCard(schedule: schedule, summary: ScheduleWords.summary(schedule)) {
+                            open = .existing(schedule)
+                        }
                     }
-                    AddCard(width: 110) { editing = .new }
+                    AddCard(width: 110) { open = .new }
                 }
             }
             .scrollIndicators(.hidden)
         }
     }
 
-    private var paused: some View {
+    /// Empty until the parent picks something: iOS keeps Phone and Messages reachable anyway.
+    private var alwaysAllowed: some View {
         VStack(alignment: .leading, spacing: Metric.Space.s) {
-            SectionHeader(title: "Paused during Kid hours") {
-                EditLink { picking = .paused }
+            SectionHeader(title: "Always allowed") {
+                EditLink { picking = .alwaysAllowed }
             }
-            TokenGrid(items: kidHours.paused) { picking = .paused }
+            TokenGrid(items: kidHours.alwaysAllowed) { picking = .alwaysAllowed }
         }
     }
 
-    /// Empty until the parent picks something: iOS keeps Phone and Messages reachable anyway.
-    private var alwaysOpen: some View {
+    private var neverAllowed: some View {
         VStack(alignment: .leading, spacing: Metric.Space.s) {
-            SectionHeader(title: "Always open") {
-                EditLink { picking = .alwaysOpen }
+            SectionHeader(title: "Never allowed") {
+                EditLink { picking = .neverAllowed }
             }
-            TokenGrid(items: kidHours.alwaysOpen) { picking = .alwaysOpen }
+            TokenGrid(items: kidHours.neverAllowed) { picking = .neverAllowed }
         }
     }
 
@@ -223,16 +195,18 @@ struct KidHoursScreen: View {
     }
 }
 
-/// A schedule on its way into the sheet. New ones start on, every day, after dinner.
-private struct ScheduleDraft: Identifiable {
+/// The schedule in the sheet. A new one starts on, every day, after dinner, with a name the
+/// parent can change.
+private struct OpenSchedule: Identifiable {
     let schedule: KidHoursSchedule
     let isNew: Bool
 
     var id: UUID { schedule.id }
 
-    static var new: ScheduleDraft {
-        ScheduleDraft(schedule: KidHoursSchedule(name: "", start: 19 * 60, end: 20 * 60, weekdays: Set(1...7)), isNew: true)
+    static var new: OpenSchedule {
+        let schedule = KidHoursSchedule(name: String(interface: "New schedule"), start: 19 * 60, end: 20 * 60, weekdays: Set(1...7))
+        return OpenSchedule(schedule: schedule, isNew: true)
     }
 
-    static func edit(_ schedule: KidHoursSchedule) -> ScheduleDraft { ScheduleDraft(schedule: schedule, isNew: false) }
+    static func existing(_ schedule: KidHoursSchedule) -> OpenSchedule { OpenSchedule(schedule: schedule, isNew: false) }
 }

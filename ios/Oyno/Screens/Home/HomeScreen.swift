@@ -1,39 +1,55 @@
+import DeviceActivity
 import SwiftUI
 
-/// D2 on the canvas: the family on its planet, today's minutes together, and the one easy
-/// thing to do next. Pressing the planet shrinks it into the worlds.
+/// The family on its planet, the bloom it grows on, today's minutes together and paused, and the
+/// phone's screen time. Pressing the planet or its name shrinks it into the worlds.
 struct HomeScreen: View {
-    /// Switches to Play with the suggested game.
+    /// Switches to Play.
     let play: () -> Void
 
     @Environment(OynoStore.self) private var oyno
     @Environment(KidHoursStore.self) private var kidHours
-    @AppStorage("oyno.energy") private var energy = Energy.low
-    @State private var worldsOpen = false
+    @State private var worldsOpen: Bool
     @State private var profileOpen = false
+    /// The world the gallery opens on, when Home appears with it open.
+    private let showingWorld: World.ID?
 
-    private var suggestion: Activity { Activity.pick(for: energy) }
+    init(play: @escaping () -> Void, showingWorld: World.ID? = nil) {
+        self.play = play
+        self.showingWorld = showingWorld
+        _worldsOpen = State(initialValue: showingWorld != nil)
+    }
 
     var body: some View {
         ScrollView {
             VStack(spacing: Metric.Space.l) {
                 header
 
-                PlanetScene(open: worldsOpen, bloom: oyno.bloom) {
+                PlanetScene(open: worldsOpen, explorable: true, bloom: oyno.bloom, showing: showingWorld) {
                     open()
                 } onClose: {
                     worldsOpen = false
                 }
                 .frame(maxWidth: 300)
+                .screenshotCallout("worlds")
 
-                today
-                stats
-                nextCard
+                TimelineView(.everyMinute) { context in
+                    TodayScore(
+                        bloom: oyno.bloom,
+                        playedMinutes: oyno.minutesToday,
+                        pausedMinutes: kidHours.pausedMinutesToday(now: context.date)
+                    )
+                }
+
+                if kidHours.isAuthorized { screenTime }
             }
             .padding(.horizontal, Metric.gutter)
-            .padding(.bottom, Metric.Space.xl)
+            .padding(.bottom, Metric.Space.l)
         }
         .scrollIndicators(.hidden)
+        .safeAreaInset(edge: .bottom) {
+            startGame.padding(.bottom, Metric.Space.s)
+        }
         .background(Palette.sky.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
         .sheet(isPresented: $profileOpen) { ProfileScreen().tracksScreen(.profile) }
@@ -49,93 +65,61 @@ struct HomeScreen: View {
             Image("Wordmark")
                 .accessibilityLabel(Text(verbatim: "Oyno"))
             Spacer()
-            BloomPill(bloom: oyno.bloom)
             GlassIconButton(symbol: "person", label: "Profile") { profileOpen = true }
         }
         .padding(.top, Metric.Space.s)
     }
 
-    private var today: some View {
-        VStack(spacing: 2) {
-            Text("Together today").oynoEyebrow()
-            Text("\(oyno.minutesToday) min").oynoHeadlineValue()
-        }
-        .accessibilityElement(children: .combine)
-    }
-
-    private var stats: some View {
-        HStack(spacing: Metric.Space.s) {
-            stat(value: "\(oyno.tally.rounds)", label: String(interface: "Rounds"))
-            stat(value: "\(oyno.tally.minutes)", label: String(interface: "Minutes"))
-            stat(value: oyno.world.name, label: String(interface: "World"))
-        }
-    }
-
-    private func stat(value: String, label: String) -> some View {
-        VStack(spacing: 2) {
-            Text(verbatim: value).oynoValue(17, .extrabold).lineLimit(1).minimumScaleFactor(0.7)
-            Text(verbatim: label).oynoCaption()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, Metric.Space.m)
-        .glassCard(radius: 20)
-        .accessibilityElement(children: .combine)
-    }
-
-    private var nextCard: some View {
-        Card(raised: true) {
-            VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Label {
-                        Text(kidHoursLine)
-                    } icon: {
-                        Image(systemName: "clock")
-                    }
-                    .font(Typeface.ui(12, .semibold, relativeTo: .caption))
-                    .foregroundStyle(Palette.muted)
-                    Spacer()
-                    if kidHours.isOnNow {
-                        Text("On now")
-                            .font(Typeface.ui(11, .extrabold, relativeTo: .caption2))
-                            .foregroundStyle(Palette.pastelGreen.ink)
-                            .padding(.horizontal, 9)
-                            .frame(height: 22)
-                            .background(Palette.pastelGreen.fill, in: .capsule)
-                    }
-                }
-                Text("\(energy.label) battery? Try \(suggestion.title)")
-                    .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
-                    .tracking(-0.4)
+    private var startGame: some View {
+        Button {
+            Haptics.tap()
+            play()
+        } label: {
+            HStack(spacing: 10) {
+                Glyph(symbol: "play.fill", size: 15, weight: .bold)
+                Text("Start a game")
+                    .font(Typeface.ui(17, .bold, relativeTo: .headline))
                     .foregroundStyle(Palette.ink)
-                Text(verbatim: suggestion.tags.map(\.label).joined(separator: " · "))
-                    .oynoCaption()
-                Button {
-                    Haptics.tap()
-                    play()
-                } label: {
-                    Label("Start \(suggestion.minutes) min", systemImage: "play.fill")
-                        .font(Typeface.ui(15, .bold, relativeTo: .subheadline))
-                        .foregroundStyle(Palette.onAccent)
-                        .padding(.horizontal, 18)
-                        .frame(height: Metric.tapTarget)
-                        .background(Palette.accent, in: .capsule)
-                }
-                .buttonStyle(.plain)
-                .padding(.top, Metric.Space.s)
+                Glyph(symbol: "chevron.right", size: 13, weight: .bold)
             }
+            .padding(.horizontal, 24)
+            .frame(height: Metric.primaryButton)
+            .floatingGlass()
         }
+        .buttonStyle(.plain)
     }
 
-    private var kidHoursLine: String {
-        if let current = kidHours.current {
-            return String(interface: "Kid hours · until \(Format.timeOfDay(minutes: current.end))")
+    private var screenTime: some View {
+        Group {
+            #if DEBUG
+            if let seeded = kidHours.seededUsage {
+                AppUsageCard(usage: seeded) { TokenTile(item: .placeholder($0.name)) }
+            } else {
+                report
+            }
+            #else
+            report
+            #endif
         }
-        if let end = kidHours.unlockEnd {
-            return String(interface: "Apps open · until \(Format.timeOfDay(date: end))")
+        .frame(height: AppUsageCard<EmptyView>.height)
+        .glassCard()
+    }
+
+    /// Drawn by `OynoReport`: only Screen Time's own process may read what each app took.
+    private var report: some View {
+        let today = DateInterval(start: Calendar.current.startOfDay(for: .now), duration: 86_400)
+        return DeviceActivityReport(.todayApps, filter: DeviceActivityFilter(segment: .daily(during: today), users: .all, devices: .init([.iPhone])))
+    }
+}
+
+private extension View {
+    /// Liquid Glass from iOS 26, the glass card before it.
+    @ViewBuilder
+    func floatingGlass() -> some View {
+        if #available(iOS 26, *) {
+            glassEffect(.regular.interactive(), in: .capsule)
+        } else {
+            glassCard(raised: true, radius: Metric.primaryButton / 2)
         }
-        if let next = kidHours.featured, next.isEnabled, let starts = next.nextStart(after: .now) {
-            return String(interface: "Kid hours · \(Format.dayAndTime(starts))")
-        }
-        return String(interface: "Kid hours are off")
     }
 }

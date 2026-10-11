@@ -37,14 +37,14 @@ enum AnalyticsEvent {
     case screenViewed(screen: AppScreen)
 
     // The core loop: one easy thing, the timer, the planet.
-    case roundStarted(activity: String, energy: String)
+    case roundStarted(activity: String, energy: String, age: String)
     case roundCompleted(activity: String, minutes: Int)
     case planetTapped(bloom: Int)
     case worldsOpened(bloom: Int)
 
     // Kid hours.
     case kidHoursAuthorized(granted: Bool)
-    case kidHoursSaved(apps: Int, categories: Int, alwaysOpen: Int)
+    case kidHoursSaved(alwaysAllowed: Int, neverAllowed: Int)
     case kidHoursScheduleSaved(schedules: Int)
     case kidHoursBreak(minutes: Int, reason: String)
     case kidHoursLockedEarly
@@ -92,11 +92,11 @@ enum AnalyticsEvent {
         case let .autoLoggedOut(reason): ["reason": reason]
         case let .settingsChanged(field): ["field": field]
         case let .screenViewed(screen): ["screen": screen.rawValue]
-        case let .roundStarted(activity, energy): ["activity": activity, "energy": energy]
+        case let .roundStarted(activity, energy, age): ["activity": activity, "energy": energy, "age": age]
         case let .roundCompleted(activity, minutes): ["activity": activity, "minutes": minutes]
         case let .planetTapped(bloom), let .worldsOpened(bloom): ["bloom": bloom]
         case let .kidHoursAuthorized(granted): ["granted": granted]
-        case let .kidHoursSaved(apps, categories, alwaysOpen): ["apps": apps, "categories": categories, "always_open": alwaysOpen]
+        case let .kidHoursSaved(alwaysAllowed, neverAllowed): ["always_allowed": alwaysAllowed, "never_allowed": neverAllowed]
         case let .kidHoursScheduleSaved(schedules): ["schedules": schedules]
         case let .kidHoursBreak(minutes, reason): ["minutes": minutes, "reason": reason]
         case let .paywallViewed(context): ["context": context.rawValue]

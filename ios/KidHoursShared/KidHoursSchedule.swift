@@ -1,8 +1,10 @@
+import FamilyControls
 import Foundation
 
-/// When Kid hours run: a named start and end time on chosen weekdays. Pure, so the app and
-/// the monitor extension agree on "is it Kid hours right now" and the tests can check it.
-struct KidHoursSchedule: Codable, Hashable, Identifiable {
+/// When Kid hours run and what they pause: a named start and end time on chosen weekdays, and
+/// the schedule's own apps. Pure, so the app and the monitor extension agree on "is it Kid
+/// hours right now" and the tests can check it.
+struct KidHoursSchedule: Codable, Equatable, Identifiable {
     var id = UUID()
     var name: String
     /// Minutes after midnight.
@@ -14,6 +16,8 @@ struct KidHoursSchedule: Codable, Hashable, Identifiable {
     /// Whether a round played during this schedule earns the parent `unlockMinutes` of open apps.
     var unlocksAfterRound = true
     var unlockMinutes = 20
+    /// What this schedule pauses.
+    var apps = FamilyActivitySelection()
 
     /// Screen Time refuses an interval shorter than this.
     static let minimumMinutes = 15
@@ -60,10 +64,11 @@ struct KidHoursSchedule: Codable, Hashable, Identifiable {
 
 extension KidHoursSchedule {
     private enum CodingKeys: String, CodingKey {
-        case id, name, start, end, weekdays, isEnabled, unlocksAfterRound, unlockMinutes
+        case id, name, start, end, weekdays, isEnabled, unlocksAfterRound, unlockMinutes, apps
     }
 
-    /// Schedules saved before the unlock settings existed decode with today's defaults.
+    /// Schedules saved before the unlock settings or their own apps existed decode with
+    /// today's defaults. `KidHoursSettings` hands the old shared apps to each one.
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.init(
@@ -74,7 +79,8 @@ extension KidHoursSchedule {
             weekdays: try container.decode(Set<Int>.self, forKey: .weekdays),
             isEnabled: try container.decodeIfPresent(Bool.self, forKey: .isEnabled) ?? true,
             unlocksAfterRound: try container.decodeIfPresent(Bool.self, forKey: .unlocksAfterRound) ?? true,
-            unlockMinutes: try container.decodeIfPresent(Int.self, forKey: .unlockMinutes) ?? 20
+            unlockMinutes: try container.decodeIfPresent(Int.self, forKey: .unlockMinutes) ?? 20,
+            apps: try container.decodeIfPresent(FamilyActivitySelection.self, forKey: .apps) ?? FamilyActivitySelection()
         )
     }
 }

@@ -1,22 +1,23 @@
 import SwiftUI
 
 /// The two white rings and the four stars around the planet after a round, laid over
-/// `PlanetScene`. They settle in when the screen appears and flare again on every bump of
-/// `burst`: the kid's taps.
+/// `PlanetScene`. They settle in when the screen appears and answer every bump of `burst`, the
+/// kid's taps: a ripple leaves the inner ring as it lights up, the rings swell as it passes,
+/// and the stars flare and glide on along the orbit.
 struct PlanetHalo: View {
     let burst: Int
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var settled = false
-    @State private var twinkling = false
     @State private var ripples = 0
 
-    /// The body's centre, planet and family together, in stage widths.
-    private static let center = CGPoint(x: 0.5, y: 0.56)
+    /// `delay` is how far behind the inner ring each one settles in and swells.
     private static let rings: [(diameter: CGFloat, opacity: Double, delay: Double)] = [
         (1.1, 0.95, 0),
         (1.26, 0.5, 0.15),
     ]
+    /// How far along the orbit the stars travel per tap.
+    private static let orbitStep = 20.0
 
     private struct Star {
         /// From the body's centre, in stage widths.
@@ -35,33 +36,43 @@ struct PlanetHalo: View {
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-            let center = CGPoint(x: width * Self.center.x, y: width * Self.center.y)
+            let center = CGPoint(x: width * PlanetLayout.bodyCenter.x, y: width * PlanetLayout.bodyCenter.y)
             ZStack {
-                ForEach(Array(Self.rings.enumerated()), id: \.offset) { index, ring in
+                ForEach(Array(Self.rings.enumerated()), id: \.offset) { _, ring in
                     Circle()
                         .strokeBorder(.white.opacity(ring.opacity), lineWidth: 1.5)
                         .frame(width: width * ring.diameter, height: width * ring.diameter)
                         .scaleEffect(settled ? 1 : 0.7)
                         .opacity(settled ? 1 : 0)
                         .animation(intro?.delay(ring.delay), value: settled)
-                        .scaleEffect(twinkling ? 1.015 : 1)
-                        .animation(breath(2.4 + Double(index) * 0.5), value: twinkling)
+                        .keyframeAnimator(initialValue: 1.0, trigger: ripples) { content, scale in
+                            content.scaleEffect(scale)
+                        } keyframes: { _ in
+                            LinearKeyframe(1, duration: 0.1 + ring.delay)
+                            CubicKeyframe(1.06, duration: 0.25)
+                            SpringKeyframe(1, duration: 0.6, spring: .smooth)
+                        }
                         .position(center)
                 }
                 ripple(width: width).position(center)
                 ForEach(Array(Self.stars.enumerated()), id: \.offset) { index, star in
-                    Sparkle()
-                        .fill(star.color)
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(star.color)
                         .frame(width: width * star.size, height: width * star.size)
                         .scaleEffect(settled ? 1 : 0.2)
                         .opacity(settled ? 1 : 0)
                         .animation(pop?.delay(0.3 + Double(index) * 0.08), value: settled)
-                        .scaleEffect(twinkling ? 0.8 : 1)
-                        .opacity(twinkling ? 0.6 : 1)
-                        .animation(breath(0.9 + Double(index) * 0.3), value: twinkling)
-                        .rotationEffect(.degrees(Double(ripples) * 90))
-                        .animation(pop, value: ripples)
-                        .position(x: center.x + width * star.offset.x, y: center.y + width * star.offset.y)
+                        .keyframeAnimator(initialValue: 1.0, trigger: ripples) { content, scale in
+                            content.scaleEffect(scale)
+                        } keyframes: { _ in
+                            CubicKeyframe(1.35, duration: PlanetLayout.bloomPeak)
+                            CubicKeyframe(1, duration: 0.5)
+                        }
+                        .modifier(Orbit(offset: CGPoint(x: width * star.offset.x, y: width * star.offset.y), degrees: orbit))
+                        .animation(.smooth(duration: 0.9).delay(0.06 * Double(index)), value: orbit)
+                        .position(center)
                 }
             }
         }
@@ -72,64 +83,69 @@ struct PlanetHalo: View {
             guard !reduceMotion else { return }
             ripples += 1
         }
-        .task {
-            try? await Task.sleep(for: .seconds(1.1))
-            guard !reduceMotion else { return }
-            twinkling = true
-        }
         .onChange(of: burst) { _, _ in
             guard !reduceMotion else { return }
             ripples += 1
         }
     }
 
+    private var orbit: Double { reduceMotion ? 0 : Double(burst) * Self.orbitStep }
     private var intro: Animation? { reduceMotion ? nil : .spring(response: 0.7, dampingFraction: 0.75) }
     private var pop: Animation? { reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.6) }
-
-    private func breath(_ seconds: Double) -> Animation? {
-        reduceMotion ? nil : .easeInOut(duration: seconds).repeatForever(autoreverses: true)
-    }
 
     private struct Ripple {
         var scale = 0.85
         var opacity = 0.0
+        var orbitGlow = 0.0
     }
 
-    /// One more ring, sent out from the inner one and gone by the time it passes the outer.
+    /// One more ring, sent out from the inner one on the release and gone by the time it passes
+    /// the outer, while the inner one glows warm.
     private func ripple(width: CGFloat) -> some View {
         KeyframeAnimator(initialValue: Ripple(), trigger: ripples) { value in
-            Circle()
-                .strokeBorder(.white.opacity(0.9), lineWidth: 2)
-                .frame(width: width * 1.1, height: width * 1.1)
-                .scaleEffect(value.scale)
-                .opacity(value.opacity)
+            ZStack {
+                Circle()
+                    .strokeBorder(Palette.gold.opacity(value.orbitGlow), lineWidth: 2.5)
+                    .frame(width: width * 1.1, height: width * 1.1)
+                Circle()
+                    .strokeBorder(.white.opacity(0.9), lineWidth: 2)
+                    .frame(width: width * 1.1, height: width * 1.1)
+                    .scaleEffect(value.scale)
+                    .opacity(value.opacity)
+            }
         } keyframes: { _ in
             KeyframeTrack(\.scale) {
-                LinearKeyframe(0.85, duration: 0.01)
+                LinearKeyframe(0.85, duration: 0.09)
                 CubicKeyframe(1.4, duration: 1.1)
             }
             KeyframeTrack(\.opacity) {
+                LinearKeyframe(0, duration: 0.09)
                 LinearKeyframe(0.9, duration: 0.06)
                 LinearKeyframe(0, duration: 1.05)
+            }
+            KeyframeTrack(\.orbitGlow) {
+                CubicKeyframe(0.5, duration: PlanetLayout.bloomPeak)
+                CubicKeyframe(0, duration: PlanetLayout.bloomLength - PlanetLayout.bloomPeak)
             }
         }
     }
 }
 
-/// A four-point star, as the canvas draws them.
-private struct Sparkle: Shape {
-    func path(in rect: CGRect) -> Path {
-        let center = CGPoint(x: rect.midX, y: rect.midY)
-        let outer = min(rect.width, rect.height) / 2
-        let inner = outer * 0.35
-        var path = Path()
-        for index in 0..<8 {
-            let angle = Double(index) * .pi / 4 - .pi / 2
-            let radius = index.isMultiple(of: 2) ? outer : inner
-            let point = CGPoint(x: center.x + cos(angle) * radius, y: center.y + sin(angle) * radius)
-            if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
-        }
-        path.closeSubpath()
-        return path
+/// Moves a view placed at the body's centre out to `offset`, turned `degrees` about the
+/// centre, so an animated turn travels the arc of the orbit rather than its chord.
+private struct Orbit: GeometryEffect {
+    let offset: CGPoint
+    var degrees: Double
+
+    var animatableData: Double {
+        get { degrees }
+        set { degrees = newValue }
+    }
+
+    func effectValue(size: CGSize) -> ProjectionTransform {
+        let angle = degrees * .pi / 180
+        let x = offset.x * cos(angle) - offset.y * sin(angle)
+        let y = offset.x * sin(angle) + offset.y * cos(angle)
+        return ProjectionTransform(CGAffineTransform(translationX: x, y: y))
     }
 }

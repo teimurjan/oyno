@@ -4,32 +4,6 @@ import SwiftUI
 
 // The pieces `KidHoursScreen` is built from, in the order they appear on it.
 
-/// A glass pill rather than the ink one, so the schedule switch stays the one ink fill on
-/// Kid hours: the header's "New".
-struct GlassPill: View {
-    let title: LocalizedStringResource
-    let symbol: String
-    let action: () -> Void
-
-    var body: some View {
-        Button {
-            Haptics.tap()
-            action()
-        } label: {
-            HStack(spacing: 6) {
-                Glyph(symbol: symbol, size: 13, weight: .bold)
-                Text(title)
-                    .font(Typeface.ui(14, .bold, relativeTo: .subheadline))
-                    .foregroundStyle(Palette.ink)
-            }
-            .padding(.horizontal, 14)
-            .frame(height: Metric.compactControl)
-            .glassCard(radius: Metric.compactControl / 2)
-        }
-        .buttonStyle(.plain)
-    }
-}
-
 struct SectionHeader<Trailing: View>: View {
     let title: LocalizedStringResource
     @ViewBuilder var trailing: Trailing
@@ -79,7 +53,7 @@ struct StatusPill: View {
     }
 }
 
-/// One of the other schedules, in the row under the featured one.
+/// One of the other schedules, in the row under the featured one. The card opens the schedule.
 struct ScheduleCard: View {
     let schedule: KidHoursSchedule
     let summary: String
@@ -112,6 +86,26 @@ struct ScheduleCard: View {
     }
 
     private var tint: ScheduleTint { ScheduleTint.forStart(minutes: schedule.start) }
+}
+
+/// How a schedule reads on its card and in its sheet.
+@MainActor
+enum ScheduleWords {
+    static func summary(_ schedule: KidHoursSchedule) -> String {
+        "\(Format.weekdays(schedule.weekdays)) · \(Format.timeRange(start: schedule.start, end: schedule.end))"
+    }
+
+    /// "On now · ends in 1h 48m", "Apps open until 6:10 PM", "Starts Mon 4:30 PM" or "Off".
+    static func status(_ schedule: KidHoursSchedule, in kidHours: KidHoursStore) -> String {
+        if schedule.id == kidHours.current?.id, let ends = schedule.end(on: .now) {
+            return String(interface: "On now · ends in \(Format.remaining(until: ends))")
+        }
+        if let end = kidHours.unlockEnd, schedule.contains(.now) {
+            return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
+        }
+        guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
+        return String(interface: "Starts \(Format.dayAndTime(next))")
+    }
 }
 
 /// The dashed "Add" at the end of the schedules row.
@@ -172,10 +166,7 @@ struct TokenTile: View {
     var body: some View {
         Group {
             if case .placeholder(let name) = item {
-                Text(verbatim: String(name.prefix(1)))
-                    .font(Typeface.ui(size * 0.37, .extrabold, relativeTo: .title3))
-                    .foregroundStyle(Palette.muted)
-                    .accessibilityLabel(Text(verbatim: name))
+                placeholder(name)
             } else {
                 Fitted(height: size * 0.74, width: size * 0.74) { icon }
             }
@@ -193,31 +184,24 @@ struct TokenTile: View {
         case .placeholder: EmptyView()
         }
     }
-}
 
-/// A Screen Time label at the size a tile wants. Those labels set their own font and size and
-/// ignore ours, so the one lever left is a transform: measure what the system drew, then scale
-/// it. The icon arrives small, so a scaled one is a little soft; there is no API for a bigger one.
-struct Fitted<Content: View>: View {
-    let height: CGFloat
-    /// The box to fit into, or the content's own width at that height.
-    var width: CGFloat?
-    @ViewBuilder var content: Content
-
-    @State private var natural = CGSize.zero
-
-    private var scale: CGFloat {
-        guard natural.width > 0, natural.height > 0 else { return 1 }
-        let byHeight = height / natural.height
-        return width.map { min(byHeight, $0 / natural.width) } ?? byHeight
-    }
-
-    var body: some View {
-        content
-            .fixedSize()
-            .onGeometryChange(for: CGSize.self) { $0.size } action: { natural = $0 }
-            .scaleEffect(scale)
-            .frame(width: width ?? natural.width * scale, height: height)
+    /// The screenshot harness's stand-in for a token: the app's icon from the Debug-only
+    /// `ScreenshotIcons` catalog, else its first letter.
+    @ViewBuilder
+    private func placeholder(_ name: String) -> some View {
+        if let image = UIImage(named: name) {
+            let side = size * 0.74
+            Image(uiImage: image)
+                .resizable()
+                .frame(width: side, height: side)
+                .clipShape(.rect(cornerRadius: side * 0.225, style: .continuous))
+                .accessibilityLabel(Text(verbatim: name))
+        } else {
+            Text(verbatim: String(name.prefix(1)))
+                .font(Typeface.ui(size * 0.37, .extrabold, relativeTo: .title3))
+                .foregroundStyle(Palette.muted)
+                .accessibilityLabel(Text(verbatim: name))
+        }
     }
 }
 
@@ -294,27 +278,33 @@ struct UnlockStrip: View {
     }
 }
 
-/// What the last round earned, folded into the featured schedule until it is used.
+/// What the last round earned, folded into the featured schedule for the minute it lasts.
 struct EarnedStrip: View {
     let earned: KidHoursEarned
     let onClaim: () -> Void
 
     var body: some View {
-        HStack(spacing: 10) {
-            Glyph(symbol: "gift.fill", size: 13, weight: .bold, color: Palette.pastelGreen.ink)
-            HStack(spacing: 5) {
-                Text("\(earned.minutes) min earned").foregroundStyle(Palette.ink)
-                Text("by \(Format.timeOfDay(date: earned.expiresAt))").foregroundStyle(Palette.muted)
+        TimelineView(.periodic(from: .now, by: 1)) { context in
+            let left = max(0, Int(earned.expiresAt.timeIntervalSince(context.date).rounded(.up)))
+            HStack(spacing: 10) {
+                Glyph(symbol: "gift.fill", size: 13, weight: .bold, color: Palette.pastelGreen.ink)
+                HStack(spacing: 5) {
+                    Text("\(earned.minutes) min earned").foregroundStyle(Palette.ink)
+                    Text("\(Format.clock(seconds: left)) left")
+                        .foregroundStyle(Palette.muted)
+                        .contentTransition(.numericText(countsDown: true))
+                        .animation(.default, value: left)
+                }
+                .font(Typeface.figures(14, .bold, relativeTo: .subheadline))
+                .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+                .accessibilityElement(children: .combine)
+                Spacer(minLength: 0)
+                StripButton(title: "Unlock", action: onClaim)
             }
-            .font(Typeface.figures(14, .bold, relativeTo: .subheadline))
-            .monospacedDigit()
-            .lineLimit(1)
-            .minimumScaleFactor(0.8)
-            .accessibilityElement(children: .combine)
-            Spacer(minLength: 0)
-            StripButton(title: "Unlock", action: onClaim)
+            .strip(Palette.pastelGreen)
         }
-        .strip(Palette.pastelGreen)
     }
 }
 

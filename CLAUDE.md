@@ -1,8 +1,8 @@
 # Oyno
 
-For parents of 2 to 8 year olds whose phone eats the evening with their kid. Oyno pauses the
-apps they pick during Kid hours. It hands them one easy 10-minute game, sized to the energy they
-have left. Every round played together grows the family's little planet.
+For parents of 0 to 5 year olds whose phone eats the evening with their kid. Oyno pauses the
+apps they pick during Kid hours. It hands them one easy 5 to 15 minute game, sized to the kid's
+age and the energy they have left. Every round played together grows the family's little planet.
 
 ## Architecture
 
@@ -27,13 +27,33 @@ writes `Resources/Funnel.json`, which is generated and committed, never edited.
 refused write. The billed amount is the big figure (3.1.2). The trial is a 3-day App Store intro
 offer, never a server allowance, and store copy must not say we charge from the start.
 
-**The games are data, not Swift and not catalogue strings.** `activities/en.json` is the source.
-One translation file per locale sits beside it. `bun run activities:build` writes
-`Resources/Activities.json`, which is generated and committed, never edited.
-`bun run activities:translate` fills what a locale is missing, or holds for English that was
-reworded since, keyed by a fingerprint of the English. `bun run activities:check` fails on any gap.
-`Activity.swift` only decodes. The games stay in the bundle, not on the API. A game must show
-instantly and offline, and picking needs the rounds, which never leave the phone.
+**The games are data, not Swift and not catalogue strings.** `activities/en.json` is the source:
+500 games, each for one age band (`0-1`, `1-3`, `3-5`) and one energy, 5 to 15 minutes, at most
+three steps of one sentence each. Every game names its `mechanic` (one of 27 activity families,
+named after Harvard's guides: hide-and-find, stop-go, sorting-switch, …), the executive functions
+it exercises (`skills`) and its `evidence`. The bibliography is the `sources` block, every entry
+checked against Crossref. A study carries its `design` (trial, experiment, longitudinal,
+observational), one sentence on who took part and what they did (`studied`), the age of its
+youngest participants (`fromMonths`), the bands it speaks to and the mechanics it studied
+(`supports`, taken from the paper's task battery or intervention). A guide carries the mechanics
+it recommends per band (`recommends`) and one sentence of what it says for that band (`says`):
+Harvard's 2014 activities guide and its 5 to 7 chapter, the 2022 Brain-Building Through Play
+handouts, the Serve and Return handout, and the AAP's Power of Play clinical report. The schema
+refuses a citation that does not speak to the game's mechanic at the game's age, a study whose
+youngest participants were older than the game's youngest player (`fromMonths` on the game, else
+the band's first month), and a game without both a study and a guide. The citing order is the
+youngest-covering study first, then the strongest design, so a game is never aged up by a second
+citation. A game that starts above its band says so in the blurb: "2 and up" for a toddler game
+from 22 months, "four and up" for a preschool game from 42 months. Reviews are not cited: the
+claim is always a primary study plus an institution's recommendation. One translation file per
+locale sits beside the source.
+`bun run activities:build` writes `Resources/Activities.json`, which is generated and committed,
+never edited. `bun run activities:translate` fills what a locale is missing, or holds for English
+that was reworded since, keyed by a fingerprint of the English. `bun run activities:check` fails
+on any gap and on fewer games than the listing promises. `Activity.swift` only decodes. The age
+band is `oyno.age` in defaults, picked on the play screen beside the energy, and the deck turns
+one game a day per age and energy. The games stay in the bundle, not on the API. A game must
+show instantly and offline, and picking needs the rounds, which never leave the phone.
 
 ## The planet scene
 
@@ -50,14 +70,18 @@ are `art/source/planets/<id>.png`, painted from Earth by `bun run art:planets` (
 ## Kid hours (Screen Time)
 
 `KidHoursShared/` is compiled into both the app and the `OynoMonitor` DeviceActivity extension.
-The app (`KidHoursStore`) saves the paused apps, the always-open apps, the schedules and the
-break to the App Group. It arms one daily activity per enabled schedule. The extension answers
-every boundary, a schedule's or the break's, by re-reading the whole state through
-`KidHoursShield.sync`. If an enabled schedule covers now and no break does, the apps are paused.
-Always-open apps are the `except` set on the shielded categories.
+The app (`KidHoursStore`) saves the schedules (each with its own apps), the always-allowed and
+never-allowed apps and the break to the App Group. It arms one daily activity per enabled schedule.
+The extension answers every boundary, a schedule's or the break's, by re-reading the whole state
+through `KidHoursShield.sync`. If an enabled schedule covers now and no break does, the apps of
+every running schedule are paused. Never-allowed apps sit in a second `ManagedSettingsStore` that
+no schedule or break clears. Always-allowed apps are the `except` set on both.
 The 20-minute break is a one-off `kidHours.break` activity. App tokens never leave the phone.
-Distribution needs Apple's Family Controls (Distribution) entitlement for `com.teimurjan.oyno` and
-`com.teimurjan.oyno.monitor`. Development builds work without it. Screen Time does not run in the
+Home's screen time card is drawn by the `OynoReport` DeviceActivityReport extension, the only
+process that may read per-app usage. It borrows `AppUsageCard` and the design system files from
+`Oyno/`. Home's "Together" figure is today's Kid hours minus the unlocks logged in `opened`.
+Distribution needs Apple's Family Controls (Distribution) entitlement for `com.teimurjan.oyno`,
+`com.teimurjan.oyno.monitor` and `com.teimurjan.oyno.report`. Development builds work without it. Screen Time does not run in the
 simulator.
 
 ## Payments: two billers, one entitlement

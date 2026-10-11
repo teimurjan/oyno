@@ -49,9 +49,17 @@ const PLACEMENTS = {
 /** Each asset borrows a caption the listing already has, so nothing new needs translating.
  * One search image per keyword family, for custom product pages. */
 const CREATIVES = [
-  { name: "header", placement: "header", caption: "home", screen: "home" },
-  { name: "search-play", placement: "search", caption: "play", screen: "play:full" },
+  { name: "header", placement: "header", caption: "together", screen: "home" },
+  // "app blocker", "block apps", "social media blocker".
   { name: "search-kidhours", placement: "search", caption: "kidhours", screen: "kidhours" },
+  // "screen time", "app limit".
+  { name: "search-schedule", placement: "search", caption: "schedule", screen: "schedule" },
+  // "toddler", "baby activities".
+  { name: "search-play", placement: "search", caption: "full", screen: "play:full:1-3" },
+  // "baby development", "self control".
+  { name: "search-science", placement: "search", caption: "science", screen: "play:okay:why", phoneTop: -200 },
+  // "family time", "parenting".
+  { name: "search-family", placement: "search", caption: "together-time", screen: "home" },
 ];
 
 /** A capture in the phone, leaning, with the shadow the screenshot frames give it. */

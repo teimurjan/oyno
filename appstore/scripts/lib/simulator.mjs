@@ -3,7 +3,7 @@
 // one seeded screen per launch.
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import path from "node:path";
 import { CACHE_DIR, IOS_PROJECT } from "./screenshot-kit.mjs";
 
@@ -133,6 +133,8 @@ export async function warmUp(device, screen) {
  * @param {{ screen: string, locale?: string, sim?: string, file: string, delay?: number, extraArgs?: string[] }} options
  */
 export async function captureScreen(device, { screen, locale = "en", sim = "en_US", file, delay = DEFAULT_DELAY, extraArgs = [] }) {
+  const report = calloutReport(device);
+  rmSync(report, { force: true });
   const launched = simctl([
     "launch", "--terminate-running-process", device.udid, BUNDLE_ID,
     "--screenshot", screen,
@@ -144,6 +146,17 @@ export async function captureScreen(device, { screen, locale = "en", sim = "en_U
   assertStillRunning(launched, `${locale}/${screen}`);
   simctl(["io", device.udid, "screenshot", "--type", "png", file]);
   simctl(["terminate", device.udid, BUNDLE_ID], { allowFail: true });
+
+  // Beside the capture, so the frame that lifts a widget out finds where it was drawn.
+  const calloutFile = file.replace(/\.png$/, ".json");
+  if (existsSync(report)) copyFileSync(report, calloutFile);
+  else rmSync(calloutFile, { force: true });
+}
+
+/** Where `ScreenshotCallout` writes the frames of the widgets a screen names, in points. */
+function calloutReport(device) {
+  const container = simctl(["get_app_container", device.udid, BUNDLE_ID, "data"]).trim();
+  return path.join(container, "Documents", "screenshot-callouts.json");
 }
 
 /**

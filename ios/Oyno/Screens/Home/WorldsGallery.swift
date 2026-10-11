@@ -2,8 +2,8 @@ import SwiftUI
 
 /// One world in `PlanetScene`'s strip: a whole stage, wider than its slide, so the centred
 /// planet sits where the scene's planet rests and the neighbours peek in at the edges. At
-/// rest only the current world shows, and it carries the family. Open, every world shows and
-/// says whether it is the family's, or how many rounds are left until it is.
+/// rest only the current world shows, and it carries the family. Open, every world shows its
+/// place in the strip and says whether it is the family's, or how many rounds are left until it is.
 struct WorldSlide: View {
     let world: World
     let bloom: Int
@@ -31,10 +31,13 @@ struct WorldSlide: View {
         }
         .overlay(alignment: .top) {
             VStack(spacing: 2) {
+                Text(verbatim: world.place)
+                    .oynoEyebrow()
+                    .monospacedDigit()
                 Text(world.name)
                     .font(Typeface.ui(16, .extrabold, relativeTo: .headline))
                     .foregroundStyle(Palette.ink)
-                Text(caption)
+                Text(world.status(at: bloom))
                     .font(Typeface.ui(13, .semibold, relativeTo: .caption))
                     .foregroundStyle(Palette.muted)
             }
@@ -44,15 +47,25 @@ struct WorldSlide: View {
                 content.opacity(phase.isIdentity ? 1 : 0)
             }
         }
-        .accessibilityElement(children: .combine)
+    }
+}
+
+extension World {
+    /// "World 2 of 31".
+    var place: String {
+        let number = (World.all.firstIndex(of: self) ?? 0) + 1
+        return String(interface: "World \(number) of \(World.all.count)")
     }
 
-    private var caption: String {
-        if !locked { return isHome ? String(interface: "Yours now") : String(interface: "Unlocked") }
-        let left = world.unlocksAt - bloom
-        if world == Bloom.nextWorld(after: bloom) {
+    /// Whether it is the family's, or how many rounds are left until it is.
+    func status(at bloom: Int) -> String {
+        if isUnlocked(at: bloom) {
+            return self == Bloom.currentWorld(at: bloom) ? String(interface: "Yours now") : String(interface: "Unlocked")
+        }
+        let left = unlocksAt - bloom
+        if self == Bloom.nextWorld(after: bloom) {
             return left == 1 ? String(interface: "1 more round") : String(interface: "\(left) more rounds")
         }
-        return String(interface: "Unlocks at bloom \(world.unlocksAt)")
+        return String(interface: "Unlocks at bloom \(unlocksAt)")
     }
 }

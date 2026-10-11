@@ -32,11 +32,16 @@ struct PlanBanner: View {
                 .foregroundStyle(Palette.ink)
             ((purchases.isPaid ? Text("Playing together every evening with") : Text("Play together every evening with"))
                 + Text(verbatim: " ")
-                + Text(Image(systemName: "sparkle")).foregroundStyle(Palette.sheenInk)
-                + Text(verbatim: " Oyno").font(Typeface.ui(15, .bold, relativeTo: .subheadline)).foregroundStyle(Palette.sheenInk))
+                + Text(wordmark).baselineOffset(-3.5))
                 .font(Typeface.ui(15, .regular, relativeTo: .subheadline))
                 .foregroundStyle(Palette.muted)
         }
+    }
+
+    /// The header's wordmark at 3/4 size, so it sits in the line as its last word.
+    private var wordmark: Image {
+        guard let image = UIImage(named: "Wordmark")?.cgImage else { return Image("Wordmark") }
+        return Image(image, scale: 4, label: Text(verbatim: "Oyno"))
     }
 
     /// The planet cropped into the corner, as Opal sets its seal.

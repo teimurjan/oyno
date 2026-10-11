@@ -14,8 +14,8 @@ enum TokenItem: Hashable {
     case placeholder(String)
 }
 
-/// Kid hours on this phone: Screen Time access, the apps to pause and the ones that stay open,
-/// the schedules, and the unlocks inside them. The schedules and the relock run in
+/// Kid hours on this phone: Screen Time access, the schedules and the apps each pauses, the
+/// apps always and never allowed, and the unlocks inside the schedules. The schedules and the relock run in
 /// `OynoMonitor`, so they hold whether or not Oyno is open.
 @MainActor
 @Observable
@@ -27,6 +27,7 @@ final class KidHoursStore {
 
     @ObservationIgnored private let center = DeviceActivityCenter()
     @ObservationIgnored private var authorizationWatch: Task<Void, Never>?
+    @ObservationIgnored private var earnedExpiry: Task<Void, Never>?
 
     /// Screen Time loads the status after launch, so the first read is often `.notDetermined`.
     init() {
@@ -59,6 +60,15 @@ final class KidHoursStore {
         return min(ends, unlock.endsAt)
     }
 
+    /// Minutes so far today that Kid hours kept the apps paused.
+    func pausedMinutesToday(now: Date = .now) -> Int {
+        #if DEBUG
+        if let seededPausedMinutes { return seededPausedMinutes }
+        #endif
+        guard isAuthorized else { return 0 }
+        return settings.pausedMinutes(until: now)
+    }
+
     /// The unlock the last round earned, while the apps are paused and its schedule still runs.
     var claimable: KidHoursEarned? {
         let now = Date.now
@@ -81,27 +91,51 @@ final class KidHoursStore {
     /// Every schedule but the featured one, in the order they were made.
     var others: [KidHoursSchedule] { settings.schedules.filter { $0.id != featured?.id } }
 
-    /// The apps that stay open. Only apps can be excepted from a paused category, so only apps
-    /// are kept.
-    var alwaysOpen: [TokenItem] { settings.alwaysOpen.applicationTokens.map(TokenItem.app) }
-
-    var paused: [TokenItem] {
+    /// Only apps can be excepted from a paused category, so only apps are kept.
+    var alwaysAllowed: [TokenItem] {
         #if DEBUG
-        if let seededPaused { return seededPaused.map(TokenItem.placeholder) }
+        if let seededAllowed { return seededAllowed.map(TokenItem.placeholder) }
         #endif
-        return settings.selection.applicationTokens.map(TokenItem.app)
-            + settings.selection.categoryTokens.map(TokenItem.category)
-            + settings.selection.webDomainTokens.map(TokenItem.domain)
+        return settings.alwaysAllowed.applicationTokens.map(TokenItem.app)
+    }
+
+    var neverAllowed: [TokenItem] {
+        #if DEBUG
+        if let seededNever { return seededNever.map(TokenItem.placeholder) }
+        #endif
+        return Self.items(settings.neverAllowed)
+    }
+
+    func apps(of schedule: KidHoursSchedule) -> [TokenItem] {
+        #if DEBUG
+        if let seededApps { return seededApps.map(TokenItem.placeholder) }
+        #endif
+        return Self.items(schedule.apps)
+    }
+
+    static func items(_ selection: FamilyActivitySelection) -> [TokenItem] {
+        selection.applicationTokens.map(TokenItem.app)
+            + selection.categoryTokens.map(TokenItem.category)
+            + selection.webDomainTokens.map(TokenItem.domain)
     }
 
     #if DEBUG
-    private var seededPaused: [String]?
+    private var seededApps: [String]?
+    private var seededAllowed: [String]?
+    private var seededNever: [String]?
+    private(set) var seededUsage: AppUsage?
+    private var seededPausedMinutes: Int?
 
     /// The simulator has no Screen Time and no app tokens, so the frame stands in a parent who set it up.
-    func seedForScreenshot(paused: [String]) {
+    func seedForScreenshot(schedules: [KidHoursSchedule], apps: [String], alwaysAllowed: [String], neverAllowed: [String], usage: AppUsage, pausedMinutes: Int) {
         authorizationWatch?.cancel()
         isAuthorized = true
-        seededPaused = paused
+        settings.schedules = schedules
+        seededApps = apps
+        seededAllowed = alwaysAllowed
+        seededNever = neverAllowed
+        seededUsage = usage
+        seededPausedMinutes = pausedMinutes
     }
     #endif
 
@@ -117,18 +151,22 @@ final class KidHoursStore {
         Analytics.shared.track(.kidHoursAuthorized(granted: isAuthorized))
     }
 
-    func update(selection: FamilyActivitySelection) {
-        settings.selection = selection
+    /// An app is on one list at most: picking it here takes it off Never allowed.
+    func update(alwaysAllowed: FamilyActivitySelection) {
+        var apps = FamilyActivitySelection()
+        apps.applicationTokens = alwaysAllowed.applicationTokens
+        settings.alwaysAllowed = apps
+        settings.neverAllowed.applicationTokens.subtract(apps.applicationTokens)
         commit()
-        trackSelection()
+        trackLists()
     }
 
-    func update(alwaysOpen: FamilyActivitySelection) {
-        var apps = FamilyActivitySelection()
-        apps.applicationTokens = alwaysOpen.applicationTokens
-        settings.alwaysOpen = apps
+    /// An app is on one list at most: picking it here takes it off Always allowed.
+    func update(neverAllowed: FamilyActivitySelection) {
+        settings.neverAllowed = neverAllowed
+        settings.alwaysAllowed.applicationTokens.subtract(neverAllowed.applicationTokens)
         commit()
-        trackSelection()
+        trackLists()
     }
 
     /// Adds the schedule, or replaces the one with its id. The sheet never lets an invalid
@@ -156,14 +194,21 @@ final class KidHoursStore {
         save(next)
     }
 
-    /// Banks what a round just played earns, when its schedule rewards rounds. One at a time:
-    /// a newer round replaces it.
+    /// Banks what a round just played earns, when its schedule rewards rounds, for a minute.
+    /// One at a time: a newer round replaces it.
     func earn(now: Date = .now) {
         guard let schedule = settings.schedule(at: now), schedule.unlocksAfterRound,
               let ends = schedule.end(on: now)
         else { return }
-        settings.earned = KidHoursEarned(scheduleID: schedule.id, minutes: schedule.unlockMinutes, expiresAt: ends)
+        let expiresAt = min(now.addingTimeInterval(KidHoursEarned.claimWindow), ends)
+        settings.earned = KidHoursEarned(scheduleID: schedule.id, minutes: schedule.unlockMinutes, expiresAt: expiresAt)
         settings.save()
+        earnedExpiry?.cancel()
+        earnedExpiry = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(expiresAt.timeIntervalSinceNow))
+            guard !Task.isCancelled else { return }
+            self?.refresh()
+        }
     }
 
     /// Opens the apps for what the last round earned. False when nothing is claimable or the
@@ -184,7 +229,9 @@ final class KidHoursStore {
 
     func lockNow() {
         guard settings.unlock != nil else { return }
+        let now = Date.now
         settings.unlock = nil
+        settings.opened = settings.opened.map { $0.end > now ? DateInterval(start: min($0.start, now), end: now) : $0 }
         settings.save()
         center.stopMonitoring([.kidHoursUnlock])
         KidHoursShield.sync(settings)
@@ -196,6 +243,7 @@ final class KidHoursStore {
     func refresh(now: Date = .now) {
         if let unlock = settings.unlock, now >= unlock.endsAt { settings.unlock = nil }
         if let earned = settings.earned, !earned.isClaimable(at: now) { settings.earned = nil }
+        settings.opened = Self.today(settings.opened, now: now)
         settings.save()
         guard isAuthorized else { return }
         KidHoursShield.sync(settings, at: now)
@@ -204,10 +252,12 @@ final class KidHoursStore {
     /// The relock is armed before the apps open: an unlock Screen Time will not end is refused,
     /// and the apps stay paused.
     private func unlock(_ reason: KidHoursUnlock.Reason, minutes: Int, now: Date) -> Bool {
-        let wanted = KidHoursUnlock.end(minutes: minutes, from: now)
+        let wanted = now.addingTimeInterval(TimeInterval(minutes * 60))
         let unlock = KidHoursUnlock(reason: reason, startedAt: now, endsAt: max(wanted, liveUnlock?.endsAt ?? wanted))
         center.stopMonitoring([.kidHoursUnlock])
+        let logged = settings.opened
         settings.unlock = unlock
+        settings.opened = Self.today(logged, now: now) + [DateInterval(start: now, end: unlock.endsAt)]
         settings.save()
         do {
             try center.startMonitoring(.kidHoursUnlock, during: DeviceActivitySchedule(
@@ -217,6 +267,7 @@ final class KidHoursStore {
             ))
         } catch {
             settings.unlock = nil
+            settings.opened = logged
             settings.save()
             KidHoursShield.sync(settings, at: now)
             return false
@@ -224,6 +275,12 @@ final class KidHoursStore {
         KidHoursShield.sync(settings, at: now)
         Analytics.shared.track(.kidHoursBreak(minutes: minutes, reason: reason.rawValue))
         return true
+    }
+
+    /// The stretches that reach into the day of `now`.
+    private static func today(_ opened: [DateInterval], now: Date) -> [DateInterval] {
+        let midnight = Calendar.current.startOfDay(for: now)
+        return opened.filter { $0.end > midnight }
     }
 
     private static func moment(_ date: Date) -> DateComponents {
@@ -250,11 +307,10 @@ final class KidHoursStore {
         KidHoursShield.sync(settings)
     }
 
-    private func trackSelection() {
+    private func trackLists() {
         Analytics.shared.track(.kidHoursSaved(
-            apps: settings.selection.applicationTokens.count,
-            categories: settings.selection.categoryTokens.count,
-            alwaysOpen: settings.alwaysOpen.applicationTokens.count
+            alwaysAllowed: settings.alwaysAllowed.count,
+            neverAllowed: settings.neverAllowed.count
         ))
     }
 }

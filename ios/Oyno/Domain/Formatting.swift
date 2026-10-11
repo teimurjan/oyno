@@ -84,8 +84,13 @@ enum Format {
 
     /// "1h 48m", what is left until `date`.
     static func remaining(until date: Date, now: Date = .now) -> String {
+        duration(date.timeIntervalSince(now))
+    }
+
+    /// "4h 38m", "51m": a stretch of time in hours and minutes.
+    static func duration(_ seconds: TimeInterval) -> String {
         let style = Duration.UnitsFormatStyle(allowedUnits: [.hours, .minutes], width: .narrow).locale(InterfaceLanguage.locale)
-        return Duration.seconds(max(0, date.timeIntervalSince(now))).formatted(style)
+        return Duration.seconds(max(0, seconds)).formatted(style)
     }
 
     /// "Daily", "Weekdays", "Weekends", else the days themselves: "Sat, Sun".

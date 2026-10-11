@@ -211,6 +211,31 @@ struct GlassIconButton: View {
     }
 }
 
+/// A glass pill rather than the ink one: Kid hours' "New" and a schedule's "Edit".
+struct GlassPill: View {
+    let title: LocalizedStringResource
+    var symbol: String?
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            HStack(spacing: 6) {
+                if let symbol { Glyph(symbol: symbol, size: 13, weight: .bold) }
+                Text(title)
+                    .font(Typeface.ui(14, .bold, relativeTo: .subheadline))
+                    .foregroundStyle(Palette.ink)
+            }
+            .padding(.horizontal, 14)
+            .frame(height: Metric.compactControl)
+            .glassCard(radius: Metric.compactControl / 2)
+        }
+        .buttonStyle(.plain)
+    }
+}
+
 /// The circle that fills while a finger holds a "Not now". Driven by `holdToConfirm`.
 struct HoldRing: View {
     let progress: CGFloat
@@ -435,6 +460,9 @@ struct LevelBar: View {
 /// The round switch the canvas draws: an ink pill with a white knob, grey when off. Used as
 /// `Toggle(...).toggleStyle(.pill)`, so the label, the trait and the value stay the system's.
 struct PillToggleStyle: ToggleStyle {
+    var track = CGSize(width: 52, height: 32)
+    var onFill = Palette.ink
+
     func makeBody(configuration: Configuration) -> some View {
         Button {
             Haptics.tap()
@@ -444,13 +472,13 @@ struct PillToggleStyle: ToggleStyle {
                 configuration.label
                 Spacer(minLength: Metric.Space.s)
                 Capsule()
-                    .fill(configuration.isOn ? Palette.ink : Palette.hairline)
-                    .frame(width: 52, height: 32)
+                    .fill(configuration.isOn ? onFill : Palette.hairline)
+                    .frame(width: track.width, height: track.height)
                     .overlay(alignment: configuration.isOn ? .trailing : .leading) {
                         Circle()
                             .fill(Palette.surface)
                             .shadow(color: Palette.ink.opacity(0.12), radius: 2, y: 1)
-                            .frame(width: 26, height: 26)
+                            .frame(width: track.height - 6, height: track.height - 6)
                             .padding(3)
                     }
                     .animation(.easeInOut(duration: 0.2), value: configuration.isOn)

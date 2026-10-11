@@ -17,7 +17,9 @@ struct AppRoot: View {
     @State private var kidHours = KidHoursStore()
 
     @State private var tab = RootTab.home
-    @State private var playPath: [PlayRoute] = []
+    /// The game being played, over the tabs from its timer to its Done screen.
+    @State private var round: Activity?
+    @State private var roundPath: [PlayRoute] = []
     @State private var didLoad = false
     @State private var splashDone = false
     /// True while a signed-in account's entitlement is on the wire during the first run, so a
@@ -104,7 +106,7 @@ struct AppRoot: View {
                     requestReview()
                 }
             }
-            .fullScreenCover(item: $paywall) { PaywallScreen(context: $0) }
+            .fullScreenCover(item: paywall(inRound: false)) { PaywallScreen(context: $0) }
             // Below the cover on purpose: a presented view inherits the environment of the
             // view its modifier is attached to, so stores installed above it would not reach it.
             .environment(\.locale, InterfaceLanguage.locale)
@@ -164,10 +166,9 @@ struct AppRoot: View {
             .tabItem { Label("Home", systemImage: "globe.europe.africa.fill") }
             .tag(RootTab.home)
 
-            NavigationStack(path: $playPath) {
-                PlayScreen(path: $playPath)
+            NavigationStack {
+                PlayScreen { round = $0 }
                     .tracksScreen(.play)
-                    .navigationDestination(for: PlayRoute.self, destination: play)
             }
             .tabItem { Label("Play", systemImage: "play.fill") }
             .tag(RootTab.play)
@@ -179,23 +180,30 @@ struct AppRoot: View {
             .tag(RootTab.kidHours)
         }
         .tint(Palette.accent)
+        // A cover, not a push: the tab bar stays put under it instead of popping back in late.
+        .fullScreenCover(item: $round, onDismiss: { roundPath = [] }) { activity in
+            NavigationStack(path: $roundPath) {
+                TimerScreen(activity: activity) { minutes in
+                    guard oyno.record(Round(activityID: activity.id, startedAt: .now, minutes: minutes)) else { return }
+                    kidHours.earn()
+                    roundPath.append(.done(minutes: minutes))
+                }
+                .navigationDestination(for: PlayRoute.self, destination: afterRound)
+            }
+            .fullScreenCover(item: paywall(inRound: true)) { PaywallScreen(context: $0) }
+        }
     }
 
-    @ViewBuilder
-    private func play(_ route: PlayRoute) -> some View {
+    /// The paywall rises from the topmost cover: a round's while one is up, else the root's.
+    private func paywall(inRound: Bool) -> Binding<PaywallContext?> {
+        inRound == (round != nil) ? $paywall : .constant(nil)
+    }
+
+    private func afterRound(_ route: PlayRoute) -> some View {
         switch route {
-        case let .timer(id):
-            if let activity = Activity.find(id) {
-                TimerScreen(activity: activity) { minutes in
-                    let round = Round(activityID: activity.id, startedAt: .now, minutes: minutes)
-                    guard oyno.record(round) else { return }
-                    kidHours.earn()
-                    playPath.append(.done(activityID: activity.id, minutes: minutes))
-                }
-            }
-        case let .done(_, minutes):
-            DoneScreen(minutes: minutes, onKeepPlaying: { playPath = [] }) {
-                playPath = []
+        case let .done(minutes):
+            DoneScreen(minutes: minutes, onKeepPlaying: { round = nil }) {
+                round = nil
                 tab = .home
             }
         }

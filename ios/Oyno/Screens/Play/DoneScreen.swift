@@ -1,8 +1,8 @@
 import SwiftUI
 
 /// D5 on the canvas: the round is in, the kid taps the planet and it blooms inside a halo of
-/// rings and stars, and a sheet at the foot hands the parent their apps back when the
-/// schedule running now rewards a round.
+/// rings and stars. The minutes, the bloom level and the bar land at the bloom's peak. A sheet
+/// at the foot hands the parent their apps back when the schedule running now rewards a round.
 struct DoneScreen: View {
     let minutes: Int
     /// Back to Play, for another round.
@@ -12,18 +12,23 @@ struct DoneScreen: View {
 
     @Environment(OynoStore.self) private var oyno
     @Environment(KidHoursStore.self) private var kidHours
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var tapped = false
     @State private var bursts = 0
+    @State private var lastBurst = Date.distantPast
+    @State private var holding: CGFloat = 0
 
     /// The level before the tap, then the new one: the tap is what grows the planet.
     private var bloom: Int { tapped ? oyno.bloom : max(0, oyno.bloom - 1) }
+    private var minutesTogether: Int { tapped ? oyno.minutesToday : max(0, oyno.minutesToday - minutes) }
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
                 header
-                gain.padding(.top, 14)
-                PlanetScene(grown: tapped, bloom: oyno.bloom, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
+                // Over the halo and the glow, which reach up past the planet's stage.
+                gain.padding(.top, 14).zIndex(1)
+                PlanetScene(pulse: bursts, bloom: oyno.bloom, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
                     .overlay { PlanetHalo(burst: bursts) }
                     .frame(maxWidth: 270)
                     .padding(.top, 6)
@@ -38,17 +43,19 @@ struct DoneScreen: View {
         .safeAreaInset(edge: .bottom, spacing: 0) { sheet }
         .background(Palette.sky.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
-        .toolbar(.hidden, for: .tabBar)
-        .animation(.easeOut(duration: 0.3), value: tapped)
     }
 
-    /// Every tap flares the halo; the first one is the bloom.
+    /// Every tap flares the halo once the last bloom has settled; the first one is the bloom.
     private func tap() {
+        guard Date.now.timeIntervalSince(lastBurst) >= PlanetLayout.bloomLength else { return }
+        lastBurst = .now
         bursts += 1
         guard !tapped else { return }
         Haptics.success()
         Analytics.shared.track(.planetTapped(bloom: oyno.bloom))
-        tapped = true
+        withAnimation(reduceMotion ? .easeOut(duration: 0.3) : .smooth(duration: 0.7).delay(PlanetLayout.bloomPeak)) {
+            tapped = true
+        }
     }
 
     private var header: some View {
@@ -64,7 +71,9 @@ struct DoneScreen: View {
         HStack(spacing: Metric.Space.s) {
             Text("+\(minutes) min").foregroundStyle(Palette.gold)
             Circle().fill(.white.opacity(0.5)).frame(width: 3, height: 3)
-            Text("\(oyno.minutesToday) min together today").foregroundStyle(Palette.onAccent)
+            Text("\(minutesTogether) min together today")
+                .foregroundStyle(Palette.onAccent)
+                .contentTransition(.numericText())
         }
         .font(Typeface.figures(13, .bold, relativeTo: .caption))
         .monospacedDigit()
@@ -72,6 +81,15 @@ struct DoneScreen: View {
         .frame(height: 32)
         .background(Palette.ink, in: .capsule)
         .shadow(color: Palette.ink.opacity(0.18), radius: 10, y: 8)
+        .keyframeAnimator(initialValue: 0.0, trigger: tapped) { content, rise in
+            content
+                .scaleEffect(reduceMotion ? 1 : 1 + 0.08 * rise)
+                .offset(y: reduceMotion ? 0 : -3 * rise)
+        } keyframes: { _ in
+            LinearKeyframe(0, duration: PlanetLayout.bloomPeak)
+            CubicKeyframe(1, duration: 0.2)
+            SpringKeyframe(0, duration: 0.5, spring: .smooth)
+        }
         .accessibilityElement(children: .combine)
     }
 
@@ -103,6 +121,7 @@ struct DoneScreen: View {
                 Text(verbatim: nextWorld)
                     .font(Typeface.ui(13, .semibold, relativeTo: .caption))
                     .foregroundStyle(Palette.muted)
+                    .contentTransition(.numericText())
             }
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
@@ -111,7 +130,6 @@ struct DoneScreen: View {
                 }
             }
             .frame(height: 8)
-            .animation(.spring(response: 0.6, dampingFraction: 0.8), value: share)
         }
         .padding(.horizontal, Metric.cardPadding)
         .padding(.vertical, Metric.Space.m)
@@ -119,19 +137,50 @@ struct DoneScreen: View {
         .accessibilityElement(children: .combine)
     }
 
-    /// How far the family is along the way to the next world, 0 just past a new one.
+    /// The world the family was heading to before the tap. A tap that reaches it fills the bar
+    /// rather than emptying it for the next one.
+    private var heading: (from: Int, to: World)? {
+        let before = max(0, oyno.bloom - 1)
+        return Bloom.nextWorld(after: before).map { (from: Bloom.currentWorld(at: before).unlocksAt, to: $0) }
+    }
+
+    private var reachedWorld: Bool { heading.map { bloom >= $0.to.unlocksAt } ?? false }
+
     private var share: Double {
-        let here = Bloom.currentWorld(at: bloom)
-        guard let next = Bloom.nextWorld(after: bloom) else { return 1 }
-        return Double(bloom - here.unlocksAt) / Double(next.unlocksAt - here.unlocksAt)
+        guard let heading else { return 1 }
+        return min(1, Double(bloom - heading.from) / Double(heading.to.unlocksAt - heading.from))
     }
 
     private var nextWorld: String {
+        if reachedWorld { return String(interface: "New world unlocked") }
         guard let left = Bloom.roundsToNextWorld(from: bloom) else { return String(interface: "Every world is yours") }
         return left == 1 ? String(interface: "1 round to a new world") : String(interface: "\(left) rounds to a new world")
     }
 
     // MARK: The sheet
+
+    /// Held for two seconds, as "Not now" on Play: another round stays the easy choice.
+    private var unlock: some View {
+        HStack(spacing: 9) {
+            HoldRing(progress: holding)
+            Text("Hold to unlock my apps")
+                .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                .foregroundStyle(Palette.muted)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: Metric.tapTarget)
+        .contentShape(.rect)
+        .holdToConfirm(progress: $holding, action: claim)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isButton)
+        .accessibilityLabel(Text("Unlock my apps"))
+        .accessibilityAction { claim() }
+    }
+
+    private func claim() {
+        guard kidHours.claimEarned() else { return Haptics.warning() }
+        onLeave()
+    }
 
     private var sheet: some View {
         VStack(spacing: 14) {
@@ -142,7 +191,7 @@ struct DoneScreen: View {
                         .background(Palette.pastelAmber.fill, in: .rect(cornerRadius: 14))
                     VStack(alignment: .leading, spacing: 1) {
                         Text("Your apps can open for \(earned.minutes) min").oynoRowTitle()
-                        Text("Or later from Kid hours, until \(Format.timeOfDay(date: earned.expiresAt))")
+                        Text("Or from Kid hours within a minute")
                             .font(Typeface.ui(13, .semibold, relativeTo: .caption))
                             .foregroundStyle(Palette.muted)
                     }
@@ -150,11 +199,8 @@ struct DoneScreen: View {
                 }
                 .accessibilityElement(children: .combine)
                 VStack(spacing: 2) {
-                    PrimaryButton(title: "Unlock my apps") {
-                        guard kidHours.claimEarned() else { return Haptics.warning() }
-                        onLeave()
-                    }
-                    QuietButton(title: "Keep playing", action: onKeepPlaying)
+                    PrimaryButton(title: "Keep playing", action: onKeepPlaying)
+                    unlock
                 }
             } else {
                 if let current = kidHours.current {

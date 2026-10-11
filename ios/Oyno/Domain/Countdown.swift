@@ -25,12 +25,6 @@ struct Countdown {
         Int((total - elapsed(at: now)).rounded(.up))
     }
 
-    /// Which of `count` equal parts the round is in, the last one once it has run out.
-    func step(of count: Int, at now: Date) -> Int {
-        guard count > 0, total > 0 else { return 0 }
-        return min(count - 1, Int(elapsed(at: now) / (total / Double(count))))
-    }
-
     mutating func pause(at now: Date) {
         guard pausedAt == nil else { return }
         pausedAt = now

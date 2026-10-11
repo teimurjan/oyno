@@ -97,8 +97,8 @@ struct Screen<Content: View>: View {
     }
 }
 
-/// The frame every sheet sits in: the system's white card, the drag indicator, a header with
-/// a close button, and the same gutter and spacing as `Screen`.
+/// The frame a full-height sheet sits in: frosted glass, the drag indicator, a header with a
+/// close button, and the same gutter and spacing as `Screen`.
 struct SheetScreen<Content: View>: View {
     let title: LocalizedStringResource
     let subtitle: String
@@ -125,7 +125,22 @@ struct SheetScreen<Content: View>: View {
         }
         .scrollDismissesKeyboard(.interactively)
         .presentationDragIndicator(.visible)
+        // Full height, where iOS 26 would turn its own glass opaque.
+        .presentationBackground(.ultraThinMaterial)
         .keyboardDismissBar()
+    }
+}
+
+extension View {
+    /// A partial-height sheet as frosted glass: the system's Liquid Glass from iOS 26, a
+    /// material before it.
+    @ViewBuilder
+    func glassSheet() -> some View {
+        if #available(iOS 26, *) {
+            self
+        } else {
+            presentationBackground(.ultraThinMaterial)
+        }
     }
 }
 

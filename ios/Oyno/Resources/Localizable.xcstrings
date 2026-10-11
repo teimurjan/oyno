@@ -11,12 +11,30 @@
         }
       }
     },
-    "%@ battery? Try %@" : {
+    "%@ left" : {
+
+    },
+    "%@ years" : {
+
+    },
+    "%lld apps" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@ battery? Try %2$@"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld app"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld apps"
+                }
+              }
+            }
           }
         }
       }
@@ -61,16 +79,25 @@
     "+%lld min" : {
 
     },
+    "0–1" : {
+
+    },
     "1 more round" : {
 
     },
     "1 round to a new world" : {
 
     },
+    "1–3" : {
+
+    },
     "3 days free" : {
 
     },
     "3-day free trial" : {
+
+    },
+    "3–5" : {
 
     },
     "A planet that grows" : {
@@ -85,10 +112,13 @@
     "Add" : {
 
     },
-    "Add one with New, and pick the apps to pause below." : {
+    "Add one with New, and pick the apps it pauses." : {
 
     },
     "After work" : {
+
+    },
+    "Age %@" : {
 
     },
     "Allow Screen Time" : {
@@ -97,7 +127,7 @@
     "Almost there. [Save your plan] to start." : {
 
     },
-    "Always open" : {
+    "Always allowed" : {
 
     },
     "Apple couldn't complete that. Check that an Apple Account is signed in under iOS Settings, then try again." : {
@@ -113,9 +143,6 @@
 
     },
     "Apps open until %@" : {
-
-    },
-    "Apps open · until %@" : {
 
     },
     "Apps open, %lld minutes %lld seconds left" : {
@@ -140,6 +167,9 @@
     "Back" : {
 
     },
+    "Back to my world" : {
+
+    },
     "Based on your answer, with Kid hours on every evening." : {
 
     },
@@ -149,10 +179,16 @@
     "Berry" : {
 
     },
+    "Bloom" : {
+
+    },
     "Bloom level %lld" : {
 
     },
     "Blossom" : {
+
+    },
+    "Cancel" : {
 
     },
     "Canyon" : {
@@ -173,9 +209,6 @@
     "Close" : {
 
     },
-    "Close worlds" : {
-
-    },
     "Closer…" : {
 
     },
@@ -192,9 +225,6 @@
 
     },
     "Daily" : {
-
-    },
-    "Days" : {
 
     },
     "Delete account" : {
@@ -227,22 +257,19 @@
     "Dune" : {
 
     },
+    "During this time" : {
+
+    },
     "Earth" : {
 
     },
     "Edit" : {
 
     },
-    "Edit schedule" : {
-
-    },
     "Email" : {
 
     },
     "Ember" : {
-
-    },
-    "Ends" : {
 
     },
     "Energy" : {
@@ -263,6 +290,9 @@
     "Everything unlocks. Nothing to pay today." : {
 
     },
+    "Explore worlds" : {
+
+    },
     "Face down is fine. We'll buzz at the end." : {
 
     },
@@ -281,7 +311,7 @@
     "Fix this" : {
 
     },
-    "For" : {
+    "From" : {
 
     },
     "Frost" : {
@@ -302,6 +332,9 @@
     "Google didn't return an identity token." : {
 
     },
+    "Growing" : {
+
+    },
     "Hand the phone to your kid for this part." : {
 
     },
@@ -318,6 +351,9 @@
 
     },
     "Hold for not now" : {
+
+    },
+    "Hold to unlock my apps" : {
 
     },
     "Home" : {
@@ -344,22 +380,16 @@
     "Keep playing" : {
 
     },
-    "Kept, but not running." : {
-
-    },
     "Kid hours" : {
-
-    },
-    "Kid hours are off" : {
 
     },
     "Kid hours pause the apps you pick, every evening, on the schedule you set." : {
 
     },
-    "Kid hours · %@" : {
+    "Kid hours · until %@" : {
 
     },
-    "Kid hours · until %@" : {
+    "Kid's age" : {
 
     },
     "Lagoon" : {
@@ -398,16 +428,16 @@
     "Mint" : {
 
     },
-    "Minutes" : {
-
-    },
     "More" : {
 
     },
     "Moss" : {
 
     },
-    "Name" : {
+    "Name this schedule" : {
+
+    },
+    "Never allowed" : {
 
     },
     "New" : {
@@ -419,19 +449,28 @@
     "New to Oyno? Any of these creates your account." : {
 
     },
+    "New world unlocked" : {
+
+    },
+    "Next world" : {
+
+    },
     "No payment due now" : {
 
     },
     "No schedule yet" : {
 
     },
+    "No screen time yet today." : {
+
+    },
+    "None" : {
+
+    },
     "Not now" : {
 
     },
     "Nothing today, then %@" : {
-
-    },
-    "Now" : {
 
     },
     "OK" : {
@@ -443,16 +482,13 @@
     "Okay" : {
 
     },
-    "On now" : {
-
-    },
     "On now · ends %@" : {
 
     },
     "On now · ends in %@" : {
 
     },
-    "On the days above." : {
+    "On these days" : {
 
     },
     "Once or twice" : {
@@ -476,7 +512,7 @@
     "Opens your apps for %lld minutes" : {
 
     },
-    "Or later from Kid hours, until %@" : {
+    "Or from Kid hours within a minute" : {
 
     },
     "Orchard" : {
@@ -494,10 +530,10 @@
     "Pause" : {
 
     },
-    "Paused during Kid hours" : {
+    "Pause schedule" : {
 
     },
-    "Pauses apps" : {
+    "Pauses" : {
 
     },
     "Pearl" : {
@@ -527,6 +563,9 @@
     "Poppy" : {
 
     },
+    "Previous world" : {
+
+    },
     "Profile" : {
 
     },
@@ -537,6 +576,9 @@
 
     },
     "Rain" : {
+
+    },
+    "Rename" : {
 
     },
     "Restore" : {
@@ -551,9 +593,6 @@
     "Rose" : {
 
     },
-    "Rounds" : {
-
-    },
     "Save" : {
 
     },
@@ -564,6 +603,9 @@
 
     },
     "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them." : {
+
+    },
+    "Screen time" : {
 
     },
     "See plans" : {
@@ -614,10 +656,10 @@
     "Soon" : {
 
     },
-    "Start %lld min" : {
+    "Start %lld-minute round" : {
 
     },
-    "Start %lld minutes" : {
+    "Start a game" : {
 
     },
     "Start my free trial" : {
@@ -626,21 +668,8 @@
     "Start with 3 days free, and spend them on the floor with your kid." : {
 
     },
-    "Starts" : {
-
-    },
     "Starts %@" : {
 
-    },
-    "Step %lld of %lld" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Step %1$lld of %2$lld"
-          }
-        }
-      }
     },
     "Subscribe" : {
 
@@ -659,6 +688,9 @@
       }
     },
     "Sunlit" : {
+
+    },
+    "Swipe to explore" : {
 
     },
     "Syncing needs an active subscription. Everything you've entered is still on this device." : {
@@ -706,13 +738,19 @@
     "The subscription page didn't open. Try again, or use the link in your receipt email." : {
 
     },
+    "To" : {
+
+    },
     "Today" : {
 
     },
-    "Together today" : {
+    "Together" : {
 
     },
     "Try 3 days free" : {
+
+    },
+    "Turn on schedule" : {
 
     },
     "Turn the chime off" : {
@@ -760,8 +798,18 @@
     "Weekends" : {
 
     },
-    "World" : {
+    "Why it works" : {
 
+    },
+    "World %lld of %lld" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "World %1$lld of %2$lld"
+          }
+        }
+      }
     },
     "You're not subscribed yet" : {
 
@@ -778,7 +826,7 @@
     "Your apps, paused" : {
 
     },
-    "Your battery right now" : {
+    "Your battery" : {
 
     },
     "Your evenings are like this too." : {
@@ -814,13 +862,7 @@
     "at %@" : {
 
     },
-    "by %@" : {
-
-    },
     "left of %@" : {
-
-    },
-    "min" : {
 
     },
     "then %@" : {

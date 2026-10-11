@@ -5,15 +5,17 @@ import Foundation
 /// What the parent chose, in the App Group both the app and `OynoMonitor` read. The apps are
 /// Screen Time's opaque tokens: neither process ever learns their names.
 struct KidHoursSettings: Codable {
-    /// What pauses.
-    var selection = FamilyActivitySelection()
-    /// Apps that stay open even when their category is paused.
-    var alwaysOpen = FamilyActivitySelection()
+    /// Apps no schedule pauses, even when their category is paused.
+    var alwaysAllowed = FamilyActivitySelection()
+    /// Paused all day, every day, through unlocks too.
+    var neverAllowed = FamilyActivitySelection()
     var schedules: [KidHoursSchedule] = []
     /// The apps opened in the middle of Kid hours, after a round or for "Not now".
     var unlock: KidHoursUnlock?
     /// What the last round earned and the parent has not claimed yet.
     var earned: KidHoursEarned?
+    /// Today's stretches of open apps inside Kid hours, so the paused time can leave them out.
+    var opened: [DateInterval] = []
 
     static let appGroup = "group.com.teimurjan.oyno"
     private static let key = "kidHours.settings"
@@ -34,6 +36,14 @@ struct KidHoursSettings: Codable {
         schedules.first { $0.isEnabled && $0.contains(date, calendar: calendar) }
     }
 
+    /// What the running schedules pause at `date`, together. Nil when nothing is paused.
+    func pausedApps(at date: Date, calendar: Calendar = .current) -> FamilyActivitySelection? {
+        guard isPaused(at: date, calendar: calendar) else { return nil }
+        return schedules
+            .filter { $0.isEnabled && $0.contains(date, calendar: calendar) }
+            .reduce(into: FamilyActivitySelection()) { $0.formUnion($1.apps) }
+    }
+
     func isUnlocked(at date: Date) -> Bool {
         unlock.map { date < $0.endsAt } ?? false
     }
@@ -41,6 +51,62 @@ struct KidHoursSettings: Codable {
     /// Whether the apps are paused at `date`: a schedule is running and no unlock is.
     func isPaused(at date: Date, calendar: Calendar = .current) -> Bool {
         schedule(at: date, calendar: calendar) != nil && !isUnlocked(at: date)
+    }
+
+    /// Minutes from midnight to `now` inside Kid hours, the opened stretches left out.
+    func pausedMinutes(until now: Date, calendar: Calendar = .current) -> Int {
+        let midnight = calendar.startOfDay(for: now)
+        let elapsed = Int(now.timeIntervalSince(midnight) / 60)
+        return (0..<elapsed).count { minute in
+            let moment = midnight.addingTimeInterval(TimeInterval(minute * 60))
+            return schedule(at: moment, calendar: calendar) != nil
+                && !opened.contains { $0.start <= moment && moment < $0.end }
+        }
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case alwaysAllowed, neverAllowed, schedules, unlock, earned, opened
+    }
+
+    /// Names older builds saved under.
+    private enum LegacyKeys: String, CodingKey {
+        case selection, alwaysOpen
+    }
+}
+
+extension KidHoursSettings {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let legacy = try decoder.container(keyedBy: LegacyKeys.self)
+        alwaysAllowed = try container.decodeIfPresent(FamilyActivitySelection.self, forKey: .alwaysAllowed)
+            ?? legacy.decodeIfPresent(FamilyActivitySelection.self, forKey: .alwaysOpen)
+            ?? FamilyActivitySelection()
+        neverAllowed = try container.decodeIfPresent(FamilyActivitySelection.self, forKey: .neverAllowed) ?? FamilyActivitySelection()
+        schedules = try container.decodeIfPresent([KidHoursSchedule].self, forKey: .schedules) ?? []
+        unlock = try container.decodeIfPresent(KidHoursUnlock.self, forKey: .unlock)
+        earned = try container.decodeIfPresent(KidHoursEarned.self, forKey: .earned)
+        opened = try container.decodeIfPresent([DateInterval].self, forKey: .opened) ?? []
+        // One list used to pause during every schedule, so each schedule starts with it.
+        if let shared = try legacy.decodeIfPresent(FamilyActivitySelection.self, forKey: .selection) {
+            schedules = schedules.map { schedule in
+                var adopted = schedule
+                if adopted.apps.isEmpty { adopted.apps = shared }
+                return adopted
+            }
+        }
+    }
+}
+
+extension FamilyActivitySelection {
+    var isEmpty: Bool { count == 0 }
+
+    /// Apps, categories and sites, each counted once.
+    var count: Int { applicationTokens.count + categoryTokens.count + webDomainTokens.count }
+
+    mutating func formUnion(_ other: FamilyActivitySelection) {
+        applicationTokens.formUnion(other.applicationTokens)
+        categoryTokens.formUnion(other.categoryTokens)
+        webDomainTokens.formUnion(other.webDomainTokens)
     }
 }
 
@@ -57,13 +123,6 @@ struct KidHoursUnlock: Codable, Equatable {
     /// Screen Time ends an interval on the minute, so its end can arrive this early.
     private static let endTolerance: TimeInterval = 60
 
-    /// `minutes` from `date`, rounded up to the minute Screen Time ends on, so a one-minute
-    /// unlock is never cut to seconds.
-    static func end(minutes: Int, from date: Date) -> Date {
-        let wanted = date.addingTimeInterval(TimeInterval(minutes * 60)).timeIntervalSinceReferenceDate
-        return Date(timeIntervalSinceReferenceDate: (wanted / 60).rounded(.up) * 60)
-    }
-
     /// Whether an end Screen Time reports at `date` is this unlock's own, rather than one
     /// left over from an unlock it replaced.
     func isEnding(at date: Date) -> Bool {
@@ -77,13 +136,19 @@ struct KidHoursUnlock: Codable, Equatable {
     }
 }
 
-/// An unlock a round earned, claimable until the schedule it was played in ends today.
+/// An unlock a round earned, claimable for a minute or until its schedule ends, if sooner.
 struct KidHoursEarned: Codable, Equatable {
     let scheduleID: UUID
     let minutes: Int
     let expiresAt: Date
 
-    func isClaimable(at date: Date) -> Bool { date < expiresAt }
+    static let claimWindow: TimeInterval = 60
+
+    /// An expiry further out than the window is refused: one banked before the window existed,
+    /// or a clock moved back.
+    func isClaimable(at date: Date) -> Bool {
+        date < expiresAt && expiresAt.timeIntervalSince(date) <= Self.claimWindow
+    }
 }
 
 extension DeviceActivityName {

@@ -41,7 +41,6 @@
   --golden-sky: linear-gradient(180deg, #b7cfee 0%, #f2ddc8 40%, #ffe5c2 66%, #fff4e6 100%);
   --sheen: linear-gradient(135deg, #8eddb4 0%, #86c4f2 50%, #b9a6f0 100%);
   --sheen-glow: rgba(134, 196, 242, 0.45);
-  --sheen-ink: linear-gradient(90deg, #2f7a5a 0%, #2f5e9e 50%, #5b47a3 100%);
 
   --accent: var(--brand);
   --muted: var(--ink-muted);

@@ -22,6 +22,14 @@ enum PlanetLayout {
     /// The planet's foot, as a fraction of the stage: where the body scales from, so it stays
     /// over its painted shadow.
     static let bodyAnchor = UnitPoint(x: 0.5, y: 0.848)
+    /// The body's centre, planet and family together, in stage widths.
+    static let bodyCenter = CGPoint(x: 0.5, y: 0.56)
+    /// Seconds from a tap to the fullest point of the bloom, where the reward lands.
+    static let bloomPeak: Double = 0.3
+    /// Seconds from a tap until the bloom has settled. A tap before then starts no new bloom.
+    static let bloomLength: Double = 1
+    /// The body's resting scale once a tap has bloomed it.
+    static let bloomedScale: CGFloat = 1.04
     /// The body's scale once it has shrunk into the worlds gallery's centred slide.
     static let openScale: CGFloat = 0.7
     /// How much of each neighbour's planet the gallery shows at the stage's edges.
@@ -87,19 +95,24 @@ struct PlanetBody: View {
 }
 
 /// The sky, the planet and the family, layered. Press it and the layers lean away from the
-/// finger at their own depths; let go on the planet and `onTap` fires. `grown` scales the
-/// planet and the family up together for the bloom, about the planet's foot so it stays over
-/// its shadow.
+/// finger at their own depths; let go on the planet and `onTap` fires. Each bump of `pulse`
+/// blooms the planet and the family together: a compress, a lift in a warm glow, a settle a
+/// little larger, all about the planet's foot so it stays over its shadow.
 ///
 /// The planet is the current world's slide in a strip of every world, always there. At rest
 /// only that slide shows and the strip is still. `open` shrinks the same slide in place and
 /// fades its neighbours in at the edges, and the strip scrolls. Tapping the centred world
-/// calls `onClose`, and closing scrolls back to the current world as it grows.
+/// calls `onClose`, and closing scrolls back to the current world as it grows. When
+/// `explorable`, `WorldCaption` under the planet opens it, and `WorldsBar` takes its place to
+/// step and close it without a swipe.
 struct PlanetScene: View {
-    let grown: Bool
+    let pulse: Int
     let open: Bool
+    let explorable: Bool
     /// The bloom level whose worlds the strip holds.
     let bloom: Int
+    /// A world to move to once the strip has laid out, instead of the family's own.
+    let showing: World.ID?
     let accessibilityLabel: String
     let onTap: () -> Void
     let onClose: () -> Void
@@ -107,21 +120,29 @@ struct PlanetScene: View {
     @GestureState private var press: CGPoint?
     @State private var floating = false
     @State private var position: String?
+    /// Hides "Swipe to explore" for good once the family has moved through the worlds.
+    @AppStorage("oyno.didBrowseWorlds") private var didBrowseWorlds = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var current: World { Bloom.currentWorld(at: bloom) }
+    private var selectedIndex: Int { World.all.firstIndex { $0.id == position } ?? 0 }
+    private var selected: World { World.all[selectedIndex] }
 
     init(
-        grown: Bool = false,
+        pulse: Int = 0,
         open: Bool = false,
+        explorable: Bool = false,
         bloom: Int = 0,
+        showing: World.ID? = nil,
         accessibilityLabel: String = String(interface: "Open your worlds"),
         onTap: @escaping () -> Void,
         onClose: @escaping () -> Void = {}
     ) {
-        self.grown = grown
+        self.pulse = pulse
         self.open = open
+        self.explorable = explorable
         self.bloom = bloom
+        self.showing = showing
         self.accessibilityLabel = accessibilityLabel
         self.onTap = onTap
         self.onClose = onClose
@@ -130,6 +151,38 @@ struct PlanetScene: View {
     }
 
     var body: some View {
+        VStack(spacing: Metric.Space.s) {
+            stage
+            if explorable {
+                swipeHint
+                    .frame(height: Metric.tapTarget)
+                    .opacity(open && !didBrowseWorlds ? 1 : 0)
+                    .animation(openAnimation, value: open)
+                    .animation(.easeOut(duration: 0.2), value: didBrowseWorlds)
+            }
+        }
+        .onAppear {
+            guard !reduceMotion else { return }
+            withAnimation(.easeInOut(duration: 2.75).repeatForever(autoreverses: true)) { floating = true }
+        }
+        .task {
+            if let showing { position = showing }
+        }
+        .onChange(of: open) { _, isOpen in
+            guard !isOpen else { return }
+            withAnimation(stepAnimation) { position = current.id }
+        }
+        // Home stays alive under the Play tab, so a round there can move the family to a new world.
+        .onChange(of: current) { _, world in position = world.id }
+        // A tick per world snapped to while browsing.
+        .onChange(of: position) { previous, id in
+            guard open, previous != nil, id != nil else { return }
+            Haptics.tap()
+            didBrowseWorlds = true
+        }
+    }
+
+    private var stage: some View {
         GeometryReader { geometry in
             let size = geometry.size
             let pressed = reduceMotion || open ? nil : press
@@ -141,6 +194,8 @@ struct PlanetScene: View {
                     .place(PlanetLayout.sky, width: size.width)
                     .offset(PlanetLayout.offset(PlanetLayout.sky, pressedAt: pressed, in: size))
                     .accessibilityHidden(true)
+
+                glow(width: size.width)
 
                 ScrollView(.horizontal) {
                     LazyHStack(spacing: 0) {
@@ -156,12 +211,15 @@ struct PlanetScene: View {
                             .frame(width: size.width * PlanetLayout.slideWidth, height: size.height)
                             .contentShape(.rect)
                             .onTapGesture { tap(world) }
-                            .accessibilityAddTraits(.isButton)
-                            .accessibilityAction(named: Text("Close worlds")) { onClose() }
                         }
                     }
                     .scrollTargetLayout()
                 }
+                // Home lays the stage out at a provisional width first, and a strip resized after
+                // scrolling keeps its old offset. Rebuilt, it lands on its world at the real one.
+                .id(size.width)
+                // No fade: the rebuild can fall inside the float's endless animation.
+                .transition(.identity)
                 .contentMargins(.horizontal, size.width * (1 - PlanetLayout.slideWidth) / 2, for: .scrollContent)
                 .scrollTargetBehavior(.viewAligned)
                 .scrollIndicators(.hidden)
@@ -173,9 +231,17 @@ struct PlanetScene: View {
                 // body still reaches above the stage.
                 .mask { Self.sideFade.padding(.vertical, -size.height) }
                 .allowsHitTesting(open)
-                .accessibilityHidden(!open)
+                // VoiceOver reads the strip as one adjustable element, in the overlay below.
+                .accessibilityHidden(true)
                 .animation(openAnimation, value: open)
-                .animation(.spring(response: 0.52, dampingFraction: 0.68), value: grown)
+                .animation(.smooth(duration: 0.8), value: pulse)
+                .keyframeAnimator(initialValue: Pulse(), trigger: pulse) { content, value in
+                    content
+                        .scaleEffect(reduceMotion ? 1 : value.scale, anchor: PlanetLayout.bodyAnchor)
+                        .offset(y: reduceMotion ? 0 : value.lift * size.height)
+                } keyframes: { _ in
+                    Self.pulseKeyframes
+                }
                 .offset(y: bodyLift(height: size.height))
             }
             .frame(width: size.width, height: size.height, alignment: .topLeading)
@@ -194,39 +260,80 @@ struct PlanetScene: View {
             .animation(.snappy(duration: 0.16), value: press)
         }
         .aspectRatio(1 / PlanetLayout.stageRatio, contentMode: .fit)
+        .overlay(alignment: .bottom) {
+            if explorable {
+                ZStack(alignment: .bottom) {
+                    WorldCaption(world: current, onExplore: onTap).shown(!open)
+                    WorldsBar(
+                        canStepBack: selectedIndex > 0,
+                        canStepForward: selectedIndex < World.all.count - 1,
+                        onClose: onClose,
+                        step: step
+                    )
+                    .shown(open)
+                }
+                .animation(openAnimation, value: open)
+            }
+        }
         .overlay {
-            Color.clear
-                .accessibilityElement()
-                .accessibilityAddTraits(.isButton)
-                .accessibilityLabel(Text(verbatim: accessibilityLabel))
-                .accessibilityAction { onTap() }
-                .accessibilityHidden(open)
-                .allowsHitTesting(false)
+            ZStack {
+                Color.clear
+                    .accessibilityElement()
+                    .accessibilityAddTraits(.isButton)
+                    .accessibilityLabel(Text(verbatim: accessibilityLabel))
+                    .accessibilityAction { onTap() }
+                    .accessibilityHidden(open)
+                Color.clear
+                    .accessibilityElement()
+                    .accessibilityLabel(Text(verbatim: [selected.name, selected.place, selected.status(at: bloom)].joined(separator: ", ")))
+                    .accessibilityAdjustableAction { direction in
+                        switch direction {
+                        case .increment: step(1)
+                        case .decrement: step(-1)
+                        @unknown default: break
+                        }
+                    }
+                    .accessibilityAction(.escape) { onClose() }
+                    .accessibilityHidden(!open)
+            }
+            .allowsHitTesting(false)
         }
-        .onAppear {
-            guard !reduceMotion else { return }
-            withAnimation(.easeInOut(duration: 2.75).repeatForever(autoreverses: true)) { floating = true }
+    }
+
+    /// Under `WorldsBar` until the first move through the worlds. Its row stays at rest, so
+    /// nothing below the scene moves.
+    private var swipeHint: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "chevron.left")
+            Text("Swipe to explore")
+            Image(systemName: "chevron.right")
         }
-        .onChange(of: open) { _, isOpen in
-            guard !isOpen else { return }
-            withAnimation(.snappy) { position = current.id }
-        }
-        // Home stays alive under the Play tab, so a round there can move the family to a new world.
-        .onChange(of: current) { _, world in position = world.id }
-        // A tick per world snapped to while browsing.
-        .onChange(of: position) { previous, id in
-            if open, previous != nil, id != nil { Haptics.tap() }
-        }
+        .font(Typeface.ui(12, .semibold, relativeTo: .caption))
+        .tracking(1.6)
+        .textCase(.uppercase)
+        .foregroundStyle(Palette.muted)
+        .breathing()
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
     }
 
     private func tap(_ world: World) {
         guard position == world.id else {
-            withAnimation(.snappy) { position = world.id }
+            withAnimation(stepAnimation) { position = world.id }
             return
         }
         Haptics.tap()
         onClose()
     }
+
+    /// Moves the centred world `offset` places along the strip, stopping at its ends.
+    private func step(_ offset: Int) {
+        let target = selectedIndex + offset
+        guard World.all.indices.contains(target) else { return }
+        withAnimation(stepAnimation) { position = World.all[target].id }
+    }
+
+    private var stepAnimation: Animation? { reduceMotion ? nil : .snappy }
 
     /// Fades in from nothing at the sky's top edge, and out at its sides and foot.
     private static var skyFade: some View {
@@ -265,12 +372,59 @@ struct PlanetScene: View {
     private func bodyScale(pressed: Bool) -> CGFloat {
         if open { return PlanetLayout.openScale }
         if reduceMotion { return 1 }
-        if grown { return 1.18 }
-        return pressed ? 0.98 : 1
+        if pressed { return 0.98 }
+        return pulse > 0 ? PlanetLayout.bloomedScale : 1
     }
 
     private func bodyLift(height: CGFloat) -> CGFloat {
-        if reduceMotion || grown { return 0 }
+        if reduceMotion { return 0 }
         return floating ? -0.012 * height : 0
+    }
+
+    /// Warm light behind the body that swells and fades with each bloom. Under Reduce Motion
+    /// it only fades, which is all the bloom shows.
+    private func glow(width: CGFloat) -> some View {
+        KeyframeAnimator(initialValue: Pulse(), trigger: pulse) { value in
+            EllipticalGradient(colors: [Palette.gold, Palette.gold.opacity(0)])
+                .frame(width: width * 0.8, height: width * 0.8)
+                .scaleEffect(reduceMotion ? 1 : value.glowScale)
+                .opacity(value.glow)
+        } keyframes: { _ in
+            Self.pulseKeyframes
+        }
+        .position(x: width * PlanetLayout.bodyCenter.x, y: width * PlanetLayout.bodyCenter.y)
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+
+    private struct Pulse {
+        var scale: CGFloat = 1
+        /// In stage heights, negative is up.
+        var lift: CGFloat = 0
+        var glow = 0.0
+        var glowScale: CGFloat = 0.85
+    }
+
+    /// Compress, release into the bloom, settle with no overshoot.
+    @KeyframesBuilder<Pulse>
+    private static var pulseKeyframes: some Keyframes<Pulse> {
+        KeyframeTrack(\.scale) {
+            CubicKeyframe(0.95, duration: 0.09)
+            CubicKeyframe(1.07, duration: PlanetLayout.bloomPeak - 0.09)
+            SpringKeyframe(1, duration: PlanetLayout.bloomLength - PlanetLayout.bloomPeak, spring: .smooth)
+        }
+        KeyframeTrack(\.lift) {
+            LinearKeyframe(0, duration: 0.09)
+            CubicKeyframe(-0.025, duration: PlanetLayout.bloomPeak - 0.09)
+            SpringKeyframe(0, duration: PlanetLayout.bloomLength - PlanetLayout.bloomPeak, spring: .smooth)
+        }
+        KeyframeTrack(\.glow) {
+            CubicKeyframe(0.35, duration: PlanetLayout.bloomPeak)
+            CubicKeyframe(0, duration: PlanetLayout.bloomLength - PlanetLayout.bloomPeak)
+        }
+        KeyframeTrack(\.glowScale) {
+            LinearKeyframe(0.85, duration: 0.01)
+            CubicKeyframe(1.15, duration: PlanetLayout.bloomLength)
+        }
     }
 }

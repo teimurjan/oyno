@@ -1,6 +1,6 @@
 /**
- * Fills `activities/<locale>.json` for every language the app ships: each game and tag the
- * deck is missing, or holds for English that has since been reworded. A unit already
+ * Fills `activities/<locale>.json` for every language the app ships: each game, tag and skill
+ * the deck is missing, or holds for English that has since been reworded. A unit already
  * translated from the current English is never sent again, and the file is written after
  * every batch, so a run that died halfway picks up where it stopped. Review the diff, then
  * `bun run activities:build`.
@@ -31,7 +31,7 @@ const MODEL = "claude-opus-5-5";
 /** Games per request: enough to keep one voice across a batch, few enough to review as a diff. */
 const BATCH = 20;
 
-const TagBatch = z.object({ tags: z.array(z.object({ id: z.string(), label: z.string() })) });
+const LabelBatch = z.object({ labels: z.array(z.object({ id: z.string(), label: z.string() })) });
 const GameBatch = z.object({
   games: z.array(z.object({ id: z.string(), title: z.string(), blurb: z.string(), steps: z.array(z.string()) })),
 });
@@ -57,15 +57,16 @@ const client = new Anthropic();
 const languageName = (locale: string) => new Intl.DisplayNames(["en"], { type: "language" }).of(locale) ?? locale;
 
 const brief = (locale: string) =>
-  `You translate Oyno, an app for parents of 2 to 8 year olds, from English into ${languageName(locale)}. ` +
-  "Each game is one easy ten-minute thing a tired parent plays with their kid at home, in the evening. " +
+  `You translate Oyno, an app for parents of 0 to 5 year olds, from English into ${languageName(locale)}. ` +
+  "Each game is one easy five-to-fifteen-minute thing a tired parent plays with their kid at home, in the evening. " +
   "Keep the voice: warm, playful, plain everyday words, short sentences. The parent is addressed " +
   "directly and the child is their kid, in whatever form is natural in the language. " +
   "A title is the game's name: make it short and fun in the language rather than literal. " +
   "A blurb is the one line under the title saying who the game is good for, kept to one sentence. " +
-  "A step is one instruction to the parent, one or two short sentences, in the same order and " +
+  "A step is one instruction to the parent, exactly one sentence, in the same order and " +
   "about the same length as the English, with the same number of steps. " +
-  "A tag is a chip of one to three words under the title. " +
+  "A tag is a chip of one to three words under the title, saying where the game is played or what to grab. " +
+  "A skill is the name of a thinking skill the game builds, one to three words, as a parent would say it. " +
   "Translate every item, keep every id exactly as given, and return nothing else.";
 
 async function ask<Shape>(locale: string, format: z.ZodType<Shape>, items: unknown): Promise<Shape> {
@@ -87,6 +88,7 @@ async function ask<Shape>(locale: string, format: z.ZodType<Shape>, items: unkno
 function ordered(deck: Translations, source: Source): Translations {
   return {
     tags: Object.fromEntries(Object.keys(source.tags).flatMap((id) => (deck.tags[id] ? [[id, deck.tags[id]]] : []))),
+    skills: Object.fromEntries(Object.keys(source.skills).flatMap((id) => (deck.skills[id] ? [[id, deck.skills[id]]] : []))),
     activities: Object.fromEntries(
       source.activities.flatMap(({ id }) => (deck.activities[id] ? [[id, deck.activities[id]]] : [])),
     ),
@@ -95,20 +97,23 @@ function ordered(deck: Translations, source: Source): Translations {
 
 async function translate(locale: string) {
   const own = translations[locale] ?? EMPTY_TRANSLATIONS;
-  const deck: Translations = { tags: { ...own.tags }, activities: { ...own.activities } };
+  const deck: Translations = { tags: { ...own.tags }, skills: { ...own.skills }, activities: { ...own.activities } };
   const save = () => writeFileSync(absolute(translationsFile(locale)), render(ordered(deck, source)));
   const mine = gaps.filter((gap) => gap.locale === locale);
 
-  const tags = mine.filter((gap) => gap.kind === "tag").map((gap) => gap.id);
-  if (tags.length) {
-    const got = await ask(locale, TagBatch, { tags: tags.map((id) => ({ id, label: source.tags[id] })) });
-    for (const id of tags) {
-      const label = got.tags.find((tag) => tag.id === id)?.label.trim();
-      if (!label) throw new Error(`${locale}: no label came back for tag ${id}`);
-      deck.tags[id] = { source: fingerprint([source.tags[id]]), label };
+  for (const kind of ["tag", "skill"] as const) {
+    const english: Record<string, string> = kind === "tag" ? source.tags : source.skills;
+    const own = kind === "tag" ? deck.tags : deck.skills;
+    const ids = mine.filter((gap) => gap.kind === kind).map((gap) => gap.id);
+    if (!ids.length) continue;
+    const got = await ask(locale, LabelBatch, { [`${kind}s`]: ids.map((id) => ({ id, label: english[id] })) });
+    for (const id of ids) {
+      const label = got.labels.find((unit) => unit.id === id)?.label.trim();
+      if (!label) throw new Error(`${locale}: no label came back for ${kind} ${id}`);
+      own[id] = { source: fingerprint([english[id]]), label };
     }
     save();
-    console.log(`${locale}: ${tags.length} tags`);
+    console.log(`${locale}: ${ids.length} ${kind}s`);
   }
 
   const byId = new Map(source.activities.map((activity) => [activity.id, activity]));

@@ -25,20 +25,13 @@ struct FunnelLine: View {
 
 /// "Tap to continue", breathing at the foot of a screen that advances on a tap anywhere.
 struct FunnelTapHint: View {
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var bright = false
-
     var body: some View {
         Text("Tap to continue")
             .font(Typeface.ui(12, .semibold, relativeTo: .caption))
             .tracking(1.6)
             .textCase(.uppercase)
             .foregroundStyle(Palette.muted)
-            .opacity(bright ? 1 : 0.4)
-            .onAppear {
-                guard !reduceMotion else { return bright = true }
-                withAnimation(.easeInOut(duration: 1.1).repeatForever(autoreverses: true)) { bright = true }
-            }
+            .breathing()
             .accessibilityHidden(true)
     }
 }

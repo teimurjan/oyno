@@ -25,7 +25,7 @@
 // Run this after every capture, and commit what lands under `public/`.
 
 import { chromium } from "playwright";
-import { existsSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { localeFor, SITE_TAGS } from "./lib/locales.mjs";
 import {
@@ -33,6 +33,7 @@ import {
   captionHtml,
   captionsFor,
   dataUri,
+  deviceGeometry,
   ensureDir,
   escapeHtml,
   FACES,
@@ -41,6 +42,7 @@ import {
   pad2,
   PALETTE,
   phoneMockupHtml,
+  pixelSize,
   resolveScreen,
   ROOT,
   SCREENS,
@@ -76,9 +78,77 @@ const CAPTION_TOP = 120;
  * filmstrip, and a device that moved frame to frame would read as a wobble. */
 const DEVICE_TOP = 560;
 
+/** A photo frame has no phone: the photo bleeds to every edge and fades into the canvas over
+ * its lower part, where the caption sits, as on the funnel's teaser screen. */
+const PHOTO_CAPTION_TOP = 2200;
+const PHOTO_MIMES = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png" };
+
+function photoFrameHtml(frame) {
+  const photoPath = path.join(SOURCE_DIR, frame.photo);
+  if (!existsSync(photoPath)) throw new Error(`No photo at ${path.relative(ROOT, photoPath)} for frame "${frame.slug}"`);
+  const mime = PHOTO_MIMES[path.extname(photoPath).toLowerCase()];
+  if (!mime) throw new Error(`${frame.photo}: expected a .jpg or .png`);
+
+  return `
+  <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
+    <img src="${dataUri(photoPath, mime)}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;">
+    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(255,248,239,0) 60%, ${PALETTE.canvas} 78%);"></div>
+    <div class="caption" style="position:absolute; top:${PHOTO_CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:112px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+      ${captionHtml(frame.caption)}
+    </div>
+  </div>`;
+}
+
+/** A callout lifts one widget off the screen: the same capture, cropped to the widget the app
+ * reported, drawn larger over it with the phone's shadow while a veil quiets the rest. */
+const CALLOUT = { zoom: 1.3, padPt: 12, radiusPt: 28, margin: 48, veil: 0.35 };
+
+function calloutHtml(frame, sourceDir, shotDataUri) {
+  const reportPath = path.join(sourceDir, `${frame.source}.json`);
+  const report = existsSync(reportPath) ? JSON.parse(readFileSync(reportPath, "utf8")) : null;
+  // Several ids lift as one: the box that holds them all.
+  const rects = [frame.callout].flat().map((id) => {
+    const found = report?.callouts?.[id];
+    if (!found) throw new Error(`Frame "${frame.slug}": capture ${frame.source} reported no "${id}" callout — recapture it`);
+    return found;
+  });
+  const minX = Math.min(...rects.map((r) => r.x));
+  const minY = Math.min(...rects.map((r) => r.y));
+  const rect = {
+    x: minX,
+    y: minY,
+    w: Math.max(...rects.map((r) => r.x + r.w)) - minX,
+    h: Math.max(...rects.map((r) => r.y + r.h)) - minY,
+  };
+
+  const capture = pixelSize(path.join(sourceDir, `${frame.source}.png`));
+  const { SCREEN } = deviceGeometry(DEVICE_WIDTH);
+  const k = SCREEN.w / capture.width;
+  const screenLeft = (CANVAS.w - DEVICE_WIDTH) / 2 + SCREEN.x;
+  const screenTop = DEVICE_TOP + SCREEN.y;
+  const toCanvas = (pt) => pt * report.scale * k;
+
+  // The widget where the phone draws it, padded so its card's edge comes along.
+  const pad = CALLOUT.padPt;
+  const from = { x: rect.x - pad, y: rect.y - pad, w: rect.w + 2 * pad, h: rect.h + 2 * pad };
+  const zoom = Math.min(frame.zoom ?? CALLOUT.zoom, (CANVAS.w - 2 * CALLOUT.margin) / toCanvas(from.w));
+  const w = toCanvas(from.w) * zoom;
+  const h = toCanvas(from.h) * zoom;
+  const clamp = (value, max) => Math.min(Math.max(value, CALLOUT.margin), max - CALLOUT.margin);
+  const left = clamp(screenLeft + toCanvas(from.x + from.w / 2) - w / 2, CANVAS.w - w);
+  const top = clamp(screenTop + toCanvas(from.y + from.h / 2) - h / 2, CANVAS.h - h);
+  const scale = k * zoom;
+
+  return `
+    <div style="position:absolute; left:${screenLeft}px; top:${screenTop}px; width:${SCREEN.w}px; height:${SCREEN.h}px; border-radius:${SCREEN.r}px; background:${PALETTE.canvas}; opacity:${CALLOUT.veil};"></div>
+    <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; border-radius:${toCanvas(CALLOUT.radiusPt) * zoom}px; overflow:hidden; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.28)); background-image:url('${shotDataUri}'); background-repeat:no-repeat; background-size:${capture.width * scale}px ${capture.height * scale}px; background-position:${-from.x * report.scale * scale}px ${-from.y * report.scale * scale}px;"></div>`;
+}
+
 function frameHtml(frame, sourceDir) {
+  if (frame.photo) return photoFrameHtml(frame);
   const sourcePath = path.join(sourceDir, `${frame.source}.png`);
   const shotDataUri = existsSync(sourcePath) ? dataUri(sourcePath, "image/png") : null;
+  const callout = frame.callout && shotDataUri ? calloutHtml(frame, sourceDir, shotDataUri) : "";
 
   return `
   <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; ${backgroundCss()}">
@@ -88,6 +158,7 @@ function frameHtml(frame, sourceDir) {
     <div style="position:absolute; left:50%; top:${DEVICE_TOP}px; transform:translateX(-50%); filter:drop-shadow(0 40px 70px rgba(10,10,10,0.22));">
       ${phoneMockupHtml(shotDataUri, DEVICE_WIDTH)}
     </div>
+    ${callout}
   </div>`;
 }
 
@@ -114,7 +185,7 @@ const CAPTION_SIZES = [112, 100, 90, 80];
 const CAPTION_GAP = 80;
 const CAPTION_CEILING = DEVICE_TOP - CAPTION_GAP;
 
-async function fitCaption(page, label) {
+async function fitCaption(page, label, ceiling = CAPTION_CEILING) {
   for (const size of CAPTION_SIZES) {
     // The constant has to travel with the call: `evaluate` runs in the page,
     // where this module's scope doesn't exist.
@@ -123,7 +194,7 @@ async function fitCaption(page, label) {
       if (!caption) return true;
       caption.style.fontSize = `${px}px`;
       return caption.getBoundingClientRect().bottom <= ceiling;
-    }, { px: size, ceiling: CAPTION_CEILING });
+    }, { px: size, ceiling });
     if (fits) {
       if (size !== CAPTION_SIZES[0]) {
         console.warn(`  ${label}: caption shrunk to ${size}px — consider shortening it`);
@@ -231,7 +302,7 @@ async function main() {
       const nn = pad2(index + 1);
       await page.setContent(pageHtml(frame, { sourceDir }), { waitUntil: "load" });
       await page.evaluate(() => document.fonts.ready);
-      await fitCaption(page, `${locale}/${frame.slug}`);
+      await fitCaption(page, `${locale}/${frame.slug}`, frame.photo ? CANVAS.h - CAPTION_TOP : CAPTION_CEILING);
 
       const png = path.join(outDir, `${nn}-${frame.slug}.png`);
       await page.screenshot({ path: png });

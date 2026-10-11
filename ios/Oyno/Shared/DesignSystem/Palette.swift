@@ -61,12 +61,6 @@ enum Palette {
         endPoint: .bottomTrailing
     )
     static let sheenGlow = Color(hex: 0x86C4F2).opacity(0.45)
-    /// The same sheen deep enough to read as type and glyphs on glass.
-    static let sheenInk = LinearGradient(
-        colors: [Color(hex: 0x2F7A5A), Color(hex: 0x2F5E9E), Color(hex: 0x5B47A3)],
-        startPoint: .leading,
-        endPoint: .trailing
-    )
 
     /// The day sky behind every screen, top to bottom.
     static let sky = LinearGradient(

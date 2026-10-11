@@ -25,8 +25,9 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 
 /** Which seeded screen the capture run photographs, and what it is filed as.
  *
- * The order is the argument the store listing makes: the hours back first, then Kid hours,
- * a game at each end of the energy scale, and the one tap from home.
+ * The order is the argument the store listing makes, after the photo frame that opens it: the
+ * time together today, a game for each battery level and why it works, Kid hours and one
+ * schedule's form, and the next world to earn.
  *
  * `nn` is what a caption's `source` points at, which is why adding a screen in the middle
  * renumbers the ones after it *and* every `appstore/captions/<tag>.json`. It lives here
@@ -35,11 +36,14 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
  * exist on one of those lists and not the other. */
 export const SCREENS = [
   // The tally wheel rolls in after the lines, so it needs longer than the default to settle.
-  { nn: "01", screen: "funnel:good_news", delay: 7000 },
-  { nn: "02", screen: "kidhours" },
-  { nn: "03", screen: "play:full" },
-  { nn: "04", screen: "play:low" },
-  { nn: "05", screen: "home" },
+  { nn: "01", screen: "home" },
+  { nn: "02", screen: "play:low:0-1" },
+  { nn: "03", screen: "play:full:1-3" },
+  { nn: "04", screen: "play:okay:why" },
+  { nn: "05", screen: "kidhours" },
+  // The sheet slides up over the screen after launch.
+  { nn: "06", screen: "schedule", delay: 6000 },
+  { nn: "07", screen: "worlds" },
 ];
 
 /** A screen named the way a person names it — "play", "02", or "2" — resolved to the
@@ -145,6 +149,7 @@ export function captionsFor(tag) {
   // which uploads perfectly happily.
   for (const [index, frame] of frames.entries()) {
     if (!frame.slug) throw new Error(`${tag}: frame ${index + 1} has no slug`);
+    if (!frame.source === !frame.photo) throw new Error(`${tag}: frame ${index + 1} needs a source or a photo, not both`);
   }
   return frames;
 }

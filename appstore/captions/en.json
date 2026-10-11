@@ -1,9 +1,12 @@
 {
   "default": [
-    { "slug": "hours", "source": "01", "caption": "Get [420 hours] back with your kid" },
-    { "slug": "kidhours", "source": "02", "caption": "Your apps pause [while you're with your kid]" },
-    { "slug": "play", "source": "03", "caption": "Play that helps [your kid grow]" },
-    { "slug": "relax", "source": "04", "caption": "Low battery? [Lie down and play]" },
-    { "slug": "home", "source": "05", "caption": "One tap. [Better parent.]" }
+    { "slug": "together", "photo": "together.jpg", "caption": "Be with your kid, [not your phone]" },
+    { "slug": "together-time", "source": "01", "callout": "together", "zoom": 1.8, "caption": "[1h 35m] of family time, phone down" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Running on empty? [Easy baby games]" },
+    { "slug": "full", "source": "03", "callout": "battery", "caption": "Full battery? [Toddler games that burn it off]" },
+    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Games that build [focus and self-control]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Block apps] while you play" },
+    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Screen time limits] to the minute" },
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Every round [grows a new world]" }
   ]
 }
