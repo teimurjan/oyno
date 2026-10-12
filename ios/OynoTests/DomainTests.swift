@@ -57,6 +57,31 @@ struct KidHoursEarnedTests {
     }
 }
 
+struct ShieldStatsTests {
+    private let calendar: Calendar = {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(identifier: "UTC")!
+        return calendar
+    }()
+    private let evening = Date(timeIntervalSince1970: 1_791_000_000)
+
+    @Test func countsEachAppOnItsOwn() {
+        let stats = ShieldStats()
+            .counting("instagram", at: evening, calendar: calendar)
+            .counting("instagram", at: evening, calendar: calendar)
+            .counting("youtube", at: evening, calendar: calendar)
+        #expect(stats.paused == ["instagram": 2, "youtube": 1])
+    }
+
+    @Test func startsOverTheNextDayButKeepsTheRounds() {
+        var stats = ShieldStats().counting("instagram", at: evening, calendar: calendar)
+        stats.rounds = 12
+        let tomorrow = stats.counting("youtube", at: evening.addingTimeInterval(24 * 60 * 60), calendar: calendar)
+        #expect(tomorrow.paused == ["youtube": 1])
+        #expect(tomorrow.rounds == 12)
+    }
+}
+
 struct KidHoursSettingsTests {
     private let calendar: Calendar = {
         var calendar = Calendar(identifier: .gregorian)

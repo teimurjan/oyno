@@ -42,11 +42,10 @@ export function HomePage({ lang }: { lang: Lang }) {
               {home.headline}
             </h1>
             <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-muted sm:text-[18px]">{home.sub}</p>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
+            <div className="mt-8 flex">
               <Link href={start} className="btn w-auto px-7 text-[16px]">
                 {home.cta}
               </Link>
-              <AppStoreBadge />
             </div>
           </div>
           <PlanetHero words={home.planet} />
@@ -57,12 +56,22 @@ export function HomePage({ lang }: { lang: Lang }) {
         <div className="shell py-16">
           <h2 className="text-[30px] font-extrabold tracking-[-0.03em] text-ink">{home.proof.heading}</h2>
           <p className="mt-3 max-w-2xl text-[16px] text-muted">{home.proof.sub}</p>
-          <ol className="mt-10 grid gap-4 sm:grid-cols-3">
-            {home.proof.steps.map((step) => (
-              <li key={step.n} className="card p-6">
-                <span className="num text-[13px] font-bold text-highlight">{step.n}</span>
-                <h3 className="mt-3 text-[18px] font-extrabold tracking-[-0.02em] text-ink">{step.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">{step.body}</p>
+          <ol className="mt-12 space-y-14 sm:space-y-20">
+            {home.proof.steps.map((step, index) => (
+              <li key={step.shot} className="grid items-center gap-8 sm:grid-cols-2 sm:gap-12">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={step.shot}
+                  alt=""
+                  width={240}
+                  height={520}
+                  loading="lazy"
+                  className={`mx-auto w-[240px] rounded-[28px] shadow-[var(--glass-shadow)] ${index % 2 ? "sm:order-last" : ""}`}
+                />
+                <div className="max-w-md sm:mx-auto">
+                  <h3 className="text-[24px] font-extrabold tracking-[-0.02em] text-ink">{step.title}</h3>
+                  <p className="mt-3 text-[17px] leading-relaxed text-muted">{step.body}</p>
+                </div>
               </li>
             ))}
           </ol>

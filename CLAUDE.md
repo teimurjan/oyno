@@ -77,11 +77,17 @@ through `KidHoursShield.sync`. If an enabled schedule covers now and no break do
 every running schedule are paused. Never-allowed apps sit in a second `ManagedSettingsStore` that
 no schedule or break clears. Always-allowed apps are the `except` set on both.
 The 20-minute break is a one-off `kidHours.break` activity. App tokens never leave the phone.
+A paused app opens to `OynoShield`, the custom shield screen. It shows the planet's rounds, which
+`OynoStore` mirrors into `ShieldStats` in the App Group, and counts that app's pauses for today.
+`OynoShieldAction` answers its buttons. "Open Oyno" calls the undocumented
+`LSApplicationWorkspace` in `ParentApp.open()`. If that call fails, the button posts a
+notification instead. If App Review refuses the undocumented call, delete it.
 Home's screen time card is drawn by the `OynoReport` DeviceActivityReport extension, the only
 process that may read per-app usage. It borrows `AppUsageCard` and the design system files from
 `Oyno/`. Home's "Together" figure is today's Kid hours minus the unlocks logged in `opened`.
 Distribution needs Apple's Family Controls (Distribution) entitlement for `com.teimurjan.oyno`,
-`com.teimurjan.oyno.monitor` and `com.teimurjan.oyno.report`. Development builds work without it. Screen Time does not run in the
+`com.teimurjan.oyno.monitor`, `com.teimurjan.oyno.report`, `com.teimurjan.oyno.shield` and
+`com.teimurjan.oyno.shield-action`. Development builds work without it. Screen Time does not run in the
 simulator.
 
 ## Payments: two billers, one entitlement

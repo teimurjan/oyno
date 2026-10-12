@@ -64,6 +64,7 @@ final class OynoStore {
         ownerID = stored.ownerID
         rounds = stored.rounds
         carried = stored.carried ?? .zero
+        mirrorForShield()
     }
 
     /// Claims the rounds on this phone for `userID`. Rounds written by another account are
@@ -98,6 +99,7 @@ final class OynoStore {
         carried = .zero
         ownerID = nil
         try? FileManager.default.removeItem(at: fileURL)
+        mirrorForShield()
     }
 
     #if DEBUG
@@ -112,6 +114,15 @@ final class OynoStore {
             withIntermediateDirectories: true
         )
         try? data.write(to: fileURL, options: .atomic)
+        mirrorForShield()
+    }
+
+    /// The paused-app screen runs outside the app and can only read the App Group.
+    private func mirrorForShield() {
+        var stats = ShieldStats.load()
+        guard stats.rounds != tally.rounds else { return }
+        stats.rounds = tally.rounds
+        stats.save()
     }
 
     private struct Stored: Codable {

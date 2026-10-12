@@ -125,7 +125,7 @@ struct PlanetScene: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private var current: World { Bloom.currentWorld(at: bloom) }
-    private var selectedIndex: Int { World.all.firstIndex { $0.id == position } ?? 0 }
+    private var selectedIndex: Int { Self.index(of: position) }
     private var selected: World { World.all[selectedIndex] }
 
     init(
@@ -147,7 +147,9 @@ struct PlanetScene: View {
         self.onTap = onTap
         self.onClose = onClose
         // Seeded, not set on appear: set before the strip's first layout, it stays on the first world.
-        _position = State(initialValue: Bloom.currentWorld(at: bloom).id)
+        // The first world is left `nil`, the strip's start: seeded, it lands a content margin right.
+        let current = Bloom.currentWorld(at: bloom)
+        _position = State(initialValue: current == World.all.first ? nil : current.id)
     }
 
     var body: some View {
@@ -176,7 +178,7 @@ struct PlanetScene: View {
         .onChange(of: current) { _, world in position = world.id }
         // A tick per world snapped to while browsing.
         .onChange(of: position) { previous, id in
-            guard open, previous != nil, id != nil else { return }
+            guard open, id != nil, Self.index(of: previous) != Self.index(of: id) else { return }
             Haptics.tap()
             didBrowseWorlds = true
         }
@@ -334,6 +336,11 @@ struct PlanetScene: View {
     }
 
     private var stepAnimation: Animation? { reduceMotion ? nil : .snappy }
+
+    /// `nil` is the strip's start, the first world.
+    private static func index(of id: World.ID?) -> Int {
+        World.all.firstIndex { $0.id == id } ?? 0
+    }
 
     /// Fades in from nothing at the sky's top edge, and out at its sides and foot.
     private static var skyFade: some View {

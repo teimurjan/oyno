@@ -14,6 +14,8 @@ import { join } from "node:path";
 
 const PROJECT = "ios/Oyno.xcodeproj";
 const SCHEME = "Oyno";
+/** The app and every extension with copy of its own. */
+const TARGETS = ["Oyno", "OynoShield", "OynoShieldAction"];
 const CATALOGS = [
   "ios/Oyno/Resources/Localizable.xcstrings",
 ];
@@ -34,9 +36,9 @@ function objroot(configuration) {
   return match[1].trim();
 }
 
-function stringsdata(root, configuration) {
+function stringsdata(root, configuration, target) {
   const base = join(root, `${SCHEME}.build`, `${configuration}-iphonesimulator`,
-                    `${SCHEME}.build`, "Objects-normal");
+                    `${target}.build`, "Objects-normal");
   if (!existsSync(base)) throw new Error(`No build output at ${base} — build first`);
   // Both slices carry the same keys; one arch is enough and avoids duplicates.
   const arch = readdirSync(base).sort()[0];
@@ -47,7 +49,8 @@ function stringsdata(root, configuration) {
 // Debug, not Release: `ScreenshotHarness` is `#if DEBUG`, so a Release build
 // would report its ~50 fixture strings as absent and mark them stale.
 const configuration = "Debug";
-const files = stringsdata(objroot(configuration), configuration);
+const root = objroot(configuration);
+const files = TARGETS.flatMap((target) => stringsdata(root, configuration, target));
 console.log(`Syncing ${CATALOGS.length} catalogs from ${files.length} .stringsdata files`);
 
 execFileSync("xcrun", ["xcstringstool", "sync", ...CATALOGS, "--stringsdata", ...files],

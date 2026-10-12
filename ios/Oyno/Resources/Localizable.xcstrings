@@ -11,8 +11,21 @@
         }
       }
     },
+    "%@ is paused for Kid hours. Your kid gets you instead." : {
+
+    },
     "%@ left" : {
 
+    },
+    "%@ paused %lld× today." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ paused %2$lld× today."
+          }
+        }
+      }
     },
     "%@ years" : {
 
@@ -72,6 +85,28 @@
     },
     "%lld rounds to a new world" : {
 
+    },
+    "%lld rounds together" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld round together"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rounds together"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld+ hours" : {
 
@@ -243,6 +278,9 @@
 
     },
     "Dimmed by a feed, a ping, and everything else pulling at you." : {
+
+    },
+    "Dismiss" : {
 
     },
     "Done" : {
@@ -503,6 +541,9 @@
     "Only during Kid hours" : {
 
     },
+    "Open Oyno" : {
+
+    },
     "Open until %@" : {
 
     },
@@ -705,6 +746,9 @@
     "Tap to continue" : {
 
     },
+    "Tap to pick tonight's game." : {
+
+    },
     "Ten minutes, sized to the energy you have left, picked for you." : {
 
     },
@@ -736,6 +780,9 @@
 
     },
     "The subscription page didn't open. Try again, or use the link in your receipt email." : {
+
+    },
+    "This app" : {
 
     },
     "To" : {
@@ -875,6 +922,9 @@
 
     },
     "“Oyno” Would Like to Access Screen Time" : {
+
+    },
+    "…and counting on your little planet." : {
 
     }
   },

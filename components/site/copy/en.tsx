@@ -81,19 +81,29 @@ export const en: SiteCopy = {
       sub: "No willpower required. The phone is paused before you have to decide.",
       steps: [
         {
-          n: "01",
+          shot: "/screenshots/en-US/06-kidhours.webp",
           title: "Kid hours start",
           body: "At the time you set, the apps you picked pause. Phone, Messages and Maps stay open.",
         },
         {
-          n: "02",
+          shot: "/screenshots/en-US/03-low.webp",
           title: "One easy thing",
           body: "Tell Oyno how much battery you have left. It hands you one game for ten minutes, with nothing to set up.",
         },
         {
-          n: "03",
+          shot: "/screenshots/en-US/05-science.webp",
+          title: "Play that builds",
+          body: "Every game trains focus, memory or self-control, and names the study and the guide behind it.",
+        },
+        {
+          shot: "/screenshots/en-US/08-worlds.webp",
           title: "The planet grows",
           body: "When the timer ends, your kid taps the planet. It blooms, and every few rounds a new world opens.",
+        },
+        {
+          shot: "/screenshots/en-US/02-together-time.webp",
+          title: "Time together, counted",
+          body: "Home shows how long the phone stayed down today, so you can see the evening you got back.",
         },
       ],
     },

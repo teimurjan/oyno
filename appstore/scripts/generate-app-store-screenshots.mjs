@@ -93,7 +93,7 @@ function photoFrameHtml(frame) {
   <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
     <img src="${dataUri(photoPath, mime)}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;">
     <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(255,248,239,0) 60%, ${PALETTE.canvas} 78%);"></div>
-    <div class="caption" style="position:absolute; top:${PHOTO_CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:112px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+    <div class="caption" style="position:absolute; top:${PHOTO_CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
       ${captionHtml(frame.caption)}
     </div>
   </div>`;
@@ -152,7 +152,7 @@ function frameHtml(frame, sourceDir) {
 
   return `
   <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; ${backgroundCss()}">
-    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:112px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
       ${captionHtml(frame.caption)}
     </div>
     <div style="position:absolute; left:50%; top:${DEVICE_TOP}px; transform:translateX(-50%); filter:drop-shadow(0 40px 70px rgba(10,10,10,0.22));">
@@ -170,7 +170,7 @@ function pageHtml(frame, { sourceDir }) {
   </style></head><body>${frameHtml(frame, sourceDir)}</body></html>`;
 }
 
-/** 112px of Inter fits two or three lines of English in the space above the device.
+/** The top size fits two or three lines of English in the space above the device.
  * German and Polish routinely need four. Rather than let the caption run into the phone,
  * step the size down until it clears — and say which locale and frame needed it, because
  * the better fix is nearly always shorter copy.
@@ -180,9 +180,9 @@ function pageHtml(frame, { sourceDir }) {
  * ceiling would have gone on approving one that now overlaps it. The clearance is the
  * slack left over once three lines at the top size fit — that is the promise the size
  * ladder makes, and a gap that reneged on it would quietly drop most of the translations
- * to 100px for the sake of four pixels. */
-const CAPTION_SIZES = [112, 100, 90, 80];
-const CAPTION_GAP = 80;
+ * to 115px for the sake of four pixels. */
+const CAPTION_SIZES = [129, 115, 104, 92];
+const CAPTION_GAP = 28;
 const CAPTION_CEILING = DEVICE_TOP - CAPTION_GAP;
 
 async function fitCaption(page, label, ceiling = CAPTION_CEILING) {

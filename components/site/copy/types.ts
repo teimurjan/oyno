@@ -44,8 +44,8 @@ export interface HomeCopy {
   sub: string;
   cta: string;
   planet: PlanetCopy;
-  /** The one proof section: an evening with Oyno, step by step. */
-  proof: { heading: string; sub: string; steps: { n: string; title: string; body: string }[] };
+  /** The one proof section: an evening with Oyno, one App Store screenshot per step. */
+  proof: { heading: string; sub: string; steps: { shot: string; title: string; body: string }[] };
   plan: {
     eyebrow: string;
     pitch: string;
