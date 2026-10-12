@@ -1,10 +1,12 @@
-import type { ComponentChildren, JSX } from "preact";
+import type { ComponentChildren } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { formatMoney, planListQuote, type Plan, type PlanQuote } from "@/lib/plans";
-import { Glyph } from "./icons";
+import { Headline } from "./Headline";
 import { LegalNote } from "./LegalNote";
 import { fill, useLocale } from "./locale";
 import { Faq } from "./paywall/Faq";
+import { PlanetFamily } from "./paywall/PlanetFamily";
+import { Timeline } from "./paywall/Timeline";
 import { planQuote } from "./planQuote";
 
 /**
@@ -16,39 +18,17 @@ import { planQuote } from "./planQuote";
  * Nothing here needs an account or a configured biller; the cards render from the list quote.
  */
 
-const Mark = ({ children }: { children: JSX.Element | JSX.Element[] }) => (
-  <Glyph size={19} box={24} stroke={1.9}>
-    {children}
-  </Glyph>
-);
-
-/**
- * What the money buys, above the prices: a reader decides what a plan is worth before they
- * read what one costs. One per line of `paywall.pros`, in order: a paused phone, a game, the planet.
- */
-const ICONS: JSX.Element[] = [
-  <Mark>
-    <rect x="7" y="3" width="10" height="18" rx="2.5" />
-    <path d="M3.5 3.5l17 17" />
-  </Mark>,
-  <Mark>
-    <path d="M12 2.5l2.1 6.4 6.4 2.1-6.4 2.1L12 19.5l-2.1-6.4L3.5 11l6.4-2.1L12 2.5z" />
-  </Mark>,
-  <Mark>
-    <circle cx="12" cy="12" r="6" />
-    <ellipse cx="12" cy="12" rx="10.5" ry="3.4" transform="rotate(-20 12 12)" />
-  </Mark>,
-];
-
 /** A month is 30 and not 30.44: the figure illustrates scale, and a buyer checking it will
  * divide by 30. */
 const DAYS = { monthly: 30, yearly: 365 };
 
 export function PaywallStep({
+  headline,
   plan,
   onSelect,
   onContinue,
 }: {
+  headline: string;
   plan: Plan;
   onSelect: (plan: Plan) => void;
   onContinue: () => void;
@@ -77,21 +57,17 @@ export function PaywallStep({
   const perDay = (amount: number, days: number) => price(amount / days);
   const monthlyPerDay = perDay(quote.monthly, DAYS.monthly);
 
+  const billed =
+    plan === "yearly" ? `${price(quote.yearly)} ${words.perYear}` : `${price(quote.monthly)} ${words.perMonth}`;
+
   return (
     <>
-      {/* Accent glyphs against ink copy, so the Continue button below is still the only accent
-          fill on the page. */}
-      <ul className="mb-4 flex flex-col gap-2.5 md:flex-row md:gap-8 md:self-center md:mb-8">
-        {words.pros.map((line, index) => (
-          <li key={line} className="flex items-center gap-3">
-            <span className="shrink-0 text-accent">{ICONS[index]}</span>
-            <span className="min-w-0 text-[15.5px] leading-[1.3] text-ink">{line}</span>
-          </li>
-        ))}
-      </ul>
+      <PlanetFamily />
+      <Headline text={headline} />
+      <Timeline />
 
       {/* A list on a phone, a row to compare across once there is room for one. */}
-      <div className="flex flex-col gap-2.5 md:grid md:grid-cols-2 md:gap-3">
+      <div className="flex flex-col gap-5 md:grid md:grid-cols-2 md:gap-3">
         <PlanCard
           label={words.yearly}
           price={price(quote.yearly)}
@@ -124,15 +100,15 @@ export function PaywallStep({
         />
       </div>
 
-      <Commit label={words.continue} onContinue={onContinue}>
-        <p className="text-center text-[14px] text-muted">{words.guarantee}</p>
+      <Commit label={words.continue} billed={billed} onContinue={onContinue}>
+        <p className="text-center text-[15.5px] text-muted">{words.guarantee}</p>
       </Commit>
 
       <Faq />
 
       {/* The same action as the one above: a reader who read the questions should not have to
           scroll back up to act on them. */}
-      <Commit label={words.continue} onContinue={onContinue} className="mt-12" />
+      <Commit label={words.continue} billed={billed} onContinue={onContinue} className="mt-12" />
 
       {/* Last on the page, under everything a buyer reads before agreeing to it. */}
       <div className="mt-8 flex justify-center">
@@ -145,11 +121,14 @@ export function PaywallStep({
 /** The one thing to press, set off from what is above and held to a button's width on a wide paywall. */
 function Commit({
   label,
+  billed,
   onContinue,
   className = "mt-6",
   children,
 }: {
   label: string;
+  /** The picked plan's price and term, under the label as the app's offer button has it. */
+  billed: string;
   onContinue: () => void;
   /** The space above it: close under the plans, a section's worth after the questions. */
   className?: string;
@@ -157,8 +136,9 @@ function Commit({
 }) {
   return (
     <div className={`${className} flex w-full flex-col items-center gap-3 md:max-w-[420px] md:self-center`}>
-      <button onClick={onContinue} className="btn text-[16px]">
-        {label}
+      <button onClick={onContinue} className="btn-offer">
+        <span className="text-[18.5px] font-bold leading-tight">{label}</span>
+        <span className="num text-[13.5px] font-medium leading-tight opacity-72">{billed}</span>
       </button>
       {children}
     </div>
@@ -197,31 +177,31 @@ function PlanCard({
     <button
       onClick={onSelect}
       data-selected={selected}
-      className="choice relative flex items-start justify-between gap-3 px-4 py-3.5 text-left"
+      className="offer-card relative flex items-start justify-between gap-3 px-4 py-4 text-left"
     >
+      {badge && <span className="offer-tag absolute top-0 right-5 -translate-y-1/2">{badge}</span>}
       <span className="min-w-0">
         <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <Radio selected={selected} />
-          <span className="text-[17px] font-extrabold tracking-[-0.02em] text-ink">{label}</span>
-          {badge && <span className="tag">{badge}</span>}
+          <span className="text-[18.5px] font-extrabold tracking-[-0.02em] text-ink">{label}</span>
         </span>
         {price && (
           <span className="mt-1.5 block">
-            <span className="num text-[16px] font-medium text-ink">{price}</span>{" "}
-            <span className="text-[14px] text-muted">{term}</span>
+            <span className="num text-[17.5px] font-medium text-ink">{price}</span>{" "}
+            <span className="text-[15.5px] text-muted">{term}</span>
           </span>
         )}
-        <span className="mt-1 block text-[13.5px] text-muted">{note}</span>
+        <span className="mt-1 block text-[15px] text-muted">{note}</span>
       </span>
 
       <span className="shrink-0 text-right">
         {wasFigure && (
-          <span className="num block text-[13px] text-faint line-through">{wasFigure}</span>
+          <span className="num block text-[14.5px] text-muted line-through">{wasFigure}</span>
         )}
-        <span className="num block text-[28px] font-extrabold leading-none tracking-[-0.03em] text-ink">
+        <span className="num block text-[30px] font-extrabold leading-none tracking-[-0.03em] text-ink">
           {figure}
         </span>
-        <span className="mt-1 block text-[11px] uppercase tracking-[0.08em] text-muted">
+        <span className="mt-1 block text-[12px] uppercase tracking-[0.08em] text-muted">
           {figureLabel}
         </span>
       </span>
@@ -237,7 +217,7 @@ function Radio({ selected }: { selected: boolean }) {
       width="20"
       height="20"
       viewBox="0 0 20 20"
-      className={`shrink-0 ${selected ? "text-accent" : "text-chevron"}`}
+      className={`shrink-0 ${selected ? "text-accent" : "text-faint"}`}
     >
       <circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5" />
       {selected && <circle cx="10" cy="10" r="4.5" fill="currentColor" />}

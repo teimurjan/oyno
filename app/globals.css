@@ -46,6 +46,11 @@
 
 /* --- Funnel components: the shapes the app draws, as classes ------------- */
 
+/* The funnel's type runs a size above the site's, so the site's shared eyebrow follows it. */
+.funnel .eyebrow {
+  font-size: 14.5px;
+}
+
 /* The one committing action per step. The single place the accent is a fill. */
 .btn {
   display: flex;
@@ -84,7 +89,7 @@
   border-radius: 16px;
   background: var(--glass);
   color: var(--ink);
-  font-size: 15px;
+  font-size: 16.5px;
 }
 
 .field::placeholder {
@@ -247,6 +252,98 @@
    step's column so it reaches the edges of the phone. */
 .paywall-page {
   background: var(--sky);
+}
+
+/* The offer's committing action, as `OfferButton.swift`: the ink pill lit from above and
+   ringed in the sheen. */
+.btn-offer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 20px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-control);
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent 50%) padding-box,
+    linear-gradient(var(--accent), var(--accent)) padding-box,
+    var(--sheen) border-box;
+  color: #fff;
+  box-shadow: 0 8px 16px var(--sheen-glow);
+  transition: scale 120ms ease-out;
+}
+
+.btn-offer:hover {
+  background:
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.2), transparent 50%) padding-box,
+    linear-gradient(var(--accent-pressed), var(--accent-pressed)) padding-box,
+    var(--sheen) border-box;
+}
+
+.btn-offer:active {
+  scale: 0.98;
+}
+
+/* A plan, as `PlanCard.swift`: glass until picked, then white, ringed in the sheen and glowing. */
+.offer-card {
+  border: 2px solid var(--glass-edge);
+  border-radius: var(--radius-card);
+  background: var(--glass);
+  transition: box-shadow 180ms ease-out;
+}
+
+.offer-card[data-selected="true"] {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--sheen) border-box;
+  box-shadow: 0 8px 18px var(--sheen-glow);
+}
+
+/* The capsule riding a plan's top edge: the sheen on the picked plan, outlined on the other. */
+.offer-tag {
+  padding: 5px 12px;
+  border: 1px solid var(--ink);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+[data-selected="true"] > .offer-tag {
+  border-color: transparent;
+  background: var(--sheen) border-box;
+}
+
+/* The timeline's node, as `SheenNode.swift`: unlit, the sheen's ring on white. */
+.sheen-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--sheen) border-box;
+  color: var(--ink);
+}
+
+.sheen-node--lit {
+  background: var(--sheen) border-box;
+}
+
+.sheen-line {
+  background: var(--sheen);
 }
 
 /* --- The planet scene (`lib/planet/`): the landing hero ---------------------------------- */

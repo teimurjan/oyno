@@ -76,8 +76,8 @@ export function AlternativeStep({ step, answers }: { step: FunnelStep; answers: 
 
       <div className="card mt-2 px-5 py-4">
         <div className="flex items-center justify-between gap-2">
-          <p className="text-[13px] font-bold text-muted">{game.eyebrow}</p>
-          <span className="num flex min-h-8 items-center rounded-full bg-surface px-3 text-[13px] font-bold text-ink">
+          <p className="text-[14.5px] font-bold text-muted">{game.eyebrow}</p>
+          <span className="num flex min-h-8 items-center rounded-full bg-surface px-3 text-[14.5px] font-bold text-ink">
             {game.age}
           </span>
         </div>
@@ -87,7 +87,7 @@ export function AlternativeStep({ step, answers }: { step: FunnelStep; answers: 
         </p>
 
         <div className="mt-2 flex flex-wrap items-center gap-1.5">
-          <span className="num mr-1 flex min-h-[26px] items-center gap-[5px] text-[13px] font-semibold text-muted">
+          <span className="num mr-1 flex min-h-[26px] items-center gap-[5px] text-[14.5px] font-semibold text-muted">
             <Icon size={13}>
               <circle cx="12" cy="12" r="9" />
               <path d="M12 7v5l3 2" />
@@ -99,7 +99,7 @@ export function AlternativeStep({ step, answers }: { step: FunnelStep; answers: 
           ))}
         </div>
 
-        <p className="mt-3 max-w-[310px] text-[15px] leading-[1.45] text-muted">{game.blurb}</p>
+        <p className="mt-3 max-w-[310px] text-[16.5px] leading-[1.45] text-muted">{game.blurb}</p>
 
         <div className="mt-5 flex flex-col gap-2">
           <p className="eyebrow">{game.why}</p>
@@ -115,7 +115,7 @@ export function AlternativeStep({ step, answers }: { step: FunnelStep; answers: 
                 href={source.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex min-h-7 items-baseline gap-1 text-[13px] font-semibold text-muted"
+                className="flex min-h-7 items-baseline gap-1 text-[14.5px] font-semibold text-muted"
               >
                 {source.short}
                 <Icon size={10}>
@@ -133,7 +133,7 @@ export function AlternativeStep({ step, answers }: { step: FunnelStep; answers: 
 /** The app's `Badge`: a glyph and a few words on a quiet ink wash. Not a control. */
 function Badge({ icon, label }: { icon: JSX.Element; label: string }) {
   return (
-    <span className="flex min-h-[26px] items-center gap-[5px] rounded-[8px] bg-ink/6 px-[9px] py-1 text-[13px] font-semibold text-slate">
+    <span className="flex min-h-[26px] items-center gap-[5px] rounded-[8px] bg-ink/6 px-[9px] py-1 text-[14.5px] font-semibold text-slate">
       {icon}
       {label}
     </span>

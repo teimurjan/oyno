@@ -41,7 +41,7 @@ export function EveningStep({ step, answers }: { step: FunnelStep; answers: Funn
             {words.hours.map((hour, index) => (
               <span
                 key={hour}
-                className="num absolute right-0 -translate-y-1/2 text-[11px] font-medium text-muted"
+                className="num absolute right-0 -translate-y-1/2 text-[13px] font-medium text-muted"
                 style={{ top: index * HOUR_PX }}
               >
                 {hour}
@@ -85,7 +85,7 @@ export function EveningStep({ step, answers }: { step: FunnelStep; answers: Funn
 
         <p
           data-shown={shown > INTERRUPTIONS.length}
-          className="row mt-4 text-center text-[15.5px] font-semibold leading-[1.35] text-alert"
+          className="row mt-4 text-center text-[17px] font-semibold leading-[1.35] text-alert"
         >
           {summary}
         </p>
@@ -106,11 +106,11 @@ function Event({
   className: string;
 }) {
   return (
-    <div
-      className={`absolute inset-x-1 rounded-[8px] border-l-[3px] px-2.5 py-1.5 ${className}`}
-      style={{ top: top + 1, height: height - 2 }}
-    >
-      <p className="text-[13px] font-semibold leading-[1.2] text-ink">{title}</p>
+    // The tint over a solid surface, so the sky through the glass card cannot wash it out.
+    <div className="absolute inset-x-1 overflow-hidden rounded-[8px] bg-surface" style={{ top: top + 1, height: height - 2 }}>
+      <div className={`h-full border-l-[3px] px-2.5 py-1.5 ${className}`}>
+        <p className="text-[15.5px] font-semibold leading-[1.2] text-ink">{title}</p>
+      </div>
     </div>
   );
 }

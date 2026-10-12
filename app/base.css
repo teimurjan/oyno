@@ -63,6 +63,7 @@
   --color-highlight: var(--highlight);
   --color-alert: var(--alert);
   --color-good: var(--good);
+  --color-good-ink: var(--pastel-green-ink);
   --color-caution: var(--caution);
   --color-lavender: var(--lavender);
   --color-amber: var(--amber);
@@ -236,7 +237,7 @@ body {
   border-radius: var(--radius-control);
   border: 1px solid transparent;
   font-family: var(--font-sans), system-ui, sans-serif;
-  font-size: 15px;
+  font-size: 16.5px;
   font-weight: 500;
   cursor: pointer;
   transition: opacity 120ms ease;
@@ -266,27 +267,4 @@ body {
 .brand-signin-button--facebook {
   background: #1877f2;
   color: #fff;
-}
-
-/* The mark on the plan that is the better deal, and it is a tag rather than a control:
-   `.btn` was doing this job, which made a 52px full-width accent slab out of the word
-   "Save".
-
-   Ink on white, not the accent, and the same shape `Chip` inverts to in the app. This step
-   already spends its accent twice — the selected plan's border and the button that takes
-   the money — and a third accent object turns the one thing the reader has to press into
-   one of three things competing to be pressed. */
-.tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 3px 6px;
-  border-radius: var(--radius-control);
-  background: var(--ink);
-  color: var(--surface);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  text-transform: uppercase;
-  white-space: nowrap;
 }

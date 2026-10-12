@@ -53,7 +53,7 @@ function ProgressBar({ count, index, label }: { count: number; index: number; la
         />
       </div>
       {/* Already announced by `aria-valuenow`, so the glyphs are for the eye only. */}
-      <span aria-hidden="true" className="num shrink-0 text-[12px] leading-none text-faint">
+      <span aria-hidden="true" className="num shrink-0 text-[13px] leading-none text-muted">
         {step}/{count}
       </span>
     </div>

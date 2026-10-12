@@ -185,7 +185,7 @@ struct PaywallPros: View {
     let lines: [String]
 
     /// One per line of `paywall.pros`, in order: a paused phone, a game, the planet.
-    private static let symbols = ["iphone.slash", "sparkles", "globe.europe.africa"]
+    private static let symbols = ["iphone.slash", "puzzlepiece.fill", "globe.europe.africa"]
 
     var body: some View {
         VStack(alignment: .leading, spacing: Metric.Space.m) {

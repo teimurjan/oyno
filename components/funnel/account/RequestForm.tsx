@@ -42,7 +42,7 @@ export function RequestForm({
           placeholder={words.emailPlaceholder}
           value={email}
           onInput={(event) => auth.setEmail(event.currentTarget.value)}
-          className={`${FIELD} text-[15px]`}
+          className={`${FIELD} text-[16.5px]`}
         />
         {usePassword && (
           <input
@@ -53,20 +53,20 @@ export function RequestForm({
             placeholder={words.passwordPlaceholder}
             value={password}
             onInput={(event) => auth.setPassword(event.currentTarget.value)}
-            className={`${FIELD} text-[15px]`}
+            className={`${FIELD} text-[16.5px]`}
           />
         )}
         <button
           type="submit"
           disabled={busy}
-          className="btn h-[46px] text-[16px] font-semibold disabled:opacity-40"
+          className="btn h-[46px] text-[17.5px] font-semibold disabled:opacity-40"
         >
           {submitTitle}
         </button>
-        {!usePassword && <p className="text-center text-[13px] leading-snug text-faint">{words.noPassword}</p>}
+        {!usePassword && <p className="text-center text-[14.5px] leading-snug text-muted">{words.noPassword}</p>}
       </form>
 
-      {error && <p className="text-[14px] leading-snug opacity-80">{error}</p>}
+      {error && <p className="text-[15.5px] leading-snug opacity-80">{error}</p>}
 
       <div className="flex items-center gap-3">
         <span className="h-px flex-1 bg-hairline" />

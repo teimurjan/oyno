@@ -66,7 +66,7 @@ export function InlineCheckout({
   }, []);
 
   if (failed) {
-    return <p className="card px-4 py-3.5 text-center text-[14px] leading-snug text-muted">{words.failed}</p>;
+    return <p className="card px-4 py-3.5 text-center text-[15.5px] leading-snug text-muted">{words.failed}</p>;
   }
 
   return (
@@ -76,7 +76,7 @@ export function InlineCheckout({
         <div id={FRAME_TARGET} className="w-full" />
         {!ready && (
           <div className="absolute inset-0 flex items-center justify-center bg-surface">
-            <p className="text-[15px] text-muted">{words.opening}</p>
+            <p className="text-[16.5px] text-muted">{words.opening}</p>
           </div>
         )}
       </div>

@@ -97,7 +97,7 @@ export function AccountStep({
       <Headline text={headline} />
       <Note text={note} />
       {!configured ? (
-        <p className="card mt-6 px-4 py-3 text-[14px] opacity-70">{copy.account.notConfigured}</p>
+        <p className="card mt-6 px-4 py-3 text-[15.5px] text-muted">{copy.account.notConfigured}</p>
       ) : auth.phase === "code" ? (
         <CodeForm auth={auth} />
       ) : (

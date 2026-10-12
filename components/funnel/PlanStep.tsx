@@ -52,9 +52,9 @@ export function PlanStep({
       <div className="card px-4 py-4">
         <div className="flex items-center gap-3">
           <div className="h-2 flex-1 overflow-hidden rounded-full bg-track">
-            <div className="h-full rounded-full bg-good" style={{ width: `${progress * 100}%` }} />
+            <div className="sheen-line h-full rounded-full" style={{ width: `${progress * 100}%` }} />
           </div>
-          <span className="num w-11 text-right text-[15px] font-bold text-ink">
+          <span className="num w-11 text-right text-[16.5px] font-bold text-ink">
             {Math.round(progress * 100)}%
           </span>
         </div>
@@ -65,12 +65,12 @@ export function PlanStep({
             const active = !ticked && progress >= index / lines.length;
             return (
               <li key={ORDER[index]} className="flex items-center gap-3">
-                <span className={`flex w-5 shrink-0 justify-center ${ticked ? "text-good" : "text-chevron"}`}>
+                <span className={`flex w-5 shrink-0 justify-center ${ticked ? "text-good-ink" : "text-faint"}`}>
                   {ticked ? <Tick /> : <span className="size-[15px] rounded-full border-[1.6px] border-current" />}
                 </span>
                 <span
-                  className={`min-w-0 text-[15.5px] leading-[1.35] transition-colors ${
-                    ticked || active ? "text-ink" : "text-faint"
+                  className={`min-w-0 text-[17px] leading-[1.35] transition-colors ${
+                    ticked || active ? "text-ink" : "text-muted"
                   }`}
                 >
                   {line}

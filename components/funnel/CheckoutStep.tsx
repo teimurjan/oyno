@@ -156,7 +156,7 @@ export function CheckoutStep({
   return (
     <div className="flex flex-col gap-4">
       {/* Above the card field: a buyer who finds out the platform after paying is a refund. */}
-      <p className="text-center text-[13px] leading-[1.5] text-muted">
+      <p className="text-center text-[14.5px] leading-[1.5] text-muted">
         {words.platforms} {words.cancelAnytime}
       </p>
       {payment()}
@@ -165,5 +165,5 @@ export function CheckoutStep({
 }
 
 function Unavailable({ children }: { children: ComponentChildren }) {
-  return <p className="card px-4 py-3.5 text-center text-[14px] leading-snug text-muted">{children}</p>;
+  return <p className="card px-4 py-3.5 text-center text-[15.5px] leading-snug text-muted">{children}</p>;
 }

@@ -153,7 +153,7 @@ export const en = {
       headline: "Your plan is ready. [Save it] to see your price.",
     },
     paywall: {
-      headline: "Get your [evenings] back.",
+      headline: "Come back to [your kid's planet].",
     },
     checkout: {
       headline: "Payment details.",
@@ -295,6 +295,12 @@ export const en = {
       "Your apps paused during Kid hours",
       "One easy game every evening",
       "Your family's planet, growing",
+    ],
+    /** The web paywall's timeline, top to bottom: what starts today, this week, in a month. */
+    timeline: [
+      { title: "Today", detail: "Pick your apps and your Kid hours. Your first game is ready." },
+      { title: "This week", detail: "Ten minutes of play together, every evening, phone down." },
+      { title: "In a month", detail: "A sharper kid: every game trains self-control and memory." },
     ],
     monthly: "Monthly",
     yearly: "Yearly",

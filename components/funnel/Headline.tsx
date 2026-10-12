@@ -3,7 +3,7 @@ import { Accented } from "./locale";
 /** `[bracketed]` marks the span that gets the accent. */
 export function Headline({ text }: { text: string }) {
   return (
-    <h1 className="mb-8 text-center font-extrabold leading-[1.1] tracking-[-0.03em] text-ink text-[clamp(26px,6.8vw,34px)]">
+    <h1 className="mb-8 text-center font-extrabold leading-[1.1] tracking-[-0.03em] text-ink text-[clamp(28px,7.4vw,36px)]">
       <Accented text={text} />
     </h1>
   );
@@ -13,7 +13,7 @@ export function Headline({ text }: { text: string }) {
  * own headline, so the page still has one title. */
 export function SectionTitle({ text }: { text: string }) {
   return (
-    <h2 className="text-center font-extrabold leading-[1.15] tracking-[-0.03em] text-ink text-[clamp(22px,5.6vw,28px)]">
+    <h2 className="text-center font-extrabold leading-[1.15] tracking-[-0.03em] text-ink text-[clamp(24px,6vw,30px)]">
       {text}
     </h2>
   );
@@ -21,12 +21,12 @@ export function SectionTitle({ text }: { text: string }) {
 
 export function Body({ text }: { text?: string }) {
   if (!text) return null;
-  return <p className="text-[16.5px] leading-[1.5] text-muted">{text}</p>;
+  return <p className="text-[18px] leading-[1.5] text-muted">{text}</p>;
 }
 
 /** The line under a headline that is a count rather than a claim: small, centred, and tucked
  * up close, which is what undoes most of the headline's own bottom margin. */
 export function Note({ text }: { text?: string }) {
   if (!text) return null;
-  return <p className="-mt-6 text-center text-[14px] text-muted">{text}</p>;
+  return <p className="-mt-6 text-center text-[15.5px] text-muted">{text}</p>;
 }

@@ -37,7 +37,7 @@ export function CheckoutSummary({
     <div className="card px-4 py-3.5">
       <p className="eyebrow">{words.summary}</p>
 
-      <div className="mt-2.5 flex items-start justify-between gap-4 text-[14.5px] leading-[1.45]">
+      <div className="mt-2.5 flex items-start justify-between gap-4 text-[16px] leading-[1.45]">
         <span className="min-w-0">
           <span className="font-bold text-ink">Oyno</span>
           <span className="text-muted"> · {label}</span>
@@ -46,7 +46,7 @@ export function CheckoutSummary({
       </div>
 
       {adjustments.length > 0 && (
-        <dl className="mt-2.5 flex flex-col gap-1 border-t border-hairline pt-2.5 text-[14.5px]">
+        <dl className="mt-2.5 flex flex-col gap-1 border-t border-hairline pt-2.5 text-[16px]">
           {adjustments.map((line) => (
             <div key={line.label} className="flex justify-between gap-4">
               <dt className="text-muted">{line.label}</dt>
@@ -57,11 +57,11 @@ export function CheckoutSummary({
       )}
 
       <div className="mt-2.5 flex items-baseline justify-between border-t border-hairline pt-2.5">
-        <span className="text-[15.5px] font-bold">{words.total}</span>
-        <span className="num text-[17px] font-extrabold">{total}</span>
+        <span className="text-[17px] font-bold">{words.total}</span>
+        <span className="num text-[18.5px] font-extrabold">{total}</span>
       </div>
 
-      <p className="mt-2 text-[13px] leading-[1.5] text-muted">
+      <p className="mt-2 text-[14.5px] leading-[1.5] text-muted">
         {fill(words.renews, { amount: total, cycle: plan === "yearly" ? words.cycles.year : words.cycles.month })}
       </p>
     </div>

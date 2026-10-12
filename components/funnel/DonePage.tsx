@@ -13,7 +13,7 @@ const APP_STORE_URL = APP_STORE_ID ? `https://apps.apple.com/app/id${APP_STORE_I
 export function DonePage() {
   const words = useLocale().copy.done;
   return (
-    <div className="sky flex min-h-dvh flex-col">
+    <div className="funnel sky flex min-h-dvh flex-col">
       <PurchaseReport />
       <header className="shell py-3">
         <Logo />
@@ -22,10 +22,10 @@ export function DonePage() {
       <main className="flex flex-1 flex-col items-center justify-center px-5 py-4 text-center">
         <div className="w-full max-w-[480px]">
           <p className="eyebrow mt-5">{words.eyebrow}</p>
-          <h1 className="font-extrabold tracking-[-0.03em] mt-2 text-[clamp(24px,6vw,34px)] leading-[1.1]">
+          <h1 className="font-extrabold tracking-[-0.03em] mt-2 text-[clamp(26px,6.6vw,36px)] leading-[1.1]">
             <Accented text={words.headline} />
           </h1>
-          <p className="mx-auto mt-4 max-w-[400px] text-[16px] leading-[1.5] opacity-70">
+          <p className="mx-auto mt-4 max-w-[400px] text-[17.5px] leading-[1.5] text-muted">
             {words.body}
           </p>
 
@@ -47,7 +47,7 @@ export function DonePage() {
             </div>
           )}
 
-          <p className="mt-8 text-[12.5px] leading-[1.5] opacity-55">
+          <p className="mt-8 text-[13.5px] leading-[1.5] text-muted">
             {words.receipt}
           </p>
         </div>

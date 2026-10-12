@@ -16,7 +16,7 @@ const LINK = "underline underline-offset-2 hover:text-ink";
 export function LegalNote() {
   const { copy, lang } = useLocale();
   return (
-    <p className="text-center text-[12.5px] leading-[1.5] text-faint flex items-center gap-4">
+    <p className="text-center text-[13.5px] leading-[1.5] text-muted flex items-center gap-4">
       <a href={pathFor(lang, "terms")} target="_blank" rel="noreferrer" className={LINK}>
         {copy.legal.terms}
       </a>{" "}

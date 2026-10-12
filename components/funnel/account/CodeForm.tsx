@@ -9,7 +9,7 @@ export function CodeForm({ auth }: { auth: EmailAuth }) {
 
   return (
     <div className="mt-5 flex flex-col gap-3">
-      <p className="text-[14px] leading-[1.5] opacity-70">
+      <p className="text-[15.5px] leading-[1.5] text-muted">
         {fillNodes(words.codeSent, { email: <span className="font-medium">{email}</span> })}
       </p>
 
@@ -31,20 +31,20 @@ export function CodeForm({ auth }: { auth: EmailAuth }) {
           // `onInput`, not `onChange`: Preact wires `onChange` to the native `change` event,
           // which fires on blur — and this field submits itself on its last digit.
           onInput={(event) => auth.onCodeInput(event.currentTarget.value)}
-          className={`${FIELD} text-center text-[20px] tracking-[0.35em]`}
+          className={`${FIELD} text-center text-[22px] tracking-[0.35em]`}
         />
         <button
           type="submit"
           disabled={busy || code.length < CODE_MIN}
-          className="btn h-[46px] text-[16px] font-semibold disabled:opacity-40"
+          className="btn h-[46px] text-[17.5px] font-semibold disabled:opacity-40"
         >
           {busy ? words.busy : words.continue}
         </button>
       </form>
 
-      {error && <p className="text-[14px] leading-snug opacity-80">{error}</p>}
+      {error && <p className="text-[15.5px] leading-snug opacity-80">{error}</p>}
 
-      <div className="flex items-center justify-between text-[14px] opacity-55">
+      <div className="flex items-center justify-between text-[15.5px] text-muted">
         <button
           onClick={() => void auth.resend()}
           disabled={busy || cooldown > 0}

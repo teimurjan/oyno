@@ -17,7 +17,7 @@ export function Faq() {
       <div className="card divide-y divide-divider">
         {words.items.map(({ question, answer }) => (
           <details key={question} className="group">
-            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[15px] font-medium leading-[1.35] text-ink [&::-webkit-details-marker]:hidden">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 text-[16.5px] font-medium leading-[1.35] text-ink [&::-webkit-details-marker]:hidden">
               {question}
               <span className="shrink-0 text-muted transition-transform group-open:rotate-180">
                 <Glyph size={18} box={24} stroke={2}>
@@ -25,7 +25,7 @@ export function Faq() {
                 </Glyph>
               </span>
             </summary>
-            <p className="px-4 pb-3.5 text-[14px] leading-[1.5] text-muted">{answer}</p>
+            <p className="px-4 pb-3.5 text-[15.5px] leading-[1.5] text-muted">{answer}</p>
           </details>
         ))}
       </div>

@@ -139,7 +139,7 @@ export function FunnelShell() {
   // a column whose height is only a minimum resolves to the content's own height — so a tall
   // step grew the column past the viewport and took the footer's button with it.
   return (
-    <div className="sky flex h-dvh flex-col">
+    <div className="funnel sky flex h-dvh flex-col">
       {!bare && <FunnelHeader index={index} count={SURVEY_LENGTH} label={copy.chrome.progress} />}
 
       {/* `min-h-0` keeps the chrome fixed and lets `main` scroll its own content. The gutter
@@ -184,7 +184,7 @@ export function FunnelShell() {
               <button
                 onClick={advance}
                 disabled={waiting}
-                className={`btn h-full w-full text-[16px] font-semibold ${step.kind === "plan" ? "anim-rise" : ""}`}
+                className={`btn h-full w-full text-[17.5px] font-semibold ${step.kind === "plan" ? "anim-rise" : ""}`}
               >
                 {buttonTitle}
               </button>
@@ -192,11 +192,11 @@ export function FunnelShell() {
           </div>
           <div className="h-[18px]">
             {index === 0 ? (
-              <p className="text-[14px] opacity-55">{copy.chrome.intro}</p>
+              <p className="text-[15.5px] text-muted">{copy.chrome.intro}</p>
             ) : (
               <button
                 onClick={() => goto(index - 1)}
-                className="text-[14px] opacity-55 transition-opacity hover:opacity-80"
+                className="text-[15.5px] text-muted transition-colors hover:text-ink"
               >
                 {copy.chrome.back}
               </button>
@@ -255,19 +255,17 @@ function StepBody({
     return <AccountStep headline={step.headline ?? ""} />;
   }
 
-  // Every remaining kind opens with the step's own copy, which is what `StatementStep` draws.
-  const heading = <StatementStep step={step} answers={answers} />;
-
+  // The family on the planet goes above the headline, so the paywall draws its own.
   if (step.kind === "paywall") {
     return (
-      <>
-        {heading}
-        <Suspense fallback={null}>
-          <PaywallStep plan={plan} onSelect={onSelectPlan} onContinue={onAdvance} />
-        </Suspense>
-      </>
+      <Suspense fallback={null}>
+        <PaywallStep headline={step.headline} plan={plan} onSelect={onSelectPlan} onContinue={onAdvance} />
+      </Suspense>
     );
   }
+
+  // Every remaining kind opens with the step's own copy, which is what `StatementStep` draws.
+  const heading = <StatementStep step={step} answers={answers} />;
 
   if (step.kind === "checkout") {
     // A fragment around a block, not a fragment of siblings: the frame is one piece.

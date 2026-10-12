@@ -44,11 +44,11 @@ export function QuestionCard({
         const inner = (
           <>
             {option.emoji && (
-              <span aria-hidden className="emoji shrink-0 text-[19px] leading-none">
+              <span aria-hidden className="emoji shrink-0 text-[21px] leading-none">
                 {option.emoji}
               </span>
             )}
-            <span className="min-w-0 flex-1 text-[17px] font-medium leading-snug text-ink">
+            <span className="min-w-0 flex-1 text-[18.5px] font-medium leading-snug text-ink">
               {option.title}
             </span>
             <Tick selected={selected} multi={question.multi} />
