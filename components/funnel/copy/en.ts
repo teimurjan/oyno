@@ -145,6 +145,16 @@ export const en = {
     enough: {
       headline: "Ten minutes is [enough].",
       body: "Kids remember the parent who got down on the floor, not how long the game lasted. Oyno picks one that fits ten minutes and the energy you have left.",
+      variants: {
+        twenty: {
+          headline: "Twenty minutes is [plenty].",
+          body: "Kids remember the parent who got down on the floor, not how long the game lasted. Oyno picks one that fits twenty minutes and the energy you have left.",
+        },
+        thirty: {
+          headline: "Thirty minutes is [more than enough].",
+          body: "Kids remember the parent who got down on the floor, not how long the game lasted. Oyno picks one that fits your evening and the energy you have left.",
+        },
+      },
     },
     plan: {
       headline: "Building [your plan]",

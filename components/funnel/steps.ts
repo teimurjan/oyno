@@ -239,7 +239,7 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
     { id: "tried", kind: "question", question: TRIED },
     { id: "alternative", kind: "alternative" },
     { id: "minutes", kind: "question", question: MINUTES },
-    { id: "enough", kind: "compare" },
+    { id: "enough", kind: "compare", branch: { on: "minutes" } },
     { id: "soon", kind: "question", question: SOON },
     { id: "plan", kind: "plan" },
     { id: "account", kind: "account" },
