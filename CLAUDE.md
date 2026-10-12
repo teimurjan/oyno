@@ -73,8 +73,8 @@ The app (`KidHoursStore`) saves the schedules (each with its own apps), the alwa
 never-allowed apps and the break to the App Group. It arms one daily activity per enabled schedule.
 The extension answers every boundary, a schedule's or the break's, by re-reading the whole state
 through `KidHoursShield.sync`. If an enabled schedule covers now and no break does, the apps of
-every running schedule are paused. Never-allowed apps sit in a second `ManagedSettingsStore` that
-no schedule or break clears. Always-allowed apps are the `except` set on both.
+every running schedule are paused. Never-allowed apps are added to every schedule, so a break,
+"Not now" or a schedule turned off opens them too. Always-allowed apps are the `except` set.
 The 20-minute break is a one-off `kidHours.break` activity. App tokens never leave the phone.
 A paused app opens to `OynoShield`, the custom shield screen. It shows the planet's rounds, which
 `OynoStore` mirrors into `ShieldStats` in the App Group, and counts that app's pauses for today.

@@ -3,20 +3,17 @@ import Foundation
 import ManagedSettings
 
 /// Pauses and resumes the chosen apps. The shield is Screen Time's own "app paused" screen.
-///
-/// Two stores, so an unlock that clears Kid hours never opens a Never allowed app: Screen Time
-/// applies the strictest of all stores.
 enum KidHoursShield {
     private static let kidHours = ManagedSettingsStore(named: .init("kidHours"))
-    private static let neverAllowed = ManagedSettingsStore(named: .init("neverAllowed"))
+    /// Never allowed used to pause around the clock from here. Cleared so no shield is left behind.
+    private static let legacyNeverAllowed = ManagedSettingsStore(named: .init("neverAllowed"))
 
     /// Makes the phone match `settings` at `date`. Every boundary the monitor hears and every
     /// save goes through here: two schedules that meet at 7:30 fire an end and a start in no
     /// fixed order, and answering from the whole state makes the order moot.
     static func sync(_ settings: KidHoursSettings, at date: Date = .now) {
-        let allowed = settings.alwaysAllowed.applicationTokens
-        apply(settings.neverAllowed, except: allowed, to: neverAllowed)
-        apply(settings.pausedApps(at: date) ?? FamilyActivitySelection(), except: allowed, to: kidHours)
+        legacyNeverAllowed.clearAllSettings()
+        apply(settings.pausedApps(at: date) ?? FamilyActivitySelection(), except: settings.alwaysAllowed.applicationTokens, to: kidHours)
     }
 
     /// Always-allowed apps are taken out of the app list and excepted from the categories.

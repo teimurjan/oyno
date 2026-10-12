@@ -41,14 +41,14 @@ struct TodayAppsReport: DeviceActivityReportScene {
     }
 }
 
-/// What Kid hours pause, from any schedule or Never allowed, less what is always allowed.
+/// What Kid hours pause, from any enabled schedule, less what is always allowed.
 private struct PausedApps {
     private let apps: Set<ApplicationToken>
     private let categories: Set<ActivityCategoryToken>
     private let allowed: Set<ApplicationToken>
 
     init(_ settings: KidHoursSettings?) {
-        let selections = (settings?.schedules.filter(\.isEnabled).map(\.apps) ?? []) + [settings?.neverAllowed].compactMap { $0 }
+        let selections = settings.map { settings in settings.schedules.filter(\.isEnabled).map(settings.apps(of:)) } ?? []
         apps = selections.reduce(into: []) { $0.formUnion($1.applicationTokens) }
         categories = selections.reduce(into: []) { $0.formUnion($1.categoryTokens) }
         allowed = settings?.alwaysAllowed.applicationTokens ?? []

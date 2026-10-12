@@ -7,7 +7,7 @@ import Foundation
 struct KidHoursSettings: Codable {
     /// Apps no schedule pauses, even when their category is paused.
     var alwaysAllowed = FamilyActivitySelection()
-    /// Paused all day, every day, through unlocks too.
+    /// Paused by every schedule, on top of its own apps.
     var neverAllowed = FamilyActivitySelection()
     var schedules: [KidHoursSchedule] = []
     /// The apps opened in the middle of Kid hours, after a round or for "Not now".
@@ -41,7 +41,14 @@ struct KidHoursSettings: Codable {
         guard isPaused(at: date, calendar: calendar) else { return nil }
         return schedules
             .filter { $0.isEnabled && $0.contains(date, calendar: calendar) }
-            .reduce(into: FamilyActivitySelection()) { $0.formUnion($1.apps) }
+            .reduce(into: FamilyActivitySelection()) { $0.formUnion(apps(of: $1)) }
+    }
+
+    /// What `schedule` pauses while it runs: its own apps and Never allowed.
+    func apps(of schedule: KidHoursSchedule) -> FamilyActivitySelection {
+        var apps = schedule.apps
+        apps.formUnion(neverAllowed)
+        return apps
     }
 
     func isUnlocked(at date: Date) -> Bool {
