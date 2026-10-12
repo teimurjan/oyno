@@ -5,7 +5,7 @@ import sharp from "sharp";
 import { glyphSvg, MARK, markSvg, wordmarkSvg, type Letters } from "@/lib/mark";
 
 /**
- * Renders the favicon set, the wordmark, the iOS `SplashMark`, `SplashSky` and `Wordmark`
+ * Renders the favicon set, the wordmark (SVG for the site, PNG for the auth emails), the iOS `SplashMark`, `SplashSky` and `Wordmark`
  * images and the paused-app screen's `ShieldMark` from `lib/mark.ts`. The app icon is the Icon Composer document `ios/Oyno/AppIcon.icon`,
  * made by hand, with the same sky gradient.
  */
@@ -82,8 +82,11 @@ console.log(`  public/ico/wordmark.svg  ${wordmark.width}×${wordmark.height}`);
 
 await writeImageSet("SplashMark", "splash-mark.png", await rasterize(glyphSvg(1024)));
 await writeImageSet("SplashSky", "splash-sky.png", await rasterize(skySvg));
-// At 3x of the 22pt home header; the funnel's 20pt one scales it down.
-await writeImageSet("Wordmark", "wordmark.png", await rasterize(wordmarkSvg(letters, 66).svg), "3x");
+// At 3x of the 22pt home header; the funnel's 20pt one scales it down. The auth emails show the
+// same PNG, because mail clients drop SVG.
+const wordmarkPng = await rasterize(wordmarkSvg(letters, 66).svg);
+await writeImageSet("Wordmark", "wordmark.png", wordmarkPng, "3x");
+await Bun.write(path.join(ROOT, "public/ico/wordmark.png"), wordmarkPng);
 
 await Bun.write(path.join(SHIELD_ASSETS, "Contents.json"), `${JSON.stringify({ info: { author: "xcode", version: 1 } })}\n`);
 // At 3x of the shield's 60pt icon.

@@ -6,8 +6,8 @@ import type { HomeCopy } from "@/components/site/copy/types";
 import { bindStrip, scrollToSlide } from "@/lib/planet/dom";
 
 /**
- * The proof section's screens, one at a time with its words beside it. A finger swipes, a
- * mouse gets the planet's arrows. The strip is bound through `lib/planet/dom.ts`, like the worlds.
+ * The proof section's screens, one at a time with its words beside it. A finger swipes or taps
+ * the planet's arrows. The strip is bound through `lib/planet/dom.ts`, like the worlds.
  */
 export function ScreenSlides({ proof }: { proof: HomeCopy["proof"] }) {
   const strip = useRef<HTMLDivElement>(null);
@@ -19,7 +19,7 @@ export function ScreenSlides({ proof }: { proof: HomeCopy["proof"] }) {
   }, []);
 
   const go = (index: number) => strip.current && scrollToSlide(strip.current, index);
-  const arrow = "absolute top-1/2 hidden -translate-y-1/2 pointer-fine:flex";
+  const arrow = "absolute top-1/2 flex -translate-y-1/2";
 
   return (
     <div className="relative mt-10">

@@ -44,20 +44,16 @@
           "key": "age",
           "options": [
             {
-              "value": "toddler",
+              "value": "0-1",
+              "emoji": "🍼"
+            },
+            {
+              "value": "1-3",
               "emoji": "🧸"
             },
             {
-              "value": "preschool",
+              "value": "3-5",
               "emoji": "🖍️"
-            },
-            {
-              "value": "school",
-              "emoji": "🚲"
-            },
-            {
-              "value": "older",
-              "emoji": "🎒"
             }
           ]
         }
@@ -301,10 +297,9 @@
         "age": {
           "headline": "How old is your youngest?",
           "options": {
-            "toddler": "2–3",
-            "preschool": "4–5",
-            "school": "6–8",
-            "older": "9 or older"
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
           }
         },
         "hardest": {

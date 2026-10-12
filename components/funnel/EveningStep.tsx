@@ -6,17 +6,19 @@ import type { FunnelAnswers, FunnelStep } from "./steps";
 /** One hour of the day column, in CSS pixels. */
 const HOUR_PX = 56;
 
-/** Work ends and kid time starts at 6 PM, two hours into the 4 PM column. */
-const KID_FROM = 120;
+/** The app's default Kid hours (`KidHoursSchedule.afterWork`), 4:30 to 7:30 PM, in minutes
+ * after 3 PM. */
+const KID_FROM = 90;
+const KID_UNTIL = 270;
 
-/** An example evening, labelled as one: minutes after 4 PM when the phone pulls the parent
+/** An example evening, labelled as one: minutes after 3 PM when the phone pulls the parent
  * away. Illustrative, not a statistic. */
-const INTERRUPTIONS = [154, 172, 189, 208, 224, 243, 261, 280];
+const INTERRUPTIONS = [124, 142, 159, 178, 194, 213, 231, 250];
 
 const px = (minutes: number) => (minutes / 60) * HOUR_PX;
 
 /**
- * Widget A: the pain as a calendar. Work until six, then the kid's hours, and the phone
+ * Widget A: the pain as a calendar. Work until half past four, then the kid's hours, and the phone
  * landing on them one red line after another. Plays once on arrival and shows the end state
  * on a second visit. Red is the phone, the one thing on this screen costing the reader.
  */
@@ -60,7 +62,7 @@ export function EveningStep({ step, answers }: { step: FunnelStep; answers: Funn
             <Event
               title={words.kid}
               top={px(KID_FROM)}
-              height={px(dayMinutes - KID_FROM)}
+              height={px(KID_UNTIL - KID_FROM)}
               className="border-good bg-good/22"
             />
 

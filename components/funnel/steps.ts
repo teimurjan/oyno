@@ -158,11 +158,11 @@ const question = (
   options: options.map(([value, emoji]) => ({ value, emoji })),
 });
 
+/** The app's age bands (`AgeBand` in `Activity.swift`), by the same ids. */
 const AGE = question("age", [
-  ["toddler", "🧸"],
-  ["preschool", "🖍️"],
-  ["school", "🚲"],
-  ["older", "🎒"],
+  ["0-1", "🍼"],
+  ["1-3", "🧸"],
+  ["3-5", "🖍️"],
 ]);
 
 const HARDEST = question("hardest", [

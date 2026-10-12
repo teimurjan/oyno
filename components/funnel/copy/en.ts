@@ -37,10 +37,9 @@ export const en = {
     age: {
       headline: "How old is your youngest?",
       options: {
-        toddler: "2–3",
-        preschool: "4–5",
-        school: "6–8",
-        older: "9 or older",
+        "0-1": "0–1",
+        "1-3": "1–3",
+        "3-5": "3–5",
       },
     },
     hardest: {
@@ -163,8 +162,8 @@ export const en = {
 
   evening: {
     caption: "A weekday evening",
-    /** One label per hour line, the first at 4 PM. */
-    hours: ["4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM"],
+    /** One label per hour line, the first at 3 PM. */
+    hours: ["3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM"],
     work: "Work",
     kid: "Time with your kid",
     phone: "Phone",
@@ -216,8 +215,9 @@ export const en = {
   plan: {
     lines: {
       age: {
-        toddler: "Games for a 2 to 3 year old",
-        preschool: "Games for a 4 to 5 year old",
+        "0-1": "Games for a baby up to one",
+        "1-3": "Games for a 1 to 3 year old",
+        "3-5": "Games for a 3 to 5 year old",
       },
       hardest: {
         afterwork: "Kid hours right after work",

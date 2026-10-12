@@ -124,6 +124,16 @@ behind "Use a password instead" (App Review's demo account uses it). The app exc
 (Apple, Google) and runs PKCE in `webAuthenticationSession` (Facebook, `oyno://auth-callback`),
 while the web redirects through `/auth/callback`. Inside Meta's webview the funnel hides Google.
 
+The emails are `supabase/templates/`, one file per tab in Authentication → Emails, in the Little
+Planet look. You paste them by hand, and nothing pushes them. The code emails carry no link. The
+other three link to `/auth/callback` with a `token_hash`, which redeems in any browser. Subjects:
+
+- `confirmation`, `magic_link`: "Your Oyno code"
+- `reauthentication`: "Your Oyno confirmation code"
+- `recovery`: "Reset your Oyno password"
+- `email_change`: "Confirm your new Oyno email"
+- `invite`: "You’ve been invited to Oyno"
+
 ## Language
 
 English only at launch. Three places hold the same locale list: `InterfaceLanguage.supported`,
