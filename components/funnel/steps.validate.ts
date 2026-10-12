@@ -70,8 +70,7 @@ const answers = (question: QuestionShape, value: string): boolean =>
 /**
  * What a deck can get wrong that its type cannot see, because option values and step ids are
  * strings: an option with no title renders an empty row, a step with no headline an empty
- * screen, a recap line or a variant keyed on a value the question never answers is a sentence
- * nobody reads, and a `multi` question's joined answer never matches a recap key at all.
+ * screen, and a variant keyed on a value the question never answers is a sentence nobody reads.
  *
  * Run by the funnel build for every deck, so a missing word fails the build rather than
  * shipping a blank to one market.
@@ -82,7 +81,7 @@ export function validateCopy(tag: string, copy: FunnelCopy, spine: FunnelSpine):
   };
   const words = copy.questions as Record<
     string,
-    { headline: string; options: Record<string, string>; recap?: Record<string, string> }
+    { headline: string; options: Record<string, string> }
   >;
   const steps = copy.steps as Record<
     string,
@@ -96,10 +95,6 @@ export function validateCopy(tag: string, copy: FunnelCopy, spine: FunnelSpine):
       if (!deck?.headline) fail(`"${question.key}" has no headline`);
       for (const option of question.options) {
         if (!deck.options[option.value]) fail(`"${question.key}" has no title for "${option.value}"`);
-      }
-      if (question.multi && deck.recap) fail(`"${question.key}" is multi, so its recap is unreachable`);
-      for (const value of Object.keys(deck.recap ?? {})) {
-        if (!answers(question, value)) fail(`"${question.key}" recaps "${value}", which it never answers`);
       }
       continue;
     }

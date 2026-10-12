@@ -5,7 +5,6 @@ import { funnelPath, type Lang } from "@/lib/i18n";
 import { inAppBrowser } from "@/lib/inAppBrowser";
 import { metaTrack } from "@/lib/metaPixel";
 import { CodeForm } from "./account/CodeForm";
-import { PlanCard } from "./account/PlanCard";
 import { RequestForm } from "./account/RequestForm";
 import { attempted, useEmailAuth } from "./account/useEmailAuth";
 import { LegalNote } from "./LegalNote";
@@ -13,7 +12,7 @@ import { Headline, Note } from "./Headline";
 import { goto } from "./location";
 import { useLocale } from "./locale";
 import { claimRegistration, storeAttempt, takeAttempt } from "./session";
-import { ACCOUNT_STEP_INDEX, problemFix, type FunnelAnswers } from "./steps";
+import { ACCOUNT_STEP_INDEX } from "./steps";
 
 /** Where both round trips come back to: this step, which forwards a signed-in visitor on.
  * Not the checkout step directly — landing there skips the effect below and the one
@@ -33,17 +32,13 @@ const asOAuthProvider = (value: unknown): OAuthProvider | null =>
  * clients find the subscription by signing into the same account.
  *
  * Placed after the plan and before the price, so the commitment is made before the number is.
- * That is the step readers leave most, so it carries their own problem forward under the head
- * count.
  */
 export function AccountStep({
   headline,
   note,
-  answers,
 }: {
   headline: string;
   note?: string;
-  answers: FunnelAnswers;
 }) {
   const { user, configured, linkError, signInWithProvider } = useAuth();
   const { copy, lang } = useLocale();
@@ -97,13 +92,10 @@ export function AccountStep({
     void signInWithProvider(provider, returnPath(lang));
   };
 
-  const plan = problemFix(answers, copy);
-
   return (
     <>
       <Headline text={headline} />
       <Note text={note} />
-      {plan && <PlanCard problem={plan.problem} fix={plan.fix} />}
       {!configured ? (
         <p className="card mt-6 px-4 py-3 text-[14px] opacity-70">{copy.account.notConfigured}</p>
       ) : auth.phase === "code" ? (

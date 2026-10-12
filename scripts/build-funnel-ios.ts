@@ -45,8 +45,8 @@ const decks = Object.fromEntries(
   Object.entries(FUNNEL_COPY).map(([lang, copy]) => {
     validateCopy(lang, copy, SPINE);
     const shared = Object.fromEntries(SECTIONS.map((section) => [section, copy[section]]));
-    const { signIn, haveAccount, fix } = copy.account;
-    return [lang, { ...shared, account: { signIn, haveAccount, fix } }];
+    const { signIn, haveAccount } = copy.account;
+    return [lang, { ...shared, account: { signIn, haveAccount } }];
   }),
 );
 

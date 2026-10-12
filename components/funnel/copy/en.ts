@@ -33,12 +33,6 @@ export const en = {
         asks: "My kid asks for my phone",
         both: "We're both on our phones",
       },
-      recap: {
-        scroll: "You pick up the phone for a second, and the evening goes with it.",
-        ideas: "You want to play, but there's nothing left to think of a game with.",
-        asks: "Your kid asks for the thing in your hand.",
-        both: "Two parents on two phones, and a kid watching.",
-      },
     },
     age: {
       headline: "How old is your youngest?",
@@ -258,13 +252,6 @@ export const en = {
     passwordPlaceholder: "Password (8+ characters)",
     busy: "One moment…",
     noPassword: "No password. We'll email you a 6-digit code.",
-    /** The account step's tick under the reader's problem: the line of the plan that answers it. */
-    fix: {
-      scroll: "Your apps pause during Kid hours, so the phone stays down.",
-      ideas: "One easy game a day, picked for the energy you have.",
-      asks: "Ten minutes where the most interesting thing in the room is you.",
-      both: "Both phones pause at once, for both of you.",
-    },
     createAccount: "Create account",
     signIn: "Sign in",
     or: "or",

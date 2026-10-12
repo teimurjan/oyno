@@ -85,8 +85,6 @@ struct FunnelCopy: Decodable {
         let headline: String
         let description: String?
         let options: [String: String]
-        /// Answer → the line that names the reader's problem back. Only the problem has one.
-        let recap: [String: String]?
     }
 
     struct StatementWords: Decodable {
@@ -113,8 +111,6 @@ struct FunnelCopy: Decodable {
     struct Account: Decodable {
         let signIn: String
         let haveAccount: String
-        /// Problem → the line of the plan that answers it, ticked on the account step.
-        let fix: [String: String]
     }
 }
 

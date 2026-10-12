@@ -296,12 +296,6 @@
             "ideas": "I'm too tired to think of a game",
             "asks": "My kid asks for my phone",
             "both": "We're both on our phones"
-          },
-          "recap": {
-            "scroll": "You pick up the phone for a second, and the evening goes with it.",
-            "ideas": "You want to play, but there's nothing left to think of a game with.",
-            "asks": "Your kid asks for the thing in your hand.",
-            "both": "Two parents on two phones, and a kid watching."
           }
         },
         "age": {
@@ -448,13 +442,7 @@
       },
       "account": {
         "signIn": "Sign in",
-        "haveAccount": "Already have an account? Sign in",
-        "fix": {
-          "scroll": "Your apps pause during Kid hours, so the phone stays down.",
-          "ideas": "One easy game a day, picked for the energy you have.",
-          "asks": "Ten minutes where the most interesting thing in the room is you.",
-          "both": "Both phones pause at once, for both of you."
-        }
+        "haveAccount": "Already have an account? Sign in"
       }
     }
   }

@@ -131,7 +131,7 @@ export const OPENER_ID = "evening";
 
 /**
  * Step 0 for every web visit: one yes/no on the phone eating the evening. Same `key` as
- * `PROBLEM` and "Yes" is `scroll`, so the branch, the account card and the Amplitude join read
+ * `PROBLEM` and "Yes" is `scroll`, so the branch and the Amplitude join read
  * as a four-way answer would. The app's first run keeps the four-way question.
  */
 function opener(copy: FunnelCopy): FunnelQuestion {
@@ -305,17 +305,6 @@ export function stepAt(index: number, copy: FunnelCopy): FunnelStep {
     question: index === 0 ? opener(copy) : step.question,
     branch: step.branch && { ...step.branch, fallback: OPENER_PROBLEM },
   };
-}
-
-/** The account step's card: the problem the reader named and the line of the plan that answers
- * it. Null for the opener's "Not really", which named none. */
-export function problemFix(
-  answers: FunnelAnswers,
-  copy: FunnelCopy,
-): { problem: string; fix: string } | null {
-  const answer = PROBLEMS.find((problem) => problem === answers[PROBLEM.key]);
-  if (!answer) return null;
-  return { problem: copy.questions.problem.recap[answer], fix: copy.account.fix[answer] };
 }
 
 // Development only — the live funnel must never fail to render over a copy mistake. The

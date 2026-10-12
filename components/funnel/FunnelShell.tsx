@@ -252,7 +252,7 @@ function StepBody({
 
   // Its note is drawn under the buttons rather than under the headline, so it lays out its own.
   if (step.kind === "account") {
-    return <AccountStep headline={step.headline ?? ""} answers={answers} />;
+    return <AccountStep headline={step.headline ?? ""} />;
   }
 
   // Every remaining kind opens with the step's own copy, which is what `StatementStep` draws.
