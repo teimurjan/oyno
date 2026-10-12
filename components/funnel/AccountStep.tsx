@@ -32,7 +32,7 @@ const asOAuthProvider = (value: unknown): OAuthProvider | null =>
  * funnel stamps that uid into Dodo's `metadata`, the webhook reads it back, and both
  * clients find the subscription by signing into the same account.
  *
- * Placed after the recap and before the price, so the commitment is made before the number is.
+ * Placed after the plan and before the price, so the commitment is made before the number is.
  * That is the step readers leave most, so it carries their own problem forward under the head
  * count.
  */

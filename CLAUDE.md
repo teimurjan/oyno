@@ -57,9 +57,8 @@ show instantly and offline, and picking needs the rounds, which never leave the 
 
 ## The planet scene
 
-One scene, three renderers: the landing hero (`components/site/PlanetHero.tsx`, React), the funnel
-widget (`components/funnel/PlanetStep.tsx`, Preact) and the app (`Screens/Home/PlanetScene.swift`,
-`WorldsGallery.swift`). The layout, depths, scales and worlds live in `lib/planet/scene.ts` and are
+One scene, two renderers: the landing hero (`components/site/PlanetHero.tsx`, React) and the app
+(`Screens/Home/PlanetScene.swift`, `WorldsGallery.swift`). The layout, depths, scales and worlds live in `lib/planet/scene.ts` and are
 mirrored by `PlanetLayout` and `World.swift`. Change them together. The browser half is
 `lib/planet/dom.ts`, framework-free, and the transforms are `.planet-*` in `app/globals.css`.
 The layers come from `art/source/*.png` through `bun run art:build`, which writes `public/art/`,

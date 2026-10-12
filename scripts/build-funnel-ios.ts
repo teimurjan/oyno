@@ -16,11 +16,20 @@ const OUT = "ios/Oyno/Resources/Funnel.json";
 
 /** The step kinds `FunnelContent.swift` decodes. A kind added on the web fails here, not as a
  * bundle the app cannot decode when the paywall opens. */
-const IOS_KINDS = new Set(["question", "statement", "evening", "planet", "recap", "account"]);
+const IOS_KINDS = new Set([
+  "question",
+  "statement",
+  "evening",
+  "apps",
+  "alternative",
+  "compare",
+  "plan",
+  "account",
+]);
 
 /** The parts of a deck the phone reads. The rest is the web's own — its sign-in forms, Dodo's
  * checkout, the page after it. */
-const SECTIONS = ["chrome", "questions", "steps", "evening", "planet", "recap", "paywall"] as const;
+const SECTIONS = ["chrome", "questions", "steps", "paywall"] as const;
 
 // The app opens on the four-way question; the web's opener is its yes/no.
 const accountIndex = FUNNEL.steps.findIndex((step) => step.kind === "account");
@@ -45,7 +54,6 @@ const funnel = {
   spine: {
     steps,
     surveyLength: accountIndex,
-    followUp: SPINE.followUp,
     separator: SPINE.separator,
   },
   decks,

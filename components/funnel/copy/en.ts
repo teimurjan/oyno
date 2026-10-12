@@ -48,11 +48,6 @@ export const en = {
         school: "6–8",
         older: "9 or older",
       },
-      recap: {
-        toddler: "A two-year-old who wants you, not your screen.",
-        preschool: "A preschooler with more energy than your evening.",
-        school: "A school kid who still asks you to play.",
-      },
     },
     hardest: {
       headline: "When does the phone [win most]?",
@@ -62,12 +57,6 @@ export const en = {
         weekend: "Weekend mornings",
         bedtime: "Before bedtime",
       },
-      recap: {
-        afterwork: "The hour after work, when you're home but not really there.",
-        dinner: "Dinner, with a phone face-down that doesn't stay face-down.",
-        weekend: "Weekend mornings that slip into the feed.",
-        bedtime: "Bedtime, with one eye on the phone.",
-      },
     },
     pickups: {
       headline: "How often do you pick it up [in an hour] with them?",
@@ -76,11 +65,6 @@ export const en = {
         few: "Once or twice",
         often: "Every few minutes",
         lost: "I lose count",
-      },
-      recap: {
-        few: "A couple of pickups an hour, each one longer than you meant.",
-        often: "A pickup every few minutes, so no game gets to the end.",
-        lost: "Too many pickups to count, which is the problem.",
       },
     },
     apps: {
@@ -102,10 +86,6 @@ export const en = {
         okay: "Okay",
         full: "Plenty",
       },
-      recap: {
-        low: "Low battery by six, so the games have to be easy.",
-        okay: "Some energy left, if the game is ready to go.",
-      },
     },
     partner: {
       headline: "Is there a co-parent home in the evening?",
@@ -113,11 +93,6 @@ export const en = {
         yes: "Yes, most evenings",
         sometimes: "Sometimes",
         no: "No, it's just me",
-      },
-      recap: {
-        yes: "Two adults home, and both of you reach for a phone.",
-        sometimes: "Some evenings solo, some evenings two of you.",
-        no: "Solo evenings, so the ten minutes have to be easy.",
       },
     },
     tried: {
@@ -128,11 +103,6 @@ export const en = {
         delete: "Deleting apps",
         nothing: "Nothing yet",
       },
-      recap: {
-        limits: "Screen Time limits you tap past with \"Ignore\".",
-        room: "The phone in another room, until a buzz calls it back.",
-        delete: "Deleted apps that were back by Friday.",
-      },
     },
     minutes: {
       headline: "How many minutes [a day] could you give?",
@@ -140,11 +110,6 @@ export const en = {
         ten: "10 minutes",
         twenty: "20 minutes",
         thirty: "30 minutes or more",
-      },
-      recap: {
-        ten: "Ten minutes a day, phone down.",
-        twenty: "Twenty minutes a day, phone down.",
-        thirty: "Half an hour a day, phone down.",
       },
     },
     soon: {
@@ -180,16 +145,16 @@ export const en = {
     evening: {
       headline: "Where an evening [goes].",
     },
-    planet: {
-      headline: "Every round together [grows your planet].",
-      body: "Tap it. Your family unlocks a new world as you play.",
+    alternative: {
+      headline: "Oyno is [not breaking] a habit you already have.",
+      body: "It gives you something better to pick up: a short game that makes your kid smarter.",
     },
     enough: {
       headline: "Ten minutes is [enough].",
       body: "Kids remember the parent who got down on the floor, not how long the game lasted. Oyno picks one that fits ten minutes and the energy you have left.",
     },
-    recap: {
-      headline: "Your evenings, as you told it",
+    plan: {
+      headline: "Building [your plan]",
     },
     account: {
       headline: "Your plan is ready. [Save it] to see your price.",
@@ -203,64 +168,88 @@ export const en = {
   },
 
   evening: {
-    caption: "An example evening, 4:30 to 7:30 PM.",
-    phone: "On the phone",
-    kid: "With your kid",
-    start: "4:30",
-    end: "7:30",
-    summary: "{kid} with your kid, {phone} on the phone.",
-    minutes: "{n} min",
+    caption: "A weekday evening",
+    /** One label per hour line, the first at 4 PM. */
+    hours: ["4 PM", "5 PM", "6 PM", "7 PM", "8 PM", "9 PM"],
+    work: "Work",
+    kid: "Time with your kid",
+    phone: "Phone",
+    summary: "{n} interruptions from your kiddo",
   },
 
-  planet: {
-    open: "Open your worlds",
-    close: "Close worlds",
-    previous: "Previous world",
-    next: "Next world",
-    yours: "Yours now",
-    unlocksAt: "Unlocks at bloom {n}",
-    worlds: {
-      earth: "Earth",
-      meadow: "Meadow",
-      ember: "Ember",
-      blossom: "Blossom",
-      lagoon: "Lagoon",
-      dune: "Dune",
-      frost: "Frost",
-      lavender: "Lavender",
-      moss: "Moss",
-      honey: "Honey",
-      cloud: "Cloud",
-      coral: "Coral",
-      rose: "Rose",
-      pebble: "Pebble",
-      orchard: "Orchard",
-      aurora: "Aurora",
-      clay: "Clay",
-      mint: "Mint",
-      twilight: "Twilight",
-      poppy: "Poppy",
-      pearl: "Pearl",
-      canyon: "Canyon",
-      rain: "Rain",
-      cedar: "Cedar",
-      sunlit: "Sunlit",
-      berry: "Berry",
-      glacier: "Glacier",
-      marigold: "Marigold",
-      dream: "Dream",
-      hearth: "Hearth",
-      home: "Home",
+  /** The play screen's top half, for one real game ("countdown-stop" in `activities/en.json`). */
+  alternative: {
+    eyebrow: "One easy thing",
+    age: "Age 3–5",
+    title: "Stop at Four",
+    minutes: "8 min",
+    tags: {
+      "lying-down": "Lying down",
+      quiet: "Quiet",
+      "nothing-to-grab": "Nothing to grab",
+    },
+    blurb: "Good for a kid who counts everything, a dark bedroom, and a parent who can manage ten numbers.",
+    why: "Why it works",
+    skills: {
+      "inhibitory-control": "Self-control",
+      "working-memory": "Working memory",
     },
   },
 
-  recap: {
-    closing: "Oyno gives you [ten phone-free minutes] every evening.",
-    answers: [
-      "Your apps paused during Kid hours",
-      "One easy game, sized to your energy",
-      "A planet that grows every time you play",
-    ],
+  compare: {
+    good: {
+      title: "A 10-minute game together",
+      points: [
+        "All of your attention",
+        "A game with a start and an end",
+        "Your kid leads, you follow",
+        "A memory you both keep",
+      ],
+    },
+    bad: {
+      title: "An hour sitting nearby",
+      points: [
+        "Half of you is on the phone",
+        "Your kid asks for the screen",
+        "Nothing gets to the end",
+        "Nobody remembers it",
+      ],
+    },
+  },
+
+  /** The plan step's checklist: a line per answer, ticked in this order. A missing answer, or
+   * one with no line, reads the fallback. */
+  plan: {
+    lines: {
+      age: {
+        toddler: "Games for a 2 to 3 year old",
+        preschool: "Games for a 4 to 5 year old",
+      },
+      hardest: {
+        afterwork: "Kid hours right after work",
+        dinner: "Kid hours around dinner",
+        weekend: "Kid hours on weekend mornings",
+        bedtime: "Kid hours before bedtime",
+      },
+      energy: {
+        low: "Easy games for a low battery",
+        okay: "Games for an okay day",
+        full: "Bigger games for a full battery",
+      },
+      minutes: {
+        ten: "Ten minutes a day, phone down",
+        twenty: "Twenty minutes a day, phone down",
+        thirty: "Half an hour a day, phone down",
+      },
+    },
+    fallback: {
+      age: "Games you can play together",
+      hardest: "Kid hours when the phone wins most",
+      apps: "Pausing the apps that pull you back",
+      energy: "Games sized to your energy",
+      minutes: "A few minutes a day, phone down",
+    },
+    apps: "Pausing {apps} during Kid hours",
   },
 
   account: {

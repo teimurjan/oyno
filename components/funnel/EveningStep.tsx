@@ -1,39 +1,31 @@
-import { useLocale, fill, fillNodes } from "./locale";
+import { useLocale, fill } from "./locale";
 import { REVEAL_DELAY_MS, useStagger } from "./reveal";
 import { StatementStep } from "./StatementStep";
 import type { FunnelAnswers, FunnelStep } from "./steps";
 
-/** 4:30 to 7:30 PM, in minutes. */
-const EVENING_MINUTES = 180;
+/** One hour of the day column, in CSS pixels. */
+const HOUR_PX = 56;
+
+/** Work ends and kid time starts at 6 PM, two hours into the 4 PM column. */
+const KID_FROM = 120;
+
+/** An example evening, labelled as one: minutes after 4 PM when the phone pulls the parent
+ * away. Illustrative, not a statistic. */
+const INTERRUPTIONS = [154, 172, 189, 208, 224, 243, 261, 280];
+
+const px = (minutes: number) => (minutes / 60) * HOUR_PX;
 
 /**
- * An example evening, labelled as one: when each pickup starts and how long it lasts, in
- * minutes after 4:30. Illustrative, not a statistic.
- */
-const PICKUPS: readonly [start: number, length: number][] = [
-  [12, 8],
-  [31, 14],
-  [58, 6],
-  [77, 18],
-  [104, 9],
-  [126, 11],
-  [151, 4],
-];
-
-const PHONE_MINUTES = PICKUPS.reduce((total, [, length]) => total + length, 0);
-
-const percent = (minutes: number) => `${(minutes / EVENING_MINUTES) * 100}%`;
-
-/**
- * Widget A: the pain happening. The pickups land on the evening one after another, then the
- * totals. No controls: it plays once on arrival and shows the end state on a second visit.
- * Red is the phone's time, the one thing on this screen costing the reader.
+ * Widget A: the pain as a calendar. Work until six, then the kid's hours, and the phone
+ * landing on them one red line after another. Plays once on arrival and shows the end state
+ * on a second visit. Red is the phone, the one thing on this screen costing the reader.
  */
 export function EveningStep({ step, answers }: { step: FunnelStep; answers: FunnelAnswers }) {
   const { copy } = useLocale();
   const words = copy.evening;
-  const shown = useStagger("evening", PICKUPS.length + 1, REVEAL_DELAY_MS, 520);
-  const minutes = (n: number) => fill(words.minutes, { n });
+  const shown = useStagger("evening", INTERRUPTIONS.length + 1, REVEAL_DELAY_MS, 420);
+  const summary = fill(words.summary, { n: INTERRUPTIONS.length });
+  const dayMinutes = (words.hours.length - 1) * 60;
 
   return (
     <>
@@ -42,50 +34,81 @@ export function EveningStep({ step, answers }: { step: FunnelStep; answers: Funn
       <div className="card px-4 pb-4 pt-3.5">
         <p className="eyebrow">{words.caption}</p>
 
-        <div
-          role="img"
-          aria-label={fill(words.summary, {
-            kid: minutes(EVENING_MINUTES - PHONE_MINUTES),
-            phone: minutes(PHONE_MINUTES),
-          })}
-          className="relative mt-3 h-11 overflow-hidden rounded-[14px] bg-good/25"
-        >
-          {PICKUPS.map(([start, length], index) => (
-            <span
-              key={start}
-              data-shown={index < shown}
-              className="row absolute inset-y-0 bg-alert"
-              style={{ left: percent(start), width: percent(length) }}
+        <div role="img" aria-label={summary} className="mt-4 flex gap-2">
+          <div className="relative w-10 shrink-0" style={{ height: px(dayMinutes) }}>
+            {words.hours.map((hour, index) => (
+              <span
+                key={hour}
+                className="num absolute right-0 -translate-y-1/2 text-[11px] font-medium text-muted"
+                style={{ top: index * HOUR_PX }}
+              >
+                {hour}
+              </span>
+            ))}
+          </div>
+
+          <div className="relative flex-1" style={{ height: px(dayMinutes) }}>
+            {words.hours.map((hour, index) => (
+              <span
+                key={hour}
+                className="absolute inset-x-0 border-t border-hairline"
+                style={{ top: index * HOUR_PX }}
+              />
+            ))}
+
+            <Event title={words.work} top={0} height={px(KID_FROM)} className="border-highlight bg-highlight/12" />
+            <Event
+              title={words.kid}
+              top={px(KID_FROM)}
+              height={px(dayMinutes - KID_FROM)}
+              className="border-good bg-good/22"
             />
-          ))}
-        </div>
 
-        <div className="num mt-1.5 flex justify-between text-[12px] font-medium text-muted">
-          <span>{words.start}</span>
-          <span>{words.end}</span>
-        </div>
-
-        <div className="mt-3 flex gap-4 text-[13px] font-semibold text-ink">
-          <span className="flex items-center gap-1.5">
-            <span aria-hidden className="size-2.5 rounded-full bg-good/60" />
-            {words.kid}
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span aria-hidden className="size-2.5 rounded-full bg-alert" />
-            {words.phone}
-          </span>
+            {INTERRUPTIONS.map((minute, index) => (
+              <div
+                key={minute}
+                data-shown={index < shown}
+                className="row absolute inset-x-1 flex items-center"
+                style={{ top: px(minute) }}
+              >
+                <span className="h-[2px] flex-1 bg-alert" />
+                <span className="flex -translate-y-px items-center gap-1 rounded-full bg-alert px-1.5 py-px text-[10.5px] font-bold leading-[1.3] text-white">
+                  <span aria-hidden>!</span>
+                  {words.phone}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <p
-          data-shown={shown > PICKUPS.length}
-          className="row mt-3 text-[15.5px] font-semibold leading-[1.35] text-ink"
+          data-shown={shown > INTERRUPTIONS.length}
+          className="row mt-4 text-center text-[15.5px] font-semibold leading-[1.35] text-alert"
         >
-          {fillNodes(words.summary, {
-            kid: <span className="num">{minutes(EVENING_MINUTES - PHONE_MINUTES)}</span>,
-            phone: <span className="num">{minutes(PHONE_MINUTES)}</span>,
-          })}
+          {summary}
         </p>
       </div>
     </>
+  );
+}
+
+function Event({
+  title,
+  top,
+  height,
+  className,
+}: {
+  title: string;
+  top: number;
+  height: number;
+  className: string;
+}) {
+  return (
+    <div
+      className={`absolute inset-x-1 rounded-[8px] border-l-[3px] px-2.5 py-1.5 ${className}`}
+      style={{ top: top + 1, height: height - 2 }}
+    >
+      <p className="text-[13px] font-semibold leading-[1.2] text-ink">{title}</p>
+    </div>
   );
 }

@@ -5,12 +5,14 @@ import { track, trackOnExit } from "@/lib/analytics";
 import { metaTrack } from "@/lib/metaPixel";
 import type { Plan } from "@/lib/plans";
 import { AccountStep } from "./AccountStep";
+import { AlternativeStep } from "./AlternativeStep";
+import { AppsStep } from "./AppsStep";
+import { CompareStep } from "./CompareStep";
 import { EveningStep } from "./EveningStep";
 import { FunnelHeader } from "./FunnelChrome";
-import { PlanetStep } from "./PlanetStep";
+import { PlanStep } from "./PlanStep";
 import { prewarmOffer } from "./prewarm";
 import { QuestionCard } from "./QuestionCard";
-import { RecapStep } from "./RecapStep";
 import { StatementStep } from "./StatementStep";
 import { useFunnelSession, type Attribution } from "./session";
 import {
@@ -36,7 +38,9 @@ const DEMOS: Partial<
   Record<FunnelStepKind, ComponentType<{ step: FunnelStep; answers: FunnelAnswers }>>
 > = {
   evening: EveningStep,
-  planet: PlanetStep,
+  apps: AppsStep,
+  alternative: AlternativeStep,
+  compare: CompareStep,
 };
 
 /**
@@ -54,6 +58,8 @@ export function FunnelShell() {
   /** Held here because the paywall and the checkout are two steps: inside the paywall it
    * would reset to the default every time somebody backed out to look at the prices again. */
   const [plan, setPlan] = useState<Plan>("yearly");
+  /** Once per page load, like the build it waits for: a second visit finds it built. */
+  const [planBuilt, setPlanBuilt] = useState(false);
   const trackedSteps = useRef(new Set<string>());
   /** The step column scrolls inside `main`, so a tall step is scrolled back to the top on the
    * way in rather than opening half-read. */
@@ -94,7 +100,7 @@ export function FunnelShell() {
     trackedSteps.current.add(current.id);
     track({ name: "onboarding_page_viewed", index, kind: current.kind, step: current.id });
     if (index === 0) startFunnel();
-    if (current.kind === "recap") {
+    if (current.kind === "plan") {
       track({ name: "plan_viewed" });
       metaTrack("Lead", { content_name: "funnel_plan" });
     }
@@ -125,7 +131,9 @@ export function FunnelShell() {
   /** Nothing chosen yet on a multi question: a button that silently does nothing is worse
    * than one that says so. */
   const waiting = multi && !(step.question && answers[step.question.key]);
-  const buttonTitle = step.kind === "recap" ? copy.chrome.letsGo : copy.chrome.continue;
+  /** The plan step's Continue appears once the plan is built, never before. */
+  const building = step.kind === "plan" && !planBuilt;
+  const buttonTitle = step.kind === "plan" ? copy.chrome.letsGo : copy.chrome.continue;
 
   // `h-dvh`, not `min-h-dvh`: `main`'s `flex-1` is `flex-basis: 0%`, and a percentage against
   // a column whose height is only a minimum resolves to the content's own height — so a tall
@@ -161,6 +169,7 @@ export function FunnelShell() {
               onSelectPlan={setPlan}
               onPick={pick}
               onAdvance={advance}
+              onPlanBuilt={() => setPlanBuilt(true)}
             />
           </div>
         </div>
@@ -171,11 +180,11 @@ export function FunnelShell() {
           {/* The slot is always here, even on the steps that own their action, so the footer
               is the same height on every step and `main` never re-centres mid-transition. */}
           <div className="h-[52px] w-full max-w-[420px]">
-            {!ownsItsAction && (
+            {!ownsItsAction && !building && (
               <button
                 onClick={advance}
                 disabled={waiting}
-                className="btn h-full w-full text-[16px] font-semibold"
+                className={`btn h-full w-full text-[16px] font-semibold ${step.kind === "plan" ? "anim-rise" : ""}`}
               >
                 {buttonTitle}
               </button>
@@ -216,6 +225,7 @@ interface StepProps {
   onPick: (value: string) => void;
   /** Used by the steps whose primary control is their own. */
   onAdvance: () => void;
+  onPlanBuilt: () => void;
 }
 
 function StepBody({
@@ -227,6 +237,7 @@ function StepBody({
   onSelectPlan,
   onPick,
   onAdvance,
+  onPlanBuilt,
 }: StepProps) {
   const Demo = DEMOS[step.kind];
   if (Demo) return <Demo step={step} answers={answers} />;
@@ -235,7 +246,9 @@ function StepBody({
     return <QuestionCard question={step.question} answers={answers} index={index} onPick={onPick} />;
   }
 
-  if (step.kind === "recap") return <RecapStep answers={answers} headline={step.headline} />;
+  if (step.kind === "plan") {
+    return <PlanStep headline={step.headline} answers={answers} onReady={onPlanBuilt} />;
+  }
 
   // Its note is drawn under the buttons rather than under the headline, so it lays out its own.
   if (step.kind === "account") {

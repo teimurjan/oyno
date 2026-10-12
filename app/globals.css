@@ -188,13 +188,68 @@
   .anim-step > *:nth-child(n + 10) { animation-delay: 1770ms; }
 }
 
+/* The funnel's floating apps (`AppsStep`). Drift moves `translate` and the knock moves
+   `scale` and `rotate`, so the two run on one element without fighting over `transform`.
+   Each tile knocks at 86% of a shared twelve-second cycle, shifted by its own `--knock`. */
+.app-tile {
+  box-shadow: 0 8px 20px rgba(24, 32, 46, 0.18);
+}
+
+@keyframes app-drift {
+  from {
+    translate: 0 0;
+  }
+  50% {
+    translate: var(--dx) var(--dy);
+  }
+  to {
+    translate: calc(var(--dx) * -0.7) calc(var(--dy) * 0.6);
+  }
+}
+
+@keyframes app-knock {
+  0%,
+  86%,
+  100% {
+    scale: 1;
+    rotate: 0deg;
+    z-index: 0;
+    box-shadow: 0 8px 20px rgba(24, 32, 46, 0.18);
+  }
+  89% {
+    scale: 1.75;
+    rotate: -7deg;
+    z-index: 1;
+    box-shadow: 0 26px 50px rgba(24, 32, 46, 0.35);
+  }
+  91.5% {
+    scale: 1.62;
+    rotate: 6deg;
+    z-index: 1;
+  }
+  94% {
+    scale: 1.7;
+    rotate: -3deg;
+    z-index: 1;
+    box-shadow: 0 26px 50px rgba(24, 32, 46, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .app-tile {
+    animation:
+      app-drift var(--drift) ease-in-out infinite alternate,
+      app-knock 12s cubic-bezier(0.3, 0.7, 0.4, 1) var(--knock) infinite;
+  }
+}
+
 /* The paywall's own surface, the full sky behind the offer. On `main` rather than the
    step's column so it reaches the edges of the phone. */
 .paywall-page {
   background: var(--sky);
 }
 
-/* --- The planet scene (`lib/planet/`): the landing hero and the funnel widget ---------- */
+/* --- The planet scene (`lib/planet/`): the landing hero ---------------------------------- */
 
 /* Layer boxes come from `layerBox()`; the transforms read the custom properties
    `lib/planet/dom.ts` writes. */

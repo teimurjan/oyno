@@ -28,7 +28,7 @@ struct DoneScreen: View {
                 header
                 // Over the halo and the glow, which reach up past the planet's stage.
                 gain.padding(.top, 14).zIndex(1)
-                PlanetScene(pulse: bursts, bloom: oyno.bloom, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
+                PlanetScene(pulse: bursts, bloom: oyno.bloom, floats: false, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
                     .overlay { PlanetHalo(burst: bursts) }
                     .frame(maxWidth: 270)
                     .padding(.top, 6)

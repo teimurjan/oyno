@@ -79,33 +79,50 @@ export const en: SiteCopy = {
     proof: {
       heading: "An evening with Oyno",
       sub: "No willpower required. The phone is paused before you have to decide.",
+      previous: "Previous screen",
+      next: "Next screen",
       steps: [
         {
-          shot: "/screenshots/en-US/06-kidhours.webp",
+          shot: "/screenshots/en-US/screens/kidhours.webp",
           title: "Kid hours start",
           body: "At the time you set, the apps you picked pause. Phone, Messages and Maps stay open.",
         },
         {
-          shot: "/screenshots/en-US/03-low.webp",
+          shot: "/screenshots/en-US/screens/low.webp",
           title: "One easy thing",
           body: "Tell Oyno how much battery you have left. It hands you one game for ten minutes, with nothing to set up.",
         },
         {
-          shot: "/screenshots/en-US/05-science.webp",
+          shot: "/screenshots/en-US/screens/science.webp",
           title: "Play that builds",
           body: "Every game trains focus, memory or self-control, and names the study and the guide behind it.",
         },
         {
-          shot: "/screenshots/en-US/08-worlds.webp",
+          shot: "/screenshots/en-US/screens/worlds.webp",
           title: "The planet grows",
           body: "When the timer ends, your kid taps the planet. It blooms, and every few rounds a new world opens.",
         },
         {
-          shot: "/screenshots/en-US/02-together-time.webp",
+          shot: "/screenshots/en-US/screens/together-time.webp",
           title: "Time together, counted",
           body: "Home shows how long the phone stayed down today, so you can see the evening you got back.",
         },
       ],
+    },
+    author: {
+      heading: "Why I made Oyno",
+      paragraphs: [
+        "There would be no Oyno without my girl. There would be no Oyno if the phones had not gotten so good at holding us.",
+        "I work all day. Then I come home and I reach for the phone. It is only a second. I hate myself for that second.",
+        "My girl sees it. She thinks it is how things are. It is not.",
+        "I tried the blockers. I deleted the socials. The habit stayed. I picked up the phone, saw the locked screen and put it down. To me it was nothing. To her it was me on my phone again.",
+        "So I stopped fighting the habit. I gave it something better to do.",
+        "Oyno means game in the language of the country where I was born. Now when I pick up the phone, it hands me a game to play with her. It is fun, and it helps her brain grow.",
+        "It took months. It is not another blocker. It is not breathing and it is not meditation. It is ten minutes with your kid, on a game the research stands behind.",
+      ],
+      name: "Tim",
+      role: "Maker of Oyno",
+      photoAlt: "A parent and a little girl on the living room floor with a glowing clay planet",
     },
     plan: {
       eyebrow: "One plan, everything in it",

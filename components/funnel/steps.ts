@@ -20,11 +20,16 @@ export type FunnelStepKind =
   | "question"
   /** A headline and a line or two, read rather than answered. */
   | "statement"
-  /** An example evening, the phone eating it minute by minute. Self-running. */
+  /** An example evening as a calendar, the phone interrupting the kid's hours. Self-running. */
   | "evening"
-  /** The planet: press it and it shrinks into the worlds. Tours itself until touched. */
-  | "planet"
-  | "recap"
+  /** The feeds the apps are built around, drifting and knocking at the reader. */
+  | "apps"
+  /** Blocking against playing: what they tried, struck through, and one real game. */
+  | "alternative"
+  /** Ten minutes of play against an hour sitting nearby, pros against cons. */
+  | "compare"
+  /** Their plan being built from their answers. Continue waits for it. */
+  | "plan"
   | "account"
   | "paywall"
   | "checkout";
@@ -33,7 +38,7 @@ export interface OptionShape {
   /** Stored, reported, and stamped onto the Dodo subscription. Never reworded once an ad
    * points at it. */
   value: string;
-  /** Kept off the title on purpose: the title is what a chart, a recap line and a transaction
+  /** Kept off the title on purpose: the title is what a chart, a plan line and a transaction
    * read, and a glyph in the middle of that is one somebody has to strip later. */
   emoji?: string;
 }
@@ -73,9 +78,6 @@ export interface FunnelQuestion {
   description?: string;
   multi?: boolean;
   options: FunnelOption[];
-  /** Answer value → the sentence the recap reads back. A value with no entry contributes no
-   * line, which keeps "no idea" and "just starting" out of a summary they would dilute. */
-  recap?: Record<string, string>;
 }
 
 export interface StatementCopy {
@@ -99,11 +101,6 @@ export interface FunnelStep extends StatementCopy {
 
 export type FunnelAnswers = Record<string, string>;
 
-export interface RecapLine {
-  key: string;
-  line: string;
-}
-
 /** A separator no option value contains, so a joined answer can be split back apart. */
 export const MULTI_SEPARATOR = "|";
 
@@ -122,7 +119,7 @@ const PROBLEM: QuestionShape = {
   ],
 };
 
-/** The opener's "Not really". Not a problem, so no recap line answers to it; a branching
+/** The opener's "Not really". Not a problem, so the account step has no card for it; a branching
  * step falls back to the opener's own problem rather than to the default copy. */
 const OPENER_DECLINED = "none";
 
@@ -134,7 +131,7 @@ export const OPENER_ID = "evening";
 
 /**
  * Step 0 for every web visit: one yes/no on the phone eating the evening. Same `key` as
- * `PROBLEM` and "Yes" is `scroll`, so the branch, the recap line and the Amplitude join read
+ * `PROBLEM` and "Yes" is `scroll`, so the branch, the account card and the Amplitude join read
  * as a four-way answer would. The app's first run keeps the four-way question.
  */
 function opener(copy: FunnelCopy): FunnelQuestion {
@@ -145,7 +142,6 @@ function opener(copy: FunnelCopy): FunnelQuestion {
       { value: OPENER_PROBLEM, emoji: "✅", title: copy.openers.yes },
       { value: OPENER_DECLINED, emoji: "🙅", title: copy.openers.no },
     ],
-    recap: copy.questions.problem.recap,
   };
 }
 
@@ -233,7 +229,7 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
   steps: [
     { id: "problem", kind: "question", question: PROBLEM },
     { id: "evening", kind: "evening" },
-    { id: "why", kind: "statement", branch: { on: "problem" } },
+    { id: "why", kind: "apps", branch: { on: "problem" } },
     { id: "age", kind: "question", question: AGE },
     { id: "hardest", kind: "question", question: HARDEST },
     { id: "pickups", kind: "question", question: PICKUPS },
@@ -241,11 +237,11 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
     { id: "energy", kind: "question", question: ENERGY },
     { id: "partner", kind: "question", question: PARTNER },
     { id: "tried", kind: "question", question: TRIED },
-    { id: "planet", kind: "planet" },
+    { id: "alternative", kind: "alternative" },
     { id: "minutes", kind: "question", question: MINUTES },
-    { id: "enough", kind: "statement" },
+    { id: "enough", kind: "compare" },
     { id: "soon", kind: "question", question: SOON },
-    { id: "recap", kind: "recap" },
+    { id: "plan", kind: "plan" },
     { id: "account", kind: "account" },
     { id: "paywall", kind: "paywall" },
     { id: "checkout", kind: "checkout" },
@@ -264,7 +260,6 @@ function worded(shape: QuestionShape, copy: FunnelCopy): FunnelQuestion {
     headline: string;
     description?: string;
     options: Record<string, string>;
-    recap?: Record<string, string>;
   } = copy.questions[shape.key];
   return {
     key: shape.key,
@@ -272,7 +267,6 @@ function worded(shape: QuestionShape, copy: FunnelCopy): FunnelQuestion {
     description: words.description,
     multi: shape.multi,
     options: shape.options.map((option) => ({ ...option, title: words.options[option.value] })),
-    recap: words.recap,
   };
 }
 
@@ -296,9 +290,9 @@ function localized(shape: StepShape, copy: FunnelCopy): FunnelStep {
 export const ACCOUNT_STEP_INDEX = WEB_FUNNEL.steps.findIndex((step) => step.kind === "account");
 
 /**
- * What the progress counter promises: the questions and the demos, ending at the recap. The
+ * What the progress counter promises: the questions and the demos, ending at the plan. The
  * account step, the offer and the card field are not survey, so the bar reads its last number
- * on the recap rather than running past its own total.
+ * on the plan rather than running past its own total.
  */
 export const SURVEY_LENGTH = ACCOUNT_STEP_INDEX;
 
@@ -311,42 +305,6 @@ export function stepAt(index: number, copy: FunnelCopy): FunnelStep {
     question: index === 0 ? opener(copy) : step.question,
     branch: step.branch && { ...step.branch, fallback: OPENER_PROBLEM },
   };
-}
-
-/** The question each problem is the short form of. Its line is pinned into the recap beside
- * the problem's own, or the questions late in the spine never survive the cap. */
-const FOLLOW_UP: Record<string, QuestionKey> = {
-  scroll: "pickups",
-  ideas: "energy",
-  asks: "tried",
-  both: "partner",
-};
-
-/**
- * The lines the recap reads back, in step order, capped so the summary reads as understanding
- * rather than as a receipt. The problem's line and its follow-up's survive whatever the cap,
- * and the problem's is moved to the front — the recap draws the first card in red, and a red
- * card halfway down a list reads as an arbitrary one rather than as theirs.
- */
-export function recapLines(answers: FunnelAnswers, limit: number, copy: FunnelCopy): RecapLine[] {
-  const all = WEB_FUNNEL.steps.flatMap((step) => {
-    const key = step.question?.key;
-    const words = key && copy.questions[key];
-    const recap: Record<string, string> | undefined =
-      words && "recap" in words ? words.recap : undefined;
-    const line = key && recap?.[answers[key]];
-    return key && line ? [{ key, line }] : [];
-  });
-
-  const pinned = new Set([PROBLEM.key, FOLLOW_UP[answers[PROBLEM.key]]]);
-  const kept = all.filter((entry) => pinned.has(entry.key));
-  const rest = all.filter((entry) => !pinned.has(entry.key));
-  // The pinned lines survive whatever the cap; the rest fill what is left of it.
-  const keep = [...kept, ...rest.slice(0, Math.max(0, limit - kept.length))];
-
-  return all
-    .filter((entry) => keep.includes(entry))
-    .sort((a, b) => Number(b.key === PROBLEM.key) - Number(a.key === PROBLEM.key));
 }
 
 /** The account step's card: the problem the reader named and the line of the plan that answers
@@ -368,7 +326,6 @@ export const SPINE: FunnelSpine = {
   steps: FUNNEL.steps,
   problem: PROBLEM,
   problems: PROBLEMS,
-  followUp: FOLLOW_UP,
   declined: OPENER_DECLINED,
   separator: MULTI_SEPARATOR,
 };

@@ -7,7 +7,6 @@ export interface FunnelSpine {
   steps: StepShape[];
   problem: QuestionShape;
   problems: readonly string[];
-  followUp: Record<string, string>;
   declined: string;
   separator: string;
 }
@@ -22,7 +21,7 @@ export interface FunnelSpine {
  * bundle.
  */
 export function validateFunnel(spine: FunnelSpine): void {
-  const { steps, problem, problems, followUp, declined, separator } = spine;
+  const { steps, problem, problems, declined, separator } = spine;
 
   const ids = steps.map((step) => step.id);
   const duplicate = ids.find((id, at) => ids.indexOf(id) !== at);
@@ -52,15 +51,6 @@ export function validateFunnel(spine: FunnelSpine): void {
       throw new Error(`step "${step.id}" branches on "${branch.on}", which no earlier step asks`);
     }
   });
-
-  for (const [named, key] of Object.entries(followUp)) {
-    if (!answers(problem, named)) {
-      throw new Error(`FOLLOW_UP names "${named}", which the problem question never answers`);
-    }
-    if (!questions.some((question) => question?.key === key)) {
-      throw new Error(`FOLLOW_UP points "${named}" at "${key}", which no step asks`);
-    }
-  }
 
   for (const named of problems) {
     if (!answers(problem, named)) {
@@ -121,6 +111,15 @@ export function validateCopy(tag: string, copy: FunnelCopy, spine: FunnelSpine):
       if (asked && !answers(asked, value)) {
         fail(`step "${step.id}" has a variant for "${value}", which "${on}" never answers`);
       }
+    }
+  }
+
+  const planLines = copy.plan.lines as Record<string, Record<string, string>>;
+  for (const [key, lines] of Object.entries(planLines)) {
+    const asked = spine.steps.find((step) => step.question?.key === key)?.question;
+    if (!asked) fail(`the plan has lines for "${key}", which no step asks`);
+    for (const value of Object.keys(lines)) {
+      if (asked && !answers(asked, value)) fail(`the plan has a line for "${key}" "${value}", which it never answers`);
     }
   }
 }

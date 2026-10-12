@@ -111,6 +111,8 @@ struct PlanetScene: View {
     let explorable: Bool
     /// The bloom level whose worlds the strip holds.
     let bloom: Int
+    /// Bobs gently at rest. Off where a halo already moves around it.
+    let floats: Bool
     /// A world to move to once the strip has laid out, instead of the family's own.
     let showing: World.ID?
     let accessibilityLabel: String
@@ -133,6 +135,7 @@ struct PlanetScene: View {
         open: Bool = false,
         explorable: Bool = false,
         bloom: Int = 0,
+        floats: Bool = true,
         showing: World.ID? = nil,
         accessibilityLabel: String = String(interface: "Open your worlds"),
         onTap: @escaping () -> Void,
@@ -142,6 +145,7 @@ struct PlanetScene: View {
         self.open = open
         self.explorable = explorable
         self.bloom = bloom
+        self.floats = floats
         self.showing = showing
         self.accessibilityLabel = accessibilityLabel
         self.onTap = onTap
@@ -164,7 +168,7 @@ struct PlanetScene: View {
             }
         }
         .onAppear {
-            guard !reduceMotion else { return }
+            guard floats, !reduceMotion else { return }
             withAnimation(.easeInOut(duration: 2.75).repeatForever(autoreverses: true)) { floating = true }
         }
         .task {

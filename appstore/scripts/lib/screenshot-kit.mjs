@@ -73,10 +73,10 @@ export const CREATIVES_DIR = path.join(APPSTORE_DIR, "creatives");
  * runner with no simulator captures and no browser to composite with. */
 export const WEB_DIR = path.join(ROOT, "public", "screenshots");
 
-/** Twice the gallery's 240x520 box (`ScreenshotGallery`), which covers every display the
- * page is read on: the frames are an impression of the app at that size, not something
- * anyone reads the numbers off. */
-export const WEB_FRAME = { w: 480, h: 1040, quality: 0.82 };
+/** Twice the site's 240pt width, which covers every display the page is read on: the
+ * images are an impression of the app at that size, not something anyone reads the
+ * numbers off. The height follows each image's own aspect. */
+export const WEB_FRAME = { w: 480, quality: 0.82 };
 
 /** Mirrors ios/Oyno/Shared/DesignSystem/Palette.swift exactly.
  *

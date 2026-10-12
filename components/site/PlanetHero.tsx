@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Arrow } from "@/components/site/Arrow";
 import type { PlanetCopy } from "@/components/site/copy/types";
 import { ART } from "@/lib/art/manifest";
 import { fallbackSrc, srcSet } from "@/lib/art/srcSet";
@@ -19,7 +20,7 @@ const REST = 0;
  * The landing hero's planet: press it and the layers lean away from the finger, let go and the
  * planet and the family shrink in place into a strip of worlds that scrolls sideways. Tapping
  * the centred planet scrolls back home and grows it. The planet is the strip's first slide,
- * never swapped for another element. The same scene as the funnel's `PlanetStep`, bound
+ * never swapped for another element. The same scene as the app's `PlanetScene`, bound
  * through `lib/planet/dom.ts`. No tour here: the hint line asks for the press instead.
  */
 export function PlanetHero({ words }: { words: PlanetCopy }) {
@@ -127,9 +128,11 @@ export function PlanetHero({ words }: { words: PlanetCopy }) {
           onClick={() => setOpen(true)}
         />
 
-        {open && selected > 0 && <Arrow side="left" label={words.previous} onClick={() => go(selected - 1)} />}
+        {open && selected > 0 && (
+          <Arrow side="left" label={words.previous} onClick={() => go(selected - 1)} className="planet-arrow" />
+        )}
         {open && selected < WORLDS.length - 1 && (
-          <Arrow side="right" label={words.next} onClick={() => go(selected + 1)} />
+          <Arrow side="right" label={words.next} onClick={() => go(selected + 1)} className="planet-arrow" />
         )}
       </div>
       <p
@@ -139,21 +142,5 @@ export function PlanetHero({ words }: { words: PlanetCopy }) {
         {words.hint}
       </p>
     </div>
-  );
-}
-
-/** One world over. Shown only where there is a mouse: a finger swipes. */
-function Arrow({ side, label, onClick }: { side: "left" | "right"; label: string; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      aria-label={label}
-      onClick={onClick}
-      className={`planet-arrow card size-11 items-center justify-center text-ink ${side === "left" ? "left-0" : "right-0"}`}
-    >
-      <svg aria-hidden width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
-        <path d={side === "left" ? "M15 5l-7 7 7 7" : "M9 5l7 7-7 7"} />
-      </svg>
-    </button>
   );
 }

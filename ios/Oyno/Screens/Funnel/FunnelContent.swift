@@ -28,10 +28,8 @@ struct FunnelContent: Decodable {
     struct Spine: Decodable {
         /// Up to and including the account step. The offer is `PaywallScreen`.
         let steps: [Step]
-        /// What the progress counter counts: everything up to the recap.
+        /// What the progress counter counts: everything up to the plan.
         let surveyLength: Int
-        /// The question each problem is the short form of, pinned into the recap beside it.
-        let followUp: [String: String]
         /// Joins the answers of a question that takes several.
         let separator: String
     }
@@ -45,7 +43,7 @@ struct FunnelContent: Decodable {
         let branch: Branch?
 
         enum Kind: String, Decodable {
-            case question, statement, evening, planet, recap, account
+            case question, statement, evening, apps, alternative, compare, plan, account
         }
 
         struct Question: Decodable {
@@ -72,9 +70,6 @@ struct FunnelCopy: Decodable {
     let chrome: Chrome
     let questions: [String: QuestionWords]
     let steps: [String: StatementWords]
-    let evening: Evening
-    let planet: Planet
-    let recap: Recap
     let paywall: Paywall
     let account: Account
 
@@ -90,7 +85,7 @@ struct FunnelCopy: Decodable {
         let headline: String
         let description: String?
         let options: [String: String]
-        /// Answer → the line the recap reads back. No entry, no line.
+        /// Answer → the line that names the reader's problem back. Only the problem has one.
         let recap: [String: String]?
     }
 
@@ -99,31 +94,6 @@ struct FunnelCopy: Decodable {
         let body: String?
         let note: String?
         let variants: [String: StatementWords]?
-    }
-
-    /// Widget A's words: an example evening, the phone eating it.
-    struct Evening: Decodable {
-        let caption: String
-        let phone: String
-        let kid: String
-        let start: String
-        let end: String
-        let summary: String
-        let minutes: String
-    }
-
-    /// Widget B's words: the planet and its worlds.
-    struct Planet: Decodable {
-        let open: String
-        let close: String
-        let yours: String
-        let unlocksAt: String
-        let worlds: [String: String]
-    }
-
-    struct Recap: Decodable {
-        let closing: String
-        let answers: [String]
     }
 
     struct Paywall: Decodable {

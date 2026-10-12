@@ -3,6 +3,7 @@ import { AppStoreBadge } from "@/components/AppStoreBadge";
 import { Logo } from "@/components/Logo";
 import { copyFor } from "@/components/site/copy";
 import { PlanetHero } from "@/components/site/PlanetHero";
+import { ScreenSlides } from "@/components/site/ScreenSlides";
 import { LanguageSwitch } from "@/components/site/SiteShell";
 import { funnelPath, pathFor, type Lang } from "@/lib/i18n";
 import { formatMoney, planListQuote } from "@/lib/plans";
@@ -52,29 +53,41 @@ export function HomePage({ lang }: { lang: Lang }) {
         </div>
       </section>
 
+      <section id="author">
+        <div className="shell py-16">
+          <figure className="card grid overflow-hidden md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+            <div className="relative aspect-[4/3] md:aspect-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/photos/evening.webp"
+                alt={home.author.photoAlt}
+                width={720}
+                height={1557}
+                loading="lazy"
+                className="absolute inset-0 size-full object-cover object-[50%_20%]"
+              />
+            </div>
+            <div className="px-6 py-9 sm:px-12 sm:py-12">
+              <h2 className="text-[30px] font-extrabold tracking-[-0.03em] text-ink">{home.author.heading}</h2>
+              <blockquote className="mt-6 space-y-4 text-[18px] leading-relaxed text-slate">
+                {home.author.paragraphs.map((paragraph) => (
+                  <p key={paragraph}>{paragraph}</p>
+                ))}
+              </blockquote>
+              <figcaption className="mt-8">
+                <p className="text-[16px] font-bold text-ink">{home.author.name}</p>
+                <p className="text-[14px] text-muted">{home.author.role}</p>
+              </figcaption>
+            </div>
+          </figure>
+        </div>
+      </section>
+
       <section id="how">
         <div className="shell py-16">
           <h2 className="text-[30px] font-extrabold tracking-[-0.03em] text-ink">{home.proof.heading}</h2>
           <p className="mt-3 max-w-2xl text-[16px] text-muted">{home.proof.sub}</p>
-          <ol className="mt-12 space-y-14 sm:space-y-20">
-            {home.proof.steps.map((step, index) => (
-              <li key={step.shot} className="grid items-center gap-8 sm:grid-cols-2 sm:gap-12">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={step.shot}
-                  alt=""
-                  width={240}
-                  height={520}
-                  loading="lazy"
-                  className={`mx-auto w-[240px] rounded-[28px] shadow-[var(--glass-shadow)] ${index % 2 ? "sm:order-last" : ""}`}
-                />
-                <div className="max-w-md sm:mx-auto">
-                  <h3 className="text-[24px] font-extrabold tracking-[-0.02em] text-ink">{step.title}</h3>
-                  <p className="mt-3 text-[17px] leading-relaxed text-muted">{step.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <ScreenSlides proof={home.proof} />
         </div>
       </section>
 

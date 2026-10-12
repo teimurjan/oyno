@@ -13,6 +13,8 @@
 //   public/screenshots/<ASC locale>/                  the same frames, downscaled to WebP for
 //                                                     the marketing site's gallery, and only
 //                                                     for locales the site has
+//   public/screenshots/<ASC locale>/screens/          each frame's raw capture, captionless,
+//                                                     named by the frame's slug
 //
 // So `--locales=nb` writes to `screenshots/no/`. There is no separate staging directory to
 // sync and no flat English case: every tree is keyed by the locale it belongs to.
@@ -205,7 +207,7 @@ async function fitCaption(page, label, ceiling = CAPTION_CEILING) {
   console.warn(`  ${label}: caption overruns even at ${CAPTION_SIZES.at(-1)}px — shorten it`);
 }
 
-/** Re-encodes a finished frame as the small WebP the marketing gallery serves.
+/** Re-encodes a frame or a capture as the small WebP the marketing site serves.
  *
  * Chromium is already open, so the resize and the encode happen in a canvas rather than
  * pulling in an image library to do two lines of work. It gets a blank page of its own —
@@ -216,10 +218,11 @@ async function fitCaption(page, label, ceiling = CAPTION_CEILING) {
  * checked rather than assumed.
  */
 async function writeWebFrame(webPage, pngPath, outPath) {
-  const dataUrl = await webPage.evaluate(async ({ src, w, h, quality }) => {
+  const dataUrl = await webPage.evaluate(async ({ src, w, quality }) => {
     const image = new Image();
     image.src = src;
     await image.decode();
+    const h = Math.round((w * image.naturalHeight) / image.naturalWidth);
     const canvas = Object.assign(document.createElement("canvas"), { width: w, height: h });
     const context = canvas.getContext("2d");
     context.imageSmoothingQuality = "high";
@@ -295,6 +298,7 @@ async function main() {
       if (!sources) rmSync(dir, { recursive: true, force: true });
       ensureDir(dir);
     }
+    if (webDir) ensureDir(path.join(webDir, "screens"));
     console.log(`\n${locale}  ->  ${dirs.map((dir) => path.relative(ROOT, dir)).join(", ")}`);
 
     for (const [index, frame] of frames.entries()) {
@@ -307,6 +311,9 @@ async function main() {
       const png = path.join(outDir, `${nn}-${frame.slug}.png`);
       await page.screenshot({ path: png });
       if (webDir) await writeWebFrame(webPage, png, path.join(webDir, `${nn}-${frame.slug}.webp`));
+      if (webDir && frame.source) {
+        await writeWebFrame(webPage, path.join(sourceDir, `${frame.source}.png`), path.join(webDir, "screens", `${frame.slug}.webp`));
+      }
       console.log(`  composited  ${nn}-${frame.slug}.png`);
       count += 1;
     }
