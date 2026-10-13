@@ -10,6 +10,7 @@ import { AppsStep } from "./AppsStep";
 import { CompareStep } from "./CompareStep";
 import { EveningStep } from "./EveningStep";
 import { FunnelHeader } from "./FunnelChrome";
+import { InfluenceStep } from "./InfluenceStep";
 import { PlanStep } from "./PlanStep";
 import { prewarmOffer } from "./prewarm";
 import { QuestionCard } from "./QuestionCard";
@@ -39,6 +40,7 @@ const DEMOS: Partial<
 > = {
   evening: EveningStep,
   apps: AppsStep,
+  influence: InfluenceStep,
   alternative: AlternativeStep,
   compare: CompareStep,
 };

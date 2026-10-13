@@ -24,6 +24,8 @@ export type FunnelStepKind =
   | "evening"
   /** The feeds the apps are built around, drifting and knocking at the reader. */
   | "apps"
+  /** What a parent's scrolling does to a kid's asking for screens, as a bar chart. */
+  | "influence"
   /** Blocking against playing: what they tried, struck through, and one real game. */
   | "alternative"
   /** Ten minutes of play against an hour sitting nearby, pros against cons. */
@@ -198,10 +200,10 @@ const ENERGY = question("energy", [
   ["full", "⚡"],
 ]);
 
-const PARTNER = question("partner", [
-  ["yes", "👫"],
-  ["sometimes", "🔀"],
-  ["no", "🧍"],
+const IDEAS = question("ideas", [
+  ["often", "💡"],
+  ["sometimes", "🤔"],
+  ["rarely", "😶"],
 ]);
 
 const TRIED = question("tried", [
@@ -234,10 +236,11 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
     { id: "hardest", kind: "question", question: HARDEST },
     { id: "pickups", kind: "question", question: PICKUPS },
     { id: "apps", kind: "question", question: APPS },
+    { id: "influence", kind: "influence" },
     { id: "energy", kind: "question", question: ENERGY },
-    { id: "partner", kind: "question", question: PARTNER },
+    { id: "ideas", kind: "question", question: IDEAS },
     { id: "tried", kind: "question", question: TRIED },
-    { id: "alternative", kind: "alternative" },
+    { id: "alternative", kind: "alternative", branch: { on: "energy" } },
     { id: "minutes", kind: "question", question: MINUTES },
     { id: "enough", kind: "compare", branch: { on: "minutes" } },
     { id: "soon", kind: "question", question: SOON },

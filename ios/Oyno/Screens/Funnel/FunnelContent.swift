@@ -43,7 +43,7 @@ struct FunnelContent: Decodable {
         let branch: Branch?
 
         enum Kind: String, Decodable {
-            case question, statement, evening, apps, alternative, compare, plan, account
+            case question, statement, evening, apps, influence, alternative, compare, plan, account
         }
 
         struct Question: Decodable {

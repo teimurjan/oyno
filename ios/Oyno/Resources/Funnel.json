@@ -143,6 +143,10 @@
         }
       },
       {
+        "id": "influence",
+        "kind": "influence"
+      },
+      {
         "id": "energy",
         "kind": "question",
         "question": {
@@ -164,22 +168,22 @@
         }
       },
       {
-        "id": "partner",
+        "id": "ideas",
         "kind": "question",
         "question": {
-          "key": "partner",
+          "key": "ideas",
           "options": [
             {
-              "value": "yes",
-              "emoji": "👫"
+              "value": "often",
+              "emoji": "💡"
             },
             {
               "value": "sometimes",
-              "emoji": "🔀"
+              "emoji": "🤔"
             },
             {
-              "value": "no",
-              "emoji": "🧍"
+              "value": "rarely",
+              "emoji": "😶"
             }
           ]
         }
@@ -211,7 +215,10 @@
       },
       {
         "id": "alternative",
-        "kind": "alternative"
+        "kind": "alternative",
+        "branch": {
+          "on": "energy"
+        }
       },
       {
         "id": "minutes",
@@ -275,7 +282,7 @@
         "kind": "account"
       }
     ],
-    "surveyLength": 15,
+    "surveyLength": 16,
     "separator": "|"
   },
   "decks": {
@@ -343,12 +350,12 @@
             "full": "Plenty"
           }
         },
-        "partner": {
-          "headline": "Is there a co-parent home in the evening?",
+        "ideas": {
+          "headline": "Do you usually know [what to play] with them?",
           "options": {
-            "yes": "Yes, most evenings",
+            "often": "Most days",
             "sometimes": "Sometimes",
-            "no": "No, it's just me"
+            "rarely": "Rarely, my mind goes blank"
           }
         },
         "tried": {
@@ -400,9 +407,20 @@
         "evening": {
           "headline": "Where an evening [goes]."
         },
+        "influence": {
+          "headline": "Kids [ask for screens] more when we scroll more."
+        },
         "alternative": {
           "headline": "Oyno is [not breaking] a habit you already have.",
-          "body": "It gives you something better to pick up: a short game that makes your kid smarter."
+          "body": "It gives you a better idea: one short game with your kid, sized to the energy you have left.",
+          "variants": {
+            "low": {
+              "body": "It gives you a better idea: a short, quiet game you can play on a low battery."
+            },
+            "full": {
+              "body": "It gives you a better idea: a game with your kid that uses the energy you still have."
+            }
+          }
         },
         "enough": {
           "headline": "Ten minutes is [enough].",

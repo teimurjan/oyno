@@ -21,6 +21,7 @@ const IOS_KINDS = new Set([
   "statement",
   "evening",
   "apps",
+  "influence",
   "alternative",
   "compare",
   "plan",

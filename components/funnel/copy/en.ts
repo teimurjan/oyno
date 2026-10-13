@@ -80,12 +80,12 @@ export const en = {
         full: "Plenty",
       },
     },
-    partner: {
-      headline: "Is there a co-parent home in the evening?",
+    ideas: {
+      headline: "Do you usually know [what to play] with them?",
       options: {
-        yes: "Yes, most evenings",
+        often: "Most days",
         sometimes: "Sometimes",
-        no: "No, it's just me",
+        rarely: "Rarely, my mind goes blank",
       },
     },
     tried: {
@@ -138,9 +138,20 @@ export const en = {
     evening: {
       headline: "Where an evening [goes].",
     },
+    influence: {
+      headline: "Kids [ask for screens] more when we scroll more.",
+    },
     alternative: {
       headline: "Oyno is [not breaking] a habit you already have.",
-      body: "It gives you something better to pick up: a short game that makes your kid smarter.",
+      body: "It gives you a better idea: one short game with your kid, sized to the energy you have left.",
+      variants: {
+        low: {
+          body: "It gives you a better idea: a short, quiet game you can play on a low battery.",
+        },
+        full: {
+          body: "It gives you a better idea: a game with your kid that uses the energy you still have.",
+        },
+      },
     },
     enough: {
       headline: "Ten minutes is [enough].",
@@ -180,6 +191,16 @@ export const en = {
     summary: "{n} interruptions from your kiddo",
   },
 
+  /** Domoff et al. (2021), Table 3: kids 2 to 5, by their parent's daily social media. */
+  influence: {
+    caption: "Kids 2 to 5 who keep asking for a screen",
+    /** One label per bar, lightest use first. */
+    bars: ["Under 1.3 h", "1.3 to 3 h", "Over 3 h"],
+    axis: "Parent's social media a day",
+    summary: "Twice as likely with a parent on social media 3+ hours a day",
+    source: "Domoff et al., 2021 · 383 US families",
+  },
+
   /** The play screen's top half, for one real game ("countdown-stop" in `activities/en.json`). */
   alternative: {
     eyebrow: "One easy thing",
@@ -200,14 +221,35 @@ export const en = {
   },
 
   compare: {
+    /** By the reader's `minutes`: more minutes, more to show for them. */
     good: {
-      title: "A 10-minute game together",
-      points: [
-        "All of your attention",
-        "A game with a start and an end",
-        "Your kid leads, you follow",
-        "A memory you both keep",
-      ],
+      ten: {
+        title: "A 10-minute game together",
+        points: [
+          "All of your attention",
+          "One game, start to finish",
+          "Your kid leads, you follow",
+          "70 minutes together a week",
+        ],
+      },
+      twenty: {
+        title: "20 minutes of play together",
+        points: [
+          "All of your attention",
+          "Two games, start to finish",
+          "Time for their favorite, twice",
+          "Over 2 hours together a week",
+        ],
+      },
+      thirty: {
+        title: "30 minutes of play together",
+        points: [
+          "All of your attention",
+          "Three games, start to finish",
+          "A new game and an old favorite",
+          "3½ hours together a week",
+        ],
+      },
     },
     bad: {
       title: "An hour sitting nearby",

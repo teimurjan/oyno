@@ -4,11 +4,12 @@ import { useLocale } from "./locale";
 import { StatementStep } from "./StatementStep";
 import type { FunnelAnswers, FunnelStep } from "./steps";
 
-/** Widget: ten minutes of play beside an hour sitting nearby, pros in green, cons in red, both
- * on a solid surface so the sky behind cannot wash the words out. */
+/** Widget: the reader's minutes of play beside an hour sitting nearby, pros in green, cons in
+ * red, both on a solid surface so the sky behind cannot wash the words out. */
 export function CompareStep({ step, answers }: { step: FunnelStep; answers: FunnelAnswers }) {
   const { copy } = useLocale();
-  const { good, bad } = copy.compare;
+  const { bad } = copy.compare;
+  const good = copy.compare.good[answers.minutes as keyof typeof copy.compare.good] ?? copy.compare.good.ten;
 
   return (
     <>
