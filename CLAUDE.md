@@ -78,9 +78,8 @@ every running schedule are paused. Never-allowed apps are added to every schedul
 The 20-minute break is a one-off `kidHours.break` activity. App tokens never leave the phone.
 A paused app opens to `OynoShield`, the custom shield screen. It shows the planet's rounds, which
 `OynoStore` mirrors into `ShieldStats` in the App Group, and counts that app's pauses for today.
-`OynoShieldAction` answers its buttons. "Open Oyno" calls the undocumented
-`LSApplicationWorkspace` in `ParentApp.open()`. If that call fails, the button posts a
-notification instead. If App Review refuses the undocumented call, delete it.
+`OynoShieldAction` answers its buttons. Apple's shield API has no action that opens an app, so
+"Open Oyno" posts a notification that opens Oyno on a tap.
 Home's screen time card is drawn by the `OynoReport` DeviceActivityReport extension, the only
 process that may read per-app usage. It borrows `AppUsageCard` and the design system files from
 `Oyno/`. Home's "Together" figure is today's Kid hours minus the unlocks logged in `opened`.

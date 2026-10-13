@@ -20,11 +20,6 @@ final class OynoShieldAction: ShieldActionDelegate {
             completionHandler(.close)
             return
         }
-        // `.close` sends the foreground app home, and by then that app is Oyno.
-        if ParentApp.open() {
-            completionHandler(.none)
-            return
-        }
         Task {
             await ParentApp.notify()
             completionHandler(.close)
