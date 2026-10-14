@@ -38,7 +38,7 @@ struct ScreenshotHarness: View {
             let parts = name.split(separator: ":").map(String.init)
             let energy = parts.lazy.compactMap(Energy.init(rawValue:)).first ?? .low
             let age = parts.lazy.compactMap(AgeBand.init(rawValue:)).first ?? .toddler
-            let play = PlayScreen { _ in }
+            let play = PlayScreen(onBack: {}) { _ in }
                 .defaultAppStorage(ScreenshotFixtures.defaults(energy: energy, age: age))
                 .defaultScrollAnchor(parts.contains("why") ? .bottom : .top)
             if #available(iOS 26, *) { play.scrollEdgeEffectStyle(.soft, for: .top) } else { play }
@@ -52,7 +52,7 @@ struct ScreenshotHarness: View {
                 }
         // The worlds gallery, open on the next world to unlock.
         case "worlds":
-            HomeScreen(play: {}, showingWorld: Bloom.nextWorld(after: oyno.bloom)?.id)
+            HomeScreen(play: {}, showingWorld: Bloom.nextWorld(after: oyno.points)?.id)
         // `funnel:<step>` opens the first run at that `FunnelStep`, `funnel` at the start.
         case let name where name.hasPrefix("funnel"):
             let step = FunnelStep(rawValue: String(name.dropFirst("funnel:".count))) ?? .hookPlanet
@@ -118,9 +118,9 @@ enum ScreenshotFixtures {
 
     /// A week a parent would set up: weekday evenings, weekend mornings and bedtime.
     static let schedules = [
-        KidHoursSchedule(name: "School nights", start: 16 * 60 + 30, end: 19 * 60 + 30, weekdays: [2, 3, 4, 5, 6], unlockMinutes: 10),
-        KidHoursSchedule(name: "Weekend mornings", start: 8 * 60, end: 11 * 60, weekdays: [1, 7]),
-        KidHoursSchedule(name: "Bath and bed", start: 19 * 60 + 30, end: 20 * 60 + 30, weekdays: Set(1...7), unlocksAfterRound: false),
+        KidHoursSchedule(name: String(interface: "School nights"), start: 16 * 60 + 30, end: 19 * 60 + 30, weekdays: [2, 3, 4, 5, 6], unlockMinutes: 10),
+        KidHoursSchedule(name: String(interface: "Weekend mornings"), start: 8 * 60, end: 11 * 60, weekdays: [1, 7]),
+        KidHoursSchedule(name: String(interface: "Bath and bed"), start: 19 * 60 + 30, end: 20 * 60 + 30, weekdays: Set(1...7), unlocksAfterRound: false),
     ]
 
     /// An evening's phone, most of it in the paused apps.

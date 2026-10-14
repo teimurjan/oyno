@@ -2,9 +2,9 @@ import SwiftUI
 
 /// D3 on the canvas: one easy thing, sized to the kid's age and the energy the parent has
 /// left. Starting it is a write, so it asks `OynoStore` first and the paywall answers a lapsed
-/// subscription. A tab rather than a pushed screen, so the menu stays under it where the
-/// canvas has a back button.
+/// subscription. A tab, whose back button returns to Home and whose search opens every game.
 struct PlayScreen: View {
+    let onBack: () -> Void
     let onStart: (Activity) -> Void
 
     @Environment(OynoStore.self) private var oyno
@@ -14,13 +14,12 @@ struct PlayScreen: View {
     @AppStorage("oyno.energy") private var energy = Energy.low
     @State private var activity = Activity.pick(for: .low, age: .toddler)
     @State private var holding: CGFloat = 0
+    @State private var searching = false
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
-                if let status = kidHoursStatus {
-                    pill(status).frame(maxWidth: .infinity).padding(.bottom, Metric.Space.l)
-                }
+                topBar.padding(.bottom, Metric.Space.l)
                 header
                 title
                 meta.padding(.top, Metric.Space.s)
@@ -39,15 +38,42 @@ struct PlayScreen: View {
         .animation(.easeInOut(duration: 0.25), value: activity.id)
         .background(Palette.sky.ignoresSafeArea())
         .toolbar(.hidden, for: .navigationBar)
-        .onAppear { activity = Activity.pick(for: energy, age: age) }
-        .onChange(of: energy) { _, value in activity = Activity.pick(for: value, age: age) }
-        .onChange(of: age) { _, value in activity = Activity.pick(for: energy, age: value) }
+        .navigationDestination(isPresented: $searching) { ActivitySearchScreen(onPick: choose) }
+        .onAppear(perform: dealIfStale)
+        .onChange(of: energy) { dealIfStale() }
+        .onChange(of: age) { dealIfStale() }
+    }
+
+    /// A new random game only when the one showing no longer fits the age and energy, so a tab
+    /// switch or a game picked in search stays put.
+    private func dealIfStale() {
+        guard activity.energy != energy || activity.age != age else { return }
+        activity = Activity.pick(for: energy, age: age)
+    }
+
+    /// The game set first, so the age and energy that follow find it already fitting.
+    private func choose(_ picked: Activity) {
+        activity = picked
+        age = picked.age
+        energy = picked.energy
+        searching = false
     }
 
     private func start() {
         guard oyno.requireEntitlement() else { return }
         Analytics.shared.track(.roundStarted(activity: activity.id, energy: energy.rawValue, age: age.rawValue))
         onStart(activity)
+    }
+
+    /// Back, the Kid hours status and search, the status centred between the two buttons.
+    private var topBar: some View {
+        HStack(spacing: Metric.Space.s) {
+            GlassIconButton(symbol: "chevron.left", label: "Back", action: onBack)
+            Spacer(minLength: 0)
+            if let status = kidHoursStatus { pill(status) }
+            Spacer(minLength: 0)
+            GlassIconButton(symbol: "magnifyingglass", label: "Find an activity") { searching = true }
+        }
     }
 
     // MARK: Kid hours

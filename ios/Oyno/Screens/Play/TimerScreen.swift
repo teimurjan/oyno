@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// D4 on the canvas: the countdown for the whole round, every step of the game at once, a
-/// pause, and a way to end early. The screen stays awake while it runs, so the phone can lie
+/// D4 on the canvas: the countdown for the whole round, every step of the game at once, five
+/// more minutes, a pause, and a way to end early. Leaving asks first: a left round is lost. The screen stays awake while it runs, so the phone can lie
 /// on the rug, and the round ends on a chime unless the bell is turned off.
 struct TimerScreen: View {
     let activity: Activity
@@ -11,6 +11,7 @@ struct TimerScreen: View {
     @AppStorage("oyno.chime") private var chimes = true
     @State private var countdown: Countdown
     @State private var finished = false
+    @State private var confirmingLeave = false
 
     init(activity: Activity, onFinish: @escaping (_ minutes: Int) -> Void) {
         self.activity = activity
@@ -50,6 +51,12 @@ struct TimerScreen: View {
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+        .confirmationDialog("Leave this round?", isPresented: $confirmingLeave, titleVisibility: .visible) {
+            Button("Leave round", role: .destructive) { dismiss() }
+            Button("Keep playing", role: .cancel) {}
+        } message: {
+            Text("The time so far won't count, and your planet won't grow.")
+        }
     }
 
     /// A round counts in whole minutes, at least one: ending early still played.
@@ -63,7 +70,7 @@ struct TimerScreen: View {
 
     private var header: some View {
         HStack {
-            GlassIconButton(symbol: "chevron.down", label: "Back") { dismiss() }
+            GlassIconButton(symbol: "chevron.down", label: "Back") { confirmingLeave = true }
             Spacer()
             Text(verbatim: activity.title)
                 .font(Typeface.ui(16, .extrabold, relativeTo: .headline))
@@ -91,24 +98,50 @@ struct TimerScreen: View {
                 .rotationEffect(.degrees(-90))
                 .animation(.linear(duration: 1), value: left)
             VStack(spacing: 4) {
-                Text(verbatim: Format.clock(seconds: left))
-                    .font(Typeface.figures(72, .extrabold, relativeTo: .largeTitle))
-                    .monospacedDigit()
-                    .tracking(-2.8)
-                    .foregroundStyle(Palette.ink)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.7)
-                Text("left of \(Format.clock(seconds: Int(countdown.total)))")
-                    .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
-                    .foregroundStyle(Palette.muted)
+                VStack(spacing: 4) {
+                    Text(verbatim: Format.clock(seconds: left))
+                        .font(Typeface.figures(72, .extrabold, relativeTo: .largeTitle))
+                        .monospacedDigit()
+                        .tracking(-2.8)
+                        .foregroundStyle(Palette.ink)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
+                    Text("left of \(Format.clock(seconds: Int(countdown.total)))")
+                        .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                        .foregroundStyle(Palette.muted)
+                }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(Text("\(left / 60) minutes \(left % 60) seconds left"))
+                addFive.padding(.top, 10)
             }
             .padding(.horizontal, 24)
         }
         .padding(4)
         .aspectRatio(1, contentMode: .fit)
-        .frame(maxWidth: 240)
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text("\(left / 60) minutes \(left % 60) seconds left"))
+        .frame(maxWidth: 280)
+    }
+
+    private var addFive: some View {
+        Button {
+            Haptics.tap()
+            countdown.extend(by: 5 * 60)
+        } label: {
+            HStack(spacing: 6) {
+                Glyph(symbol: "plus", size: 14, weight: .bold)
+                Text("5 min")
+                    .font(Typeface.figures(15, .bold, relativeTo: .subheadline))
+                    .monospacedDigit()
+                    .foregroundStyle(Palette.ink)
+            }
+            .padding(.leading, 12)
+            .padding(.trailing, 16)
+            .frame(height: Metric.compactControl)
+            .glassCard(radius: Metric.compactControl / 2)
+            .frame(minHeight: Metric.tapTarget)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text("Add 5 minutes"))
     }
 
     /// Outside the scroll, so the pause and the finish stay in reach however long the steps run.

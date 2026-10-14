@@ -25,13 +25,14 @@ enum InterfaceLanguage {
     /// falls back key by key, so the shop gets a Russian screen with three English rows
     /// in the middle of it and no way to tell whether that is a bug or the product.
     ///
-    /// Both faces cover Latin and Cyrillic, so the writing system is not the
-    /// constraint here; the constraint is having a translation worth shipping.
+    /// Figtree is Latin only, so `Typeface` draws a Cyrillic language in Onest. The
+    /// writing system is not the constraint here; the constraint is having a translation
+    /// worth shipping.
     ///
     /// Ordered by market rather than alphabetically, which is the order the picker draws
     /// and the same order `LOCALES` in `appstore/scripts/lib/locales.mjs` prints in — the
     /// two lists are one set, and a market only really exists when both name it.
-    static let supported = ["en"]
+    static let supported = ["en", "ru"]
 
     /// The language's own name for itself — "Русский", not "Russian". The only spelling
     /// that works in a picker, because somebody who has the app in a language they cannot

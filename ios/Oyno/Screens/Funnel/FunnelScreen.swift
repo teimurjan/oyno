@@ -3,9 +3,9 @@ import SwiftUI
 /// The argument, made before the app asks for anything: Opal's onboarding, beat for beat,
 /// told with our planet and our sums.
 ///
-/// Twelve screens, each a `FunnelStep`: the planet waking and dimming over four taps, the one
-/// question, the news in two halves, Screen Time, the promise, the offer's cover and the
-/// account. This screen keeps the index and the one answer, draws the step and the chrome
+/// Thirteen screens, each a `FunnelStep`: the planet waking and dimming over four taps, the one
+/// question, the news in two halves, Screen Time, notifications, the promise, the offer's
+/// cover and the account. This screen keeps the index and the one answer, draws the step and the chrome
 /// around it, and reports each arrival once — the question the numbers answer is *which*
 /// step loses people. The offer after it is `PaywallScreen`.
 struct FunnelScreen: View {
@@ -72,6 +72,8 @@ struct FunnelScreen: View {
             FunnelProjection(step: step, pickups: pickups) { advance(from: step) }
                 .id(step)
                 .funnelExit()
+        case .permission where step == .notifications:
+            FunnelNotifications { advance(from: .notifications) }.funnelExit()
         case .permission:
             FunnelPermission { advance(from: .screenTime) }.funnelExit()
         case .promise:

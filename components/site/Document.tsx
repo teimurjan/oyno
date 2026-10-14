@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { figtree } from "@/app/fonts";
+import { figtree, onest } from "@/app/fonts";
 import { AnalyticsBoot } from "@/components/AnalyticsBoot";
 import { MetaPixel } from "@/components/MetaPixel";
 import type { Lang } from "@/lib/i18n";
@@ -32,7 +32,7 @@ export function Document({
   children: React.ReactNode;
 }) {
   return (
-    <html lang={lang} className={figtree.variable}>
+    <html lang={lang} className={`${figtree.variable} ${onest.variable}`}>
       <body className="font-sans antialiased" data-surface={surface}>
         {children}
         {/* Both are inert until their key is set — a bare clone and a preview deploy

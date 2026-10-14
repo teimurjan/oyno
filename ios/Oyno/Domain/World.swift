@@ -5,7 +5,7 @@ import Foundation
 /// the app's agree.
 struct World: Identifiable, Hashable {
     let id: String
-    /// The bloom level that unlocks it. One round together is one bloom.
+    /// The bloom points that unlock it.
     let unlocksAt: Int
 
     var imageName: String { "Planet-\(id)" }
@@ -46,11 +46,14 @@ struct World: Identifiable, Hashable {
         }
     }
 
-    func isUnlocked(at bloom: Int) -> Bool { bloom >= unlocksAt }
+    /// The bloom level it stands for: its place in the list, from 1.
+    var level: Int { (World.all.firstIndex(of: self) ?? 0) + 1 }
 
-    /// Rounds from the world before to the `index`th: 3 for the first six, then one more per
-    /// block of six, so Home, the thirtieth, opens at bloom 150.
-    private static func roundsToReach(_ index: Int) -> Int { 3 + (index - 1) / 6 }
+    func isUnlocked(at points: Int) -> Bool { points >= unlocksAt }
+
+    /// Points from the world before to the `index`th: 50, then 10 more for each world after,
+    /// so Home, the thirtieth, opens at 5,850.
+    private static func pointsToReach(_ index: Int) -> Int { 50 + 10 * (index - 1) }
 
     static let all: [World] = [
         "earth", "meadow", "ember", "blossom", "lagoon", "dune", "frost", "lavender", "moss",
@@ -58,23 +61,26 @@ struct World: Identifiable, Hashable {
         "twilight", "poppy", "pearl", "canyon", "rain", "cedar", "sunlit", "berry", "glacier",
         "marigold", "dream", "hearth", "home"
     ].enumerated().map { index, id in
-        World(id: id, unlocksAt: (0..<index).reduce(0) { $0 + roundsToReach($1 + 1) })
+        World(id: id, unlocksAt: (0..<index).reduce(0) { $0 + pointsToReach($1 + 1) })
     }
 }
 
-/// How far the planet has grown. Never shrinks: a skipped day costs nothing.
+/// How far the planet has grown, in points: 10 a round and 1 a minute played. Never shrinks:
+/// a skipped day costs nothing. The family sees the level, the number of the world it is on.
 enum Bloom {
+    static let pointsPerRound = 10
+
+    static func points(rounds: Int, minutes: Int) -> Int { rounds * pointsPerRound + minutes }
+
     /// The world the family is on now: the last one unlocked.
-    static func currentWorld(at bloom: Int) -> World {
-        World.all.last { $0.isUnlocked(at: bloom) } ?? World.all[0]
+    static func currentWorld(at points: Int) -> World {
+        World.all.last { $0.isUnlocked(at: points) } ?? World.all[0]
     }
+
+    static func level(at points: Int) -> Int { currentWorld(at: points).level }
 
     /// The next world to unlock, nil once every world is open.
-    static func nextWorld(after bloom: Int) -> World? {
-        World.all.first { !$0.isUnlocked(at: bloom) }
-    }
-
-    static func roundsToNextWorld(from bloom: Int) -> Int? {
-        nextWorld(after: bloom).map { $0.unlocksAt - bloom }
+    static func nextWorld(after points: Int) -> World? {
+        World.all.first { !$0.isUnlocked(at: points) }
     }
 }

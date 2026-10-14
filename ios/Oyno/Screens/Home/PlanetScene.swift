@@ -109,8 +109,8 @@ struct PlanetScene: View {
     let pulse: Int
     let open: Bool
     let explorable: Bool
-    /// The bloom level whose worlds the strip holds.
-    let bloom: Int
+    /// The bloom points whose worlds the strip holds.
+    let points: Int
     /// Bobs gently at rest. Off where a halo already moves around it.
     let floats: Bool
     /// A world to move to once the strip has laid out, instead of the family's own.
@@ -126,7 +126,7 @@ struct PlanetScene: View {
     @AppStorage("oyno.didBrowseWorlds") private var didBrowseWorlds = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private var current: World { Bloom.currentWorld(at: bloom) }
+    private var current: World { Bloom.currentWorld(at: points) }
     private var selectedIndex: Int { Self.index(of: position) }
     private var selected: World { World.all[selectedIndex] }
 
@@ -134,7 +134,7 @@ struct PlanetScene: View {
         pulse: Int = 0,
         open: Bool = false,
         explorable: Bool = false,
-        bloom: Int = 0,
+        points: Int = 0,
         floats: Bool = true,
         showing: World.ID? = nil,
         accessibilityLabel: String = String(interface: "Open your worlds"),
@@ -144,7 +144,7 @@ struct PlanetScene: View {
         self.pulse = pulse
         self.open = open
         self.explorable = explorable
-        self.bloom = bloom
+        self.points = points
         self.floats = floats
         self.showing = showing
         self.accessibilityLabel = accessibilityLabel
@@ -152,7 +152,7 @@ struct PlanetScene: View {
         self.onClose = onClose
         // Seeded, not set on appear: set before the strip's first layout, it stays on the first world.
         // The first world is left `nil`, the strip's start: seeded, it lands a content margin right.
-        let current = Bloom.currentWorld(at: bloom)
+        let current = Bloom.currentWorld(at: points)
         _position = State(initialValue: current == World.all.first ? nil : current.id)
     }
 
@@ -208,7 +208,7 @@ struct PlanetScene: View {
                         ForEach(World.all) { world in
                             WorldSlide(
                                 world: world,
-                                bloom: bloom,
+                                points: points,
                                 stage: size,
                                 open: open,
                                 scale: bodyScale(pressed: pressed != nil),
@@ -291,7 +291,7 @@ struct PlanetScene: View {
                     .accessibilityHidden(open)
                 Color.clear
                     .accessibilityElement()
-                    .accessibilityLabel(Text(verbatim: [selected.name, selected.place, selected.status(at: bloom)].joined(separator: ", ")))
+                    .accessibilityLabel(Text(verbatim: [selected.name, selected.place, selected.status(at: points)].joined(separator: ", ")))
                     .accessibilityAdjustableAction { direction in
                         switch direction {
                         case .increment: step(1)

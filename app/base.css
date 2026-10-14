@@ -79,6 +79,11 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Figtree has no Cyrillic, so a Russian page is set whole in Onest, as the app is. */
+html:lang(ru) {
+  --font-sans: var(--font-onest), ui-sans-serif, system-ui, sans-serif;
+}
+
 body {
   background: var(--canvas);
   color: var(--ink);

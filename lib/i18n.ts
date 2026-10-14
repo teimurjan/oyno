@@ -20,7 +20,7 @@
  * listing for an English app.
  */
 
-export const LOCALES = ["en"] as const;
+export const LOCALES = ["en", "ru"] as const;
 export type Lang = (typeof LOCALES)[number];
 
 export const DEFAULT_LANG: Lang = "en";
@@ -46,6 +46,7 @@ export function isPrefixedLocale(value: unknown): value is Lang {
  * word they would write it with, not for its English name. */
 export const LOCALE_NAMES: Record<Lang, string> = {
   en: "English",
+  ru: "Русский",
 };
 
 /** Every page the site has, addressed by name rather than by path.
@@ -137,8 +138,8 @@ export function languageFromAcceptHeader(header: string | null | undefined): Lan
 }
 
 /** The locale a reader in a given country is most likely to want, consulted only when the
- * browser's own languages name none the site has. Empty while the site is English only. */
-export const LOCALE_BY_COUNTRY: Partial<Record<string, Lang>> = {};
+ * browser's own languages name none the site has. */
+export const LOCALE_BY_COUNTRY: Partial<Record<string, Lang>> = { RU: "ru", BY: "ru", KZ: "ru", KG: "ru" };
 
 /** The canonical origin, for the absolute URLs `hreflang` requires.
  *

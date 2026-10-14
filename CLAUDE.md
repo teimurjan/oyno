@@ -51,8 +51,8 @@ locale sits beside the source.
 never edited. `bun run activities:translate` fills what a locale is missing, or holds for English
 that was reworded since, keyed by a fingerprint of the English. `bun run activities:check` fails
 on any gap and on fewer games than the listing promises. `Activity.swift` only decodes. The age
-band is `oyno.age` in defaults, picked on the play screen beside the energy, and the deck turns
-one game a day per age and energy. The games stay in the bundle, not on the API. A game must
+band is `oyno.age` in defaults, picked on the play screen beside the energy. The deck deals a
+random game per age and energy. Search lists all of them, shuffled. The games stay in the bundle, not on the API. A game must
 show instantly and offline, and picking needs the rounds, which never leave the phone.
 
 ## The planet scene
@@ -82,7 +82,9 @@ A paused app opens to `OynoShield`, the custom shield screen. It shows the plane
 "Open Oyno" posts a notification that opens Oyno on a tap.
 Home's screen time card is drawn by the `OynoReport` DeviceActivityReport extension, the only
 process that may read per-app usage. It borrows `AppUsageCard` and the design system files from
-`Oyno/`. Home's "Together" figure is today's Kid hours minus the unlocks logged in `opened`.
+`Oyno/`. Home's "Together" figure is all time: the days `bankPausedMinutes` banked, plus today's
+Kid hours minus the unlocks logged in `opened`. The bloom level is the world the points reach
+(10 a round, 1 a minute played), and Together does not count toward it.
 Distribution needs Apple's Family Controls (Distribution) entitlement for `com.teimurjan.oyno`,
 `com.teimurjan.oyno.monitor`, `com.teimurjan.oyno.report`, `com.teimurjan.oyno.shield` and
 `com.teimurjan.oyno.shield-action`. Development builds work without it. Screen Time does not run in the
@@ -135,7 +137,7 @@ other three link to `/auth/callback` with a `token_hash`, which redeems in any b
 
 ## Language
 
-English only at launch. Three places hold the same locale list: `InterfaceLanguage.supported`,
+English and Russian. Three places hold the same locale list: `InterfaceLanguage.supported`,
 `LOCALES` in `lib/i18n.ts` and `LOCALES` in `appstore/scripts/lib/locales.mjs`. Every tag needs a
 site deck and a funnel deck. Use
 `String(interface:)`, never `String(localized:)`.
@@ -144,7 +146,8 @@ site deck and a funnel deck. Use
 
 `Palette.swift` and `app/base.css` `:root` hold the same values: ink on a warm sky, glass cards,
 one accent fill (the ink pill) per screen. Red means only "this is costing you". The one typeface is
-Figtree, with tabular figures for every number. It is vendored in `ios/Oyno/Resources/Fonts/`. The
+Figtree, with tabular figures for every number. Figtree has no Cyrillic, so Russian is set in Onest.
+Both are vendored in `ios/Oyno/Resources/Fonts/`. The
 app, the site, the funnel build and the screenshot kit read it from there. The mark is `lib/mark.ts`, rendered by
 `bun run icons:build`. Tap targets are 44pt, and 52pt for the committing button. The bell that
 ends a round is `Resources/Chime.wav`, written by `bun run chime:build`, generated and committed.
@@ -164,3 +167,5 @@ funnel decks.
 - Games: if you edit `activities/`, `bun run activities:build`, then `bun run activities:check`, and
   commit `Activities.json`.
 - Store: `bun run metadata:check` before any deliver.
+- Design: if a change alters a screen the canvas draws, update its artboard in the same change. The
+  app is the source of truth, and the canvas follows it.

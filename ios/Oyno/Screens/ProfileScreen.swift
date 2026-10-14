@@ -16,12 +16,14 @@ struct ProfileScreen: View {
     @State private var manageError = false
     @State private var showsManageSheet = false
     @State private var paywall: PaywallContext?
+    @AppStorage(InterfaceLanguage.overrideKey) private var language = "en"
 
     var body: some View {
         SheetScreen(title: "Profile", subtitle: auth.currentUser?.email ?? "") {
             PlanBanner {
                 if purchases.isPaid { manage() } else { paywall = .settings }
             }
+            RowCard(raised: true) { languageMenu }
             RowCard(raised: true) {
                 row(String(interface: "Restore purchases"), busy: purchases.isRestoring) {
                     Task { await purchases.restore() }
@@ -87,6 +89,27 @@ struct ProfileScreen: View {
                 manageError = true
             }
         }
+    }
+
+    /// Each language is named in itself, so somebody stuck in one they cannot read still finds theirs.
+    private var languageMenu: some View {
+        Menu {
+            Picker("Language", selection: Binding(get: { language }, set: InterfaceLanguage.select)) {
+                ForEach(InterfaceLanguage.supported, id: \.self) { tag in
+                    Text(verbatim: InterfaceLanguage.displayName(tag)).tag(tag)
+                }
+            }
+        } label: {
+            HStack {
+                Text("Language").oynoRowTitle()
+                Spacer()
+                Text(verbatim: InterfaceLanguage.displayName(language)).oynoCaption()
+                Glyph.caret(Palette.muted)
+            }
+            .padding(Metric.cardPadding)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
     }
 
     private func row(_ title: String, busy: Bool = false, action: @escaping () -> Void) -> some View {

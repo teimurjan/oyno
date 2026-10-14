@@ -1,1 +1,6 @@
-First release.
+What is new:
+
+- Search all 500 games. Games you played before are at the top under Play again.
+- The Bloom card on Home counts your rounds, your time together and the time your kid spent on development.
+- If the game is still going, add 5 minutes to the timer.
+- Oyno is now in Russian. You can change the language in Profile.

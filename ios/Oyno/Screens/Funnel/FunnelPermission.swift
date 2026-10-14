@@ -16,7 +16,15 @@ struct FunnelPermission: View {
             FunnelLine(text: String(interface: "Let's connect Oyno to Screen Time. Securely."))
                 .funnelStage(stage >= 1)
             Spacer(minLength: 0)
-            ScreenTimeSheetPreview(arrowDrawn: stage >= 3)
+            SystemAlertPreview(
+                title: "“Oyno” Would Like to Access Screen Time",
+                message: "Providing “Oyno” access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps & websites.",
+                leading: "Continue",
+                trailing: "Don’t Allow",
+                target: .leading,
+                arrowDrawn: stage >= 3,
+                accessibilityLabel: "A preview of the Screen Time permission sheet, with an arrow on Continue"
+            )
                 .funnelStage(stage >= 2)
             Spacer(minLength: 0)
             Text("Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them.")
@@ -52,10 +60,19 @@ struct FunnelPermission: View {
     }
 }
 
-/// The system sheet, drawn: Apple's words and Apple's face, so the real one reads as the
-/// thing the arrow already pointed at. System font on purpose — this is a picture of iOS.
-private struct ScreenTimeSheetPreview: View {
+/// An iOS permission alert, drawn: Apple's words and Apple's face, so the real one reads as
+/// the thing the arrow already pointed at. System font on purpose — this is a picture of iOS.
+struct SystemAlertPreview: View {
+    enum Side { case leading, trailing }
+
+    let title: LocalizedStringKey
+    let message: LocalizedStringKey
+    let leading: LocalizedStringKey
+    let trailing: LocalizedStringKey
+    /// The button the arrow points at, set bold as iOS sets the default one.
+    let target: Side
     let arrowDrawn: Bool
+    let accessibilityLabel: LocalizedStringKey
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var haloBright = false
@@ -68,9 +85,9 @@ private struct ScreenTimeSheetPreview: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 6) {
-                Text("“Oyno” Would Like to Access Screen Time")
+                Text(title)
                     .font(.system(size: 17, weight: .semibold))
-                Text("Providing “Oyno” access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps & websites.")
+                Text(message)
                     .font(.system(size: 13))
                     .foregroundStyle(Palette.slate)
             }
@@ -80,12 +97,12 @@ private struct ScreenTimeSheetPreview: View {
             .padding(.bottom, 16)
             Rectangle().fill(Palette.hairline).frame(height: 0.5)
             HStack(spacing: 0) {
-                Text("Continue")
-                    .font(.system(size: 17, weight: .semibold))
+                Text(leading)
+                    .font(.system(size: 17, weight: target == .leading ? .semibold : .regular))
                     .frame(maxWidth: .infinity)
                 Rectangle().fill(Palette.hairline).frame(width: 0.5)
-                Text("Don’t Allow")
-                    .font(.system(size: 17))
+                Text(trailing)
+                    .font(.system(size: 17, weight: target == .trailing ? .semibold : .regular))
                     .frame(maxWidth: .infinity)
             }
             .frame(height: 44)
@@ -100,32 +117,33 @@ private struct ScreenTimeSheetPreview: View {
                 .padding(-10)
         )
         .overlay(alignment: .bottomLeading) { arrow }
-        .padding(.bottom, Self.arrowGap + ArrowToContinue.size.height)
+        .padding(.bottom, Self.arrowGap + ArrowToButton.size.height)
         .onAppear {
             guard !reduceMotion else { return haloBright = true }
             withAnimation(.easeInOut(duration: 1.4).repeatForever(autoreverses: true)) { haloBright = true }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Text("A preview of the Screen Time permission sheet, with an arrow on Continue"))
+        .accessibilityLabel(Text(accessibilityLabel))
     }
 
-    /// Drawn from below, curling up to the Continue button's foot.
+    /// Drawn from below, curling up to the target button's foot, mirrored for the trailing one.
     private var arrow: some View {
-        ArrowToContinue()
+        let mirrored = target == .trailing
+        let tipX = mirrored ? ArrowToButton.size.width - ArrowToButton.tipX : ArrowToButton.tipX
+        let buttonX = Self.width * (mirrored ? 0.75 : 0.25)
+        return ArrowToButton()
             .trim(from: 0, to: arrowDrawn ? 1 : 0)
             .stroke(Palette.highlight, style: StrokeStyle(lineWidth: 2.5, lineCap: .round, lineJoin: .round))
-            .frame(width: ArrowToContinue.size.width, height: ArrowToContinue.size.height)
-            .offset(
-                x: Self.width / 4 - ArrowToContinue.tipX,
-                y: Self.arrowGap + ArrowToContinue.size.height
-            )
+            .frame(width: ArrowToButton.size.width, height: ArrowToButton.size.height)
+            .scaleEffect(x: mirrored ? -1 : 1)
+            .offset(x: buttonX - tipX, y: Self.arrowGap + ArrowToButton.size.height)
             .animation(.easeInOut(duration: reduceMotion ? 0 : 0.7), value: arrowDrawn)
     }
 }
 
 /// A curve from the bottom left that sweeps right, then turns to arrive pointing straight
 /// up, with the head drawn last so a trim draws the shaft first.
-private struct ArrowToContinue: Shape {
+private struct ArrowToButton: Shape {
     static let size = CGSize(width: 90, height: 84)
     static let tipX: CGFloat = 80
     private static let headLength: CGFloat = 12

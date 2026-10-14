@@ -5,6 +5,9 @@ import UIKit
 /// One family, Figtree, for language and numbers alike. Numbers stay on a grid through its
 /// tabular figures (`.monospacedDigit()`), which is why there is no second, mono face.
 ///
+/// Figtree has no Cyrillic, so a language written in it is drawn whole in Onest, a geometric
+/// sans of the same build, rather than letter by letter in the system font.
+///
 /// The faces register themselves rather than going through `UIAppFonts`, so adding a weight
 /// is a file drop with no Info.plist edit. The site and the funnel read the same TTFs.
 enum Typeface {
@@ -16,9 +19,11 @@ enum Typeface {
         case extrabold = "ExtraBold"
     }
 
+    private static let families = ["Figtree", "Onest"]
+
     private static let registered: Void = {
-        let urls = Weight.allCases.compactMap {
-            Bundle.main.url(forResource: postScriptName($0), withExtension: "ttf")
+        let urls = families.flatMap { family in
+            Weight.allCases.compactMap { Bundle.main.url(forResource: "\(family)-\($0.rawValue)", withExtension: "ttf") }
         } as CFArray
         CTFontManagerRegisterFontURLs(urls, .process, true, nil)
     }()
@@ -27,14 +32,19 @@ enum Typeface {
 
     /// A wrong PostScript name falls back to the system font without a word, so it is
     /// checked in `assertFontsResolve()`.
-    private static func postScriptName(_ weight: Weight) -> String { "Figtree-\(weight.rawValue)" }
+    private static func postScriptName(_ weight: Weight, family: String = face) -> String { "\(family)-\(weight.rawValue)" }
+
+    /// Read on every call, so a language picked in the app redraws in its own face.
+    private static var face: String {
+        InterfaceLanguage.locale.language.script == .cyrillic ? "Onest" : "Figtree"
+    }
 
     static func ui(_ size: CGFloat, _ weight: Weight = .regular, relativeTo style: Font.TextStyle = .body) -> Font {
         register()
         return .custom(postScriptName(weight), size: size, relativeTo: style)
     }
 
-    /// Figtree for a number. Pair with `.monospacedDigit()` so a changing figure keeps its width.
+    /// The interface face for a number. Pair with `.monospacedDigit()` so a changing figure keeps its width.
     static func figures(_ size: CGFloat, _ weight: Weight = .semibold, relativeTo style: Font.TextStyle = .body) -> Font {
         ui(size, weight, relativeTo: style)
     }
@@ -42,9 +52,11 @@ enum Typeface {
     #if DEBUG
     static func assertFontsResolve() {
         register()
-        for weight in Weight.allCases {
-            let name = postScriptName(weight)
-            assert(UIFont(name: name, size: 12) != nil, "Font \"\(name)\" did not resolve")
+        for family in families {
+            for weight in Weight.allCases {
+                let name = postScriptName(weight, family: family)
+                assert(UIFont(name: name, size: 12) != nil, "Font \"\(name)\" did not resolve")
+            }
         }
     }
     #endif

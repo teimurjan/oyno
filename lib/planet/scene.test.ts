@@ -63,8 +63,8 @@ describe("worlds", () => {
     expect(thresholds).toEqual([...thresholds].sort((a, b) => a - b));
   });
 
-  test("each block of six worlds costs one round more than the last", () => {
+  test("each world costs ten points more than the last", () => {
     const at = (id: string) => WORLDS.find((world) => world.id === id)?.unlocksAt;
-    expect([at("meadow"), at("frost"), at("lavender"), at("rose"), at("pebble"), at("home")]).toEqual([3, 18, 22, 42, 47, 150]);
+    expect([at("meadow"), at("frost"), at("lavender"), at("rose"), at("pebble"), at("home")]).toEqual([50, 450, 560, 1260, 1430, 5850]);
   });
 });

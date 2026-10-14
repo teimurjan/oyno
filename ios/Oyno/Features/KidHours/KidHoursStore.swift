@@ -4,6 +4,7 @@ import FamilyControls
 import Foundation
 import ManagedSettings
 import Observation
+import UserNotifications
 
 /// What a tile in the Kid hours grids stands for. Tokens draw themselves through `Label`; a
 /// placeholder is the screenshot harness standing in for a phone with Screen Time.
@@ -151,6 +152,15 @@ final class KidHoursStore {
         Analytics.shared.track(.kidHoursAuthorized(granted: isAuthorized))
     }
 
+    /// The shield's "Open Oyno" is a notification, so it needs this permission to do anything.
+    /// Asked by the funnel, and again on every save for a phone that skipped it.
+    func requestNotifications() async {
+        let center = UNUserNotificationCenter.current()
+        guard await center.notificationSettings().authorizationStatus == .notDetermined else { return }
+        let granted = (try? await center.requestAuthorization(options: [.alert, .sound])) == true
+        Analytics.shared.track(.notificationsAuthorized(granted: granted))
+    }
+
     /// An app is on one list at most: picking it here takes it off Never allowed.
     func update(alwaysAllowed: FamilyActivitySelection) {
         var apps = FamilyActivitySelection()
@@ -180,6 +190,7 @@ final class KidHoursStore {
         }
         commit()
         Analytics.shared.track(.kidHoursScheduleSaved(schedules: settings.schedules.count))
+        if isAuthorized { Task { await requestNotifications() } }
     }
 
     func remove(_ schedule: KidHoursSchedule) {
@@ -238,15 +249,29 @@ final class KidHoursStore {
         Analytics.shared.track(.kidHoursLockedEarly)
     }
 
-    /// Drops what has run out and makes the shield match. The monitor relocks on its own; this
-    /// repairs a boundary it missed, each time the app comes forward.
+    /// Drops what has run out, banks the days that ended and makes the shield match. The
+    /// monitor relocks on its own; this repairs a boundary it missed, each time the app comes
+    /// forward. Without Screen Time nothing was paused, so nothing is banked.
     func refresh(now: Date = .now) {
         if let unlock = settings.unlock, now >= unlock.endsAt { settings.unlock = nil }
         if let earned = settings.earned, !earned.isClaimable(at: now) { settings.earned = nil }
-        settings.opened = Self.today(settings.opened, now: now)
+        if isAuthorized { settings.bankPausedMinutes(now: now) }
         settings.save()
         guard isAuthorized else { return }
         KidHoursShield.sync(settings, at: now)
+    }
+
+    /// Signing out opens every paused app, and no schedule pauses one until someone signs in.
+    func release(now: Date = .now) {
+        settings.signOut(at: now)
+        settings.save()
+        KidHoursShield.sync(settings, at: now)
+    }
+
+    func resume(now: Date = .now) {
+        guard settings.signedOutAt != nil else { return }
+        settings.signIn(at: now)
+        refresh(now: now)
     }
 
     /// The relock is armed before the apps open: an unlock Screen Time will not end is refused,
@@ -255,9 +280,10 @@ final class KidHoursStore {
         let wanted = now.addingTimeInterval(TimeInterval(minutes * 60))
         let unlock = KidHoursUnlock(reason: reason, startedAt: now, endsAt: max(wanted, liveUnlock?.endsAt ?? wanted))
         center.stopMonitoring([.kidHoursUnlock])
+        settings.bankPausedMinutes(now: now)
         let logged = settings.opened
         settings.unlock = unlock
-        settings.opened = Self.today(logged, now: now) + [DateInterval(start: now, end: unlock.endsAt)]
+        settings.opened = logged + [DateInterval(start: now, end: unlock.endsAt)]
         settings.save()
         do {
             try center.startMonitoring(.kidHoursUnlock, during: DeviceActivitySchedule(
@@ -275,12 +301,6 @@ final class KidHoursStore {
         KidHoursShield.sync(settings, at: now)
         Analytics.shared.track(.kidHoursBreak(minutes: minutes, reason: reason.rawValue))
         return true
-    }
-
-    /// The stretches that reach into the day of `now`.
-    private static func today(_ opened: [DateInterval], now: Date) -> [DateInterval] {
-        let midnight = Calendar.current.startOfDay(for: now)
-        return opened.filter { $0.end > midnight }
     }
 
     private static func moment(_ date: Date) -> DateComponents {

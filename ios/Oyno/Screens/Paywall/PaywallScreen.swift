@@ -250,11 +250,12 @@ struct PaywallScreen: View {
         Task {
             let outcome = await purchases.restore()
             Analytics.shared.track(.restoreFinished(outcome: outcome.rawValue))
-            restoreMessage = switch outcome {
-            case .restored: "Your subscription is active again."
-            case .nothingToRestore: "No purchase found for this Apple ID."
-            case .failed: "Couldn't reach the server. Try again in a moment."
-            case .cancelled: nil
+            // One assignment per branch: a `switch` expression only has its first literal extracted.
+            switch outcome {
+            case .restored: restoreMessage = "Your subscription is active again."
+            case .nothingToRestore: restoreMessage = "No purchase found for this Apple ID."
+            case .failed: restoreMessage = "Couldn't reach the server. Try again in a moment."
+            case .cancelled: restoreMessage = nil
             }
         }
     }

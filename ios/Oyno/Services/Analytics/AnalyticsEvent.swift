@@ -44,6 +44,7 @@ enum AnalyticsEvent {
 
     // Kid hours.
     case kidHoursAuthorized(granted: Bool)
+    case notificationsAuthorized(granted: Bool)
     case kidHoursSaved(alwaysAllowed: Int, neverAllowed: Int)
     case kidHoursScheduleSaved(schedules: Int)
     case kidHoursBreak(minutes: Int, reason: String)
@@ -71,6 +72,7 @@ enum AnalyticsEvent {
         case .planetTapped: "planet_tapped"
         case .worldsOpened: "worlds_opened"
         case .kidHoursAuthorized: "kid_hours_authorized"
+        case .notificationsAuthorized: "notifications_authorized"
         case .kidHoursSaved: "kid_hours_saved"
         case .kidHoursScheduleSaved: "kid_hours_schedule_saved"
         case .kidHoursBreak: "kid_hours_break"
@@ -95,7 +97,7 @@ enum AnalyticsEvent {
         case let .roundStarted(activity, energy, age): ["activity": activity, "energy": energy, "age": age]
         case let .roundCompleted(activity, minutes): ["activity": activity, "minutes": minutes]
         case let .planetTapped(bloom), let .worldsOpened(bloom): ["bloom": bloom]
-        case let .kidHoursAuthorized(granted): ["granted": granted]
+        case let .kidHoursAuthorized(granted), let .notificationsAuthorized(granted): ["granted": granted]
         case let .kidHoursSaved(alwaysAllowed, neverAllowed): ["always_allowed": alwaysAllowed, "never_allowed": neverAllowed]
         case let .kidHoursScheduleSaved(schedules): ["schedules": schedules]
         case let .kidHoursBreak(minutes, reason): ["minutes": minutes, "reason": reason]

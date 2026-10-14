@@ -117,7 +117,7 @@ export const en: SiteCopy = {
         "My girl sees it. She thinks it is how things are. It is not.",
         "I tried the blockers. I deleted the socials. The habit stayed. I picked up the phone, saw the locked screen and put it down. To me it was nothing. To her it was me on my phone again.",
         "So I stopped fighting the habit. I gave it something better to do.",
-        "Oyno means game in the language of the country where I was born. Now when I pick up the phone, it hands me a game to play with her. It is fun, and it helps her brain grow.",
+        "Oyno means play in the language of the country where I was born. Now when I pick up the phone, it hands me a game to play with her. It is fun, and it helps her brain grow.",
         "It took months. It is not another blocker. It is not breathing and it is not meditation. It is ten minutes with your kid, on a game the research stands behind.",
       ],
       name: "Tim",

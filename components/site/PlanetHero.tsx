@@ -109,7 +109,7 @@ export function PlanetHero({ words }: { words: PlanetCopy }) {
                       {words.worlds[world.id]}
                     </span>
                     <span className="text-[13px] font-semibold text-muted">
-                      {locked ? words.unlocksAt.replace("{n}", String(world.unlocksAt)) : words.yours}
+                      {locked ? words.unlocksAt.replace("{n}", String(index + 1)) : words.yours}
                     </span>
                   </figcaption>
                 </figure>

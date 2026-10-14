@@ -265,15 +265,7 @@ const ACTIONS = {
     );
     await requireApiKey();
     const version = await askVersion();
-    const search = await select({
-      message: "Search result slot",
-      choices: [
-        { name: "Leave it — the first screenshots show there", value: "none" },
-        { name: "Play that helps your kid grow", value: "play" },
-        { name: "Your apps pause while you're with your kid", value: "kidhours" },
-      ],
-    });
-    run("push-creative-assets.mjs", [`--version=${version}`, `--search=${search}`, `--locales=${locales.join(",")}`]);
+    run("push-creative-assets.mjs", [`--version=${version}`, `--locales=${locales.join(",")}`]);
   },
 
   pullMetadata: () => pull("download_metadata", "--metadata_path", "metadata"),

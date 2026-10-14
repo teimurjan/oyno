@@ -82,6 +82,20 @@ enum Format {
         return String(interface: "\(day) at \(time)")
     }
 
+    /// "today", "yesterday", "Tuesday" within a week, else "Oct 3": when something last happened.
+    static func day(_ date: Date, now: Date = .now) -> String {
+        let calendar = Calendar.current
+        if calendar.isDate(date, inSameDayAs: now) { return String(interface: "today") }
+        if let yesterday = calendar.date(byAdding: .day, value: -1, to: now), calendar.isDate(date, inSameDayAs: yesterday) {
+            return String(interface: "yesterday")
+        }
+        let locale = InterfaceLanguage.locale
+        if let weekAgo = calendar.date(byAdding: .day, value: -6, to: calendar.startOfDay(for: now)), date >= weekAgo {
+            return date.formatted(Date.FormatStyle(date: .omitted, time: .omitted).weekday(.wide).locale(locale))
+        }
+        return date.formatted(Date.FormatStyle(date: .omitted, time: .omitted).month(.abbreviated).day().locale(locale))
+    }
+
     /// "1h 48m", what is left until `date`.
     static func remaining(until date: Date, now: Date = .now) -> String {
         duration(date.timeIntervalSince(now))
@@ -91,6 +105,17 @@ enum Format {
     static func duration(_ seconds: TimeInterval) -> String {
         let style = Duration.UnitsFormatStyle(allowedUnits: [.hours, .minutes], width: .narrow).locale(InterfaceLanguage.locale)
         return Duration.seconds(max(0, seconds)).formatted(style)
+    }
+
+    /// Only the largest unit, rounded down: "45m", "7h", "3d".
+    static func largestUnit(minutes: Int) -> String {
+        let style = Duration.UnitsFormatStyle(
+            allowedUnits: [.days, .hours, .minutes],
+            width: .narrow,
+            maximumUnitCount: 1,
+            fractionalPart: .hide(rounded: .down)
+        ).locale(InterfaceLanguage.locale)
+        return Duration.seconds(max(0, minutes) * 60).formatted(style)
     }
 
     /// "Daily", "Weekdays", "Weekends", else the days themselves: "Sat, Sun".

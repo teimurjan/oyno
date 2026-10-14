@@ -18,8 +18,10 @@ struct DoneScreen: View {
     @State private var lastBurst = Date.distantPast
     @State private var holding: CGFloat = 0
 
-    /// The level before the tap, then the new one: the tap is what grows the planet.
-    private var bloom: Int { tapped ? oyno.bloom : max(0, oyno.bloom - 1) }
+    /// The points before this round, which the planet shows until the tap grows it.
+    private var pointsBefore: Int { max(0, oyno.points - Bloom.points(rounds: 1, minutes: minutes)) }
+    private var points: Int { tapped ? oyno.points : pointsBefore }
+    private var level: Int { Bloom.level(at: points) }
     private var minutesTogether: Int { tapped ? oyno.minutesToday : max(0, oyno.minutesToday - minutes) }
 
     var body: some View {
@@ -28,7 +30,7 @@ struct DoneScreen: View {
                 header
                 // Over the halo and the glow, which reach up past the planet's stage.
                 gain.padding(.top, 14).zIndex(1)
-                PlanetScene(pulse: bursts, bloom: oyno.bloom, floats: false, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
+                PlanetScene(pulse: bursts, points: oyno.points, floats: false, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
                     .overlay { PlanetHalo(burst: bursts) }
                     .frame(maxWidth: 270)
                     .padding(.top, 6)
@@ -52,7 +54,7 @@ struct DoneScreen: View {
         bursts += 1
         guard !tapped else { return }
         Haptics.success()
-        Analytics.shared.track(.planetTapped(bloom: oyno.bloom))
+        Analytics.shared.track(.planetTapped(bloom: oyno.level))
         withAnimation(reduceMotion ? .easeOut(duration: 0.3) : .smooth(duration: 0.7).delay(PlanetLayout.bloomPeak)) {
             tapped = true
         }
@@ -62,7 +64,7 @@ struct DoneScreen: View {
         HStack {
             Image("Wordmark").accessibilityLabel(Text(verbatim: "Oyno"))
             Spacer()
-            BloomPill(bloom: bloom)
+            BloomPill(bloom: level)
         }
         .frame(height: Metric.tapTarget)
     }
@@ -100,7 +102,7 @@ struct DoneScreen: View {
                 .tracking(-0.5)
                 .foregroundStyle(Palette.ink)
                 .contentTransition(.opacity)
-            Text(tapped ? "Every round together is one bloom." : "Hand the phone to your kid for this part.")
+            Text(tapped ? "Every round and every minute grow it." : "Hand the phone to your kid for this part.")
                 .font(Typeface.ui(13, .semibold, relativeTo: .caption))
                 .foregroundStyle(Palette.muted)
                 .contentTransition(.opacity)
@@ -112,7 +114,7 @@ struct DoneScreen: View {
     private var progress: some View {
         VStack(spacing: Metric.Space.s) {
             HStack {
-                Text("Bloom level \(bloom)")
+                Text("Bloom level \(level)")
                     .font(Typeface.figures(13, .bold, relativeTo: .caption))
                     .monospacedDigit()
                     .foregroundStyle(Palette.ink)
@@ -140,21 +142,20 @@ struct DoneScreen: View {
     /// The world the family was heading to before the tap. A tap that reaches it fills the bar
     /// rather than emptying it for the next one.
     private var heading: (from: Int, to: World)? {
-        let before = max(0, oyno.bloom - 1)
-        return Bloom.nextWorld(after: before).map { (from: Bloom.currentWorld(at: before).unlocksAt, to: $0) }
+        Bloom.nextWorld(after: pointsBefore).map { (from: Bloom.currentWorld(at: pointsBefore).unlocksAt, to: $0) }
     }
 
-    private var reachedWorld: Bool { heading.map { bloom >= $0.to.unlocksAt } ?? false }
+    private var reachedWorld: Bool { heading.map { points >= $0.to.unlocksAt } ?? false }
 
     private var share: Double {
         guard let heading else { return 1 }
-        return min(1, Double(bloom - heading.from) / Double(heading.to.unlocksAt - heading.from))
+        return min(1, Double(points - heading.from) / Double(heading.to.unlocksAt - heading.from))
     }
 
     private var nextWorld: String {
         if reachedWorld { return String(interface: "New world unlocked") }
-        guard let left = Bloom.roundsToNextWorld(from: bloom) else { return String(interface: "Every world is yours") }
-        return left == 1 ? String(interface: "1 round to a new world") : String(interface: "\(left) rounds to a new world")
+        guard let next = Bloom.nextWorld(after: points) else { return String(interface: "Every world is yours") }
+        return String(interface: "Next: \(next.name)")
     }
 
     // MARK: The sheet

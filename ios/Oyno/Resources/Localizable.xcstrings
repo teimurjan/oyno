@@ -1,6 +1,36 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "…and counting on your little planet." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "…и счёт на вашей маленькой планете растёт."
+          }
+        }
+      }
+    },
+    "“Oyno” Would Like to Access Screen Time" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложение «Oyno» запрашивает доступ к Экранному времени"
+          }
+        }
+      }
+    },
+    "“Oyno” Would Like to Send You Notifications" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложение «Oyno» запрашивает разрешение на отправку уведомлений"
+          }
+        }
+      }
+    },
     "%@ at %@" : {
       "localizations" : {
         "en" : {
@@ -8,14 +38,34 @@
             "state" : "new",
             "value" : "%1$@ at %2$@"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "в %1$@ в %2$@"
+          }
         }
       }
     },
     "%@ is paused for Kid hours. Your kid gets you instead." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ на паузе — идёт Детское время. Вместо него у ребёнка есть вы."
+          }
+        }
+      }
     },
     "%@ left" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ещё %@"
+          }
+        }
+      }
     },
     "%@ paused %lld× today." : {
       "localizations" : {
@@ -24,11 +74,76 @@
             "state" : "new",
             "value" : "%1$@ paused %2$lld× today."
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ сегодня на паузе уже %2$lld×."
+          }
         }
       }
     },
     "%@ years" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возраст %@"
+          }
+        }
+      }
+    },
+    "%lld activities" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld activity"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld activities"
+                }
+              }
+            }
+          }
+        },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игры"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игр"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игра"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игры"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld apps" : {
       "localizations" : {
@@ -49,26 +164,220 @@
               }
             }
           }
+        },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld приложения"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld приложений"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld приложение"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld приложения"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld evenings" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вечера"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вечеров"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вечер"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld вечера"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld hours" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld часа"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld часов"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld час"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld часа"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld ideas, no prep" : {
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игры без подготовки"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игр без подготовки"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игра без подготовки"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld игры без подготовки"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld min" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld мин"
+          }
+        }
+      }
+    },
+    "%lld min · %@ battery · Age %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld min · %2$@ battery · Age %3$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld мин · Заряд: %2$@ · Возраст: %3$@"
+          }
+        }
+      }
     },
     "%lld min earned" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заработали %lld мин"
+          }
+        }
+      }
     },
     "%lld min together today" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня вместе %lld мин"
+          }
+        }
+      }
     },
     "%lld minutes" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld минуты"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld минут"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld минута"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld минуты"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld minutes %lld seconds left" : {
       "localizations" : {
@@ -77,14 +386,14 @@
             "state" : "new",
             "value" : "%1$lld minutes %2$lld seconds left"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Осталось %1$lld мин %2$lld с"
+          }
         }
       }
-    },
-    "%lld more rounds" : {
-
-    },
-    "%lld rounds to a new world" : {
-
     },
     "%lld rounds together" : {
       "localizations" : {
@@ -105,80 +414,352 @@
               }
             }
           }
+        },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раунда вместе"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раундов вместе"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раунд вместе"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld раунда вместе"
+                }
+              }
+            }
+          }
         }
       }
     },
     "%lld+ hours" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld+ часа"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld+ часов"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld+ час"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld+ часа"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "+%lld min" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld мин"
+          }
+        }
+      }
     },
     "0–1" : {
-
-    },
-    "1 more round" : {
-
-    },
-    "1 round to a new world" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "0–1"
+          }
+        }
+      }
     },
     "1–3" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1–3"
+          }
+        }
+      }
     },
     "3 days free" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 дня бесплатно"
+          }
+        }
+      }
     },
     "3-day free trial" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пробный период — 3 дня"
+          }
+        }
+      }
     },
     "3–5" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3–5"
+          }
+        }
+      }
+    },
+    "5 min" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 мин"
+          }
+        }
+      }
     },
     "A planet that grows" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Планета, которая растёт"
+          }
+        }
+      }
     },
     "A planet this small only grows when its family shows up." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Такая маленькая планета растёт, только когда рядом её семья."
+          }
+        }
+      }
+    },
+    "A preview of Oyno's notification: Open Oyno. Tap to pick tonight's game." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Так выглядит уведомление Oyno: «Открыть Oyno. Нажмите, чтобы выбрать игру на вечер»."
+          }
+        }
+      }
+    },
+    "A preview of the notifications permission alert, with an arrow on Allow" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Так выглядит запрос на уведомления. Стрелка указывает на «Разрешить»"
+          }
+        }
+      }
     },
     "A preview of the Screen Time permission sheet, with an arrow on Continue" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Так выглядит запрос доступа к Экранному времени. Стрелка указывает на «Продолжить»"
+          }
+        }
+      }
+    },
+    "a year with your kid, phone down, ten minutes at a time." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "в год с ребёнком — без телефона, по десять минут."
+          }
+        }
+      }
     },
     "Add" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить"
+          }
+        }
+      }
+    },
+    "Add 5 minutes" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Добавить 5 минут"
+          }
+        }
+      }
     },
     "Add one with New, and pick the apps it pauses." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите «Создать» и выберите, какие приложения ставить на паузу."
+          }
+        }
+      }
     },
     "After work" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "После работы"
+          }
+        }
+      }
     },
     "Age %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возраст %@"
+          }
+        }
+      }
+    },
+    "All activities" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все игры"
+          }
+        }
+      }
+    },
+    "Allow" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешить"
+          }
+        }
+      }
     },
     "Allow Screen Time" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешить доступ"
+          }
+        }
+      }
     },
     "Almost there. [Save your plan] to start." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почти готово. [Сохраните план], чтобы начать."
+          }
+        }
+      }
     },
     "Always allowed" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всегда открыты"
+          }
+        }
+      }
     },
     "Apple couldn't complete that. Check that an Apple Account is signed in under iOS Settings, then try again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple не удалось завершить вход. Проверьте в Настройках iOS, что вы вошли в Аккаунт Apple, и попробуйте снова."
+          }
+        }
+      }
     },
     "Apple couldn't complete that. Try again in a moment, or use Google or email." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple не удалось завершить вход. Попробуйте чуть позже или войдите через Google или почту."
+          }
+        }
+      }
     },
     "Apple didn't return an identity token." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось получить токен входа от Apple."
+          }
+        }
+      }
     },
     "Apple returned a sign-in this app couldn't read. Try again, or use Google or email." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось прочитать ответ Apple. Попробуйте снова или войдите через Google или почту."
+          }
+        }
+      }
     },
     "Apps open until %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложения открыты до %@"
+          }
+        }
+      }
     },
     "Apps open, %lld minutes %lld seconds left" : {
       "localizations" : {
@@ -187,536 +768,2115 @@
             "state" : "new",
             "value" : "Apps open, %1$lld minutes %2$lld seconds left"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложения открыты, осталось %1$lld мин %2$lld с"
+          }
         }
       }
     },
     "Apps stay paused until %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложения на паузе до %@"
+          }
+        }
+      }
     },
     "Apps stay paused until Kid hours end." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложения на паузе до конца Детского времени."
+          }
+        }
+      }
+    },
+    "at %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "в %@"
+          }
+        }
+      }
     },
     "Aurora" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сияние"
+          }
+        }
+      }
     },
     "Back" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назад"
+          }
+        }
+      }
     },
     "Back to my world" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назад к моему миру"
+          }
+        }
+      }
     },
     "Based on your answer, with Kid hours on every evening." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расчёт по вашему ответу, если включать Детское время каждый вечер."
+          }
+        }
+      }
+    },
+    "Bath and bed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Купание и сон"
+          }
+        }
+      }
     },
     "Bedtime" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перед сном"
+          }
+        }
+      }
     },
     "Berry" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ягода"
+          }
+        }
+      }
     },
     "Bloom" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цветение"
+          }
+        }
+      }
     },
     "Bloom level %lld" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уровень цветения %lld"
+          }
+        }
+      }
     },
     "Blossom" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бутон"
+          }
+        }
+      }
     },
     "Cancel" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
+          }
+        }
+      }
     },
     "Canyon" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Каньон"
+          }
+        }
+      }
     },
     "Cedar" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кедр"
+          }
+        }
+      }
     },
     "Checking your subscription on this account." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Проверяем подписку в этом аккаунте."
+          }
+        }
+      }
     },
     "Choose apps" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбрать приложения"
+          }
+        }
+      }
     },
     "Clay" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Глина"
+          }
+        }
+      }
+    },
+    "Clear search" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистить поиск"
+          }
+        }
+      }
     },
     "Close" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыть"
+          }
+        }
+      }
     },
     "Closer…" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ближе…"
+          }
+        }
+      }
     },
     "Cloud" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Облако"
+          }
+        }
+      }
     },
     "Continue" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить"
+          }
+        }
+      }
     },
     "Continue with Facebook" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить с Facebook"
+          }
+        }
+      }
     },
     "Coral" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Коралл"
+          }
+        }
+      }
+    },
+    "Couldn't reach the server. Try again in a moment." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось связаться с сервером. Попробуйте чуть позже."
+          }
+        }
+      }
     },
     "Daily" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Каждый день"
+          }
+        }
+      }
     },
     "Delete account" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить аккаунт"
+          }
+        }
+      }
     },
     "Delete everything" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить всё"
+          }
+        }
+      }
     },
     "Delete schedule" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить расписание"
+          }
+        }
+      }
     },
     "Delete your account?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалить аккаунт?"
+          }
+        }
+      }
+    },
+    "Development" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Развитие"
+          }
+        }
+      }
     },
     "Different idea" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Другая игра"
+          }
+        }
+      }
     },
     "Dimmed by a feed, a ping, and everything else pulling at you." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Но их гасят лента, уведомления и всё, что вас отвлекает."
+          }
+        }
+      }
     },
     "Dismiss" : {
-
-    },
-    "Done" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыть"
+          }
+        }
+      }
     },
     "Don’t Allow" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не разрешать"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Готово"
+          }
+        }
+      }
     },
     "Dream" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мечта"
+          }
+        }
+      }
     },
     "Dune" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дюна"
+          }
+        }
+      }
     },
     "During this time" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В это время"
+          }
+        }
+      }
     },
     "Earth" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Земля"
+          }
+        }
+      }
     },
     "Edit" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменить"
+          }
+        }
+      }
     },
     "Email" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Эл. почта"
+          }
+        }
+      }
     },
     "Ember" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уголёк"
+          }
+        }
+      }
     },
     "Energy" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заряд"
+          }
+        }
+      }
     },
     "Every few minutes" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Раз в пару минут"
+          }
+        }
+      }
+    },
+    "Every round and every minute grow it." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Она растёт с каждым раундом и каждой минутой."
+          }
+        }
+      }
     },
     "Every round together blooms your family's little planet." : {
-
-    },
-    "Every round together is one bloom." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "С каждым раундом маленькая планета вашей семьи расцветает."
+          }
+        }
+      }
     },
     "Every world is yours" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Все миры — ваши"
+          }
+        }
+      }
     },
     "Everything unlocks. Nothing to pay today." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всё открыто. Сегодня платить не нужно."
+          }
+        }
+      }
     },
     "Explore worlds" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Смотреть миры"
+          }
+        }
+      }
     },
     "Face down is fine. We'll buzz at the end." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можно положить экраном вниз. В конце телефон завибрирует."
+          }
+        }
+      }
     },
     "Face down is fine. We'll chime at the end." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можно положить экраном вниз. В конце прозвенит колокольчик."
+          }
+        }
+      }
     },
     "Facebook couldn't complete that. Try again, or use another way in." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facebook не удалось завершить вход. Попробуйте снова или войдите другим способом."
+          }
+        }
+      }
+    },
+    "Find an activity" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Найти игру"
+          }
+        }
+      }
     },
     "Finding your plan" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ищем ваш план"
+          }
+        }
+      }
     },
     "Finish for today" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На сегодня всё"
+          }
+        }
+      }
     },
     "Fix this" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Исправить это"
+          }
+        }
+      }
     },
     "From" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начало"
+          }
+        }
+      }
+    },
+    "From your history" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Из вашей истории"
+          }
+        }
+      }
     },
     "Frost" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Иней"
+          }
+        }
+      }
     },
     "Full" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Полно"
+          }
+        }
+      }
     },
     "Get [%lld minutes] back every single evening" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Верните себе [%lld минуты] каждого вечера"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Верните себе [%lld минут] каждого вечера"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Верните себе [%lld минуту] каждого вечера"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Верните себе [%lld минуты] каждого вечера"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Get my evenings back" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вернуть себе вечера"
+          }
+        }
+      }
     },
     "Glacier" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ледник"
+          }
+        }
+      }
     },
     "Google didn't return an identity token." : {
-
-    },
-    "Growing" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось получить токен входа от Google."
+          }
+        }
+      }
     },
     "Hand the phone to your kid for this part." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пусть это сделает ребёнок — дайте ему телефон."
+          }
+        }
+      }
     },
     "Hardly ever" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почти никогда"
+          }
+        }
+      }
     },
     "Hearth" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очаг"
+          }
+        }
+      }
     },
     "High five" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дать пять"
+          }
+        }
+      }
     },
     "Hold 2 sec" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удерживайте 2 с"
+          }
+        }
+      }
     },
     "Hold for not now" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не сейчас — удерживайте"
+          }
+        }
+      }
     },
     "Hold to unlock my apps" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удерживайте, чтобы открыть приложения"
+          }
+        }
+      }
     },
     "Home" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дом"
+          }
+        }
+      }
+    },
+    "Home tab" : {
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Home"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Главная"
+          }
+        }
+      }
     },
     "Honey" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мёд"
+          }
+        }
+      }
     },
     "How often do you pick it up [in an hour] with them?" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сколько раз [за час] с ребёнком вы берёте телефон?"
+          }
+        }
+      }
     },
     "I lose count" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сбиваюсь со счёта"
+          }
+        }
+      }
     },
     "If you keep Oyno, %@ is billed then. You can cancel in Settings." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если останетесь с Oyno, завтра спишется %@. Отменить можно в Настройках."
+          }
+        }
+      }
     },
     "In 2 days" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Через 2 дня"
+          }
+        }
+      }
     },
     "In 3 days" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Через 3 дня"
+          }
+        }
+      }
     },
     "Keep playing" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Играть дальше"
+          }
+        }
+      }
     },
     "Kid hours" : {
-
-    },
-    "Kid hours pause the apps you pick, every evening, on the schedule you set." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Детское время"
+          }
+        }
+      }
     },
     "Kid hours · until %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Детское время · до %@"
+          }
+        }
+      }
+    },
+    "Kid hours pause the apps you pick, every evening, on the schedule you set." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Детское время ставит на паузу выбранные приложения — каждый вечер, по вашему расписанию."
+          }
+        }
+      }
     },
     "Kid's age" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Возраст ребёнка"
+          }
+        }
+      }
     },
     "Lagoon" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лагуна"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Язык"
+          }
+        }
+      }
     },
     "Lavender" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Лаванда"
+          }
+        }
+      }
+    },
+    "Leave round" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прервать раунд"
+          }
+        }
+      }
+    },
+    "Leave this round?" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прервать раунд?"
+          }
+        }
+      }
+    },
+    "left of %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "из %@"
+          }
+        }
+      }
     },
     "Let Oyno pause apps" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разрешите Oyno ставить приложения на паузу"
+          }
+        }
+      }
     },
     "Let's connect Oyno to Screen Time. Securely." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подключим Oyno к Экранному времени. Это безопасно."
+          }
+        }
+      }
     },
     "Let's seal it with a high five" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скрепим уговор — дайте пять"
+          }
+        }
+      }
     },
     "Lock" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Закрыть"
+          }
+        }
+      }
     },
     "Low" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мало"
+          }
+        }
+      }
     },
     "Manage subscription" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Управление подпиской"
+          }
+        }
+      }
     },
     "Marigold" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бархатцы"
+          }
+        }
+      }
     },
     "Meadow" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Луг"
+          }
+        }
+      }
     },
     "Meaning that this year you're on track to lose" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выходит, за этот год вы отдадите"
+          }
+        }
+      }
     },
     "Mint" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мята"
+          }
+        }
+      }
     },
     "More" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ещё"
+          }
+        }
+      }
     },
     "Moss" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мох"
+          }
+        }
+      }
     },
     "Name this schedule" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Название расписания"
+          }
+        }
+      }
     },
     "Never allowed" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всегда закрыты"
+          }
+        }
+      }
     },
     "New" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Создать"
+          }
+        }
+      }
     },
     "New schedule" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новое расписание"
+          }
+        }
+      }
     },
     "New to Oyno? Any of these creates your account." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Впервые в Oyno? Любой из этих способов создаст аккаунт."
+          }
+        }
+      }
     },
     "New world unlocked" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыт новый мир"
+          }
+        }
+      }
     },
     "Next world" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Следующий мир"
+          }
+        }
+      }
+    },
+    "Next: %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дальше: %@"
+          }
+        }
+      }
     },
     "No payment due now" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сейчас платить не нужно"
+          }
+        }
+      }
+    },
+    "No purchase found for this Apple ID." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В этом Аккаунте Apple покупок не найдено."
+          }
+        }
+      }
     },
     "No schedule yet" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расписаний пока нет"
+          }
+        }
+      }
     },
     "No screen time yet today." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня экранного времени пока нет."
+          }
+        }
+      }
     },
     "None" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нет"
+          }
+        }
+      }
     },
     "Not now" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не сейчас"
+          }
+        }
+      }
+    },
+    "Nothing matches that yet" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ничего не нашлось"
+          }
+        }
+      }
     },
     "Nothing today, then %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня бесплатно, затем %@"
+          }
+        }
+      }
     },
-    "OK" : {
-
+    "Notifications may include alerts, sounds, and icon badges. These can be configured in Settings." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уведомления могут содержать напоминания, звуки и наклейки значков. Их конфигурирование возможно в Настройках."
+          }
+        }
+      }
+    },
+    "now" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сейчас"
+          }
+        }
+      }
     },
     "Off" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключено"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ОК"
+          }
+        }
+      }
     },
     "Okay" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Средне"
+          }
+        }
+      }
     },
     "On now · ends %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Идёт сейчас · до %@"
+          }
+        }
+      }
     },
     "On now · ends in %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Идёт сейчас · ещё %@"
+          }
+        }
+      }
     },
     "On these days" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "В эти дни"
+          }
+        }
+      }
     },
     "Once or twice" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Раз или два"
+          }
+        }
+      }
     },
     "One easy game" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Одна простая игра"
+          }
+        }
+      }
     },
     "One easy thing" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Одна простая игра"
+          }
+        }
+      }
+    },
+    "One tap opens tonight's game. iOS only lets the nudge through if you allow it." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Одно касание — и игра на вечер открыта. iOS покажет напоминание, только если вы разрешите."
+          }
+        }
+      }
     },
     "Only during Kid hours" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Только в Детское время"
+          }
+        }
+      }
+    },
+    "Open a paused app, and Oyno [nudges you back] to your kid" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Откроете приложение на паузе — и Oyno [мягко вернёт вас] к ребёнку"
+          }
+        }
+      }
     },
     "Open Oyno" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть Oyno"
+          }
+        }
+      }
     },
     "Open until %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыты до %@"
+          }
+        }
+      }
     },
     "Open your worlds" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть миры"
+          }
+        }
+      }
     },
     "Opens your apps for %lld minutes" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Открывает приложения на %lld минуты"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Открывает приложения на %lld минут"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Открывает приложения на %lld минуту"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Открывает приложения на %lld минуты"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Or from Kid hours within a minute" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Или в течение минуты в разделе «Детское время»"
+          }
+        }
+      }
     },
     "Orchard" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сад"
+          }
+        }
+      }
     },
     "Oyno" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oyno"
+          }
+        }
+      }
     },
     "Oyno will give you back [%lld+ hours] a year with your kid" : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Oyno вернёт вам [%lld+ часа] в год с ребёнком"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Oyno вернёт вам [%lld+ часов] в год с ребёнком"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Oyno вернёт вам [%lld+ час] в год с ребёнком"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Oyno вернёт вам [%lld+ часа] в год с ребёнком"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Password" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пароль"
+          }
+        }
+      }
     },
     "Pause" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пауза"
+          }
+        }
+      }
     },
     "Pause schedule" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключить расписание"
+          }
+        }
+      }
     },
     "Pauses" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На паузе"
+          }
+        }
+      }
     },
     "Pearl" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жемчуг"
+          }
+        }
+      }
     },
     "Pebble" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Галька"
+          }
+        }
+      }
     },
     "Pick at least one day." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберите хотя бы один день."
+          }
+        }
+      }
     },
     "Plans aren't available right now. Check your connection and try again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тарифы сейчас недоступны. Проверьте интернет и попробуйте снова."
+          }
+        }
+      }
     },
     "Play" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Играть"
+          }
+        }
+      }
+    },
+    "Play again" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сыграть ещё раз"
+          }
+        }
+      }
     },
     "Play together every evening with" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Играйте вместе каждый вечер с"
+          }
+        }
+      }
     },
     "Play together, then your apps open for a while." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиграйте вместе — и приложения ненадолго откроются."
+          }
+        }
+      }
+    },
+    "Played %lld× · last %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Played %1$lld× · last %2$@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Играли %1$lld× · последний раз: %2$@"
+          }
+        }
+      }
     },
     "Playing together every evening with" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Играете вместе каждый вечер с"
+          }
+        }
+      }
     },
     "Poppy" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мак"
+          }
+        }
+      }
     },
     "Previous world" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Предыдущий мир"
+          }
+        }
+      }
     },
     "Profile" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Профиль"
+          }
+        }
+      }
     },
     "Projection from your answer: %lld phone minutes in an evening from 4:30 to 7:30 PM, every day of the year." : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расчёт по вашему ответу: телефон забирает %lld минуты каждый вечер с 16:30 до 19:30, и так весь год."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расчёт по вашему ответу: телефон забирает %lld минут каждый вечер с 16:30 до 19:30, и так весь год."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расчёт по вашему ответу: телефон забирает %lld минуту каждый вечер с 16:30 до 19:30, и так весь год."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расчёт по вашему ответу: телефон забирает %lld минуты каждый вечер с 16:30 до 19:30, и так весь год."
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "Providing “Oyno” access to Screen Time may allow it to see your activity data, restrict content, and limit the usage of apps & websites." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если у приложения «Oyno» будет доступ к Экранному времени, оно может получить возможность просматривать данные о Ваших действиях, запрещать Вам доступ к контенту и ограничивать для Вас использование приложений и веб-сайтов."
+          }
+        }
+      }
     },
     "Rain" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дождь"
+          }
+        }
+      }
     },
     "Rename" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переименовать"
+          }
+        }
+      }
     },
     "Restore" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Восстановление покупок"
+          }
+        }
+      }
     },
     "Restore purchases" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Восстановить покупки"
+          }
+        }
+      }
     },
     "Resume" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить"
+          }
+        }
+      }
     },
     "Rose" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Роза"
+          }
+        }
+      }
+    },
+    "Rounds" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Раунды"
+          }
+        }
+      }
     },
     "Save" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохранить"
+          }
+        }
+      }
     },
     "Save your family's planet" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сохраните планету своей семьи"
+          }
+        }
+      }
     },
     "Schedules" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Расписания"
+          }
+        }
+      }
     },
-    "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them." : {
-
+    "School nights" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будние вечера"
+          }
+        }
+      }
     },
     "Screen time" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экранное время"
+          }
+        }
+      }
+    },
+    "Screen Time asks once. Oyno only sees the apps you pick, as tokens, and never what you do in them." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Экранное время спросит один раз. Oyno видит лишь анонимные метки выбранных приложений и никогда — что вы в них делаете."
+          }
+        }
+      }
+    },
+    "Search activities" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поиск игр"
+          }
+        }
+      }
     },
     "See plans" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Посмотреть тарифы"
+          }
+        }
+      }
     },
     "Send another code" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отправить код ещё раз"
+          }
+        }
+      }
     },
     "Send another in %lld s" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новый код через %lld с"
+          }
+        }
+      }
     },
     "Send me a code" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прислать код"
+          }
+        }
+      }
     },
     "Share with a co-parent" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поделиться со вторым родителем"
+          }
+        }
+      }
     },
     "Show me how" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показать как"
+          }
+        }
+      }
     },
     "Sign in" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти"
+          }
+        }
+      }
     },
     "Sign in so your plan and your planet stay with you, and a subscription bought on the web finds you here." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войдите, чтобы план и планета остались с вами, а подписка, купленная на сайте, нашлась здесь."
+          }
+        }
+      }
     },
     "Sign in with Google" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти с аккаунтом Google"
+          }
+        }
+      }
     },
     "Sign out" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выйти"
+          }
+        }
+      }
     },
     "Sign-in failed (%lld)." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось войти (%lld)."
+          }
+        }
+      }
     },
     "Sign-in failed: %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось войти: %@"
+          }
+        }
+      }
     },
     "Sign-in isn't set up yet." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вход пока не настроен."
+          }
+        }
+      }
     },
     "Signing you in" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выполняем вход"
+          }
+        }
+      }
     },
     "Some not-so-good news, and some good news." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У нас две новости: плохая и хорошая."
+          }
+        }
+      }
     },
     "Soon" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скоро"
+          }
+        }
+      }
     },
     "Start %lld-minute round" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать раунд на %lld мин"
+          }
+        }
+      }
     },
     "Start a game" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать игру"
+          }
+        }
+      }
     },
     "Start my free trial" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать бесплатный период"
+          }
+        }
+      }
     },
     "Start with 3 days free, and spend them on the floor with your kid." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начните с 3 бесплатных дней — и проведите их на ковре с ребёнком."
+          }
+        }
+      }
     },
     "Starts %@" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начнётся %@"
+          }
+        }
+      }
     },
     "Subscribe" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оформить подписку"
+          }
+        }
+      }
     },
     "Subscriptions are unavailable right now." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписки сейчас недоступны."
+          }
+        }
+      }
     },
     "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy)." : {
       "localizations" : {
@@ -725,128 +2885,533 @@
             "state" : "translated",
             "value" : "Subscriptions renew automatically until cancelled. Manage or cancel in your Apple Account settings. By continuing you agree to the [Terms of Use](oyno://terms) and the [Privacy Policy](oyno://privacy)."
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка продлевается автоматически, пока вы её не отмените. Управлять подпиской и отменить её можно в настройках Аккаунта Apple. Продолжая, вы принимаете [Условия использования](oyno://terms) и [Политику конфиденциальности](oyno://privacy)."
+          }
         }
       }
     },
     "Sunlit" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Солнце"
+          }
+        }
+      }
     },
     "Swipe to explore" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Листайте миры"
+          }
+        }
+      }
     },
     "Syncing needs an active subscription. Everything you've entered is still on this device." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для синхронизации нужна активная подписка. Всё, что вы ввели, осталось на этом устройстве."
+          }
+        }
+      }
     },
     "Tap the planet" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите на планету"
+          }
+        }
+      }
     },
     "Tap the planet!" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите на планету!"
+          }
+        }
+      }
     },
     "Tap to continue" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите, чтобы продолжить"
+          }
+        }
+      }
     },
     "Tap to pick tonight's game." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нажмите, чтобы выбрать игру на вечер."
+          }
+        }
+      }
     },
     "Ten minutes, sized to the energy you have left, picked for you." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Десять минут — под ваш заряд. Игру выберем мы."
+          }
+        }
+      }
     },
     "That isn't on your account anymore." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Этого больше нет в вашем аккаунте."
+          }
+        }
+      }
     },
     "That purchase couldn't be verified." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось подтвердить покупку."
+          }
+        }
+      }
     },
     "That sign-in expired. Try again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Время входа истекло. Попробуйте снова."
+          }
+        }
+      }
     },
     "The bad news is that your phone takes about [%lld minutes] of every evening with your kid." : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Плохая новость: телефон забирает примерно [%lld минуты] каждого вечера с ребёнком."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Плохая новость: телефон забирает примерно [%lld минут] каждого вечера с ребёнком."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Плохая новость: телефон забирает примерно [%lld минуту] каждого вечера с ребёнком."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Плохая новость: телефон забирает примерно [%lld минуты] каждого вечера с ребёнком."
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "The end has to be at least %lld minutes after the start." : {
-
+      "localizations" : {
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расписание должно длиться хотя бы %lld минуты."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расписание должно длиться хотя бы %lld минут."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расписание должно длиться хотя бы %lld минуту."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Расписание должно длиться хотя бы %lld минуты."
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "The good news is that Oyno can give you back" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хорошая новость: Oyno может вернуть вам"
+          }
+        }
+      }
     },
     "The server couldn't read that request." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сервер не понял запрос."
+          }
+        }
+      }
     },
     "The server lost its place. Try again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На сервере что-то пошло не так. Попробуйте снова."
+          }
+        }
+      }
     },
     "The server turned the request down. (%lld)" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сервер отклонил запрос (%lld)."
+          }
+        }
+      }
     },
     "The subscription page didn't open. Try again, or use the link in your receipt email." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Страница подписки не открылась. Попробуйте снова или перейдите по ссылке из письма с чеком."
+          }
+        }
+      }
+    },
+    "The time so far won't count, and your planet won't grow." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это время не засчитается, и планета не вырастет."
+          }
+        }
+      }
+    },
+    "then %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "затем %@"
+          }
+        }
+      }
     },
     "This app" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это приложение"
+          }
+        }
+      }
     },
     "To" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Конец"
+          }
+        }
+      }
+    },
+    "to a screen, with your kid right there. Yep, you read this right." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "экрану, пока ребёнок рядом. Да, всё верно."
+          }
+        }
+      }
+    },
+    "today" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "сегодня"
+          }
+        }
+      }
     },
     "Today" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сегодня"
+          }
+        }
+      }
     },
     "Together" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вместе"
+          }
+        }
+      }
+    },
+    "tomorrow at %@" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "завтра в %@"
+          }
+        }
+      }
     },
     "Try 3 days free" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 дня бесплатно"
+          }
+        }
+      }
+    },
+    "Try a word like quiet, moving or bedtime." : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Попробуйте «тихая», «мяч» или «перед сном»."
+          }
+        }
+      }
     },
     "Turn on schedule" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить расписание"
+          }
+        }
+      }
     },
     "Turn the chime off" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выключить колокольчик"
+          }
+        }
+      }
     },
     "Turn the chime on" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить колокольчик"
+          }
+        }
+      }
     },
     "Twilight" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сумерки"
+          }
+        }
+      }
     },
     "Unlock" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть"
+          }
+        }
+      }
     },
     "Unlock after a round" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открывать после раунда"
+          }
+        }
+      }
     },
     "Unlock my apps" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыть приложения"
+          }
+        }
+      }
     },
     "Unlocked" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Открыт"
+          }
+        }
+      }
     },
     "Unlocks at bloom %lld" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Откроется на уровне цветения %lld"
+          }
+        }
+      }
     },
     "Use a password instead" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти с паролем"
+          }
+        }
+      }
     },
     "Use email instead" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Войти по почте"
+          }
+        }
+      }
     },
     "We remind you that your trial ends tomorrow." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Напомним, что завтра пробный период закончится."
+          }
+        }
+      }
     },
     "We sent a six-digit code to %@." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мы отправили шестизначный код на %@."
+          }
+        }
+      }
     },
     "We're done" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мы закончили"
+          }
+        }
+      }
     },
     "Weekdays" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По будням"
+          }
+        }
+      }
+    },
+    "Weekend mornings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Утро выходных"
+          }
+        }
+      }
     },
     "Weekends" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По выходным"
+          }
+        }
+      }
     },
     "Why it works" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Почему это работает"
+          }
+        }
+      }
     },
     "World %lld of %lld" : {
       "localizations" : {
@@ -855,77 +3420,174 @@
             "state" : "new",
             "value" : "World %1$lld of %2$lld"
           }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мир %1$lld из %2$lld"
+          }
+        }
+      }
+    },
+    "yesterday" : {
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "вчера"
+          }
         }
       }
     },
     "You're not subscribed yet" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписки пока нет"
+          }
+        }
+      }
     },
     "You're subscribed" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка оформлена"
+          }
+        }
+      }
     },
     "Your account is still here — that didn't go through. Try again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аккаунт на месте — удалить не получилось. Попробуйте снова."
+          }
+        }
+      }
     },
     "Your apps can open for %lld min" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложения можно открыть на %lld мин"
+          }
+        }
+      }
     },
     "Your apps, paused" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приложения на паузе"
+          }
+        }
+      }
     },
     "Your battery" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш заряд"
+          }
+        }
+      }
     },
     "Your evenings are like this too." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваши вечера тоже такие."
+          }
+        }
+      }
     },
     "Your free trial ends tomorrow" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завтра заканчивается бесплатный период"
+          }
+        }
+      }
     },
     "Your plan and your family's planet are tied to your account." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "План и планета вашей семьи хранятся в аккаунте."
+          }
+        }
+      }
     },
     "Your plan starts at %@. Cancel anytime before." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начнётся подписка: %@. Отменить можно в любой момент до этого."
+          }
+        }
+      }
     },
     "Your planet just grew" : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваша планета подросла"
+          }
+        }
+      }
     },
     "Your rounds and your planet go with it. This cannot be undone. An active subscription keeps running until you cancel it." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вместе с ним удалятся раунды и планета. Это действие нельзя отменить. Активная подписка продолжит действовать, пока вы её не отмените."
+          }
+        }
+      }
     },
     "Your session expired. Sign in again to keep going." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеанс истёк. Войдите снова, чтобы продолжить."
+          }
+        }
+      }
     },
     "Your subscription is active again." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписка снова активна."
+          }
+        }
+      }
     },
     "Yours now" : {
-
-    },
-    "a year with your kid, phone down, ten minutes at a time." : {
-
-    },
-    "at %@" : {
-
-    },
-    "left of %@" : {
-
-    },
-    "then %@" : {
-
-    },
-    "to a screen, with your kid right there. Yep, you read this right." : {
-
-    },
-    "tomorrow at %@" : {
-
-    },
-    "“Oyno” Would Like to Access Screen Time" : {
-
-    },
-    "…and counting on your little planet." : {
-
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уже ваш"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

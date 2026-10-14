@@ -11,6 +11,7 @@ export interface Market {
 
 export const MARKETS: Record<Lang, Market> = {
   en: { numberLocale: "en-US", currency: "USD" },
+  ru: { numberLocale: "ru-RU", currency: "USD" },
 };
 
 /** A money formatter for one market, at the currency's own precision unless told otherwise. */

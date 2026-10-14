@@ -12,6 +12,7 @@ enum FunnelStep: String, CaseIterable {
     case badNews = "bad_news"
     case goodNews = "good_news"
     case screenTime = "screen_time"
+    case notifications
     case promise
     case teaser
     case account
@@ -26,7 +27,7 @@ enum FunnelStep: String, CaseIterable {
         case .pickups: .question
         case .interlude: .interlude
         case .badNews, .goodNews: .projection
-        case .screenTime: .permission
+        case .screenTime, .notifications: .permission
         case .promise: .promise
         case .teaser: .teaser
         case .account: .account

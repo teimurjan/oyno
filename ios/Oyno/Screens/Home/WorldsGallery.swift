@@ -3,17 +3,17 @@ import SwiftUI
 /// One world in `PlanetScene`'s strip: a whole stage, wider than its slide, so the centred
 /// planet sits where the scene's planet rests and the neighbours peek in at the edges. At
 /// rest only the current world shows, and it carries the family. Open, every world shows its
-/// place in the strip and says whether it is the family's, or how many rounds are left until it is.
+/// place in the strip and says whether it is the family's, or the bloom level that opens it.
 struct WorldSlide: View {
     let world: World
-    let bloom: Int
+    let points: Int
     let stage: CGSize
     let open: Bool
     let scale: CGFloat
     var pressedAt: CGPoint?
 
-    private var locked: Bool { !world.isUnlocked(at: bloom) }
-    private var isHome: Bool { world == Bloom.currentWorld(at: bloom) }
+    private var locked: Bool { !world.isUnlocked(at: points) }
+    private var isHome: Bool { world == Bloom.currentWorld(at: points) }
 
     var body: some View {
         PlanetBody(
@@ -37,7 +37,7 @@ struct WorldSlide: View {
                 Text(world.name)
                     .font(Typeface.ui(16, .extrabold, relativeTo: .headline))
                     .foregroundStyle(Palette.ink)
-                Text(world.status(at: bloom))
+                Text(world.status(at: points))
                     .font(Typeface.ui(13, .semibold, relativeTo: .caption))
                     .foregroundStyle(Palette.muted)
             }
@@ -52,20 +52,13 @@ struct WorldSlide: View {
 
 extension World {
     /// "World 2 of 31".
-    var place: String {
-        let number = (World.all.firstIndex(of: self) ?? 0) + 1
-        return String(interface: "World \(number) of \(World.all.count)")
-    }
+    var place: String { String(interface: "World \(level) of \(World.all.count)") }
 
-    /// Whether it is the family's, or how many rounds are left until it is.
-    func status(at bloom: Int) -> String {
-        if isUnlocked(at: bloom) {
-            return self == Bloom.currentWorld(at: bloom) ? String(interface: "Yours now") : String(interface: "Unlocked")
+    /// Whether it is the family's, or the bloom level that opens it.
+    func status(at points: Int) -> String {
+        if isUnlocked(at: points) {
+            return self == Bloom.currentWorld(at: points) ? String(interface: "Yours now") : String(interface: "Unlocked")
         }
-        let left = unlocksAt - bloom
-        if self == Bloom.nextWorld(after: bloom) {
-            return left == 1 ? String(interface: "1 more round") : String(interface: "\(left) more rounds")
-        }
-        return String(interface: "Unlocks at bloom \(unlocksAt)")
+        return String(interface: "Unlocks at bloom \(level)")
     }
 }

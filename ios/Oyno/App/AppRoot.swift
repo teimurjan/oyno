@@ -14,7 +14,7 @@ struct AppRoot: View {
     @State private var auth: AuthStore
     @State private var oyno: OynoStore
     @State private var purchases: PurchaseStore
-    @State private var kidHours = KidHoursStore()
+    @State private var kidHours: KidHoursStore
 
     @State private var tab = RootTab.home
     /// The game being played, over the tabs from its timer to its Done screen.
@@ -30,6 +30,7 @@ struct AppRoot: View {
     @AppStorage("oyno.didOnboard") private var didFinishFirstRun = false
     @AppStorage("oyno.didFunnel") private var didFunnel = false
     @AppStorage("oyno.didAskForReview") private var didAskForReview = false
+    @AppStorage(InterfaceLanguage.overrideKey) private var language = "en"
 
     init() {
         Analytics.shared.configure(apiKey: AppConfig.amplitudeAPIKey, environment: AppConfig.analyticsEnvironment)
@@ -41,15 +42,21 @@ struct AppRoot: View {
             userID: { [weak auth] in await auth?.currentUser?.id }
         )
         _purchases = State(initialValue: purchases)
+        let kidHours = KidHoursStore()
+        _kidHours = State(initialValue: kidHours)
         let progress = ProgressService(accessToken: { [weak auth] in await auth?.accessToken() })
         _oyno = State(initialValue: OynoStore(
             isEntitled: { [weak purchases] in purchases?.isPaid ?? false },
+            bankedTogether: { [weak kidHours] in kidHours?.settings.bankedMinutes ?? 0 },
             backup: progress.merge
         ))
     }
 
     var body: some View {
         content
+            // A new language redraws every screen: fonts and game copy are read once per body,
+            // not from the environment, so nothing short of a rebuild switches them all.
+            .id(language)
             .background(Palette.canvas.ignoresSafeArea())
             .task {
                 oyno.load()
@@ -66,16 +73,20 @@ struct AppRoot: View {
                 if let resolved = await AppConfig.resolveAnalyticsEnvironment() {
                     Analytics.shared.setEnvironment(resolved)
                 }
+                mirrorEntitlementToShield()
             }
             .onChange(of: auth.currentUser?.id) { _, id in
                 guard let id else {
                     adoptedUserID = nil
                     purchases.forgetAccount()
+                    kidHours.release()
+                    ShieldStats.clearEntitlement()
                     return
                 }
                 Analytics.shared.identify(userID: id)
                 adoptedUserID = id
                 oyno.adopt(userID: id)
+                kidHours.resume()
                 isRestoring = !didFinishFirstRun
                 Task {
                     // A subscription bought before signing in belongs to this account now.
@@ -83,6 +94,7 @@ struct AppRoot: View {
                     await refreshEntitlement()
                     // A reinstall signs in here: this is where the planet comes back.
                     await oyno.syncBackup()
+                    mirrorEntitlementToShield()
                 }
             }
             .onChange(of: scenePhase) { _, phase in
@@ -109,7 +121,7 @@ struct AppRoot: View {
             .fullScreenCover(item: paywall(inRound: false)) { PaywallScreen(context: $0) }
             // Below the cover on purpose: a presented view inherits the environment of the
             // view its modifier is attached to, so stores installed above it would not reach it.
-            .environment(\.locale, InterfaceLanguage.locale)
+            .environment(\.locale, Locale(identifier: language))
             .environment(auth)
             .environment(oyno)
             .environment(purchases)
@@ -128,6 +140,11 @@ struct AppRoot: View {
         defer { isRestoring = false }
         guard auth.isSignedIn else { return }
         await purchases.refreshServerEntitlement()
+    }
+
+    /// Mirrors entitlement status to App Group so the shield action can decide whether to open directly.
+    private func mirrorEntitlementToShield() {
+        ShieldStats.updateEntitlement(environment: AppConfig.analyticsEnvironment)
     }
 
     @ViewBuilder
@@ -163,11 +180,18 @@ struct AppRoot: View {
                 HomeScreen(play: { tab = .play })
                     .tracksScreen(.home)
             }
-            .tabItem { Label("Home", systemImage: "globe.europe.africa.fill") }
+            // Its own key: "Home" is also the last world, and Russian names the two differently.
+            .tabItem {
+                Label {
+                    Text(LocalizedStringResource("Home tab", defaultValue: "Home"))
+                } icon: {
+                    Image(systemName: "globe.europe.africa.fill")
+                }
+            }
             .tag(RootTab.home)
 
             NavigationStack {
-                PlayScreen { round = $0 }
+                PlayScreen(onBack: { tab = .home }) { round = $0 }
                     .tracksScreen(.play)
             }
             .tabItem { Label("Play", systemImage: "play.fill") }

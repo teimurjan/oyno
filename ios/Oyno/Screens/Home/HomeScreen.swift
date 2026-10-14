@@ -1,8 +1,8 @@
 import DeviceActivity
 import SwiftUI
 
-/// The family on its planet, the bloom it grows on, today's minutes together and paused, and the
-/// phone's screen time. Pressing the planet or its name shrinks it into the worlds.
+/// The family on its planet, its bloom level and the totals that grow it, and the phone's
+/// screen time. Pressing the planet or its name shrinks it into the worlds.
 struct HomeScreen: View {
     /// Switches to Play.
     let play: () -> Void
@@ -25,7 +25,7 @@ struct HomeScreen: View {
             VStack(spacing: Metric.Space.l) {
                 header
 
-                PlanetScene(open: worldsOpen, explorable: true, bloom: oyno.bloom, showing: showingWorld) {
+                PlanetScene(open: worldsOpen, explorable: true, points: oyno.points, showing: showingWorld) {
                     open()
                 } onClose: {
                     worldsOpen = false
@@ -34,10 +34,11 @@ struct HomeScreen: View {
                 .screenshotCallout("worlds")
 
                 TimelineView(.everyMinute) { context in
-                    TodayScore(
-                        bloom: oyno.bloom,
-                        playedMinutes: oyno.minutesToday,
-                        pausedMinutes: kidHours.pausedMinutesToday(now: context.date)
+                    BloomScore(
+                        level: oyno.level,
+                        developmentMinutes: oyno.tally.minutes,
+                        rounds: oyno.tally.rounds,
+                        togetherMinutes: oyno.tally.together + kidHours.pausedMinutesToday(now: context.date)
                     )
                 }
 
@@ -56,7 +57,7 @@ struct HomeScreen: View {
     }
 
     private func open() {
-        Analytics.shared.track(.worldsOpened(bloom: oyno.bloom))
+        Analytics.shared.track(.worldsOpened(bloom: oyno.level))
         worldsOpen = true
     }
 

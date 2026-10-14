@@ -46,20 +46,10 @@ const PLACEMENTS = {
   search: { w: 3840, h: 2560, sizes: [250, 228, 208, 190, 172] },
 };
 
-/** Each asset borrows a caption the listing already has, so nothing new needs translating.
- * One search image per keyword family, for custom product pages. */
+/** Each asset borrows a caption the listing already has, so nothing new needs translating. */
 const CREATIVES = [
   { name: "header", placement: "header", caption: "together", screen: "home" },
-  // "app blocker", "block apps", "social media blocker".
-  { name: "search-kidhours", placement: "search", caption: "kidhours", screen: "kidhours" },
-  // "screen time", "app limit".
-  { name: "search-schedule", placement: "search", caption: "schedule", screen: "schedule" },
-  // "toddler", "baby activities".
-  { name: "search-play", placement: "search", caption: "full", screen: "play:full:1-3" },
-  // "baby development", "self control".
-  { name: "search-science", placement: "search", caption: "science", screen: "play:okay:why", phoneTop: -200 },
-  // "family time", "parenting".
-  { name: "search-family", placement: "search", caption: "together-time", screen: "home" },
+  { name: "search", placement: "search", caption: "kidhours", screen: "kidhours" },
 ];
 
 /** A capture in the phone, leaning, with the shadow the screenshot frames give it. */
@@ -103,11 +93,11 @@ function headerBody({ caption, capture }) {
 /** The search image: Apple's own examples are a headline on the left and a phone on the
  * right running off the bottom, read whole at about a tenth of its size. The planet peeks in
  * from the corner under the words, label first. */
-function searchBody({ caption, capture, phoneTop = 330 }) {
+function searchBody({ caption, capture }) {
   return `
     ${glowHtml(26, 40)}
     ${planetHtml({ size: 1400, left: -380, top: 1800, angle: -4 })}
-    ${phoneHtml({ capture, width: 1240, left: 2300, top: phoneTop, angle: 4 })}
+    ${phoneHtml({ capture, width: 1240, left: 2300, top: 330, angle: 4 })}
     ${headlineHtml({ caption, box: { x: 300, y: 380, w: 1820, h: 1340 }, align: "left" })}`;
 }
 
@@ -125,7 +115,7 @@ function pageHtml(creative, { caption, capture }) {
     .hl { display:block; }
   </style></head><body>
     <div style="width:${w}px; height:${h}px; position:relative; overflow:hidden; ${backgroundCss({ cell: 96, rule: 2 })}">
-      ${BODIES[creative.placement]({ caption, capture, phoneTop: creative.phoneTop })}
+      ${BODIES[creative.placement]({ caption, capture })}
     </div>
   </body></html>`;
 }

@@ -1,5 +1,6 @@
 import type { Lang } from "@/lib/i18n";
 import { en } from "./en";
+import { ru } from "./ru";
 import type { FunnelCopy } from "./types";
 
 /**
@@ -9,4 +10,5 @@ import type { FunnelCopy } from "./types";
  */
 export const FUNNEL_COPY: Record<Lang, FunnelCopy> = {
   en,
+  ru,
 };

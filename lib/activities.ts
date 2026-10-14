@@ -58,8 +58,8 @@ export type Mechanic = (typeof MECHANICS)[number];
 const line = z.string().trim().min(1);
 const identifier = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "kebab-case id");
 
-/** A sentence ends at a terminator, any closing quote, then a space before a capital or the end. */
-const SENTENCE_END = /[.!?…]["”')\]]*(?:\s+(?=["“(A-Z0-9])|$)/g;
+/** A sentence ends at a terminator, any closing quote, then a space before a capital in any script or the end. */
+const SENTENCE_END = /[.!?…]["”»')\]]*(?:\s+(?=["“«(\p{Lu}\d])|$)/gu;
 
 export const sentenceCount = (text: string) => Math.max(1, (text.match(SENTENCE_END) ?? []).length);
 

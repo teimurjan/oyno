@@ -7,6 +7,8 @@ struct ShieldStats: Codable, Equatable {
     var day = Date.distantPast
     /// Today's pauses per app, keyed by its encoded Screen Time token.
     var paused: [String: Int] = [:]
+    /// Whether the user has a production entitlement, allowing direct app opening.
+    var canOpenDirectly = false
 
     private static let key = "shield.stats"
 
@@ -31,5 +33,19 @@ struct ShieldStats: Codable, Equatable {
         }
         next.paused[app, default: 0] += 1
         return next
+    }
+
+    /// Updates the entitlement status for direct app opening.
+    static func updateEntitlement(environment: String) {
+        var stats = load()
+        stats.canOpenDirectly = true
+        stats.save()
+    }
+
+    /// Clears the entitlement status on sign out or account change.
+    static func clearEntitlement() {
+        var stats = load()
+        stats.canOpenDirectly = false
+        stats.save()
     }
 }

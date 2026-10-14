@@ -4,7 +4,7 @@
 //
 // The fonts are read directly out of the iOS bundle (ios/Oyno/Resources/Fonts), so
 // marketing can never drift from what ships: the caption above the phone is set in the
-// app's own Figtree. The phone mockup (appstore/source/frame.png)
+// app's own Figtree, and Onest for Cyrillic. The phone mockup (appstore/source/frame.png)
 // is brand-neutral device photography, not app-specific art.
 
 import { execFileSync } from "node:child_process";
@@ -95,7 +95,8 @@ export const PALETTE = {
   alert: "#C2412D",
 };
 
-/** Mirrors Shared/DesignSystem/Typeface.swift: Figtree for everything, tabular figures for numbers. */
+/** Mirrors Shared/DesignSystem/Typeface.swift: Figtree for everything, tabular figures for numbers.
+ * The family names are the faces' own; `fontFaceCss` lends each one Onest's Cyrillic. */
 export const FACES = {
   heading: "'Figtree-ExtraBold'",
   body: "'Figtree-Regular'",
@@ -104,10 +105,13 @@ export const FACES = {
   monoBody: "'Figtree-Medium'",
 };
 
-const FONT_FILES = ["Regular", "Medium", "SemiBold", "Bold", "ExtraBold"].map((weight) => ({
-  family: `Figtree-${weight}`,
-  file: `Figtree-${weight}.ttf`,
-}));
+/** Figtree has no Cyrillic, so each family takes those letters from Onest, as the app does. */
+const CYRILLIC = "U+0400-04FF, U+0500-052F, U+2DE0-2DFF, U+A640-A69F, U+1C80-1C8F";
+
+const FONT_FILES = ["Regular", "Medium", "SemiBold", "Bold", "ExtraBold"].flatMap((weight) => [
+  { family: `Figtree-${weight}`, file: `Figtree-${weight}.ttf` },
+  { family: `Figtree-${weight}`, file: `Onest-${weight}.ttf`, range: CYRILLIC },
+]);
 
 export function pad2(n) {
   return String(n).padStart(2, "0");
@@ -127,11 +131,13 @@ export function dataUri(filePath, mime) {
 }
 
 /** Inline every bundled font face as base64 — no network fetch, no cache: the same TTFs
- * the app itself ships are the source of truth. */
+ * the app itself ships are the source of truth. A ranged face is declared last, so it wins
+ * for its letters. */
 export function fontFaceCss() {
-  return FONT_FILES.map(({ family, file }) => {
+  return FONT_FILES.map(({ family, file, range }) => {
     const uri = dataUri(path.join(FONTS_DIR, file), "font/ttf");
-    return `@font-face { font-family: '${family}'; src: url('${uri}') format('truetype'); font-display: block; }`;
+    const unicodeRange = range ? ` unicode-range: ${range};` : "";
+    return `@font-face { font-family: '${family}'; src: url('${uri}') format('truetype'); font-display: block;${unicodeRange} }`;
   }).join("\n");
 }
 

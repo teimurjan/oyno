@@ -3,9 +3,7 @@
 // uploads each image to the app's Asset Library, then places it as that localization's
 // product page header or search result asset. They go to review with the version.
 //
-// Usage: node appstore/scripts/push-creative-assets.mjs --version=1.10
-//                                                       [--search=none|play|kidhours]
-//                                                       [--locales=en,de] [--yes]
+// Usage: node appstore/scripts/push-creative-assets.mjs --version=1.10 [--locales=en,de] [--yes]
 //
 // Deliver has no notion of these, and Apple's published OpenAPI (4.5) has none of the
 // resources either: the Asset Library routes used here are live but undocumented, as
@@ -17,8 +15,6 @@
 //
 // Re-running is safe. Uploads are named by their content hash, so an image already in the
 // library is reused rather than uploaded again, and a slot already holding it is left alone.
-// `--search=none` (the default) leaves the search slot as it is: without an asset there, the
-// search result shows the first screenshots, which carry three messages to this one.
 
 import { confirm } from "@inquirer/prompts";
 import { createHash } from "node:crypto";
@@ -33,16 +29,12 @@ const PLACEMENT_TYPES = { header: "PRODUCT_PAGE_HEADER_ASSET", search: "APP_STOR
 /** The states App Store Connect lets a version's media be edited in. */
 const EDITABLE = ["PREPARE_FOR_SUBMISSION", "DEVELOPER_REJECTED", "REJECTED", "METADATA_REJECTED", "INVALID_BINARY"];
 
-const SEARCH_CHOICES = ["none", "play", "kidhours"];
-
 function parseArgs(argv) {
   const flag = (name) => argv.find((arg) => arg.startsWith(`--${name}=`))?.split("=")[1];
   const version = flag("version");
   if (!version) throw new Error("--version is required, e.g. --version=1.10");
-  const search = flag("search") ?? "none";
-  if (!SEARCH_CHOICES.includes(search)) throw new Error(`--search must be one of ${SEARCH_CHOICES.join(", ")}`);
   const locales = flag("locales")?.split(",").map((tag) => localeFor(tag.trim()).asc) ?? null;
-  return { version, search, locales, yes: argv.includes("--yes") };
+  return { version, locales, yes: argv.includes("--yes") };
 }
 
 /** deliver's Appfile is where the bundle id is written down; reading it keeps one copy. */
@@ -56,13 +48,13 @@ function bundleId() {
 /** What goes where, per locale, from what is on disk. A locale the version has no
  * localization for is reported rather than created: adding a language to the listing is
  * a decision, not a side effect of an image upload. */
-function plan({ search, locales }, localizations) {
+function plan({ locales }, localizations) {
   const dirs = existsSync(CREATIVES_DIR) ? readdirSync(CREATIVES_DIR) : [];
   const wanted = locales ?? dirs;
   return wanted.map((asc) => {
     const files = [
       { slot: "header", file: path.join(CREATIVES_DIR, asc, `header-${asc}.png`) },
-      ...(search === "none" ? [] : [{ slot: "search", file: path.join(CREATIVES_DIR, asc, `search-${search}-${asc}.png`) }]),
+      { slot: "search", file: path.join(CREATIVES_DIR, asc, `search-${asc}.png`) },
     ];
     const missing = files.filter(({ file }) => !existsSync(file)).map(({ file }) => path.relative(ROOT, file));
     return { asc, localizationId: localizations.get(asc), files, missing };
@@ -187,7 +179,6 @@ async function main() {
       if (!unchanged) work.push({ ...target, slot, bytes, fileName, inLibrary, placements: now.placements });
     }
   }
-  if (args.search === "none") console.log("  search slot left as it is");
   if (!work.length) return console.log("\nNothing to change.");
   if (!args.yes && !(await confirm({ message: `Change ${work.length} slot(s)?`, default: false }))) {
     return console.log("Nothing sent.");

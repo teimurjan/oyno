@@ -98,22 +98,22 @@ export type WorldId = (typeof WORLD_IDS)[number];
 /** A world's words live in each surface's copy deck, keyed by `id`. Its painting is `ART.planets[id]`. */
 export interface World {
   id: WorldId;
-  /** The bloom level that unlocks it. A round together is one bloom. */
+  /** The bloom points that unlock it: 10 a round and 1 a minute played. */
   unlocksAt: number;
 }
 
 /**
- * Rounds from the world before to the `index`th: 3 for the first six, then one more per block
- * of six, so Home, the thirtieth, opens at bloom 150.
+ * Points from the world before to the `index`th: 50, then 10 more for each world after, so
+ * Home, the thirtieth, opens at 5,850.
  */
-const roundsToReach = (index: number): number => 3 + Math.floor((index - 1) / 6);
+const pointsToReach = (index: number): number => 50 + 10 * (index - 1);
 
 const unlocksAt = (index: number): number =>
-  Array.from({ length: index }, (_, step) => roundsToReach(step + 1)).reduce((sum, rounds) => sum + rounds, 0);
+  Array.from({ length: index }, (_, step) => pointsToReach(step + 1)).reduce((sum, points) => sum + points, 0);
 
 export const WORLDS: readonly World[] = WORLD_IDS.map((id, index) => ({ id, unlocksAt: unlocksAt(index) }));
 
 /** A locked world is dimmed, so it reads as not yet yours. */
 export const lockedStyle = (locked: boolean) => (locked ? { filter: "saturate(0.55)", opacity: 0.7 } : {});
 
-export const isUnlocked = (world: World, bloom: number): boolean => bloom >= world.unlocksAt;
+export const isUnlocked = (world: World, points: number): boolean => points >= world.unlocksAt;

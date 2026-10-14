@@ -1,6 +1,6 @@
 import SwiftUI
 
-/// The sun and the bloom level in a glass pill: a header's count of rounds together.
+/// The sun and the bloom level in a glass pill, for a header.
 struct BloomPill: View {
     let bloom: Int
 

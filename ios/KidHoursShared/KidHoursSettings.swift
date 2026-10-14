@@ -16,6 +16,12 @@ struct KidHoursSettings: Codable {
     var earned: KidHoursEarned?
     /// Today's stretches of open apps inside Kid hours, so the paused time can leave them out.
     var opened: [DateInterval] = []
+    /// Minutes Kid hours kept the apps paused on the days already over.
+    var bankedMinutes = 0
+    /// The first day not yet in `bankedMinutes`. Nil until the first day is counted.
+    var bankedThrough: Date?
+    /// Set while no one is signed in. Nothing is paused from then until someone signs in.
+    var signedOutAt: Date?
 
     static let appGroup = "group.com.teimurjan.oyno"
     private static let key = "kidHours.settings"
@@ -55,24 +61,56 @@ struct KidHoursSettings: Codable {
         unlock.map { date < $0.endsAt } ?? false
     }
 
-    /// Whether the apps are paused at `date`: a schedule is running and no unlock is.
+    /// Whether the apps are paused at `date`: someone is signed in, a schedule is running and
+    /// no unlock is.
     func isPaused(at date: Date, calendar: Calendar = .current) -> Bool {
-        schedule(at: date, calendar: calendar) != nil && !isUnlocked(at: date)
+        signedOutAt == nil && schedule(at: date, calendar: calendar) != nil && !isUnlocked(at: date)
+    }
+
+    /// Opens every app until `signIn`. A pending reward goes with the account.
+    mutating func signOut(at date: Date) {
+        guard signedOutAt == nil else { return }
+        signedOutAt = date
+        earned = nil
+    }
+
+    /// Logs the signed-out stretch as open, so it never counts as paused time.
+    mutating func signIn(at date: Date) {
+        guard let since = signedOutAt else { return }
+        opened.append(DateInterval(start: since, end: max(since, date)))
+        signedOutAt = nil
     }
 
     /// Minutes from midnight to `now` inside Kid hours, the opened stretches left out.
     func pausedMinutes(until now: Date, calendar: Calendar = .current) -> Int {
-        let midnight = calendar.startOfDay(for: now)
-        let elapsed = Int(now.timeIntervalSince(midnight) / 60)
-        return (0..<elapsed).count { minute in
-            let moment = midnight.addingTimeInterval(TimeInterval(minute * 60))
+        pausedMinutes(from: calendar.startOfDay(for: now), to: now, calendar: calendar)
+    }
+
+    /// Adds every day that ended since the last call to `bankedMinutes`, then forgets the
+    /// opened stretches of those days. The days are counted against today's schedules.
+    mutating func bankPausedMinutes(now: Date, calendar: Calendar = .current) {
+        let today = calendar.startOfDay(for: now)
+        var day = bankedThrough ?? today
+        while day < today, let next = calendar.date(byAdding: .day, value: 1, to: day) {
+            bankedMinutes += pausedMinutes(from: day, to: next, calendar: calendar)
+            day = next
+        }
+        bankedThrough = today
+        opened = opened.filter { $0.end > today }
+    }
+
+    private func pausedMinutes(from start: Date, to end: Date, calendar: Calendar) -> Int {
+        let elapsed = Int(end.timeIntervalSince(start) / 60)
+        return (0..<max(0, elapsed)).count { minute in
+            let moment = start.addingTimeInterval(TimeInterval(minute * 60))
             return schedule(at: moment, calendar: calendar) != nil
+                && (signedOutAt.map { moment < $0 } ?? true)
                 && !opened.contains { $0.start <= moment && moment < $0.end }
         }
     }
 
     private enum CodingKeys: String, CodingKey {
-        case alwaysAllowed, neverAllowed, schedules, unlock, earned, opened
+        case alwaysAllowed, neverAllowed, schedules, unlock, earned, opened, bankedMinutes, bankedThrough, signedOutAt
     }
 
     /// Names older builds saved under.
@@ -93,6 +131,9 @@ extension KidHoursSettings {
         unlock = try container.decodeIfPresent(KidHoursUnlock.self, forKey: .unlock)
         earned = try container.decodeIfPresent(KidHoursEarned.self, forKey: .earned)
         opened = try container.decodeIfPresent([DateInterval].self, forKey: .opened) ?? []
+        bankedMinutes = try container.decodeIfPresent(Int.self, forKey: .bankedMinutes) ?? 0
+        bankedThrough = try container.decodeIfPresent(Date.self, forKey: .bankedThrough)
+        signedOutAt = try container.decodeIfPresent(Date.self, forKey: .signedOutAt)
         // One list used to pause during every schedule, so each schedule starts with it.
         if let shared = try legacy.decodeIfPresent(FamilyActivitySelection.self, forKey: .selection) {
             schedules = schedules.map { schedule in

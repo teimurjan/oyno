@@ -124,6 +124,12 @@ describe("sentenceCount", () => {
     expect(sentenceCount("Lie on your back on the rug. You're a sleeping mountain.")).toBe(2);
     expect(sentenceCount("Freeze! Then go.")).toBe(2);
   });
+
+  test("counts sentences in a translation, whatever the script and quotes", () => {
+    expect(sentenceCount("Скажите «Замри!» и все останавливаются.")).toBe(1);
+    expect(sentenceCount("Лягте на ковёр. Вы — спящая гора.")).toBe(2);
+    expect(sentenceCount("Скажите: «Где я?» «Вот я!»")).toBe(2);
+  });
 });
 
 describe("Source", () => {

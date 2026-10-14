@@ -159,6 +159,27 @@ struct KidHoursSettingsTests {
         #expect(settings.pausedMinutes(until: date(weekday: 3, hour: 18, minute: 0), calendar: calendar) == 70)
     }
 
+    @Test func signingOutOpensTheAppsAndPausesNoMinutesUntilSignIn() {
+        var settings = KidHoursSettings(schedules: [afterWork])
+        settings.signOut(at: date(weekday: 3, hour: 17, minute: 0))
+        #expect(!settings.isPaused(at: date(weekday: 3, hour: 17, minute: 30), calendar: calendar))
+        #expect(settings.pausedMinutes(until: date(weekday: 3, hour: 18, minute: 0), calendar: calendar) == 30)
+        settings.signIn(at: date(weekday: 3, hour: 18, minute: 0))
+        #expect(settings.isPaused(at: date(weekday: 3, hour: 18, minute: 10), calendar: calendar))
+        #expect(settings.pausedMinutes(until: date(weekday: 3, hour: 18, minute: 30), calendar: calendar) == 60)
+    }
+
+    @Test func banksEachDayThatEndedOnce() {
+        var settings = KidHoursSettings(schedules: [afterWork, bedtime])
+        settings.bankPausedMinutes(now: date(weekday: 3, hour: 10, minute: 0), calendar: calendar)
+        settings.opened = [DateInterval(start: date(weekday: 3, hour: 17, minute: 0), duration: 20 * 60)]
+        settings.bankPausedMinutes(now: date(weekday: 5, hour: 9, minute: 0), calendar: calendar)
+        #expect(settings.bankedMinutes == 220 + 240)
+        #expect(settings.opened.isEmpty)
+        settings.bankPausedMinutes(now: date(weekday: 5, hour: 23, minute: 0), calendar: calendar)
+        #expect(settings.bankedMinutes == 460)
+    }
+
     @Test func aScheduleTurnedOffPausesNoMinutes() {
         var off = afterWork
         off.isEnabled = false
@@ -178,28 +199,39 @@ struct BloomTests {
         #expect(Bloom.nextWorld(after: 0)?.id == "meadow")
     }
 
-    @Test func countsTheRoundsLeftToTheNextWorld() {
-        #expect(Bloom.roundsToNextWorld(from: 2) == 1)
-        #expect(Bloom.currentWorld(at: 3).id == "meadow")
-        #expect(Bloom.roundsToNextWorld(from: 18) == 4)
+    @Test func eachLevelCostsTenMoreThanTheOneBefore() {
+        #expect(Bloom.level(at: 49) == 1)
+        #expect(Bloom.level(at: 50) == 2)
+        #expect(Bloom.level(at: 109) == 2)
+        #expect(Bloom.level(at: 110) == 3)
+        #expect(Bloom.level(at: Bloom.points(rounds: 34, minutes: 420)) == 9)
     }
 
     @Test func matchesTheWebThresholds() {
         let at = { (id: String) in World.all.first { $0.id == id }?.unlocksAt }
         #expect(World.all.count == 31)
-        #expect([at("frost"), at("lavender"), at("rose"), at("pebble"), at("home")] == [18, 22, 42, 47, 150])
+        #expect([at("frost"), at("lavender"), at("rose"), at("pebble"), at("home")] == [450, 560, 1260, 1430, 5850])
     }
 
     @Test func runsOutOfWorldsWithoutFailing() {
-        #expect(Bloom.nextWorld(after: 500) == nil)
-        #expect(Bloom.roundsToNextWorld(from: 500) == nil)
+        #expect(Bloom.nextWorld(after: 10_000) == nil)
+        #expect(Bloom.level(at: 10_000) == 31)
+    }
+}
+
+struct FormatTests {
+    @Test func showsOnlyTheLargestUnitRoundedDown() {
+        #expect(Format.largestUnit(minutes: 45) == "45m")
+        #expect(Format.largestUnit(minutes: 7 * 60 + 40) == "7h")
+        #expect(Format.largestUnit(minutes: 3 * 1440 + 23 * 60) == "3d")
     }
 }
 
 @MainActor
 struct ProgressBackupTests {
-    private func store(backup: Tally? = nil) -> OynoStore {
+    private func store(backup: Tally? = nil, bankedTogether: Int = 0) -> OynoStore {
         OynoStore(isEntitled: { true },
+                  bankedTogether: { bankedTogether },
                   backup: { _ in backup },
                   fileURL: URL.temporaryDirectory.appending(path: "rounds-\(UUID()).json"))
     }
@@ -212,7 +244,19 @@ struct ProgressBackupTests {
         await oyno.syncBackup()
         #expect(oyno.tally == Tally(rounds: 40, minutes: 420))
         oyno.record(round)
-        #expect(oyno.bloom == 41)
+        #expect(oyno.points == 41 * 10 + 430)
+    }
+
+    @Test func togetherCountsThePhoneAndTheBackupOnce() async {
+        let oyno = store(backup: Tally(rounds: 0, minutes: 0, together: 100), bankedTogether: 30)
+        oyno.adopt(userID: "parent")
+        await oyno.syncBackup()
+        #expect(oyno.tally.together == 100)
+    }
+
+    @Test func aTallySavedBeforeTogetherStillLoads() throws {
+        let tally = try JSONDecoder().decode(Tally.self, from: Data(#"{"rounds":3,"minutes":30}"#.utf8))
+        #expect(tally == Tally(rounds: 3, minutes: 30))
     }
 
     @Test func aBackupBehindThePhoneNeverShrinksThePlanet() {
@@ -233,6 +277,24 @@ struct ProgressBackupTests {
     }
 }
 
+struct ReplayTests {
+    private let start = Date(timeIntervalSince1970: 1_000_000)
+
+    @Test func playAgainListsTheMostRecentGamesOnce() {
+        let rounds = [
+            Round(activityID: "mountain", startedAt: start, minutes: 10),
+            Round(activityID: "freeze", startedAt: start + 60, minutes: 10),
+            Round(activityID: "mountain", startedAt: start + 120, minutes: 10),
+            Round(activityID: "parade", startedAt: start + 30, minutes: 15),
+        ]
+        let replays = rounds.replays(limit: 2)
+        #expect(replays == [
+            Replay(activityID: "mountain", count: 2, last: start + 120),
+            Replay(activityID: "freeze", count: 1, last: start + 60),
+        ])
+    }
+}
+
 struct CountdownTests {
     private let start = Date(timeIntervalSince1970: 1_000_000)
 
@@ -248,6 +310,14 @@ struct CountdownTests {
     @Test func theClockStopsAtZero() {
         let countdown = Countdown(total: 600, startedAt: start)
         #expect(countdown.secondsLeft(at: start + 900) == 0)
+    }
+
+    @Test func fiveMoreMinutesKeepThePauses() {
+        var countdown = Countdown(total: 600, startedAt: start)
+        countdown.pause(at: start + 100)
+        countdown.resume(at: start + 160)
+        countdown.extend(by: 300)
+        #expect(countdown.secondsLeft(at: start + 200) == 760)
     }
 }
 
@@ -265,17 +335,16 @@ struct ActivityTests {
         #expect(Activity.all.allSatisfy { (1...3).contains($0.steps.count) && (5...15).contains($0.minutes) })
     }
 
-    @Test func theDeckTurnsOneGameADay() {
-        let day = Date(timeIntervalSince1970: 1_700_000_000)
-        let today = Activity.pick(for: .okay, age: .preschooler, on: day)
-        #expect(today != Activity.pick(for: .okay, age: .preschooler, on: day + 86_400))
-        #expect(today == Activity.pick(for: .okay, age: .preschooler, on: day + 3_600))
+    @Test func theDeckDealsForTheAgeAndEnergy() {
+        let games = (0..<50).map { _ in Activity.pick(for: .okay, age: .preschooler) }
+        #expect(games.allSatisfy { $0.energy == .okay && $0.age == .preschooler })
+        #expect(Set(games).count > 1)
     }
 
-    @Test func aDifferentIdeaWrapsAroundTheSameAgeAndEnergy() {
-        let games = Activity.catalogue(for: .okay, age: .toddler)
-        #expect(Activity.next(after: games[games.count - 1]) == games[0])
-        #expect(Activity.next(after: games[0]) == games[1])
+    @Test func aDifferentIdeaIsNeverTheSameGame() {
+        let current = Activity.catalogue(for: .okay, age: .toddler)[0]
+        let next = (0..<50).map { _ in Activity.next(after: current) }
+        #expect(next.allSatisfy { $0 != current && $0.energy == .okay && $0.age == .toddler })
     }
 
     @Test func everyShippedLanguageHasADeck() {

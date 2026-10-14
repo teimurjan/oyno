@@ -77,19 +77,15 @@ struct Activity: Identifiable, Hashable {
         all.filter { $0.energy == energy && $0.age == age }
     }
 
-    /// The game for `energy` and `age` on `date`. The deck turns one game a day, so an
-    /// evening never starts where the last one did.
-    static func pick(for energy: Energy, age: AgeBand, on date: Date = .now, calendar: Calendar = .current) -> Activity {
-        let games = catalogue(for: energy, age: age)
-        let day = calendar.ordinality(of: .day, in: .era, for: date) ?? 0
-        return games[day % games.count]
+    /// A random game for `energy` and `age`, so an evening never starts where the last one did.
+    static func pick(for energy: Energy, age: AgeBand) -> Activity {
+        catalogue(for: energy, age: age).randomElement()!
     }
 
-    /// The game after `current` for the same energy and age, wrapping around: "Different idea".
+    /// Another random game for the same energy and age, never `current`: "Different idea".
     static func next(after current: Activity) -> Activity {
-        let games = catalogue(for: current.energy, age: current.age)
-        guard let at = games.firstIndex(of: current) else { return games[0] }
-        return games[(at + 1) % games.count]
+        let others = catalogue(for: current.energy, age: current.age).filter { $0 != current }
+        return others.randomElement() ?? current
     }
 
     static func find(_ id: String) -> Activity? { all.first { $0.id == id } }

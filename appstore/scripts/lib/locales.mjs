@@ -28,6 +28,7 @@ import { readFileSync } from "node:fs";
 /** Ordered by market priority, which is the order every report prints in. */
 export const LOCALES = [
   { tag: "en", sim: "en_US", asc: "en-US" },
+  { tag: "ru", sim: "ru_RU", asc: "ru" },
 ];
 
 export const APP_TAGS = LOCALES.map((locale) => locale.tag);

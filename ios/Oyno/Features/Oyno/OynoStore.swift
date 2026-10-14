@@ -18,23 +18,33 @@ final class OynoStore {
     /// Rounds this account played that are not on this phone, restored from the backup.
     private(set) var carried = Tally.zero
 
-    var tally: Tally { carried + rounds.tally }
-    /// One round together is one bloom.
-    var bloom: Int { tally.rounds }
-    var world: World { Bloom.currentWorld(at: bloom) }
+    var tally: Tally { carried + local }
+    var points: Int { tally.points }
+    var level: Int { Bloom.level(at: points) }
+    var world: World { Bloom.currentWorld(at: points) }
     var minutesToday: Int { rounds.minutes(on: .now) }
 
+    /// What this phone counted: its rounds, and the paused minutes Kid hours banked.
+    private var local: Tally {
+        var local = rounds.tally
+        local.together = bankedTogether()
+        return local
+    }
+
     @ObservationIgnored private let isEntitled: () -> Bool
+    @ObservationIgnored private let bankedTogether: @MainActor () -> Int
     @ObservationIgnored private let backup: @MainActor @Sendable (Tally) async -> Tally?
     @ObservationIgnored private let fileURL: URL
     @ObservationIgnored private var ownerID: String?
 
     init(
         isEntitled: @escaping () -> Bool,
+        bankedTogether: @escaping @MainActor () -> Int = { 0 },
         backup: @escaping @MainActor @Sendable (Tally) async -> Tally? = { _ in nil },
         fileURL: URL = URL.applicationSupportDirectory.appending(path: "oyno-rounds.json")
     ) {
         self.isEntitled = isEntitled
+        self.bankedTogether = bankedTogether
         self.backup = backup
         self.fileURL = fileURL
     }
@@ -84,10 +94,10 @@ final class OynoStore {
         restore(merged)
     }
 
-    /// Whatever the backup counts beyond the rounds on this phone becomes `carried`. Never
-    /// lowers it, so a reply that left before the latest round cannot shrink the planet.
+    /// Whatever the backup counts beyond this phone becomes `carried`. Never lowers it, so a
+    /// reply that left before the latest round cannot shrink the planet.
     func restore(_ backedUp: Tally) {
-        let next = carried.union(backedUp.excess(over: rounds.tally))
+        let next = carried.union(backedUp.excess(over: local))
         guard next != carried else { return }
         carried = next
         save()

@@ -1,6 +1,6 @@
 import Foundation
 
-/// The planet's backup on our backend: two totals per account, never the rounds themselves.
+/// The planet's backup on our backend: three totals per account, never the rounds themselves.
 struct ProgressService: Sendable {
     var client = HTTPClient()
     var baseURL: URL = AppConfig.apiBaseURL

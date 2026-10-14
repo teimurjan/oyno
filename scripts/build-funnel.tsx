@@ -52,11 +52,20 @@ const FACES = [
   { family: "Figtree", weight: 600, file: "Figtree-SemiBold.ttf", preload: true },
   { family: "Figtree", weight: 700, file: "Figtree-Bold.ttf", preload: false },
   { family: "Figtree", weight: 800, file: "Figtree-ExtraBold.ttf", preload: true },
+  { family: "Onest", weight: 400, file: "Onest-Regular.ttf", preload: true },
+  { family: "Onest", weight: 500, file: "Onest-Medium.ttf", preload: false },
+  { family: "Onest", weight: 600, file: "Onest-SemiBold.ttf", preload: true },
+  { family: "Onest", weight: 700, file: "Onest-Bold.ttf", preload: false },
+  { family: "Onest", weight: 800, file: "Onest-ExtraBold.ttf", preload: true },
 ] as const;
+
+/** The family a language's pages are set in: Onest where Figtree has no letters for the script. */
+const familyFor = (lang: Lang) => (new Intl.Locale(lang).maximize().script === "Cyrl" ? "Onest" : "Figtree");
 
 /** The `--font-*` variables `app/globals.css` builds its families from. */
 const FONT_VARIABLES: Record<string, string> = {
   "--font-figtree": "Figtree",
+  "--font-onest": "Onest",
 };
 
 const PAGES: Record<string, { page: string; body: () => VNode }> = {
@@ -224,7 +233,7 @@ function document(
   served: Map<string, string>,
   build: string,
 ): string {
-  const preloads = FACES.filter((face) => face.preload)
+  const preloads = FACES.filter((face) => face.preload && face.family === familyFor(lang))
     .map(
       (face) =>
         `<link rel="preload" href="${served.get(face.file)}" as="font" type="font/woff2" crossorigin>`,

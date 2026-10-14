@@ -1,0 +1,12 @@
+{
+  "default": [
+    { "slug": "together", "photo": "together.jpg", "caption": "Будьте на планете ребёнка, [а не на своей]" },
+    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "Уже [1 ч] вместе — без телефона" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Батарейка на нуле? [Лёгкие игры с малышом]" },
+    { "slug": "full", "source": "03", "callout": "battery", "caption": "Сил полно? [Подвижные игры с малышом]" },
+    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Игры, которые [развивают ребёнка]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Приложения на паузе], пока вы играете" },
+    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Экранное время] по расписанию" },
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Каждый раунд [приближает новый мир]" }
+  ]
+}

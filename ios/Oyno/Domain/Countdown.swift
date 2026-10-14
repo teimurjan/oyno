@@ -3,7 +3,7 @@ import Foundation
 /// A round's clock, pauses taken out. Pure, so the timer screen only asks it questions on
 /// each tick and the arithmetic can be tested without one.
 struct Countdown {
-    let total: TimeInterval
+    private(set) var total: TimeInterval
     private(set) var startedAt: Date
     private(set) var pausedAt: Date?
     private(set) var pausedFor: TimeInterval = 0
@@ -34,5 +34,10 @@ struct Countdown {
         guard let pausedAt else { return }
         pausedFor += max(0, now.timeIntervalSince(pausedAt))
         self.pausedAt = nil
+    }
+
+    /// The round runs longer: "+5 min".
+    mutating func extend(by seconds: TimeInterval) {
+        total += max(0, seconds)
     }
 }
