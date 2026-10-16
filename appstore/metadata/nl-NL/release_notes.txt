@@ -1,3 +1,1 @@
-- Oyno is nu in het Nederlands. Je kunt de taal wijzigen in Profiel.
-- Vanaf iOS 26.5 brengt ‘Open Oyno’ op een gepauzeerde app je meteen naar ‘Spelen’.
-- De knop onderaan ‘Spelen’ schuift na het sluiten van zoeken niet meer omhoog.
+- Elk van de 500 spelletjes heeft nu een eigen tekening. Je ziet hem bij ‘Spelen’ en naast elk spelletje bij zoeken.

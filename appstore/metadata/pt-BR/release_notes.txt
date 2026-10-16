@@ -1,3 +1,1 @@
-- O Oyno agora está em português. Você pode mudar o idioma no Perfil.
-- No iOS 26.5 ou posterior, “Abrir o Oyno” em um app pausado leva você direto para “Brincar”.
-- O botão na parte de baixo de “Brincar” não sobe mais na tela depois que você fecha a busca.
+- Cada uma das 500 brincadeiras agora tem sua própria ilustração. Você a vê em “Brincar” e ao lado de cada brincadeira na busca.

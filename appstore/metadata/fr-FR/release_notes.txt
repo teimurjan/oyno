@@ -1,3 +1,1 @@
-- Oyno parle désormais français. Vous pouvez changer de langue dans Profil.
-- Sous iOS 26.5 et ultérieur, « Ouvrir Oyno » sur une app en pause mène directement à « Jouer ».
-- Le bouton en bas de « Jouer » ne remonte plus après la fermeture de la recherche.
+- Chacun des 500 jeux a désormais sa propre illustration. Vous la voyez dans « Jouer » et à côté de chaque jeu dans la recherche.

@@ -250,21 +250,18 @@ struct PlayScreen: View {
         .accessibilityValue(Text(verbatim: age.label))
     }
 
-    /// Two lines held open in the title's own font, so a short title does not pull the page up
-    /// and the reserve grows with Dynamic Type. A column of its own has no page below to pull.
+    /// As tall as the title runs. A new game's words crossfade while the page eases to its height.
     private var title: some View {
-        ZStack(alignment: .topLeading) {
-            if adaptive.columns != .two { Text(verbatim: " \n ").hidden().accessibilityHidden(true) }
-            Text(verbatim: activity.title)
-                .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
-                .minimumScaleFactor(0.75)
-                .fixedSize(horizontal: false, vertical: true)
-                .accessibilityAddTraits(.isHeader)
-        }
-        .font(Typeface.ui(titleSize, .extrabold, relativeTo: .largeTitle))
-        .tracking(-titleSize * 0.0375)
-        .foregroundStyle(Palette.ink)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        Text(verbatim: activity.title)
+            .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
+            .minimumScaleFactor(0.75)
+            .fixedSize(horizontal: false, vertical: true)
+            .contentTransition(.opacity)
+            .accessibilityAddTraits(.isHeader)
+            .font(Typeface.ui(titleSize, .extrabold, relativeTo: .largeTitle))
+            .tracking(-titleSize * 0.0375)
+            .foregroundStyle(Palette.ink)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private var titleSize: CGFloat {

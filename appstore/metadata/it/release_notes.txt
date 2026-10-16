@@ -1,3 +1,1 @@
-- Oyno ora parla italiano. Puoi cambiare la lingua in Profilo.
-- Da iOS 26.5, “Apri Oyno” su un’app in pausa ti porta subito a “Gioca”.
-- Il pulsante in fondo a “Gioca” non sale più sullo schermo dopo aver chiuso la ricerca.
+- Ognuno dei 500 giochi ora ha la sua illustrazione. La vedi in “Gioca” e accanto a ogni gioco nella ricerca.

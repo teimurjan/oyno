@@ -1,3 +1,1 @@
-- Oyno now speaks German, French, Spanish, Portuguese, Italian, Dutch and Polish. You can change the language in Profile.
-- On iOS 26.5 and later, Open Oyno on a paused app takes you straight to Play.
-- The button at the bottom of Play no longer floats up the screen after you close search.
+- Every one of the 500 games now has its own painting. You see it on Play and next to each game in search.

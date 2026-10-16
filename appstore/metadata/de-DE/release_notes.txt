@@ -1,3 +1,1 @@
-- Oyno gibt es jetzt auf Deutsch. Die Sprache kannst du im Profil ändern.
-- Ab iOS 26.5 bringt dich „Oyno öffnen“ bei einer pausierten App direkt zu „Spielen“.
-- Der Button unten bei „Spielen“ rutscht nach dem Schließen der Suche nicht mehr nach oben.
+- Jedes der 500 Spiele hat jetzt sein eigenes Bild. Du siehst es bei „Spielen“ und neben jedem Spiel in der Suche.

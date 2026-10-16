@@ -1,3 +1,1 @@
-- Oyno jest teraz po polsku. Język zmienisz w Profilu.
-- Na iOS 26.5 i nowszym przycisk „Otwórz Oyno” na wstrzymanej aplikacji od razu przenosi do „Graj”.
-- Przycisk na dole ekranu „Graj” nie podjeżdża już do góry po zamknięciu wyszukiwania.
+- Każda z 500 zabaw ma teraz własną ilustrację. Zobaczysz ją w „Graj” i obok każdej zabawy w wyszukiwaniu.
