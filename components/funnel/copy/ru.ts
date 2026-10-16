@@ -171,7 +171,7 @@ export const ru: FunnelCopy = {
       headline: "План готов. [Сохраните его], чтобы узнать цену.",
     },
     paywall: {
-      headline: "Вас ждёт [планета вашего ребёнка].",
+      headline: "Вас ждёт [планета ребёнка].",
     },
     checkout: {
       headline: "Данные для оплаты.",

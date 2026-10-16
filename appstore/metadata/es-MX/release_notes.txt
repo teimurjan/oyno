@@ -1,0 +1,3 @@
+- Oyno ya habla español. Puedes cambiar el idioma en Perfil.
+- En iOS 26.5 y posteriores, Abrir Oyno en una app en pausa te lleva directo a Jugar.
+- El botón de la parte inferior de Jugar ya no se sube por la pantalla al cerrar la búsqueda.

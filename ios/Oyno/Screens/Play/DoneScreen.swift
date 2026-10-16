@@ -13,6 +13,7 @@ struct DoneScreen: View {
     @Environment(OynoStore.self) private var oyno
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.adaptive) private var adaptive
     @State private var tapped = false
     @State private var bursts = 0
     @State private var lastBurst = Date.distantPast
@@ -25,26 +26,76 @@ struct DoneScreen: View {
     private var minutesTogether: Int { tapped ? oyno.minutesToday : max(0, oyno.minutesToday - minutes) }
 
     var body: some View {
+        Group {
+            if adaptive.columns == .two { split } else { column }
+        }
+        .background(Palette.sky.ignoresSafeArea())
+        .toolbar(.hidden, for: .navigationBar)
+    }
+
+    /// The phone's: the planet over its words and its bar, the choices in a sheet at the foot.
+    private var column: some View {
         ScrollView {
             VStack(spacing: 0) {
                 header
                 // Over the halo and the glow, which reach up past the planet's stage.
                 gain.padding(.top, 14).zIndex(1)
-                PlanetScene(pulse: bursts, points: oyno.points, floats: false, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
-                    .overlay { PlanetHalo(burst: bursts) }
-                    .frame(maxWidth: 270)
-                    .padding(.top, 6)
+                // Smaller on the closed Duo, so its short screen keeps the bar above the sheet.
+                planet.frame(maxWidth: adaptive.bars == .side ? 195 : 270).padding(.top, 6)
                 words.padding(.top, 10)
                 progress.padding(.top, 14)
             }
             .padding(.horizontal, Metric.gutter)
             .padding(.top, Metric.Space.s)
             .padding(.bottom, Metric.Space.l)
+            .readableWidth()
         }
         .scrollIndicators(.hidden)
         .safeAreaInset(edge: .bottom, spacing: 0) { sheet }
-        .background(Palette.sky.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
+    }
+
+    /// iPad and the Duo open: the planet for the kid to tap on the leading side, the words, the
+    /// bar and the choices on the trailing one. iPad keeps the phone's header across the top;
+    /// the Duo splits it, the wordmark over the planet and the bloom over the words.
+    private var split: some View {
+        FoldColumns {
+            VStack(spacing: Metric.Space.s) {
+                gain.zIndex(1)
+                planet.frame(maxWidth: adaptive.roomy ? 405 : 337)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .overlay(alignment: .topLeading) {
+                if adaptive.bars != .top { wordmark.padding(.top, Metric.Space.xl) }
+            }
+        } trailing: {
+            ScrollsIfNeeded {
+                VStack(alignment: .leading, spacing: adaptive.roomy ? Metric.Space.xl : Metric.Space.l) {
+                    Spacer(minLength: 0)
+                    if adaptive.bars != .top { BloomPill(bloom: level) }
+                    words
+                    progress
+                    choices
+                        .padding(adaptive.roomy ? 22 : 18)
+                        .background {
+                            RoundedRectangle(cornerRadius: adaptive.roomy ? 28 : 26)
+                                .fill(.white.opacity(0.88))
+                                .shadow(color: Palette.glassShadow, radius: 15, y: 10)
+                        }
+                    Spacer(minLength: 0)
+                }
+                .padding(.vertical, Metric.Space.xl)
+            }
+        }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            if adaptive.bars == .top {
+                header.padding(.horizontal, Metric.gutter).padding(.top, Metric.Space.s)
+            }
+        }
+    }
+
+    private var planet: some View {
+        PlanetScene(pulse: bursts, points: oyno.points, floats: false, accessibilityLabel: String(interface: "Tap the planet")) { tap() }
+            .overlay { PlanetHalo(burst: bursts) }
     }
 
     /// Every tap flares the halo once the last bloom has settled; the first one is the bloom.
@@ -62,11 +113,15 @@ struct DoneScreen: View {
 
     private var header: some View {
         HStack {
-            Image("Wordmark").accessibilityLabel(Text(verbatim: "Oyno"))
+            wordmark
             Spacer()
             BloomPill(bloom: level)
         }
         .frame(height: Metric.tapTarget)
+    }
+
+    private var wordmark: some View {
+        Image("Wordmark").accessibilityLabel(Text(verbatim: "Oyno"))
     }
 
     private var gain: some View {
@@ -95,20 +150,22 @@ struct DoneScreen: View {
         .accessibilityElement(children: .combine)
     }
 
+    /// Centred under the planet on the phone, a heading of its own beside it in a wide window.
     private var words: some View {
-        VStack(spacing: 3) {
+        let wide = adaptive.columns == .two
+        return VStack(alignment: wide ? .leading : .center, spacing: wide ? 6 : 3) {
             Text(tapped ? "Your planet just grew" : "Tap the planet!")
-                .font(Typeface.ui(22, .extrabold, relativeTo: .title2))
-                .tracking(-0.5)
+                .font(Typeface.ui(wide ? (adaptive.roomy ? 44 : 34) : 22, .extrabold, relativeTo: .title2))
+                .tracking(wide ? -1.2 : -0.5)
                 .foregroundStyle(Palette.ink)
                 .contentTransition(.opacity)
             Text(tapped ? "Every round and every minute grow it." : "Hand the phone to your kid for this part.")
-                .font(Typeface.ui(13, .semibold, relativeTo: .caption))
+                .font(Typeface.ui(wide ? (adaptive.roomy ? 16 : 14) : 13, .semibold, relativeTo: .caption))
                 .foregroundStyle(Palette.muted)
                 .contentTransition(.opacity)
         }
-        .multilineTextAlignment(.center)
-        .frame(maxWidth: .infinity)
+        .multilineTextAlignment(wide ? .leading : .center)
+        .frame(maxWidth: .infinity, alignment: wide ? .leading : .center)
     }
 
     private var progress: some View {
@@ -184,6 +241,24 @@ struct DoneScreen: View {
     }
 
     private var sheet: some View {
+        choices
+            .padding(.horizontal, Metric.gutter)
+            .padding(.top, Metric.Space.xl)
+            .padding(.bottom, Metric.Space.s)
+            .readableWidth()
+            .background {
+                let shape = UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
+                ZStack {
+                    shape.fill(.white.opacity(0.88)).shadow(color: Palette.glassShadow, radius: 15, y: -10)
+                    shape.fill(.ultraThinMaterial)
+                }
+                .ignoresSafeArea(edges: .bottom)
+            }
+    }
+
+    /// What the parent does next: their apps back when the schedule rewards a round, else
+    /// another round or the end of the evening.
+    private var choices: some View {
         VStack(spacing: 14) {
             if let earned = kidHours.claimable {
                 HStack(spacing: Metric.Space.m) {
@@ -215,17 +290,6 @@ struct DoneScreen: View {
                 }
             }
         }
-        .padding(.horizontal, Metric.gutter)
-        .padding(.top, Metric.Space.xl)
-        .padding(.bottom, Metric.Space.s)
         .frame(maxWidth: .infinity)
-        .background {
-            let shape = UnevenRoundedRectangle(topLeadingRadius: 32, topTrailingRadius: 32)
-            ZStack {
-                shape.fill(.white.opacity(0.88)).shadow(color: Palette.glassShadow, radius: 15, y: -10)
-                shape.fill(.ultraThinMaterial)
-            }
-            .ignoresSafeArea(edges: .bottom)
-        }
     }
 }

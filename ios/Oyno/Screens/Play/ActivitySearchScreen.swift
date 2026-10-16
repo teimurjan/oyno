@@ -1,13 +1,17 @@
 import SwiftUI
 
 /// D8 on the canvas: every game, the ones played before first. A row hands its game back to
-/// Play, which shows it with the age and the battery set to match.
+/// Play, which shows it with the age and the battery set to match. In a wide window a row
+/// shows its game beside the list instead, and that game starts from there.
 struct ActivitySearchScreen: View {
     let onPick: (Activity) -> Void
+    let onStart: (Activity) -> Void
 
     @Environment(\.dismiss) private var dismiss
     @Environment(OynoStore.self) private var oyno
+    @Environment(\.adaptive) private var adaptive
     @State private var query = ""
+    @State private var selected: Activity.ID?
     /// Shuffled once a visit, so the list never reads the same and holds still while typing.
     @State private var games = Activity.all.shuffled()
 
@@ -24,36 +28,63 @@ struct ActivitySearchScreen: View {
 
     private var replays: [Row] {
         oyno.rounds.replays(limit: 3).compactMap { replay in
-            Activity.find(replay.activityID).map {
-                (game: $0, meta: String(interface: "Played \(replay.count)× · last \(Format.day(replay.last))"))
-            }
+            Activity.find(replay.activityID).map { (game: $0, meta: Self.history(replay)) }
         }
     }
 
+    private static func history(_ replay: Replay) -> String {
+        String(interface: "Played \(replay.count)× · last \(Format.day(replay.last))")
+    }
+
     var body: some View {
+        Group {
+            if adaptive.columns == .two {
+                FoldColumns {
+                    list.padding(.top, Metric.Space.xl)
+                } trailing: {
+                    preview.padding(.vertical, Metric.Space.xl)
+                }
+            } else {
+                list
+            }
+        }
+        .background(Palette.sky.ignoresSafeArea())
+        // The system's own back button where the Duo's side bar holds the screen's buttons.
+        // iPad keeps the canvas's, beside the field, under an empty bar that the tabs float over.
+        .toolbar(adaptive.barsAreSystem ? .visible : .hidden, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .navigationBarBackButtonHidden(adaptive.bars == .top)
+    }
+
+    private var list: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 if trimmed.isEmpty, !replays.isEmpty { playAgain.padding(.top, Metric.Space.xl) }
                 everything.padding(.top, Metric.Space.xl)
             }
-            .padding(.horizontal, Metric.gutter)
+            .padding(.horizontal, inset)
             .padding(.bottom, Metric.Space.xl)
+            .readableWidth()
         }
         .scrollIndicators(.hidden)
         .scrollDismissesKeyboard(.immediately)
         // An inset, not a stacked header, so rows scroll under the bar instead of clipping at its edge.
         .safeAreaInset(edge: .top, spacing: 0) {
             header
-                .padding(.horizontal, Metric.gutter)
+                .padding(.horizontal, inset)
                 .padding(.top, Metric.Space.s)
+                .readableWidth()
         }
-        .background(Palette.sky.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
     }
+
+    /// The phone's gutter, or none in a column whose margins `FoldColumns` keeps.
+    private var inset: CGFloat { adaptive.columns == .two ? 0 : Metric.gutter }
 
     private var header: some View {
         HStack(spacing: 10) {
-            GlassIconButton(symbol: "chevron.left", label: "Back") { dismiss() }
+            if adaptive.bars != .side {
+                GlassIconButton(symbol: "chevron.left", label: "Back") { dismiss() }
+            }
             HStack(spacing: Metric.Space.s) {
                 Glyph(symbol: "magnifyingglass", size: 16, weight: .semibold, color: Palette.muted)
                 TextField("Search activities", text: $query)
@@ -133,7 +164,7 @@ struct ActivitySearchScreen: View {
     private func row(_ game: Activity, meta: String) -> some View {
         Button {
             Haptics.tap()
-            onPick(game)
+            if adaptive.columns == .two { selected = game.id } else { onPick(game) }
         } label: {
             HStack(spacing: Metric.Space.m) {
                 let tint = Palette.pastels[game.id.unicodeScalars.reduce(0) { $0 + Int($1.value) } % Palette.pastels.count]
@@ -159,10 +190,99 @@ struct ActivitySearchScreen: View {
             .padding(.horizontal, 14)
             .padding(.vertical, Metric.Space.m)
             .frame(minHeight: Metric.tapTarget)
+            .background(isShowing(game) ? Palette.surface.opacity(0.7) : .clear, ignoresSafeAreaEdges: [])
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isShowing(game) ? .isSelected : [])
+    }
+
+    private func isShowing(_ game: Activity) -> Bool {
+        adaptive.columns == .two && game.id == shown?.id
+    }
+
+    // MARK: Preview
+
+    /// The game a row picked, else the first one listed.
+    private var shown: Activity? {
+        if let selected, let game = Activity.find(selected) { return game }
+        return (trimmed.isEmpty ? replays.first?.game : nil) ?? matches.first
+    }
+
+    /// The picked game as Play draws it, its start in reach. On a card where the iPad has room.
+    @ViewBuilder
+    private var preview: some View {
+        if let game = shown {
+            let card = ScrollsIfNeeded { details(game) }
+            if adaptive.roomy {
+                card.padding(32).glassCard(radius: 32)
+            } else {
+                card
+            }
+        }
+    }
+
+    /// The age, then how long and how much battery: beside the age on the Duo, leading the tags
+    /// on iPad, whose room beside the age goes to when the family last played it.
+    private func details(_ game: Activity) -> some View {
+        let fit = Text("\(game.minutes) min · \(game.energy.label) battery")
+            .font(Typeface.figures(13, .semibold, relativeTo: .caption))
+            .monospacedDigit()
+            .foregroundStyle(Palette.muted)
+        let played = oyno.rounds.replays(limit: .max).first { $0.activityID == game.id }
+        return VStack(alignment: .leading, spacing: adaptive.roomy ? Metric.Space.l : Metric.Space.m) {
+            HStack(spacing: Metric.Space.s) {
+                Text("Age \(game.age.label)")
+                    .font(Typeface.figures(13, .bold, relativeTo: .caption))
+                    .monospacedDigit()
+                    .foregroundStyle(Palette.ink)
+                    .padding(.horizontal, 11)
+                    .frame(minHeight: 28)
+                    .background(Palette.surface, in: .capsule)
+                if !adaptive.roomy {
+                    fit
+                } else if let played {
+                    Text(verbatim: Self.history(played)).oynoEyebrow()
+                }
+            }
+            Text(verbatim: game.title)
+                .font(Typeface.ui(adaptive.roomy ? 48 : 34, .extrabold, relativeTo: .largeTitle))
+                .tracking(adaptive.roomy ? -1.6 : -1)
+                .foregroundStyle(Palette.ink)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
+            FlowLayout(spacing: 6) {
+                if adaptive.roomy {
+                    HStack(spacing: 5) {
+                        Glyph(symbol: "clock", size: 13, weight: .semibold, color: Palette.muted)
+                        fit
+                    }
+                    .frame(minHeight: 26)
+                    .padding(.trailing, Metric.Space.xs)
+                }
+                ForEach(game.tags, id: \.id) { tag in
+                    Text(verbatim: tag.label)
+                        .font(Typeface.ui(adaptive.roomy ? 13 : 12, .semibold, relativeTo: .caption))
+                        .foregroundStyle(Palette.slate)
+                        .padding(.horizontal, adaptive.roomy ? 9 : 8)
+                        .frame(minHeight: adaptive.roomy ? 26 : 24)
+                        .background(Palette.ink.opacity(0.06), in: .rect(cornerRadius: 8))
+                }
+            }
+            if adaptive.roomy {
+                Text(verbatim: game.blurb)
+                    .font(Typeface.ui(16, .regular, relativeTo: .body))
+                    .foregroundStyle(Palette.muted)
+                    .lineSpacing(4)
+                    .frame(maxWidth: 560, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Card(padding: adaptive.roomy ? Metric.Space.xl : Metric.cardPadding, raised: true) { StepList(steps: game.steps) }
+            Spacer(minLength: 0)
+            PrimaryButton(title: "Start \(game.minutes)-minute round", symbol: "play.fill") { onStart(game) }
+        }
+        .animation(.easeInOut(duration: 0.2), value: game.id)
     }
 
     private var nothingFound: some View {

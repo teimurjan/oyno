@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 // Composites the raw simulator captures (appstore/source/<tag>/*.png) into App
 // Store Connect assets for the iPhone 6.9" slot (1290x2796) — one framed
-// screenshot per captured screen.
+// screenshot per captured screen. `--devices=ipad,ipad-11,duo,duo-outer` does the same for
+// the iPad 13" slot (2752x2064), the iPad 11" slot (2360x1640) and the iPhone Duo slot, inner
+// display (2853x2007) and outer display (1398x2034), from appstore/source/<device>/<tag>/.
 // Renders with headless Chromium (Playwright); everything is inlined as data
 // URIs, so there's no external asset serving.
 //
 // Usage: node appstore/scripts/generate-app-store-screenshots.mjs [--locales=en,de,fr]
 //                                                                 [--sources=03,play]
+//                                                                 [--devices=iphone,ipad,ipad-11,duo,duo-outer]
 //
 // Where each render lands:
 //   appstore/screenshots/<ASC locale>/               deliver's screenshots_path, uploaded as-is
@@ -27,7 +30,7 @@
 // Run this after every capture, and commit what lands under `public/`.
 
 import { chromium } from "playwright";
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { localeFor, SITE_TAGS } from "./lib/locales.mjs";
 import {
@@ -35,6 +38,7 @@ import {
   captionHtml,
   captionsFor,
   dataUri,
+  deviceFor,
   deviceGeometry,
   ensureDir,
   escapeHtml,
@@ -50,11 +54,12 @@ import {
   SCREENS,
   SCREENSHOTS_DIR,
   SOURCE_DIR,
+  sourceDirFor,
   WEB_DIR,
   WEB_FRAME,
 } from "./lib/screenshot-kit.mjs";
 
-const CANVAS = { w: 1290, h: 2796 };
+const CANVAS = deviceFor("iphone").canvas;
 
 /** deliver's tree for the listing. Single-theme and no marketing-site mirror, so it is a
  * single directory — none of the theme/site fan-out the sister project needs. */
@@ -81,21 +86,39 @@ const CAPTION_TOP = 120;
 const DEVICE_TOP = 560;
 
 /** A photo frame has no phone: the photo bleeds to every edge and fades into the canvas over
- * its lower part, where the caption sits, as on the funnel's teaser screen. */
-const PHOTO_CAPTION_TOP = 2200;
+ * its lower part, where the caption sits, as on the funnel's teaser screen. The caption is
+ * measured from the foot. A landscape canvas would crop the upright photo to a strip of
+ * ceiling, so there the photo takes the left of the canvas at full height and the caption
+ * sits beside it. */
+const PHOTO_CAPTION_ROOM = 596;
+const PHOTO_SIDE = { share: 0.46, gap: 120 };
 const PHOTO_MIMES = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png" };
 
-function photoFrameHtml(frame) {
+function photoFrameHtml(frame, canvas) {
   const photoPath = path.join(SOURCE_DIR, frame.photo);
   if (!existsSync(photoPath)) throw new Error(`No photo at ${path.relative(ROOT, photoPath)} for frame "${frame.slug}"`);
   const mime = PHOTO_MIMES[path.extname(photoPath).toLowerCase()];
   if (!mime) throw new Error(`${frame.photo}: expected a .jpg or .png`);
+  const photo = dataUri(photoPath, mime);
+  const captionStyle = `font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};`;
+
+  if (canvas.w > canvas.h) {
+    const width = canvas.w * PHOTO_SIDE.share;
+    return `
+  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
+    <img src="${photo}" style="position:absolute; left:0; top:0; width:${width}px; height:100%; object-fit:cover; object-position:center top;">
+    <div style="position:absolute; left:0; top:0; width:${width}px; height:100%; background:linear-gradient(to right, rgba(255,248,239,0) 72%, ${PALETTE.canvas} 100%);"></div>
+    <div class="caption" style="position:absolute; top:50%; transform:translateY(-50%); left:${width + PHOTO_SIDE.gap}px; right:${PHOTO_SIDE.gap}px; ${captionStyle}">
+      ${captionHtml(frame.caption)}
+    </div>
+  </div>`;
+  }
 
   return `
-  <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
-    <img src="${dataUri(photoPath, mime)}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;">
+  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
+    <img src="${photo}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;">
     <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(255,248,239,0) 60%, ${PALETTE.canvas} 78%);"></div>
-    <div class="caption" style="position:absolute; top:${PHOTO_CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+    <div class="caption" style="position:absolute; top:${canvas.h - PHOTO_CAPTION_ROOM}px; left:88px; right:88px; ${captionStyle}">
       ${captionHtml(frame.caption)}
     </div>
   </div>`;
@@ -146,8 +169,56 @@ function calloutHtml(frame, sourceDir, shotDataUri) {
     <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; border-radius:${toCanvas(CALLOUT.radiusPt) * zoom}px; overflow:hidden; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.28)); background-image:url('${shotDataUri}'); background-repeat:no-repeat; background-size:${capture.width * scale}px ${capture.height * scale}px; background-position:${-from.x * report.scale * scale}px ${-from.y * report.scale * scale}px;"></div>`;
 }
 
-function frameHtml(frame, sourceDir) {
-  if (frame.photo) return photoFrameHtml(frame);
+/** iPad and iPhone Duo sit under a caption lined up with them, running off the foot like
+ * the phone. The capture is the canvas's own size, so it fills the photograph's screen. */
+const SLATE = { top: 440, bleed: 120 };
+
+/** The device `height` tall: the photograph, turned a quarter anticlockwise if `turned`, the
+ * capture under its transparent screen and a few pixels past it, under the bezel. */
+const UNDERLAP = 4;
+
+function mockupHtml(capture, height, mockup) {
+  const k = height / (mockup.turned ? mockup.w : mockup.h);
+  const width = (mockup.turned ? mockup.h : mockup.w) * k;
+  const { x, y, w, h, radius: [tl, tr, br, bl] } = mockup.screen;
+  const screen = mockup.turned
+    ? { x: y * k, y: (mockup.w - x - w) * k, w: h * k, h: w * k }
+    : { x: x * k, y: y * k, w: w * k, h: h * k };
+  // Clipped to the screen's own corners, or it shows past the frame's rounder outer ones.
+  const corners = (mockup.turned ? [tr, br, bl, tl] : [tl, tr, br, bl]).map((r) => `${r * k + UNDERLAP}px`).join(" ");
+  return {
+    width,
+    html: `
+    <div style="position:relative; width:${width}px; height:${height}px;">
+      <img src="${capture}" style="position:absolute; left:${screen.x - UNDERLAP}px; top:${screen.y - UNDERLAP}px; width:${screen.w + 2 * UNDERLAP}px; height:${screen.h + 2 * UNDERLAP}px; border-radius:${corners}; object-fit:cover;">
+      <img src="${dataUri(mockup.file, "image/png")}" style="position:absolute; left:${(width - mockup.w * k) / 2}px; top:${(height - mockup.h * k) / 2}px; width:${mockup.w * k}px; height:${mockup.h * k}px;${mockup.turned ? " transform:rotate(-90deg);" : ""}">
+    </div>`,
+  };
+}
+
+function slateFrameHtml(frame, sourceDir, canvas, mockup) {
+  const sourcePath = path.join(sourceDir, `${frame.source}.png`);
+  if (!existsSync(sourcePath)) throw new Error(`No capture at ${path.relative(ROOT, sourcePath)} for frame "${frame.slug}"`);
+  const capture = dataUri(sourcePath, "image/png");
+  const height = canvas.h + SLATE.bleed - SLATE.top;
+  const device = mockupHtml(capture, height, mockup);
+  const left = (canvas.w - device.width) / 2;
+
+  return `
+  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; ${backgroundCss()}">
+    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:${left}px; right:${left}px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+      ${captionHtml(frame.caption)}
+    </div>
+    <div style="position:absolute; left:${left}px; top:${SLATE.top}px; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.22));">
+      ${device.html}
+    </div>
+  </div>`;
+}
+
+function frameHtml(frame, sourceDir, device) {
+  const { canvas, mockup } = deviceFor(device);
+  if (frame.photo) return photoFrameHtml(frame, canvas);
+  if (device !== "iphone") return slateFrameHtml(frame, sourceDir, canvas, mockup);
   const sourcePath = path.join(sourceDir, `${frame.source}.png`);
   const shotDataUri = existsSync(sourcePath) ? dataUri(sourcePath, "image/png") : null;
   const callout = frame.callout && shotDataUri ? calloutHtml(frame, sourceDir, shotDataUri) : "";
@@ -164,12 +235,12 @@ function frameHtml(frame, sourceDir) {
   </div>`;
 }
 
-function pageHtml(frame, { sourceDir }) {
+function pageHtml(frame, { sourceDir, device }) {
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     * { margin:0; padding:0; box-sizing:border-box; }
     ${HIGHLIGHT_CSS}
     ${fontFaceCss()}
-  </style></head><body>${frameHtml(frame, sourceDir)}</body></html>`;
+  </style></head><body>${frameHtml(frame, sourceDir, device)}</body></html>`;
 }
 
 /** The top size fits two or three lines of English in the space above the device.
@@ -186,6 +257,13 @@ function pageHtml(frame, { sourceDir }) {
 const CAPTION_SIZES = [129, 115, 104, 92];
 const CAPTION_GAP = 28;
 const CAPTION_CEILING = DEVICE_TOP - CAPTION_GAP;
+
+/** Where a frame's caption must end: above the device, or for a photo, above the foot. */
+function captionCeiling(frame, device) {
+  const { canvas } = deviceFor(device);
+  if (frame.photo) return canvas.h - CAPTION_TOP;
+  return device === "iphone" ? CAPTION_CEILING : SLATE.top - CAPTION_GAP;
+}
 
 async function fitCaption(page, label, ceiling = CAPTION_CEILING) {
   for (const size of CAPTION_SIZES) {
@@ -262,65 +340,85 @@ function parseArgs(argv) {
   const locales = localesFlag.split(",").map((tag) => tag.trim()).filter(Boolean);
   locales.forEach(localeFor);
 
-  return { sources, locales };
+  const devicesFlag = argv.find((a) => a.startsWith("--devices="))?.split("=")[1] ?? "iphone";
+  const devices = devicesFlag.split(",").map((name) => name.trim()).filter(Boolean);
+  devices.forEach(deviceFor);
+
+  return { sources, locales, devices };
 }
 
+/** A device's frames in a locale's folder, which every device shares. */
+const isFrameOf = (file, prefix) => new RegExp(`^${prefix}\\d{2}-.+\\.png$`).test(file);
+
 async function main() {
-  const { sources, locales } = parseArgs(process.argv.slice(2));
+  const { sources, locales, devices } = parseArgs(process.argv.slice(2));
 
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: CANVAS.w, height: CANVAS.h }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ deviceScaleFactor: 1 });
   const webPage = await browser.newPage();
 
   let count = 0;
-  for (const locale of locales) {
-    const frames = captionsFor(locale);
-
-    const sourceDir = path.join(SOURCE_DIR, locale);
-    // Without this, a locale that was never captured renders eight frames of the
-    // "missing capture" placeholder and exits 0 — which is exactly the sort of set
-    // that gets uploaded before anyone looks at it.
-    if (!existsSync(sourceDir)) {
-      throw new Error(`No captures for ${locale} at ${path.relative(ROOT, sourceDir)} — capture first`);
-    }
-    const outDir = outDirFor(locale);
-    // The web set is narrower than the store set: a store locale the site has no page for
-    // would have nothing to serve its frames — `public/screenshots/` is the one generated
-    // tree that is checked in, which is exactly why it has to stay the size of what the
-    // site serves.
-    const webDir = SITE_TAGS.includes(locale) ? path.join(WEB_DIR, localeFor(locale).asc) : null;
-    const dirs = [outDir, ...(webDir ? [webDir] : [])];
-    for (const dir of dirs) {
-      // Full runs replace the directory: frame files carry their caption slug, so a
-      // reworded caption would otherwise leave the old file beside the new one. A run
-      // limited to one capture must not — the frames it is not rendering are the whole
-      // reason it was limited.
-      if (!sources) rmSync(dir, { recursive: true, force: true });
-      ensureDir(dir);
-    }
-    if (webDir) ensureDir(path.join(webDir, "screens"));
-    console.log(`\n${locale}  ->  ${dirs.map((dir) => path.relative(ROOT, dir)).join(", ")}`);
-
-    for (const [index, frame] of frames.entries()) {
-      if (sources && !sources.has(frame.source)) continue;
-      const nn = pad2(index + 1);
-      await page.setContent(pageHtml(frame, { sourceDir }), { waitUntil: "load" });
-      await page.evaluate(() => document.fonts.ready);
-      await fitCaption(page, `${locale}/${frame.slug}`, frame.photo ? CANVAS.h - CAPTION_TOP : CAPTION_CEILING);
-
-      const png = path.join(outDir, `${nn}-${frame.slug}.png`);
-      await page.screenshot({ path: png });
-      if (webDir) await writeWebFrame(webPage, png, path.join(webDir, `${nn}-${frame.slug}.webp`));
-      if (webDir && frame.source) {
-        await writeWebFrame(webPage, path.join(sourceDir, `${frame.source}.png`), path.join(webDir, "screens", `${frame.slug}.webp`));
-      }
-      console.log(`  composited  ${nn}-${frame.slug}.png`);
-      count += 1;
+  for (const device of devices) {
+    const { canvas } = deviceFor(device);
+    await page.setViewportSize({ width: canvas.w, height: canvas.h });
+    for (const locale of locales) {
+      count += await renderLocale({ page, webPage, device, locale, sources });
     }
   }
 
   await browser.close();
-  console.log(`\n${count} screenshot(s) written across {${locales.join(",")}} (${CANVAS.w}x${CANVAS.h}).`);
+  console.log(`\n${count} screenshot(s) written across {${locales.join(",")}} for {${devices.join(",")}}.`);
+}
+
+async function renderLocale({ page, webPage, device, locale, sources }) {
+  const { prefix, slugs } = deviceFor(device);
+  const frames = captionsFor(locale);
+  let count = 0;
+
+  const sourceDir = sourceDirFor(device, locale);
+  // Without this, a locale that was never captured renders eight frames of the
+  // "missing capture" placeholder and exits 0 — which is exactly the sort of set
+  // that gets uploaded before anyone looks at it.
+  if (!existsSync(sourceDir)) {
+    throw new Error(`No captures for ${locale} at ${path.relative(ROOT, sourceDir)} — capture first`);
+  }
+  const outDir = outDirFor(locale);
+  // The web set is narrower than the store set: a store locale the site has no page for
+  // would have nothing to serve its frames — `public/screenshots/` is the one generated
+  // tree that is checked in, which is exactly why it has to stay the size of what the
+  // site serves. And it is the phone's alone.
+  const webDir = device === "iphone" && SITE_TAGS.includes(locale) ? path.join(WEB_DIR, localeFor(locale).asc) : null;
+  const dirs = [outDir, ...(webDir ? [webDir] : [])];
+  // Full runs replace this device's frames: frame files carry their caption slug, so a
+  // reworded caption would otherwise leave the old file beside the new one. A run
+  // limited to one capture must not — the frames it is not rendering are the whole
+  // reason it was limited. The other devices' frames share the folder and stay.
+  ensureDir(outDir);
+  if (!sources) {
+    for (const file of readdirSync(outDir).filter((name) => isFrameOf(name, prefix))) rmSync(path.join(outDir, file));
+    if (webDir) rmSync(webDir, { recursive: true, force: true });
+  }
+  if (webDir) ensureDir(path.join(webDir, "screens"));
+  console.log(`\n${device} ${locale}  ->  ${dirs.map((dir) => path.relative(ROOT, dir)).join(", ")}`);
+
+  for (const [index, frame] of frames.entries()) {
+    if (sources && !sources.has(frame.source)) continue;
+    if (slugs && !slugs.includes(frame.slug)) continue;
+    const nn = pad2(index + 1);
+    await page.setContent(pageHtml(frame, { sourceDir, device }), { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready);
+    await fitCaption(page, `${device}/${locale}/${frame.slug}`, captionCeiling(frame, device));
+
+    const png = path.join(outDir, `${prefix}${nn}-${frame.slug}.png`);
+    await page.screenshot({ path: png });
+    if (webDir) await writeWebFrame(webPage, png, path.join(webDir, `${nn}-${frame.slug}.webp`));
+    if (webDir && frame.source) {
+      await writeWebFrame(webPage, path.join(sourceDir, `${frame.source}.png`), path.join(webDir, "screens", `${frame.slug}.webp`));
+    }
+    console.log(`  composited  ${prefix}${nn}-${frame.slug}.png`);
+    count += 1;
+  }
+  return count;
 }
 
 main().catch((error) => {

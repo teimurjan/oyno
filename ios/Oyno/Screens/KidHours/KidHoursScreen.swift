@@ -7,6 +7,7 @@ import SwiftUI
 struct KidHoursScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(OynoStore.self) private var oyno
+    @Environment(\.adaptive) private var adaptive
     @State private var open: OpenSchedule?
     @State private var picking: Picking?
     @State private var pickerDraft = FamilyActivitySelection()
@@ -15,22 +16,13 @@ struct KidHoursScreen: View {
     private enum Picking { case alwaysAllowed, neverAllowed }
 
     var body: some View {
-        Screen {
-            ScreenHeader(title: "Kid hours", subtitle: status) {
-                if kidHours.isAuthorized { GlassPill(title: "New", symbol: "plus") { open = .new } }
-            }
-
-            if !kidHours.isAuthorized {
-                permission
-            } else {
-                featured
-                schedules.screenshotCallout("schedules")
-                alwaysAllowed.screenshotCallout("alwaysAllowed")
-                neverAllowed.screenshotCallout("neverAllowed")
-                RowCard {
-                    HoldRow(title: "Not now", hint: notNowHint, enabled: kidHours.isOnNow) { kidHours.takeNotNow() }
-                    RowDivider(inset: 0)
-                    soonRow
+        Group {
+            if adaptive.columns == .two { split } else { column }
+        }
+        .toolbar {
+            if adaptive.bars == .side, kidHours.isAuthorized {
+                ToolbarItem(placement: .topBarTrailing) {
+                    BarButton(title: "New schedule", symbol: "plus") { open = .new }
                 }
             }
         }
@@ -46,6 +38,73 @@ struct KidHoursScreen: View {
             case (.neverAllowed, nil): kidHours.update(neverAllowed: pickerDraft)
             case (nil, nil): break
             }
+        }
+    }
+
+    /// The phone's: the schedules, then the apps, then "Not now".
+    private var column: some View {
+        Screen {
+            header
+            if !kidHours.isAuthorized {
+                permission
+            } else {
+                featured
+                schedules.screenshotCallout("schedules")
+                alwaysAllowed.screenshotCallout("alwaysAllowed")
+                neverAllowed.screenshotCallout("neverAllowed")
+                notNowCard
+            }
+        }
+    }
+
+    /// iPad and the Duo open: the schedules on the leading side, the apps and "Not now" on the
+    /// trailing one.
+    private var split: some View {
+        FoldColumns {
+            ScrollView {
+                VStack(alignment: .leading, spacing: Metric.Space.xl) {
+                    header
+                    if !kidHours.isAuthorized {
+                        permission
+                    } else {
+                        featured
+                        schedules
+                    }
+                }
+                .padding(.vertical, Metric.Space.xl)
+            }
+            .scrollIndicators(.hidden)
+        } trailing: {
+            if kidHours.isAuthorized {
+                ScrollView {
+                    VStack(spacing: Metric.Space.m) {
+                        Card(raised: true) { alwaysAllowed }
+                        Card(raised: true) { neverAllowed }
+                        notNowCard
+                    }
+                    .padding(.vertical, Metric.Space.xl)
+                }
+                .scrollIndicators(.hidden)
+            }
+        }
+        .background(Palette.sky.ignoresSafeArea())
+        .systemBar(adaptive)
+    }
+
+    /// "New" beside the title, except where the Duo's side bar holds it.
+    private var header: some View {
+        ScreenHeader(title: "Kid hours", subtitle: status) {
+            if kidHours.isAuthorized, adaptive.bars != .side {
+                GlassPill(title: "New", symbol: "plus") { open = .new }
+            }
+        }
+    }
+
+    private var notNowCard: some View {
+        RowCard {
+            HoldRow(title: "Not now", hint: notNowHint, enabled: kidHours.isOnNow) { kidHours.takeNotNow() }
+            RowDivider(inset: 0)
+            soonRow
         }
     }
 
@@ -66,7 +125,7 @@ struct KidHoursScreen: View {
             return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
         }
         guard let schedule = kidHours.featured else { return String(interface: "No schedule yet") }
-        guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
+        guard schedule.isEnabled, let next = schedule.nextStart(after: kidHours.now) else { return String(interface: "Off") }
         return String(interface: "Starts \(Format.dayAndTime(next))")
     }
 
@@ -107,7 +166,7 @@ struct KidHoursScreen: View {
     @ViewBuilder
     private var featured: some View {
         if let schedule = kidHours.featured {
-            Card(raised: true) {
+            Card(padding: adaptive.roomy ? 22 : Metric.cardPadding, raised: true) {
                 VStack(spacing: Metric.Space.m) {
                     Button {
                         Haptics.tap()
@@ -117,10 +176,12 @@ struct KidHoursScreen: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 StatusPill(text: ScheduleWords.status(schedule, in: kidHours), on: schedule.id == kidHours.current?.id)
                                 Text(verbatim: schedule.name)
-                                    .font(Typeface.ui(19, .extrabold, relativeTo: .title3))
-                                    .tracking(-0.4)
+                                    .font(Typeface.ui(adaptive.roomy ? 26 : 19, .extrabold, relativeTo: .title3))
+                                    .tracking(adaptive.roomy ? -0.6 : -0.4)
                                     .foregroundStyle(Palette.ink)
-                                Text(verbatim: ScheduleWords.summary(schedule)).oynoCaption()
+                                Text(verbatim: ScheduleWords.summary(schedule))
+                                    .font(Typeface.ui(adaptive.roomy ? 14 : 13, .medium, relativeTo: .caption))
+                                    .foregroundStyle(Palette.muted)
                             }
                             Spacer(minLength: 0)
                             Glyph.disclosure
@@ -143,54 +204,69 @@ struct KidHoursScreen: View {
         }
     }
 
+    /// A row that scrolls on the phone, three across in a column of its own.
     private var schedules: some View {
         VStack(alignment: .leading, spacing: Metric.Space.s) {
             SectionHeader(title: "Schedules") {
                 Text(verbatim: "\(kidHours.settings.schedules.count)").oynoCaption()
             }
-            ScrollView(.horizontal) {
-                HStack(spacing: 10) {
-                    ForEach(kidHours.others) { schedule in
-                        ScheduleCard(schedule: schedule, summary: ScheduleWords.summary(schedule)) {
-                            open = .existing(schedule)
-                        }
-                    }
-                    AddCard(width: 110) { open = .new }
+            if adaptive.columns == .two {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 3), spacing: 10) {
+                    scheduleCards(width: nil)
                 }
+            } else {
+                ScrollView(.horizontal) {
+                    HStack(spacing: 10) { scheduleCards(width: 150) }
+                }
+                .scrollIndicators(.hidden)
             }
-            .scrollIndicators(.hidden)
         }
+    }
+
+    @ViewBuilder
+    private func scheduleCards(width: CGFloat?) -> some View {
+        ForEach(kidHours.others) { schedule in
+            ScheduleCard(schedule: schedule, width: width) {
+                open = .existing(schedule)
+            }
+        }
+        AddCard(width: width.map { _ in 110 }) { open = .new }
     }
 
     /// Empty until the parent picks something: iOS keeps Phone and Messages reachable anyway.
     private var alwaysAllowed: some View {
-        VStack(alignment: .leading, spacing: Metric.Space.s) {
-            SectionHeader(title: "Always allowed") {
-                EditLink { picking = .alwaysAllowed }
-            }
-            TokenGrid(items: kidHours.alwaysAllowed) { picking = .alwaysAllowed }
-        }
+        apps("Always allowed", detail: "Open during every schedule", items: kidHours.alwaysAllowed, list: .alwaysAllowed)
     }
 
     private var neverAllowed: some View {
+        apps("Never allowed", detail: "Paused in every schedule", items: kidHours.neverAllowed, list: .neverAllowed)
+    }
+
+    private func apps(_ title: LocalizedStringResource, detail: LocalizedStringResource, items: [TokenItem], list: Picking) -> some View {
         VStack(alignment: .leading, spacing: Metric.Space.s) {
-            SectionHeader(title: "Never allowed") {
-                EditLink { picking = .neverAllowed }
+            SectionHeader(title: title, detail: adaptive.roomy ? detail : nil) {
+                EditLink { picking = list }
             }
-            TokenGrid(items: kidHours.neverAllowed) { picking = .neverAllowed }
+            if adaptive.columns == .two {
+                TokenGrid(items: items, across: 6, tile: adaptive.roomy ? 60 : 48) { picking = list }
+            } else {
+                TokenGrid(items: items) { picking = list }
+            }
         }
     }
 
     private var soonRow: some View {
         HStack {
             Text("Share with a co-parent")
-                .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                .font(Typeface.ui(adaptive.roomy ? 16 : 15, .semibold, relativeTo: .subheadline))
                 .foregroundStyle(Palette.muted)
             Spacer()
-            Text("Soon").oynoCaption()
+            Text("Soon")
+                .font(Typeface.ui(adaptive.roomy ? 14 : 13, .medium, relativeTo: .caption))
+                .foregroundStyle(Palette.muted)
         }
-        .padding(.horizontal, Metric.cardPadding)
-        .frame(height: 52)
+        .padding(.horizontal, adaptive.roomy ? Metric.Space.xl : Metric.cardPadding)
+        .frame(height: adaptive.roomy ? 56 : 52)
         .accessibilityElement(children: .combine)
     }
 }

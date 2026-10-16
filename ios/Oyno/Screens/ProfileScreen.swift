@@ -16,7 +16,7 @@ struct ProfileScreen: View {
     @State private var manageError = false
     @State private var showsManageSheet = false
     @State private var paywall: PaywallContext?
-    @AppStorage(InterfaceLanguage.overrideKey) private var language = "en"
+    @AppStorage(InterfaceLanguage.overrideKey, store: InterfaceLanguage.store) private var language = "en"
 
     var body: some View {
         SheetScreen(title: "Profile", subtitle: auth.currentUser?.email ?? "") {

@@ -8,6 +8,7 @@ struct TimerScreen: View {
     let onFinish: (_ minutes: Int) -> Void
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.adaptive) private var adaptive
     @AppStorage("oyno.chime") private var chimes = true
     @State private var countdown: Countdown
     @State private var finished = false
@@ -24,38 +25,124 @@ struct TimerScreen: View {
             let now = context.date
             let left = countdown.secondsLeft(at: now)
 
-            VStack(spacing: 0) {
-                header
-                    .padding(.horizontal, Metric.gutter)
-                    .padding(.top, Metric.Space.s)
-                ScrollView {
-                    VStack(spacing: Metric.Space.xl) {
-                        dial(left: left, now: now)
-                        Card(raised: true) { StepList(steps: activity.steps) }
-                    }
-                    .padding(.horizontal, Metric.gutter)
-                    .padding(.vertical, Metric.Space.l)
+            Group {
+                switch adaptive.columns {
+                case .one: column(left: left, now: now)
+                case .two: split(left: left, now: now)
+                case .rows: rows(left: left, now: now)
                 }
-                .scrollIndicators(.hidden)
-                .scrollBounceBehavior(.basedOnSize)
-                footer
             }
             .onChange(of: left) { _, value in
                 if value <= 0 { finish(at: now) }
             }
         }
         .background(Palette.goldenSky.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
+        .toolbar(barsShown ? .visible : .hidden, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
+        .toolbar {
+            if barsShown {
+                ToolbarItem(placement: .topBarLeading) {
+                    BarButton(title: "Back", symbol: "chevron.down") { confirmingLeave = true }
+                }
+                if adaptive.bars == .top, adaptive.columns == .two {
+                    ToolbarItem(placement: .principal) { title }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    BarButton(title: bellLabel, symbol: chimes ? "bell" : "bell.slash") { chimes.toggle() }
+                }
+            }
+        }
         .onAppear {
             countdown = Countdown(total: countdown.total)
             UIApplication.shared.isIdleTimerDisabled = true
         }
         .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
-        .confirmationDialog("Leave this round?", isPresented: $confirmingLeave, titleVisibility: .visible) {
-            Button("Leave round", role: .destructive) { dismiss() }
-            Button("Keep playing", role: .cancel) {}
-        } message: {
-            Text("The time so far won't count, and your planet won't grow.")
+        .modifier(LeaveConfirmation(isPresented: $confirmingLeave, asAlert: adaptive.barsAreSystem) { dismiss() })
+    }
+
+    /// Back and the bell move into the system's bar, except on the rows: standing half open on
+    /// a table, the Duo keeps its bar along the top, out of reach of the hand on the flat half.
+    private var barsShown: Bool { adaptive.barsAreSystem && adaptive.columns != .rows }
+
+    /// The phone's: the dial over the steps, the pause and the finish pinned at the foot.
+    private func column(left: Int, now: Date) -> some View {
+        VStack(spacing: 0) {
+            header
+                .padding(.horizontal, Metric.gutter)
+                .padding(.top, Metric.Space.s)
+            ScrollView {
+                VStack(spacing: Metric.Space.xl) {
+                    dial(left: left, now: now, side: barsShown ? 224 : 280)
+                    Card(raised: true) { StepList(steps: activity.steps) }
+                }
+                .padding(.horizontal, Metric.gutter)
+                .padding(.vertical, Metric.Space.l)
+                .readableWidth()
+            }
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
+            footer(alignment: .center)
+                .padding(.horizontal, Metric.gutter)
+                .padding(.top, Metric.Space.s)
+                .padding(.bottom, Metric.Space.m)
+                .readableWidth()
+        }
+    }
+
+    /// iPad and the Duo open: the dial to watch on the leading side, the steps and the controls
+    /// on the trailing one.
+    private func split(left: Int, now: Date) -> some View {
+        FoldColumns {
+            VStack(spacing: 18) {
+                if adaptive.bars != .top { title }
+                dial(left: left, now: now, side: adaptive.roomy ? 420 : 360)
+            }
+            .padding(.vertical, Metric.Space.xl)
+            .frame(maxHeight: .infinity)
+        } trailing: {
+            ScrollsIfNeeded {
+                VStack(alignment: .leading, spacing: adaptive.roomy ? Metric.Space.xl : 14) {
+                    Spacer(minLength: 0)
+                    Card(padding: adaptive.roomy ? 24 : Metric.cardPadding, raised: true) {
+                        StepList(steps: activity.steps, large: adaptive.roomy)
+                    }
+                    footer(alignment: .leading)
+                    Spacer(minLength: 0)
+                }
+                .padding(.vertical, Metric.Space.xl)
+            }
+        }
+    }
+
+    /// The Duo standing half open on a table: the dial up on the raised half, big enough for a
+    /// kid to read across the rug, and every control on the flat half.
+    private func rows(left: Int, now: Date) -> some View {
+        FoldRows {
+            VStack(spacing: 6) {
+                title
+                dial(left: left, now: now, side: 384, addsFive: false)
+            }
+            .padding(.top, Metric.Space.s)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        } bottom: {
+            ScrollsIfNeeded {
+                VStack(spacing: 14) {
+                    HStack {
+                        GlassIconButton(symbol: "chevron.down", label: "Back") { confirmingLeave = true }
+                        Spacer()
+                        addFive
+                        Spacer()
+                        bell
+                    }
+                    Card(raised: true) { StepList(steps: activity.steps) }
+                    Spacer(minLength: 0)
+                    footer(alignment: .center)
+                }
+                .padding(.horizontal, 24)
+                .padding(.top, 18)
+                .padding(.bottom, Metric.Space.xl)
+                .readableWidth()
+            }
         }
     }
 
@@ -68,27 +155,39 @@ struct TimerScreen: View {
         onFinish(max(1, Int((countdown.elapsed(at: now) / 60).rounded())))
     }
 
+    /// Back, the game's name and the bell, or the name alone where the system's bar holds the two.
     private var header: some View {
         HStack {
-            GlassIconButton(symbol: "chevron.down", label: "Back") { confirmingLeave = true }
+            if !barsShown {
+                GlassIconButton(symbol: "chevron.down", label: "Back") { confirmingLeave = true }
+            }
             Spacer()
-            Text(verbatim: activity.title)
-                .font(Typeface.ui(16, .extrabold, relativeTo: .headline))
-                .tracking(-0.3)
-                .foregroundStyle(Palette.ink)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .minimumScaleFactor(0.8)
-                .accessibilityAddTraits(.isHeader)
+            title
             Spacer()
-            GlassIconButton(symbol: chimes ? "bell" : "bell.slash", label: bellLabel) { chimes.toggle() }
+            if !barsShown { bell }
         }
+    }
+
+    private var title: some View {
+        Text(verbatim: activity.title)
+            .font(Typeface.ui(adaptive.columns == .one ? 16 : 17, .extrabold, relativeTo: .headline))
+            .tracking(-0.3)
+            .foregroundStyle(Palette.ink)
+            .multilineTextAlignment(.center)
+            .lineLimit(2)
+            .minimumScaleFactor(0.8)
+            .accessibilityAddTraits(.isHeader)
+    }
+
+    private var bell: some View {
+        GlassIconButton(symbol: chimes ? "bell" : "bell.slash", label: bellLabel) { chimes.toggle() }
     }
 
     private var bellLabel: LocalizedStringResource { chimes ? "Turn the chime off" : "Turn the chime on" }
 
-    /// The amber arc is what is left, draining as the round runs.
-    private func dial(left: Int, now: Date) -> some View {
+    /// The amber arc is what is left, draining as the round runs. The figures scale with the
+    /// dial, and run larger where "+5 min" moves out of it.
+    private func dial(left: Int, now: Date, side: CGFloat, addsFive: Bool = true) -> some View {
         ZStack {
             Circle().fill(.white.opacity(0.34))
             Circle().stroke(.white.opacity(0.9), lineWidth: 8)
@@ -98,27 +197,27 @@ struct TimerScreen: View {
                 .rotationEffect(.degrees(-90))
                 .animation(.linear(duration: 1), value: left)
             VStack(spacing: 4) {
-                VStack(spacing: 4) {
+                VStack(spacing: addsFive ? 4 : 6) {
                     Text(verbatim: Format.clock(seconds: left))
-                        .font(Typeface.figures(72, .extrabold, relativeTo: .largeTitle))
+                        .font(Typeface.figures(side * (addsFive ? 0.257 : 0.31), .extrabold, relativeTo: .largeTitle))
                         .monospacedDigit()
-                        .tracking(-2.8)
+                        .tracking(-side * 0.01)
                         .foregroundStyle(Palette.ink)
                         .lineLimit(1)
-                        .minimumScaleFactor(0.7)
+                        .minimumScaleFactor(0.5)
                     Text("left of \(Format.clock(seconds: Int(countdown.total)))")
-                        .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                        .font(Typeface.ui(side >= 360 ? 17 : 15, .semibold, relativeTo: .subheadline))
                         .foregroundStyle(Palette.muted)
                 }
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text("\(left / 60) minutes \(left % 60) seconds left"))
-                addFive.padding(.top, 10)
+                if addsFive { addFive.padding(.top, 10) }
             }
             .padding(.horizontal, 24)
         }
         .padding(4)
         .aspectRatio(1, contentMode: .fit)
-        .frame(maxWidth: 280)
+        .frame(maxWidth: side)
     }
 
     private var addFive: some View {
@@ -145,14 +244,11 @@ struct TimerScreen: View {
     }
 
     /// Outside the scroll, so the pause and the finish stay in reach however long the steps run.
-    private var footer: some View {
-        VStack(spacing: Metric.Space.m) {
+    private func footer(alignment: HorizontalAlignment) -> some View {
+        VStack(alignment: alignment, spacing: Metric.Space.m) {
             hint
             controls
         }
-        .padding(.horizontal, Metric.gutter)
-        .padding(.top, Metric.Space.s)
-        .padding(.bottom, Metric.Space.m)
     }
 
     private var hint: some View {
@@ -184,5 +280,41 @@ struct TimerScreen: View {
             .buttonStyle(.plain)
             PrimaryButton(title: "We're done") { finish(at: .now) }
         }
+    }
+}
+
+/// "Leave this round?": choices rising from the foot on the phone, an alert in a wide window,
+/// which the Duo keeps clear of its fold.
+private struct LeaveConfirmation: ViewModifier {
+    @Binding var isPresented: Bool
+    let asAlert: Bool
+    let leave: () -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .confirmationDialog("Leave this round?", isPresented: shown(!asAlert), titleVisibility: .visible) {
+                buttons
+            } message: {
+                message
+            }
+            .alert("Leave this round?", isPresented: shown(asAlert)) {
+                buttons
+            } message: {
+                message
+            }
+    }
+
+    private func shown(_ here: Bool) -> Binding<Bool> {
+        Binding(get: { here && isPresented }, set: { isPresented = $0 })
+    }
+
+    @ViewBuilder
+    private var buttons: some View {
+        Button("Leave round", role: .destructive, action: leave)
+        Button("Keep playing", role: .cancel) {}
+    }
+
+    private var message: some View {
+        Text("The time so far won't count, and your planet won't grow.")
     }
 }

@@ -3,6 +3,8 @@ import SwiftUI
 
 @main
 struct OynoApp: App {
+    @UIApplicationDelegateAdaptor(OrientationLock.self) private var orientationLock
+
     init() {
         Typeface.register()
         #if DEBUG

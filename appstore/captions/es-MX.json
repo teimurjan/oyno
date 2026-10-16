@@ -1,0 +1,12 @@
+{
+  "default": [
+    { "slug": "together", "photo": "together.jpg", "caption": "Vive en el planeta de tu peque, [no en el tuyo]" },
+    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 h] en familia, sin celular" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "¿Sin pila? [Juegos fáciles para bebés]" },
+    { "slug": "full", "source": "03", "callout": "battery", "caption": "¿Con toda la pila? [Juegos para gastar energía]" },
+    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Cada juego, [respaldado por la ciencia]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Bloquea apps] mientras juegan" },
+    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limita el tiempo en pantalla] al minuto exacto" },
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Cada ronda [hace crecer un mundo nuevo]" }
+  ]
+}

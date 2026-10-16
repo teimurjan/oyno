@@ -28,6 +28,14 @@ import { readFileSync } from "node:fs";
 /** Ordered by market priority, which is the order every report prints in. */
 export const LOCALES = [
   { tag: "en", sim: "en_US", asc: "en-US" },
+  { tag: "de", sim: "de_DE", asc: "de-DE" },
+  { tag: "fr", sim: "fr_FR", asc: "fr-FR" },
+  { tag: "es", sim: "es_ES", asc: "es-ES" },
+  { tag: "es-MX", sim: "es_MX", asc: "es-MX" },
+  { tag: "pt-BR", sim: "pt_BR", asc: "pt-BR" },
+  { tag: "it", sim: "it_IT", asc: "it" },
+  { tag: "nl", sim: "nl_NL", asc: "nl-NL" },
+  { tag: "pl", sim: "pl_PL", asc: "pl" },
   { tag: "ru", sim: "ru_RU", asc: "ru" },
 ];
 

@@ -20,7 +20,7 @@
  * listing for an English app.
  */
 
-export const LOCALES = ["en", "ru"] as const;
+export const LOCALES = ["en", "de", "fr", "es", "es-MX", "pt-BR", "it", "nl", "pl", "ru"] as const;
 export type Lang = (typeof LOCALES)[number];
 
 export const DEFAULT_LANG: Lang = "en";
@@ -46,6 +46,14 @@ export function isPrefixedLocale(value: unknown): value is Lang {
  * word they would write it with, not for its English name. */
 export const LOCALE_NAMES: Record<Lang, string> = {
   en: "English",
+  de: "Deutsch",
+  fr: "Français",
+  es: "Español (España)",
+  "es-MX": "Español (México)",
+  "pt-BR": "Português (Brasil)",
+  it: "Italiano",
+  nl: "Nederlands",
+  pl: "Polski",
   ru: "Русский",
 };
 
@@ -106,10 +114,15 @@ export const LANG_COOKIE = "oyno.lang";
 export const LANG_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 /** The locale a single language tag asks for, or nothing when the site has no such language.
- * Region subtags drop away: `en-GB` is English. */
+ * An exact match wins (`es-MX`), then the first locale of the same language: `en-GB` is
+ * English, `pt-PT` is Brazilian Portuguese and `es-AR` is Spain's Spanish. */
 export function localeForTag(tag: string): Lang | undefined {
-  const [base] = tag.trim().toLowerCase().split("-");
-  return isLang(base) ? base : undefined;
+  const wanted = tag.trim().toLowerCase();
+  const [base] = wanted.split("-");
+  return (
+    LOCALES.find((lang) => lang.toLowerCase() === wanted) ??
+    LOCALES.find((lang) => lang.toLowerCase().split("-")[0] === base)
+  );
 }
 
 /**

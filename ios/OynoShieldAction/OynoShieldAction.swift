@@ -1,6 +1,6 @@
 import ManagedSettings
 
-/// Answers the paused-app screen's buttons: "Open Oyno" brings the app forward, "Dismiss"
+/// Answers the paused-app screen's buttons: "Open Oyno" opens the app on Play, "Dismiss"
 /// closes the screen.
 final class OynoShieldAction: ShieldActionDelegate {
     override func handle(action: ShieldAction, for application: ApplicationToken, completionHandler: @escaping (ShieldActionResponse) -> Void) {
@@ -18,6 +18,11 @@ final class OynoShieldAction: ShieldActionDelegate {
     private func respond(to action: ShieldAction, _ completionHandler: @escaping (ShieldActionResponse) -> Void) {
         guard action == .primaryButtonPressed else {
             completionHandler(.close)
+            return
+        }
+        if #available(iOS 26.5, *) {
+            ShieldRoute.requestPlay()
+            completionHandler(.openParentalControlsApp)
             return
         }
         Task {

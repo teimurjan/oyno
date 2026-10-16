@@ -11,6 +11,7 @@ struct PrimaryButton: View {
     /// Red instead of the accent, for the one commit that deletes something.
     private let destructive: Bool
     private let action: () -> Void
+    @Environment(\.adaptive) private var adaptive
 
     init(
         title: LocalizedStringResource,
@@ -45,11 +46,11 @@ struct PrimaryButton: View {
                     Glyph(symbol: symbol, size: 15, weight: .bold, color: Palette.onAccent)
                 }
                 label
-                    .font(Typeface.ui(17, .bold, relativeTo: .headline))
+                    .font(Typeface.ui(adaptive.roomy ? 18 : 17, .bold, relativeTo: .headline))
                     .foregroundStyle(Palette.onAccent)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: Metric.primaryButton)
+            .frame(height: adaptive.roomy ? Metric.primaryButtonRoomy : Metric.primaryButton)
         }
         .buttonStyle(destructive ? FilledAccentStyle(fill: Palette.alert, pressed: Palette.alert.opacity(0.85)) : FilledAccentStyle())
         .disabled(!enabled)
@@ -211,11 +212,31 @@ struct GlassIconButton: View {
     }
 }
 
+/// `GlassIconButton` where the system's bar holds it: the symbol is drawn, and the title is
+/// read aloud and shown when the bar folds it into its overflow menu.
+struct BarButton: View {
+    let title: LocalizedStringResource
+    let symbol: String
+    let action: () -> Void
+
+    var body: some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            Label { Text(title) } icon: { Image(systemName: symbol) }
+        }
+        .tint(Palette.ink)
+    }
+}
+
 /// A glass pill rather than the ink one: Kid hours' "New" and a schedule's "Edit".
 struct GlassPill: View {
     let title: LocalizedStringResource
     var symbol: String?
     let action: () -> Void
+
+    @Environment(\.adaptive) private var adaptive
 
     var body: some View {
         Button {
@@ -225,15 +246,17 @@ struct GlassPill: View {
             HStack(spacing: 6) {
                 if let symbol { Glyph(symbol: symbol, size: 13, weight: .bold) }
                 Text(title)
-                    .font(Typeface.ui(14, .bold, relativeTo: .subheadline))
+                    .font(Typeface.ui(adaptive.roomy ? 15 : 14, .bold, relativeTo: .subheadline))
                     .foregroundStyle(Palette.ink)
             }
-            .padding(.horizontal, 14)
-            .frame(height: Metric.compactControl)
-            .glassCard(radius: Metric.compactControl / 2)
+            .padding(.horizontal, adaptive.roomy ? 16 : 14)
+            .frame(height: height)
+            .glassCard(radius: height / 2)
         }
         .buttonStyle(.plain)
     }
+
+    private var height: CGFloat { adaptive.roomy ? Metric.tapTarget : Metric.compactControl }
 }
 
 /// The circle that fills while a finger holds a "Not now". Driven by `holdToConfirm`.

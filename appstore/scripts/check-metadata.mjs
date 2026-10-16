@@ -92,6 +92,12 @@ for (const locale of ASC_LOCALES) {
     problems.push(`${locale}/name.txt: brand "Oyno" is missing — it is never translated`);
   }
 
+  // App Store Connect refuses any space but U+0020 in the name, such as French typography's
+  // no-break space before a colon.
+  if (name && /[^\S ]/.test(name)) {
+    problems.push(`${locale}/name.txt: contains a space other than U+0020 — App Store Connect refuses it`);
+  }
+
   // Guideline 3.1.2 wants the subscription's Terms of Use and privacy policy
   // reachable from the App Store listing, not only from the paywall — the app
   // was rejected once for having them in the binary alone. The EULA link is

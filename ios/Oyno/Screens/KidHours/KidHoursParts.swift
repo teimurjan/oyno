@@ -6,14 +6,21 @@ import SwiftUI
 
 struct SectionHeader<Trailing: View>: View {
     let title: LocalizedStringResource
+    /// A line under the title, where an iPad has the room.
+    var detail: LocalizedStringResource?
     @ViewBuilder var trailing: Trailing
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
-            Text(title)
-                .font(Typeface.ui(17, .extrabold, relativeTo: .headline))
-                .tracking(-0.3)
-                .foregroundStyle(Palette.ink)
+        HStack(alignment: detail == nil ? .firstTextBaseline : .center) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(Typeface.ui(adaptive.roomy ? 19 : 17, .extrabold, relativeTo: .headline))
+                    .tracking(-0.3)
+                    .foregroundStyle(Palette.ink)
+                if let detail { Text(detail).oynoCaption() }
+            }
             Spacer()
             trailing
         }
@@ -23,15 +30,17 @@ struct SectionHeader<Trailing: View>: View {
 struct EditLink: View {
     let action: () -> Void
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
         Button {
             Haptics.tap()
             action()
         } label: {
             Text("Edit")
-                .font(Typeface.ui(13, .bold, relativeTo: .footnote))
+                .font(Typeface.ui(adaptive.roomy ? 15 : 13, .bold, relativeTo: .footnote))
                 .foregroundStyle(Palette.ink)
-                .frame(minWidth: Metric.tapTarget, minHeight: 32)
+                .frame(minWidth: Metric.tapTarget, minHeight: adaptive.roomy ? Metric.tapTarget : 32)
                 .contentShape(.rect)
         }
         .buttonStyle(.plain)
@@ -43,12 +52,14 @@ struct StatusPill: View {
     let text: String
     let on: Bool
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
         Text(verbatim: text)
-            .font(Typeface.ui(11, .extrabold, relativeTo: .caption2))
+            .font(Typeface.ui(adaptive.roomy ? 12 : 11, .extrabold, relativeTo: .caption2))
             .foregroundStyle(on ? ScheduleTint.on.ink : Palette.muted)
-            .padding(.horizontal, 9)
-            .frame(height: 22)
+            .padding(.horizontal, adaptive.roomy ? 10 : 9)
+            .frame(height: adaptive.roomy ? 24 : 22)
             .background(on ? ScheduleTint.on.fill : Palette.glass, in: .capsule)
     }
 }
@@ -56,29 +67,41 @@ struct StatusPill: View {
 /// One of the other schedules, in the row under the featured one. The card opens the schedule.
 struct ScheduleCard: View {
     let schedule: KidHoursSchedule
-    let summary: String
+    /// Fixed in the scrolling row, none where a grid sizes it.
+    var width: CGFloat? = 150
     let action: () -> Void
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
-        Button {
+        let roomy = adaptive.roomy
+        return Button {
             Haptics.tap()
             action()
         } label: {
-            VStack(alignment: .leading, spacing: 8) {
-                Glyph(symbol: tint.symbol, size: 16, weight: .semibold, color: tint.ink)
-                    .frame(width: 34, height: 34)
-                    .background(tint.fill, in: .rect(cornerRadius: 12))
+            VStack(alignment: .leading, spacing: roomy ? 10 : 8) {
+                Glyph(symbol: tint.symbol, size: roomy ? 18 : 16, weight: .semibold, color: tint.ink)
+                    .frame(width: roomy ? 38 : 34, height: roomy ? 38 : 34)
+                    .background(tint.fill, in: .rect(cornerRadius: roomy ? 13 : 12))
+                // Two lines kept for every name, so the cards in a row stand the same height.
                 Text(verbatim: schedule.name)
-                    .font(Typeface.ui(15, .extrabold, relativeTo: .subheadline))
+                    .font(Typeface.ui(roomy ? 16 : 15, .extrabold, relativeTo: .subheadline))
                     .foregroundStyle(Palette.ink)
-                    .lineLimit(1)
-                Text(verbatim: schedule.isEnabled ? summary : String(interface: "Off"))
-                    .font(Typeface.ui(12, .semibold, relativeTo: .caption))
-                    .foregroundStyle(Palette.muted)
-                    .lineLimit(1)
+                    .lineLimit(2, reservesSpace: true)
+                // The days over the hours: on one line they outgrow the card in most languages.
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(verbatim: schedule.isEnabled ? Format.weekdays(schedule.weekdays) : String(interface: "Off"))
+                    Text(verbatim: Format.timeRange(start: schedule.start, end: schedule.end))
+                        .opacity(schedule.isEnabled ? 1 : 0)
+                        .accessibilityHidden(!schedule.isEnabled)
+                }
+                .font(Typeface.ui(12, .semibold, relativeTo: .caption))
+                .foregroundStyle(Palette.muted)
+                .lineLimit(1)
+                .minimumScaleFactor(0.85)
             }
-            .padding(14)
-            .frame(width: 150, alignment: .leading)
+            .padding(roomy ? 16 : 14)
+            .frame(minWidth: width, maxWidth: width ?? .infinity, alignment: .leading)
             .glassCard()
             .opacity(schedule.isEnabled ? 1 : 0.6)
         }
@@ -97,21 +120,25 @@ enum ScheduleWords {
 
     /// "On now · ends in 1h 48m", "Apps open until 6:10 PM", "Starts Mon 4:30 PM" or "Off".
     static func status(_ schedule: KidHoursSchedule, in kidHours: KidHoursStore) -> String {
-        if schedule.id == kidHours.current?.id, let ends = schedule.end(on: .now) {
-            return String(interface: "On now · ends in \(Format.remaining(until: ends))")
+        let now = kidHours.now
+        if schedule.id == kidHours.current?.id, let ends = schedule.end(on: now) {
+            return String(interface: "On now · ends in \(Format.remaining(until: ends, now: now))")
         }
-        if let end = kidHours.unlockEnd, schedule.contains(.now) {
+        if let end = kidHours.unlockEnd, schedule.contains(now) {
             return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
         }
-        guard schedule.isEnabled, let next = schedule.nextStart(after: .now) else { return String(interface: "Off") }
+        guard schedule.isEnabled, let next = schedule.nextStart(after: now) else { return String(interface: "Off") }
         return String(interface: "Starts \(Format.dayAndTime(next))")
     }
 }
 
 /// The dashed "Add" at the end of the schedules row.
 struct AddCard: View {
-    let width: CGFloat
+    /// Fixed in the scrolling row, none where a grid sizes it.
+    let width: CGFloat?
     let action: () -> Void
+
+    @Environment(\.adaptive) private var adaptive
 
     var body: some View {
         Button {
@@ -119,13 +146,12 @@ struct AddCard: View {
             action()
         } label: {
             VStack(spacing: 6) {
-                Glyph(symbol: "plus", size: 16, weight: .bold, color: Palette.muted)
+                Glyph(symbol: "plus", size: adaptive.roomy ? 17 : 16, weight: .bold, color: Palette.muted)
                 Text("Add")
-                    .font(Typeface.ui(13, .bold, relativeTo: .footnote))
+                    .font(Typeface.ui(adaptive.roomy ? 14 : 13, .bold, relativeTo: .footnote))
                     .foregroundStyle(Palette.muted)
             }
-            .frame(width: width)
-            .frame(maxHeight: .infinity)
+            .frame(minWidth: width, maxWidth: width ?? .infinity, maxHeight: .infinity)
             .padding(.vertical, 14)
             .overlay(RoundedRectangle(cornerRadius: Metric.Radius.card).strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [6, 5])).foregroundStyle(Palette.ink.opacity(0.18)))
             .contentShape(.rect)
@@ -134,24 +160,26 @@ struct AddCard: View {
     }
 }
 
-/// Five icons across: what is picked, a "+N" for what the two rows have no room for, and a
-/// plus when nothing is picked yet.
+/// Five icons across, six on a card of its own: what is picked, a "+N" for what the two rows
+/// have no room for, and a plus when nothing is picked yet.
 struct TokenGrid: View {
     let items: [TokenItem]
+    var across = 5
+    /// A size down where six share the Duo's narrower column.
+    var tile: CGFloat = 54
     let edit: () -> Void
 
-    /// Two rows of five: enough to recognise the list, with the rest behind "+N".
-    private static let limit = 10
-
     var body: some View {
-        let shown = items.prefix(items.count > Self.limit ? Self.limit - 1 : Self.limit)
-        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 5), spacing: 10) {
-            ForEach(Array(shown), id: \.self) { item in TokenTile(item: item).frame(maxWidth: .infinity) }
+        // Two rows: enough to recognise the list, with the rest behind "+N".
+        let limit = across * 2
+        let shown = items.prefix(items.count > limit ? limit - 1 : limit)
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: across), spacing: 10) {
+            ForEach(Array(shown), id: \.self) { item in TokenTile(item: item, size: tile).frame(maxWidth: .infinity) }
             if items.count > shown.count {
-                DashedTile(text: "+\(items.count - shown.count)", caption: String(interface: "More"), action: edit)
+                DashedTile(text: "+\(items.count - shown.count)", side: tile, caption: String(interface: "More"), action: edit)
             }
             if items.isEmpty {
-                DashedTile(symbol: "plus", caption: String(interface: "Choose apps"), action: edit)
+                DashedTile(symbol: "plus", side: tile, caption: String(interface: "Choose apps"), action: edit)
             }
         }
     }
@@ -210,6 +238,7 @@ struct TokenTile: View {
 struct DashedTile: View {
     var text: String?
     var symbol: String?
+    var side: CGFloat = 54
     let caption: String
     let action: () -> Void
 
@@ -226,8 +255,8 @@ struct DashedTile: View {
                 }
             }
             .foregroundStyle(Palette.muted)
-            .frame(width: 54, height: 54)
-            .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [6, 5])).foregroundStyle(Palette.ink.opacity(0.18)))
+            .frame(width: side, height: side)
+            .overlay(RoundedRectangle(cornerRadius: side * 0.3).strokeBorder(style: StrokeStyle(lineWidth: 2, dash: [6, 5])).foregroundStyle(Palette.ink.opacity(0.18)))
             .contentShape(.rect)
         }
         .buttonStyle(.plain)
@@ -379,11 +408,12 @@ struct HoldRow: View {
     let action: () -> Void
 
     @State private var progress: CGFloat = 0
+    @Environment(\.adaptive) private var adaptive
 
     var body: some View {
         HStack(spacing: Metric.Space.s) {
             Text(title)
-                .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                .font(Typeface.ui(adaptive.roomy ? 16 : 15, .semibold, relativeTo: .subheadline))
                 .foregroundStyle(enabled ? Palette.ink : Palette.muted)
             Spacer()
             Text(verbatim: hint)
@@ -391,8 +421,8 @@ struct HoldRow: View {
                 .foregroundStyle(Palette.muted)
             if enabled { HoldRing(progress: progress) }
         }
-        .padding(.horizontal, Metric.cardPadding)
-        .frame(height: 52)
+        .padding(.horizontal, adaptive.roomy ? Metric.Space.xl : Metric.cardPadding)
+        .frame(height: adaptive.roomy ? 56 : 52)
         .contentShape(.rect)
         .holdToConfirm(progress: $progress, action: action)
         .disabled(!enabled)

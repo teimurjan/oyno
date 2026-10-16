@@ -19,7 +19,7 @@ import path from "node:path";
 import { checkbox, confirm, input, select, Separator } from "@inquirer/prompts";
 import { API_KEY_PATH } from "./lib/asc-api.mjs";
 import { APP_TAGS, ASC_LOCALES, localeFor, PRIORITY_TAGS, SCREENSHOT_TAGS } from "./lib/locales.mjs";
-import { APPSTORE_DIR, CAPTIONS_DIR, CREATIVES_DIR, IOS_PROJECT, METADATA_DIR, ROOT, SCREENS, SCREENSHOTS_DIR } from "./lib/screenshot-kit.mjs";
+import { APPSTORE_DIR, CAPTIONS_DIR, CREATIVES_DIR, DEVICES, IOS_PROJECT, METADATA_DIR, ROOT, SCREENS, SCREENSHOTS_DIR } from "./lib/screenshot-kit.mjs";
 
 const SCRIPTS_DIR = path.join(APPSTORE_DIR, "scripts");
 const PBXPROJ = path.join(IOS_PROJECT, "project.pbxproj");
@@ -35,6 +35,30 @@ function requireFastlane() {
     execFileSync("which", ["fastlane"], { stdio: "ignore" });
   } catch {
     throw new Error("fastlane is not installed. Run: brew install fastlane");
+  }
+}
+
+/** App Store Connect holds one iPhone Duo set per locale, both displays in it. */
+const DUO_SET_LIMIT = 10;
+
+/** deliver learned the iPhone Duo's sizes after 2.241.0 (fastlane#30444). Before that it
+ * refuses the whole upload over one Duo frame. App Store Connect refuses a set over its
+ * limit, so the count is checked first. */
+function requireDuoSupport() {
+  const duoCounts = localeDirs(SCREENSHOTS_DIR).map((locale) => ({
+    locale,
+    count: readdirSync(path.join(SCREENSHOTS_DIR, locale)).filter((file) => file.startsWith(DEVICES.duo.prefix)).length,
+  }));
+  if (!duoCounts.some(({ count }) => count)) return;
+  const over = duoCounts.filter(({ count }) => count > DUO_SET_LIMIT);
+  if (over.length) {
+    const list = over.map(({ locale, count }) => `${locale} (${count})`).join(", ");
+    throw new Error(`The iPhone Duo set takes ${DUO_SET_LIMIT} screenshots, inner and outer together: ${list}. Delete the extra duo-* files.`);
+  }
+  const version = execFileSync("fastlane", ["--version"]).toString().match(/fastlane (\d+)\.(\d+)\.(\d+)/)?.slice(1).map(Number);
+  const known = version && (version[0] - 2 || version[1] - 241 || version[2]) > 0;
+  if (!known) {
+    throw new Error("This fastlane cannot upload iPhone Duo screenshots. Run: brew upgrade fastlane (a release after 2.241.0)");
   }
 }
 
@@ -189,6 +213,7 @@ async function push({ metadata, screenshots }) {
   if (screenshots && !localeDirs(SCREENSHOTS_DIR).length) {
     throw new Error(`No locales in ${path.relative(ROOT, SCREENSHOTS_DIR)} — generate screenshots first.`);
   }
+  if (screenshots) requireDuoSupport();
 
   const version = await askVersion();
   console.log(`\nAbout to change App Store Connect version ${version}:`);
@@ -227,10 +252,12 @@ async function pull(subcommand, pathFlag, into) {
 
 const ACTIONS = {
   async capture() {
-    const device = await input({ message: "Simulator device", default: "iPhone 17" });
+    const kind = await select({ message: "Store slot", choices: Object.keys(DEVICES).map((name) => ({ name, value: name })) });
+    const device = await input({ message: "Simulator device", default: DEVICES[kind].simulator });
     const locales = await pickLocales(SCREENSHOT_TAGS, "Locales to capture");
     const screens = await pickScreens("Screens to capture");
     run("capture-simulator-screens.mjs", [
+      `--device=${kind}`,
       device,
       `--locales=${locales.join(",")}`,
       ...(screens ? [`--screens=${screens.join(",")}`] : []),
@@ -241,7 +268,13 @@ const ACTIONS = {
     const locales = await pickLocales(captionedTags(), "Locales to generate");
     // By capture, not by frame number: re-shooting one screen is the reason to be here.
     const sources = await pickScreens("Captures to composite");
+    const devices = await checkbox({
+      message: "Store slots",
+      choices: Object.keys(DEVICES).map((name) => ({ name, value: name, checked: true })),
+      required: true,
+    });
     run("generate-app-store-screenshots.mjs", [
+      `--devices=${devices.join(",")}`,
       `--locales=${locales.join(",")}`,
       ...(sources ? [`--sources=${sources.join(",")}`] : []),
     ]);

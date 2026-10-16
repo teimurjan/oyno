@@ -41,22 +41,28 @@ final class KidHoursStore {
         }
     }
 
+    /// What "right now" means below: the clock, or the moment the screenshot harness pins.
+    var now: Date {
+        #if DEBUG
+        if let seededNow { return seededNow }
+        #endif
+        return .now
+    }
+
     /// Whether the apps are paused right now.
-    var isOnNow: Bool { settings.isPaused(at: .now) }
+    var isOnNow: Bool { settings.isPaused(at: now) }
 
     /// The schedule pausing the apps right now, nil outside Kid hours and during an unlock.
-    var current: KidHoursSchedule? { isOnNow ? settings.schedule(at: .now) : nil }
+    var current: KidHoursSchedule? { isOnNow ? settings.schedule(at: now) : nil }
 
     /// The unlock keeping the apps open inside Kid hours right now.
     var liveUnlock: KidHoursUnlock? {
-        let now = Date.now
         guard settings.isUnlocked(at: now), settings.schedule(at: now) != nil else { return nil }
         return settings.unlock
     }
 
     /// When the apps stop being open: the unlock's end, or Kid hours' if they end first.
     var unlockEnd: Date? {
-        let now = Date.now
         guard let unlock = liveUnlock, let ends = settings.schedule(at: now)?.end(on: now) else { return nil }
         return min(ends, unlock.endsAt)
     }
@@ -72,7 +78,6 @@ final class KidHoursStore {
 
     /// The unlock the last round earned, while the apps are paused and its schedule still runs.
     var claimable: KidHoursEarned? {
-        let now = Date.now
         guard isOnNow, let earned = settings.earned, earned.isClaimable(at: now),
               settings.schedule(at: now)?.id == earned.scheduleID
         else { return nil }
@@ -82,7 +87,6 @@ final class KidHoursStore {
     /// The schedule the top card shows: the one running now, else the next to start, else
     /// whatever there is.
     var featured: KidHoursSchedule? {
-        let now = Date.now
         if let running = settings.schedule(at: now) { return running }
         let upcoming = settings.schedules.filter(\.isEnabled)
         return upcoming.min { ($0.nextStart(after: now) ?? .distantFuture) < ($1.nextStart(after: now) ?? .distantFuture) }
@@ -126,9 +130,10 @@ final class KidHoursStore {
     private var seededNever: [String]?
     private(set) var seededUsage: AppUsage?
     private var seededPausedMinutes: Int?
+    private var seededNow: Date?
 
     /// The simulator has no Screen Time and no app tokens, so the frame stands in a parent who set it up.
-    func seedForScreenshot(schedules: [KidHoursSchedule], apps: [String], alwaysAllowed: [String], neverAllowed: [String], usage: AppUsage, pausedMinutes: Int) {
+    func seedForScreenshot(schedules: [KidHoursSchedule], apps: [String], alwaysAllowed: [String], neverAllowed: [String], usage: AppUsage, pausedMinutes: Int, now: Date) {
         authorizationWatch?.cancel()
         isAuthorized = true
         settings.schedules = schedules
@@ -137,6 +142,7 @@ final class KidHoursStore {
         seededNever = neverAllowed
         seededUsage = usage
         seededPausedMinutes = pausedMinutes
+        seededNow = now
     }
     #endif
 

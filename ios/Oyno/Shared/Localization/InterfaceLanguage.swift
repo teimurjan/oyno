@@ -13,8 +13,12 @@ import Foundation
 /// which is what keeps it honest: a language picked in Settings between runs
 /// arrives on its own, and a screenshot run launched with `-AppleLanguages`
 /// leaves nothing behind for the next ordinary launch to pick up.
+///
+/// The mirror lives in the App Group, so the Screen Time extensions draw in the app's language
+/// and not the phone's.
 enum InterfaceLanguage {
     static let overrideKey = "oyno.interfaceLanguage"
+    static let store = UserDefaults(suiteName: KidHoursSettings.appGroup) ?? .standard
     private static let systemKey = "AppleLanguages"
 
     /// Every locale the app ships copy for, and nothing else.
@@ -32,7 +36,7 @@ enum InterfaceLanguage {
     /// Ordered by market rather than alphabetically, which is the order the picker draws
     /// and the same order `LOCALES` in `appstore/scripts/lib/locales.mjs` prints in — the
     /// two lists are one set, and a market only really exists when both name it.
-    static let supported = ["en", "ru"]
+    static let supported = ["en", "de", "fr", "es", "es-MX", "pt-BR", "it", "nl", "pl", "ru"]
 
     /// The language's own name for itself — "Русский", not "Russian". The only spelling
     /// that works in a picker, because somebody who has the app in a language they cannot
@@ -48,7 +52,7 @@ enum InterfaceLanguage {
     /// property written on the main thread while a background task reads it is a race for
     /// the sake of a lookup that was never the expensive part.
     static var current: String {
-        UserDefaults.standard.string(forKey: overrideKey) ?? launchLocalization
+        store.string(forKey: overrideKey) ?? launchLocalization
     }
 
     private static let launchLocalization = Bundle.main.preferredLocalizations.first ?? "en"
@@ -75,14 +79,14 @@ enum InterfaceLanguage {
     /// which is also what makes a choice made in Settings win over one this app
     /// recorded before it.
     static func adoptLaunchLocalization() {
-        UserDefaults.standard.set(launchLocalization, forKey: overrideKey)
+        store.set(launchLocalization, forKey: overrideKey)
     }
 
     /// The mirror is written last: it is what the tree redraws on, and the
     /// system key has to be true by then.
     static func select(_ tag: String) {
         UserDefaults.standard.set([tag], forKey: systemKey)
-        UserDefaults.standard.set(tag, forKey: overrideKey)
+        store.set(tag, forKey: overrideKey)
     }
 }
 

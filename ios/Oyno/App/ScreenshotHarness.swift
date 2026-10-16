@@ -19,12 +19,73 @@ struct ScreenshotHarness: View {
     @State private var kidHours = ScreenshotFixtures.kidHours()
 
     var body: some View {
-        NavigationStack { seeded }
-            .environment(\.locale, InterfaceLanguage.locale)
+        framed { tabbed }
+        .environment(\.locale, InterfaceLanguage.locale)
             .environment(oyno)
             .environment(auth)
             .environment(purchases)
             .environment(kidHours)
+    }
+
+    /// `--window 951x669` draws the screen in a window of that size, centred, to check another
+    /// device's layout from one simulator. `--bars side` reserves the Duo's side bar beside it.
+    @ViewBuilder
+    private func framed(@ViewBuilder _ content: () -> some View) -> some View {
+        if let size = Self.argument("--window")?.split(separator: "x").compactMap({ Double($0) }), size.count == 2 {
+            let rail: CGFloat = Self.argument("--bars") == "side" ? 84 : 0
+            content()
+                .padding(.trailing, rail)
+                .overlay(alignment: .trailing) { Palette.ink.opacity(0.08).frame(width: rail) }
+                .adaptiveLayout(idiom: Self.idiom)
+                .frame(width: size[0], height: size[1])
+                .background(Palette.sky)
+                .overlay { Rectangle().stroke(Palette.ink.opacity(0.3)) }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black.ignoresSafeArea())
+        } else {
+            content().adaptiveLayout(idiom: Self.idiom)
+        }
+    }
+
+    /// In the tabs, as the app draws them, on the tab the screen belongs to.
+    @ViewBuilder
+    private var tabbed: some View {
+        if let tab = Self.tab(for: screen) {
+            RootTabs(selection: .constant(tab)) {
+                NavigationStack { if tab == .home { seeded } }
+            } play: {
+                NavigationStack { if tab == .play { seeded } }
+            } kidHours: {
+                NavigationStack { if tab == .kidHours { seeded } }
+            }
+        } else {
+            NavigationStack { seeded }
+        }
+    }
+
+    /// Nil for the screens that cover the tabs: the first run, the round and its end.
+    private static func tab(for screen: String) -> RootTab? {
+        switch screen.split(separator: ":").first.map(String.init) ?? screen {
+        case "home", "worlds": .home
+        case "play", "find": .play
+        case "kidhours", "schedule": .kidHours
+        default: nil
+        }
+    }
+
+    /// `--idiom phone` lays an iPad simulator out as the Duo.
+    private static var idiom: UIUserInterfaceIdiom? {
+        switch argument("--idiom") {
+        case "phone": .phone
+        case "pad": .pad
+        default: nil
+        }
+    }
+
+    private static func argument(_ name: String) -> String? {
+        let args = ProcessInfo.processInfo.arguments
+        guard let index = args.firstIndex(of: name), index + 1 < args.count else { return nil }
+        return args[index + 1]
     }
 
     @ViewBuilder private var seeded: some View {
@@ -33,17 +94,20 @@ struct ScreenshotHarness: View {
         case "signin": SignInScreen()
         case "paywall": PaywallScreen(context: .onboarding)
         // `play:<energy>[:<age>][:why]` opens Play at that `Energy` (Low by default) and
-        // `AgeBand`, and `why` scrolls down to "Why it works".
+        // `AgeBand`, and `why` scrolls down to "Why it works". `play:<game id>` opens on that
+        // game at its own energy and age, so every language photographs the same one.
         case let name where name.hasPrefix("play"):
             let parts = name.split(separator: ":").map(String.init)
-            let energy = parts.lazy.compactMap(Energy.init(rawValue:)).first ?? .low
-            let age = parts.lazy.compactMap(AgeBand.init(rawValue:)).first ?? .toddler
-            let play = PlayScreen(onBack: {}) { _ in }
+            let game = parts.lazy.compactMap(Activity.find).first
+            let energy = game?.energy ?? parts.lazy.compactMap(Energy.init(rawValue:)).first ?? .low
+            let age = game?.age ?? parts.lazy.compactMap(AgeBand.init(rawValue:)).first ?? .toddler
+            let play = PlayScreen(dealt: game, onBack: {}) { _ in }
                 .defaultAppStorage(ScreenshotFixtures.defaults(energy: energy, age: age))
                 .defaultScrollAnchor(parts.contains("why") ? .bottom : .top)
             if #available(iOS 26, *) { play.scrollEdgeEffectStyle(.soft, for: .top) } else { play }
         case "timer": TimerScreen(activity: Activity.all[0]) { _ in }
         case "done": DoneScreen(minutes: 10, onKeepPlaying: {}, onLeave: {})
+        case "find": ActivitySearchScreen(onPick: { _ in }, onStart: { _ in })
         case "kidhours": KidHoursScreen()
         case "schedule":
             KidHoursScreen()
@@ -108,9 +172,17 @@ enum ScreenshotFixtures {
             alwaysAllowed: ["Phone", "Slack"],
             neverAllowed: socialApps,
             usage: usage,
-            pausedMinutes: 95
+            pausedMinutes: 95,
+            now: evening
         )
         return store
+    }
+
+    /// The latest Thursday at 5:15 PM, inside School nights, so every frame shows Kid hours on
+    /// whatever the time of the capture.
+    private static var evening: Date {
+        let weekAgo = Date.now.addingTimeInterval(-7 * 86_400)
+        return Calendar.current.nextDate(after: weekAgo, matching: DateComponents(hour: 17, minute: 15, weekday: 5), matchingPolicy: .nextTime) ?? .now
     }
 
     /// The apps the evening goes to. Their icons, and the allowed ones', are in `ScreenshotIcons`.

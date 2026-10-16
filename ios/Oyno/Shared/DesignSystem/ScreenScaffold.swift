@@ -20,6 +20,8 @@ struct ScreenHeader<Trailing: View>: View {
     var onBack: (() -> Void)?
     @ViewBuilder var trailing: Trailing
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
         HStack(alignment: .top, spacing: Metric.Space.m) {
             if let onBack {
@@ -35,9 +37,9 @@ struct ScreenHeader<Trailing: View>: View {
             }
 
             VStack(alignment: .leading, spacing: 3) {
-                Text(title).oynoTitle()
+                Text(title).oynoTitle(large: adaptive.roomy)
                 Text(subtitle)
-                    .font(Typeface.ui(13, .regular, relativeTo: .footnote))
+                    .font(Typeface.ui(adaptive.roomy ? 14 : 13, .regular, relativeTo: .footnote))
                     .foregroundStyle(Palette.muted)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -69,6 +71,8 @@ struct Screen<Content: View>: View {
     var scrolls = true
     @ViewBuilder var content: Content
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
         Group {
             if scrolls {
@@ -77,6 +81,7 @@ struct Screen<Content: View>: View {
                         .padding(.horizontal, Metric.gutter)
                         .padding(.top, Metric.Space.s)
                         .padding(.bottom, Metric.Space.xl)
+                        .readableWidth()
                         .containerRelativeFrame(.horizontal)
                 }
                 .scrollDismissesKeyboard(.interactively)
@@ -84,6 +89,7 @@ struct Screen<Content: View>: View {
                 VStack(alignment: .leading, spacing: Metric.Space.l) { content }
                     .padding(.horizontal, Metric.gutter)
                     .padding(.top, Metric.Space.s)
+                    .readableWidth()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -92,7 +98,7 @@ struct Screen<Content: View>: View {
         // through it — and the home indicator strip below it with nothing painted at all.
         .background(Palette.sky.ignoresSafeArea())
         .background { SwipeBackGesture() }
-        .toolbar(.hidden, for: .navigationBar)
+        .systemBar(adaptive)
         .keyboardDismissBar()
     }
 }
@@ -210,38 +216,12 @@ extension View {
     /// The bar pinned to the bottom of a screen — the price and its action on Quick Quote,
     /// the save button on every editor.
     ///
-    /// It steps aside for the keyboard rather than riding above it. SwiftUI lifts a
-    /// `safeAreaInset` bar clear of the keypad, which stacks it under the Done bar that
-    /// `keyboardDismissBar` draws and leaves the two of them squatting on the half of the
-    /// screen the keyboard has not already taken. Nothing on this bar is wanted mid-entry
-    /// anyway: a quote is committed after the numbers are typed, not during.
+    /// It stays at the foot and lets the keyboard cover it. A screen beneath a pushed one
+    /// keeps the keyboard's safe area when the keyboard is dismissed mid-pop, a known
+    /// SwiftUI bug, which left the bar floating at the keyboard's height on the way back.
     func pinnedBar<Bar: View>(@ViewBuilder _ bar: () -> Bar) -> some View {
-        modifier(PinnedBar(bar: bar()))
-    }
-}
-
-private struct PinnedBar<Bar: View>: ViewModifier {
-    let bar: Bar
-    @State private var keyboardIsUp = false
-
-    func body(content: Content) -> some View {
-        content
-            .safeAreaInset(edge: .bottom) {
-                if !keyboardIsUp { bar.pinnedBarBackground() }
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) {
-                setKeyboard(up: true, from: $0)
-            }
-            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) {
-                setKeyboard(up: false, from: $0)
-            }
-    }
-
-    /// Timed off the notification rather than a constant, so the bar leaves with the
-    /// keyboard instead of blinking out from under it.
-    private func setKeyboard(up: Bool, from note: Notification) {
-        let duration = note.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-        withAnimation(.easeOut(duration: duration)) { keyboardIsUp = up }
+        safeAreaInset(edge: .bottom) { bar().pinnedBarBackground() }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 

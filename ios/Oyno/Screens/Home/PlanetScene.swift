@@ -157,12 +157,15 @@ struct PlanetScene: View {
     }
 
     var body: some View {
-        VStack(spacing: Metric.Space.s) {
+        VStack(spacing: 0) {
             stage
             if explorable {
+                // Room only while the hint shows, so the planet otherwise sits close over the totals.
+                let hinting = open && !didBrowseWorlds
                 swipeHint
-                    .frame(height: Metric.tapTarget)
-                    .opacity(open && !didBrowseWorlds ? 1 : 0)
+                    .frame(height: hinting ? Metric.tapTarget : 0)
+                    .padding(.top, hinting ? Metric.Space.s : 0)
+                    .opacity(hinting ? 1 : 0)
                     .animation(openAnimation, value: open)
                     .animation(.easeOut(duration: 0.2), value: didBrowseWorlds)
             }

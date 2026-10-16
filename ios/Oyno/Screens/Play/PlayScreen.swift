@@ -10,35 +10,44 @@ struct PlayScreen: View {
     @Environment(OynoStore.self) private var oyno
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(\.dynamicTypeSize) private var typeSize
+    @Environment(\.adaptive) private var adaptive
     @AppStorage("oyno.age") private var age = AgeBand.toddler
     @AppStorage("oyno.energy") private var energy = Energy.low
-    @State private var activity = Activity.pick(for: .low, age: .toddler)
+    @State private var activity: Activity
     @State private var holding: CGFloat = 0
     @State private var searching = false
 
+    /// `dealt` opens on that game instead of a random one, for the screenshot harness.
+    init(dealt: Activity? = nil, onBack: @escaping () -> Void, onStart: @escaping (Activity) -> Void) {
+        self.onBack = onBack
+        self.onStart = onStart
+        _activity = State(initialValue: dealt ?? Activity.pick(for: .low, age: .toddler))
+    }
+
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 0) {
-                topBar.padding(.bottom, Metric.Space.l)
-                header
-                title
-                meta.padding(.top, Metric.Space.s)
-                blurb.padding(.top, Metric.Space.m)
-                battery.screenshotCallout("battery").padding(.top, Metric.Space.xl)
-                steps.padding(.top, Metric.Space.l)
-                evidence.screenshotCallout("evidence").padding(.top, Metric.Space.xl)
-            }
-            .padding(.horizontal, Metric.gutter)
-            .padding(.top, Metric.Space.s)
-            .padding(.bottom, Metric.Space.xl)
-            .containerRelativeFrame(.horizontal)
+        Group {
+            if adaptive.columns == .two { split } else { column }
         }
-        .scrollIndicators(.hidden)
-        .pinnedBar { actions }
         .animation(.easeInOut(duration: 0.25), value: activity.id)
         .background(Palette.sky.ignoresSafeArea())
-        .toolbar(.hidden, for: .navigationBar)
-        .navigationDestination(isPresented: $searching) { ActivitySearchScreen(onPick: choose) }
+        .systemBar(adaptive)
+        .toolbar {
+            if adaptive.bars == .top, let status = kidHoursStatus {
+                // The bar sizes an item to an icon's width unless it keeps its own.
+                ToolbarItem(placement: .topBarLeading) { pill(status).fixedSize() }.bare()
+            }
+            if adaptive.barsAreSystem {
+                ToolbarItem(placement: .topBarTrailing) {
+                    BarButton(title: "Find an activity", symbol: "magnifyingglass") { searching = true }
+                }
+            }
+        }
+        .navigationDestination(isPresented: $searching) {
+            ActivitySearchScreen(onPick: choose) { picked in
+                choose(picked)
+                start()
+            }
+        }
         .onAppear(perform: dealIfStale)
         .onChange(of: energy) { dealIfStale() }
         .onChange(of: age) { dealIfStale() }
@@ -59,20 +68,87 @@ struct PlayScreen: View {
         searching = false
     }
 
+    /// The phone's: the game from its title to its sources, the start pinned at the foot.
+    private var column: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 0) {
+                topBar
+                header
+                title
+                meta.padding(.top, Metric.Space.s)
+                blurb.padding(.top, Metric.Space.m)
+                battery.screenshotCallout("battery").padding(.top, Metric.Space.xl)
+                steps.padding(.top, Metric.Space.l)
+                evidence.screenshotCallout("evidence").padding(.top, Metric.Space.xl)
+            }
+            .padding(.horizontal, Metric.gutter)
+            .padding(.top, Metric.Space.s)
+            .padding(.bottom, Metric.Space.xl)
+            .readableWidth()
+            .containerRelativeFrame(.horizontal)
+        }
+        .scrollIndicators(.hidden)
+        .pinnedBar {
+            actions
+                .padding(.horizontal, Metric.gutter)
+                .padding(.top, Metric.Space.m)
+                .padding(.bottom, Metric.Space.xs)
+                .readableWidth()
+        }
+    }
+
+    /// iPad and the Duo open: the game to read on the leading side, its steps and the start on
+    /// the trailing one. The battery joins the steps on the Duo, where the thumb is.
+    private var split: some View {
+        FoldColumns {
+            ScrollsIfNeeded {
+                VStack(alignment: .leading, spacing: 0) {
+                    topBar
+                    header
+                    title
+                    meta.padding(.top, Metric.Space.m)
+                    blurb.padding(.top, 14)
+                    if adaptive.bars == .top { battery.padding(.top, 28) }
+                    Spacer(minLength: Metric.Space.xl)
+                    evidence
+                }
+                .padding(.vertical, Metric.Space.xl)
+            }
+        } trailing: {
+            ScrollsIfNeeded {
+                VStack(alignment: .leading, spacing: adaptive.roomy ? Metric.Space.xl : 14) {
+                    if adaptive.bars != .top { battery }
+                    steps
+                    Spacer(minLength: 0)
+                    actions
+                }
+                .padding(.vertical, Metric.Space.xl)
+            }
+        }
+    }
+
     private func start() {
         guard oyno.requireEntitlement() else { return }
         Analytics.shared.track(.roundStarted(activity: activity.id, energy: energy.rawValue, age: age.rawValue))
         onStart(activity)
     }
 
-    /// Back, the Kid hours status and search, the status centred between the two buttons.
+    /// Back, the Kid hours status and search, the status centred between the two buttons. Where
+    /// the system's bar holds search, the tab bar is the way back, and the status leads alone.
+    /// On iPad the status sits in that bar too.
+    @ViewBuilder
     private var topBar: some View {
-        HStack(spacing: Metric.Space.s) {
-            GlassIconButton(symbol: "chevron.left", label: "Back", action: onBack)
-            Spacer(minLength: 0)
-            if let status = kidHoursStatus { pill(status) }
-            Spacer(minLength: 0)
-            GlassIconButton(symbol: "magnifyingglass", label: "Find an activity") { searching = true }
+        if !adaptive.barsAreSystem {
+            HStack(spacing: Metric.Space.s) {
+                GlassIconButton(symbol: "chevron.left", label: "Back", action: onBack)
+                Spacer(minLength: 0)
+                if let status = kidHoursStatus { pill(status) }
+                Spacer(minLength: 0)
+                GlassIconButton(symbol: "magnifyingglass", label: "Find an activity") { searching = true }
+            }
+            .padding(.bottom, Metric.Space.l)
+        } else if adaptive.bars == .side, let status = kidHoursStatus {
+            pill(status).padding(.bottom, Metric.Space.l)
         }
     }
 
@@ -117,7 +193,8 @@ struct PlayScreen: View {
             Text("One easy thing")
                 .font(Typeface.ui(13, .bold, relativeTo: .caption))
                 .foregroundStyle(Palette.muted)
-            Spacer(minLength: 0)
+            // Beside the eyebrow in a column of its own, at the far edge in the phone's full width.
+            if adaptive.columns != .two { Spacer(minLength: 0) }
             ageMenu
         }
     }
@@ -148,20 +225,25 @@ struct PlayScreen: View {
     }
 
     /// Two lines held open in the title's own font, so a short title does not pull the page up
-    /// and the reserve grows with Dynamic Type.
+    /// and the reserve grows with Dynamic Type. A column of its own has no page below to pull.
     private var title: some View {
         ZStack(alignment: .topLeading) {
-            Text(verbatim: " \n ").hidden().accessibilityHidden(true)
+            if adaptive.columns != .two { Text(verbatim: " \n ").hidden().accessibilityHidden(true) }
             Text(verbatim: activity.title)
                 .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
                 .minimumScaleFactor(0.75)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
         }
-        .font(Typeface.ui(48, .extrabold, relativeTo: .largeTitle))
-        .tracking(-1.8)
+        .font(Typeface.ui(titleSize, .extrabold, relativeTo: .largeTitle))
+        .tracking(-titleSize * 0.0375)
         .foregroundStyle(Palette.ink)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var titleSize: CGFloat {
+        guard adaptive.columns == .two else { return 48 }
+        return adaptive.roomy ? 68 : 54
     }
 
     /// How long, then what it needs: plain text for the time, quiet badges for the rest.
@@ -193,7 +275,7 @@ struct PlayScreen: View {
         .font(Typeface.ui(15, .regular, relativeTo: .body))
         .foregroundStyle(Palette.muted)
         .lineSpacing(3)
-        .frame(maxWidth: 310, alignment: .leading)
+        .frame(maxWidth: adaptive.columns == .two ? 440 : 310, alignment: .leading)
     }
 
     /// The icon on a tag's badge, by the tag's id. A tag added to the data later wears a plain
@@ -268,13 +350,17 @@ struct PlayScreen: View {
                 Glyph(symbol: level.symbol, size: 15, color: active ? Palette.ink : Palette.muted)
                 Text(verbatim: level.label)
                     .font(Typeface.ui(14, active ? .bold : .semibold, relativeTo: .subheadline))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                     .foregroundStyle(active ? Palette.ink : Palette.muted)
             }
         }
     }
 
     private var steps: some View {
-        Card(raised: true) { StepList(steps: activity.steps) }
+        Card(padding: adaptive.roomy ? 24 : Metric.cardPadding, raised: true) {
+            StepList(steps: activity.steps, large: adaptive.roomy)
+        }
     }
 
     /// What the game exercises and who showed it, kept quiet under the steps. A source opens
@@ -307,7 +393,8 @@ struct PlayScreen: View {
 
     // MARK: Actions
 
-    /// Pinned above the tab bar, so the start is never under it whatever the game's length.
+    /// Pinned above the tab bar on the phone, so the start is never under it whatever the
+    /// game's length. At the foot of the trailing column on a wide window.
     private var actions: some View {
         VStack(spacing: 2) {
             PrimaryButton(title: "Start \(activity.minutes)-minute round", symbol: "play.fill") { start() }
@@ -331,9 +418,6 @@ struct PlayScreen: View {
                 if kidHours.isOnNow { notNow }
             }
         }
-        .padding(.horizontal, Metric.gutter)
-        .padding(.top, Metric.Space.m)
-        .padding(.bottom, Metric.Space.xs)
     }
 
     /// Held for two seconds, as on Kid hours: the apps open for a break instead of a round.

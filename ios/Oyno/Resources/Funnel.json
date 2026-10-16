@@ -485,6 +485,1598 @@
         "haveAccount": "Already have an account? Sign in"
       }
     },
+    "de": {
+      "chrome": {
+        "continue": "Weiter",
+        "letsGo": "Los geht’s",
+        "intro": "Ein paar Fragen · etwa eine Minute",
+        "back": "Zurück",
+        "progress": "Fortschritt"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Was davon [passt zu deinen Abenden]?",
+          "options": {
+            "scroll": "Ich scrolle, statt zu spielen",
+            "ideas": "Ich bin zu müde für Spielideen",
+            "asks": "Mein Kind will mein Handy",
+            "both": "Wir hängen beide am Handy"
+          }
+        },
+        "age": {
+          "headline": "Wie alt ist dein jüngstes Kind?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "Wann [gewinnt das Handy] am häufigsten?",
+          "options": {
+            "afterwork": "Direkt nach der Arbeit",
+            "dinner": "Rund ums Abendessen",
+            "weekend": "Am Wochenende morgens",
+            "bedtime": "Vor dem Schlafengehen"
+          }
+        },
+        "pickups": {
+          "headline": "Wie oft greifst du [in einer Stunde] mit deinem Kind zum Handy?",
+          "options": {
+            "rare": "Fast nie",
+            "few": "Ein- oder zweimal",
+            "often": "Alle paar Minuten",
+            "lost": "Ich zähle nicht mehr mit"
+          }
+        },
+        "apps": {
+          "headline": "Welche Apps [ziehen dich immer wieder rein]?",
+          "description": "Wähle alle aus, die passen",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Nachrichten",
+            "work": "E-Mail und Slack",
+            "games": "Spiele"
+          }
+        },
+        "energy": {
+          "headline": "Wie viel Energie hast du [um 18 Uhr] noch?",
+          "options": {
+            "low": "Akku fast leer",
+            "okay": "Geht so",
+            "full": "Jede Menge"
+          }
+        },
+        "ideas": {
+          "headline": "Weißt du meistens, [was ihr spielen könnt]?",
+          "options": {
+            "often": "Fast immer",
+            "sometimes": "Manchmal",
+            "rarely": "Selten, mir fällt nichts ein"
+          }
+        },
+        "tried": {
+          "headline": "Was hast du [schon probiert]?",
+          "options": {
+            "limits": "Bildschirmzeit-Limits",
+            "room": "Handy ins Nebenzimmer",
+            "delete": "Apps löschen",
+            "nothing": "Noch nichts"
+          }
+        },
+        "minutes": {
+          "headline": "Wie viele Minuten [am Tag] kannst du dir nehmen?",
+          "options": {
+            "ten": "10 Minuten",
+            "twenty": "20 Minuten",
+            "thirty": "30 Minuten oder mehr"
+          }
+        },
+        "soon": {
+          "headline": "Wann willst du deine Abende zurück?",
+          "options": {
+            "tonight": "Heute Abend",
+            "week": "Diese Woche",
+            "month": "Diesen Monat",
+            "unsure": "Weiß ich noch nicht"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "Es liegt nicht an dir. Apps sind [gemacht, um dich zurückzuholen].",
+          "body": "Hinter jeder App auf deinem Handy steckt ein Team, das dafür bezahlt wird, deine nächste Minute zu gewinnen. Gegen die hat deine Willenskraft um 18 Uhr keine faire Chance.",
+          "variants": {
+            "ideas": {
+              "headline": "Es liegt nicht an dir. Nach einem vollen Tag hat niemand [Spielideen].",
+              "body": "Also gewinnt das Einfachste im Raum, und das Einfachste im Raum ist ein Bildschirm."
+            },
+            "asks": {
+              "headline": "Es liegt nicht an dir. Kinder wollen, [was du anschaust].",
+              "body": "Ein Handy in deiner Hand ist das Spannendste im Raum. Leg es weg, und das Spannendste bist du."
+            },
+            "both": {
+              "headline": "Es liegt nicht an dir. Zwei Handys, und [im Raum wird es still].",
+              "body": "Jeder wartet, dass der andere sein Handy zuerst weglegt. Warten muss niemand, wenn beide Handys gleichzeitig Pause machen."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Wohin ein Abend [verschwindet]."
+        },
+        "influence": {
+          "headline": "Je mehr wir scrollen, desto öfter [wollen Kinder an den Bildschirm]."
+        },
+        "alternative": {
+          "headline": "Oyno [kämpft nicht] gegen deine Gewohnheit.",
+          "body": "Es gibt dir eine bessere Idee: ein kurzes Spiel mit deinem Kind, passend zu der Energie, die du noch hast.",
+          "variants": {
+            "low": {
+              "body": "Es gibt dir eine bessere Idee: ein kurzes, ruhiges Spiel, das auch mit fast leerem Akku klappt."
+            },
+            "full": {
+              "body": "Es gibt dir eine bessere Idee: ein Spiel mit deinem Kind, das die Energie nutzt, die du noch hast."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Zehn Minuten [reichen].",
+          "body": "Kinder erinnern sich daran, dass du dich zu ihnen auf den Boden gesetzt hast, nicht daran, wie lange das Spiel ging. Oyno sucht eins aus, das in zehn Minuten passt und zu der Energie, die du noch hast.",
+          "variants": {
+            "twenty": {
+              "headline": "Zwanzig Minuten sind [reichlich].",
+              "body": "Kinder erinnern sich daran, dass du dich zu ihnen auf den Boden gesetzt hast, nicht daran, wie lange das Spiel ging. Oyno sucht eins aus, das in zwanzig Minuten passt und zu der Energie, die du noch hast."
+            },
+            "thirty": {
+              "headline": "Dreißig Minuten sind [mehr als genug].",
+              "body": "Kinder erinnern sich daran, dass du dich zu ihnen auf den Boden gesetzt hast, nicht daran, wie lange das Spiel ging. Oyno sucht eins aus, das zu deinem Abend passt und zu der Energie, die du noch hast."
+            }
+          }
+        },
+        "plan": {
+          "headline": "Wir erstellen [deinen Plan]"
+        },
+        "account": {
+          "headline": "Dein Plan ist fertig. [Speichere ihn], um deinen Preis zu sehen."
+        },
+        "paywall": {
+          "headline": "[Der Planet deines Kindes] wartet auf dich."
+        },
+        "checkout": {
+          "headline": "Zahlungsdaten."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Deine Apps pausieren in der Familienzeit",
+          "Jeden Abend ein leichtes Spiel",
+          "Der Planet deiner Familie wächst"
+        ],
+        "timeline": [
+          {
+            "title": "Heute",
+            "detail": "Wähle deine Apps und deine Familienzeit. Dein erstes Spiel ist bereit."
+          },
+          {
+            "title": "Diese Woche",
+            "detail": "Jeden Abend zehn Minuten gemeinsam spielen, Handy weg."
+          },
+          {
+            "title": "In einem Monat",
+            "detail": "Ein wacheres Kind: Jedes Spiel trainiert Selbstkontrolle und Gedächtnis."
+          }
+        ],
+        "monthly": "Monatlich",
+        "yearly": "Jährlich",
+        "perMonth": "/ Monat",
+        "perYear": "/ Jahr",
+        "perDay": "pro Tag",
+        "cancelAnytime": "Jederzeit kündbar",
+        "billedYearly": "Jährliche Abrechnung",
+        "save": "{percent} sparen",
+        "guarantee": "Nicht das Richtige? Innerhalb von 14 Tagen bekommst du auf Anfrage dein ganzes Geld zurück.",
+        "continue": "Weiter"
+      },
+      "account": {
+        "signIn": "Anmelden",
+        "haveAccount": "Schon ein Konto? Anmelden"
+      }
+    },
+    "fr": {
+      "chrome": {
+        "continue": "Continuer",
+        "letsGo": "C’est parti",
+        "intro": "Quelques questions · environ une minute",
+        "back": "Retour",
+        "progress": "Progression"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Qu’est-ce qui [ressemble à vos soirées] ?",
+          "options": {
+            "scroll": "Je scrolle au lieu de jouer",
+            "ideas": "Pas la force d’inventer un jeu",
+            "asks": "Mon enfant réclame mon téléphone",
+            "both": "On est chacun sur son téléphone"
+          }
+        },
+        "age": {
+          "headline": "Quel âge a votre plus jeune ?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "À quel moment le téléphone [l’emporte le plus] ?",
+          "options": {
+            "afterwork": "Juste après le travail",
+            "dinner": "Autour du dîner",
+            "weekend": "Les matins du week-end",
+            "bedtime": "Avant le coucher"
+          }
+        },
+        "pickups": {
+          "headline": "Combien de fois prenez-vous votre téléphone [en une heure] avec votre enfant ?",
+          "options": {
+            "rare": "Presque jamais",
+            "few": "Une ou deux fois",
+            "often": "Toutes les cinq minutes",
+            "lost": "Je ne compte plus"
+          }
+        },
+        "apps": {
+          "headline": "Quelles apps [vous font replonger] ?",
+          "description": "Plusieurs choix possibles",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Actualités",
+            "work": "Mails et Slack",
+            "games": "Jeux"
+          }
+        },
+        "energy": {
+          "headline": "Combien d’énergie vous reste-t-il [à 18 h] ?",
+          "options": {
+            "low": "Batterie faible",
+            "okay": "Ça va",
+            "full": "À bloc"
+          }
+        },
+        "ideas": {
+          "headline": "Savez-vous en général [à quoi jouer] avec votre enfant ?",
+          "options": {
+            "often": "Presque toujours",
+            "sometimes": "Parfois",
+            "rarely": "Rarement, c’est le trou noir"
+          }
+        },
+        "tried": {
+          "headline": "Qu’avez-vous [déjà essayé] ?",
+          "options": {
+            "limits": "Les limites de Temps d’écran",
+            "room": "Le téléphone dans une autre pièce",
+            "delete": "Supprimer des apps",
+            "nothing": "Rien pour l’instant"
+          }
+        },
+        "minutes": {
+          "headline": "Combien de minutes [par jour] pourriez-vous y consacrer ?",
+          "options": {
+            "ten": "10 minutes",
+            "twenty": "20 minutes",
+            "thirty": "30 minutes ou plus"
+          }
+        },
+        "soon": {
+          "headline": "Quand voulez-vous retrouver vos soirées ?",
+          "options": {
+            "tonight": "Dès ce soir",
+            "week": "Cette semaine",
+            "month": "Ce mois-ci",
+            "unsure": "Je ne sais pas encore"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "Ce n’est pas vous. Les apps sont [faites pour vous retenir].",
+          "body": "Chaque app de votre téléphone a une équipe payée pour gagner votre prochaine minute. À 18 h, la volonté ne fait pas le poids.",
+          "variants": {
+            "ideas": {
+              "headline": "Ce n’est pas vous. Après une longue journée, personne n’a [d’idées de jeux].",
+              "body": "Alors c’est le plus facile qui gagne. Et le plus facile, c’est l’écran."
+            },
+            "asks": {
+              "headline": "Ce n’est pas vous. Les enfants veulent [ce que vous regardez].",
+              "body": "Un téléphone dans votre main, c’est ce qu’il y a de plus intéressant dans la pièce. Posez-le, et ce sera vous."
+            },
+            "both": {
+              "headline": "Ce n’est pas vous. Deux téléphones, et [la pièce se tait].",
+              "body": "Chacun attend que l’autre pose le sien en premier. Plus besoin d’attendre si les deux téléphones se mettent en pause en même temps."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Où [file] une soirée."
+        },
+        "influence": {
+          "headline": "Plus on scrolle, plus les enfants [réclament un écran]."
+        },
+        "alternative": {
+          "headline": "Oyno ne cherche pas à [casser] votre habitude.",
+          "body": "Il vous donne une meilleure idée : un jeu court avec votre enfant, à la mesure de l’énergie qui vous reste.",
+          "variants": {
+            "low": {
+              "body": "Il vous donne une meilleure idée : un jeu court et calme, même avec une batterie faible."
+            },
+            "full": {
+              "body": "Il vous donne une meilleure idée : un jeu avec votre enfant qui profite de l’énergie qui vous reste."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Dix minutes, [ça suffit].",
+          "body": "Les enfants se souviennent du parent qui s’est assis par terre avec eux, pas de la durée du jeu. Oyno en choisit un qui tient en dix minutes, à la mesure de l’énergie qui vous reste.",
+          "variants": {
+            "twenty": {
+              "headline": "Vingt minutes, [c’est déjà beaucoup].",
+              "body": "Les enfants se souviennent du parent qui s’est assis par terre avec eux, pas de la durée du jeu. Oyno en choisit un qui tient en vingt minutes, à la mesure de l’énergie qui vous reste."
+            },
+            "thirty": {
+              "headline": "Trente minutes, [c’est plus que suffisant].",
+              "body": "Les enfants se souviennent du parent qui s’est assis par terre avec eux, pas de la durée du jeu. Oyno en choisit un qui va avec votre soirée et l’énergie qui vous reste."
+            }
+          }
+        },
+        "plan": {
+          "headline": "On prépare [votre programme]"
+        },
+        "account": {
+          "headline": "Votre programme est prêt. [Enregistrez-le] pour voir votre tarif."
+        },
+        "paywall": {
+          "headline": "Revenez sur [la planète de votre enfant]."
+        },
+        "checkout": {
+          "headline": "Informations de paiement."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Vos apps en pause pendant le Temps en famille",
+          "Un jeu facile chaque soir",
+          "Une planète qui grandit avec votre famille"
+        ],
+        "timeline": [
+          {
+            "title": "Aujourd’hui",
+            "detail": "Choisissez vos apps et votre Temps en famille. Votre premier jeu est prêt."
+          },
+          {
+            "title": "Cette semaine",
+            "detail": "Dix minutes de jeu ensemble, chaque soir, téléphone posé."
+          },
+          {
+            "title": "Dans un mois",
+            "detail": "Un enfant plus vif : chaque jeu entraîne la maîtrise de soi et la mémoire."
+          }
+        ],
+        "monthly": "Mensuel",
+        "yearly": "Annuel",
+        "perMonth": "/ mois",
+        "perYear": "/ an",
+        "perDay": "par jour",
+        "cancelAnytime": "Annulable à tout moment",
+        "billedYearly": "Facturé une fois par an",
+        "save": "Économisez {percent}",
+        "guarantee": "Ça ne vous convient pas ? Remboursement intégral sur demande sous 14 jours.",
+        "continue": "Continuer"
+      },
+      "account": {
+        "signIn": "Se connecter",
+        "haveAccount": "Déjà un compte ? Se connecter"
+      }
+    },
+    "es": {
+      "chrome": {
+        "continue": "Continuar",
+        "letsGo": "¡Vamos!",
+        "intro": "Unas preguntas · un minuto",
+        "back": "Atrás",
+        "progress": "Progreso"
+      },
+      "questions": {
+        "problem": {
+          "headline": "¿Cuál [se parece a tus tardes]?",
+          "options": {
+            "scroll": "Hago scroll en vez de jugar",
+            "ideas": "No me quedan fuerzas para pensar un juego",
+            "asks": "Mi peque me pide el móvil",
+            "both": "Los dos estamos pegados al móvil"
+          }
+        },
+        "age": {
+          "headline": "¿Qué edad tiene el peque de la casa?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "¿Cuándo [gana más] el móvil?",
+          "options": {
+            "afterwork": "Al volver del trabajo",
+            "dinner": "A la hora de cenar",
+            "weekend": "Mañanas de fin de semana",
+            "bedtime": "Antes de dormir"
+          }
+        },
+        "pickups": {
+          "headline": "¿Cuántas veces coges el móvil [en una hora] cuando estás con tu peque?",
+          "options": {
+            "rare": "Casi nunca",
+            "few": "Una o dos veces",
+            "often": "Cada dos por tres",
+            "lost": "Pierdo la cuenta"
+          }
+        },
+        "apps": {
+          "headline": "¿Qué apps [te enganchan]?",
+          "description": "Puedes elegir varias",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Noticias",
+            "work": "Correo y Slack",
+            "games": "Juegos"
+          }
+        },
+        "energy": {
+          "headline": "¿Cuánta energía te queda [a las seis]?",
+          "options": {
+            "low": "Batería baja",
+            "okay": "Media",
+            "full": "De sobra"
+          }
+        },
+        "ideas": {
+          "headline": "¿Sueles saber [a qué jugar] con tu peque?",
+          "options": {
+            "often": "Casi siempre",
+            "sometimes": "A veces",
+            "rarely": "Pocas veces, me quedo en blanco"
+          }
+        },
+        "tried": {
+          "headline": "¿Qué has [probado ya]?",
+          "options": {
+            "limits": "Límites en Tiempo de uso",
+            "room": "El móvil en otra habitación",
+            "delete": "Borrar apps",
+            "nothing": "Nada todavía"
+          }
+        },
+        "minutes": {
+          "headline": "¿Cuántos minutos [al día] podrías dedicarle?",
+          "options": {
+            "ten": "10 minutos",
+            "twenty": "20 minutos",
+            "thirty": "30 minutos o más"
+          }
+        },
+        "soon": {
+          "headline": "¿Cuándo quieres recuperar tus tardes?",
+          "options": {
+            "tonight": "Hoy mismo",
+            "week": "Esta semana",
+            "month": "Este mes",
+            "unsure": "Aún no lo sé"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "No eres tú. Las apps están [hechas para engancharte].",
+          "body": "Cada app de tu móvil tiene un equipo al que pagan por ganarse tu siguiente minuto. A las seis de la tarde, tu fuerza de voluntad juega en desventaja.",
+          "variants": {
+            "ideas": {
+              "headline": "No eres tú. Tras un día entero, nadie tiene [ideas para jugar].",
+              "body": "Así que gana lo que menos cuesta, y lo que menos cuesta es una pantalla."
+            },
+            "asks": {
+              "headline": "No eres tú. Los peques quieren [lo que tú miras].",
+              "body": "Un móvil en tu mano es lo más interesante de la habitación. Suéltalo, y lo más interesante serás tú."
+            },
+            "both": {
+              "headline": "No eres tú. Con dos móviles, [el salón se queda mudo].",
+              "body": "Cada uno espera a que el otro suelte el suyo primero. Nadie tiene que esperar si los dos móviles se pausan a la vez."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Así [se va] una tarde."
+        },
+        "influence": {
+          "headline": "Cuanto más scroll hacemos, más [piden pantallas] los peques."
+        },
+        "alternative": {
+          "headline": "Oyno [no lucha] contra un hábito que ya tienes.",
+          "body": "Te da una idea mejor: un juego corto con tu peque, a la medida de la energía que te queda.",
+          "variants": {
+            "low": {
+              "body": "Te da una idea mejor: un juego corto y tranquilo para cuando vas con la batería baja."
+            },
+            "full": {
+              "body": "Te da una idea mejor: un juego con tu peque que aprovecha la energía que aún tienes."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Con diez minutos [basta].",
+          "body": "Los peques recuerdan que te tiraste al suelo a jugar, no cuánto duró el juego. Oyno elige uno que cabe en diez minutos y en la energía que te queda.",
+          "variants": {
+            "twenty": {
+              "headline": "Veinte minutos dan [para mucho].",
+              "body": "Los peques recuerdan que te tiraste al suelo a jugar, no cuánto duró el juego. Oyno elige uno que cabe en veinte minutos y en la energía que te queda."
+            },
+            "thirty": {
+              "headline": "Media hora es [más que suficiente].",
+              "body": "Los peques recuerdan que te tiraste al suelo a jugar, no cuánto duró el juego. Oyno elige uno que encaja con tu tarde y con la energía que te queda."
+            }
+          }
+        },
+        "plan": {
+          "headline": "Preparando [tu plan]"
+        },
+        "account": {
+          "headline": "Tu plan está listo. [Guárdalo] para ver tu precio."
+        },
+        "paywall": {
+          "headline": "Vuelve [al planeta de tu peque]."
+        },
+        "checkout": {
+          "headline": "Datos de pago."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Tus apps en pausa durante el Tiempo en familia",
+          "Un juego fácil cada tarde",
+          "El planeta de tu familia, cada vez más grande"
+        ],
+        "timeline": [
+          {
+            "title": "Hoy",
+            "detail": "Elige tus apps y tu Tiempo en familia. Tu primer juego ya está listo."
+          },
+          {
+            "title": "Esta semana",
+            "detail": "Diez minutos de juego juntos cada tarde, sin móvil."
+          },
+          {
+            "title": "En un mes",
+            "detail": "Un peque más espabilado: cada juego entrena el autocontrol y la memoria."
+          }
+        ],
+        "monthly": "Mensual",
+        "yearly": "Anual",
+        "perMonth": "/ mes",
+        "perYear": "/ año",
+        "perDay": "al día",
+        "cancelAnytime": "Cancela cuando quieras",
+        "billedYearly": "Un solo pago al año",
+        "save": "Ahorra {percent}",
+        "guarantee": "¿No es para ti? Te devolvemos todo el dinero si lo pides en 14 días.",
+        "continue": "Continuar"
+      },
+      "account": {
+        "signIn": "Iniciar sesión",
+        "haveAccount": "¿Ya tienes cuenta? Inicia sesión"
+      }
+    },
+    "es-MX": {
+      "chrome": {
+        "continue": "Continuar",
+        "letsGo": "¡Vamos!",
+        "intro": "Unas preguntas · toma un minuto",
+        "back": "Atrás",
+        "progress": "Progreso"
+      },
+      "questions": {
+        "problem": {
+          "headline": "¿Cuál de estas [se parece a tus tardes]?",
+          "options": {
+            "scroll": "Me pongo a scrollear en vez de jugar",
+            "ideas": "Llego sin energía para pensar en un juego",
+            "asks": "Mi peque me pide el celular",
+            "both": "Los dos estamos pegados al celular"
+          }
+        },
+        "age": {
+          "headline": "¿Qué edad tiene el más chiquito de la casa?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "¿Cuándo [te gana más] el celular?",
+          "options": {
+            "afterwork": "Saliendo del trabajo",
+            "dinner": "A la hora de la cena",
+            "weekend": "Fines de semana en la mañana",
+            "bedtime": "Antes de dormir"
+          }
+        },
+        "pickups": {
+          "headline": "¿Cuántas veces agarras el celular [en una hora] con tu peque?",
+          "options": {
+            "rare": "Casi nunca",
+            "few": "Una o dos veces",
+            "often": "A cada rato",
+            "lost": "Pierdo la cuenta"
+          }
+        },
+        "apps": {
+          "headline": "¿Qué apps [te enganchan]?",
+          "description": "Elige todas las que apliquen",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Noticias",
+            "work": "Correo y Slack",
+            "games": "Juegos"
+          }
+        },
+        "energy": {
+          "headline": "¿Cuánta energía te queda [a las 6 p.m.]?",
+          "options": {
+            "low": "Batería baja",
+            "okay": "Media",
+            "full": "De sobra"
+          }
+        },
+        "ideas": {
+          "headline": "¿Sueles saber [a qué jugar] con tu peque?",
+          "options": {
+            "often": "Casi siempre",
+            "sometimes": "A veces",
+            "rarely": "Casi nunca, me quedo en blanco"
+          }
+        },
+        "tried": {
+          "headline": "¿Qué [ya probaste]?",
+          "options": {
+            "limits": "Límites en Tiempo en pantalla",
+            "room": "Dejar el celular en otro cuarto",
+            "delete": "Borrar apps",
+            "nothing": "Nada todavía"
+          }
+        },
+        "minutes": {
+          "headline": "¿Cuántos minutos [al día] le puedes dedicar?",
+          "options": {
+            "ten": "10 minutos",
+            "twenty": "20 minutos",
+            "thirty": "30 minutos o más"
+          }
+        },
+        "soon": {
+          "headline": "¿Cuándo quieres recuperar tus tardes?",
+          "options": {
+            "tonight": "Hoy mismo",
+            "week": "Esta semana",
+            "month": "Este mes",
+            "unsure": "Todavía no sé"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "No eres tú. Las apps están [hechas para engancharte].",
+          "body": "Cada app de tu celular tiene un equipo al que le pagan por ganarse tu siguiente minuto. A las 6 de la tarde, la fuerza de voluntad no tiene con qué.",
+          "variants": {
+            "ideas": {
+              "headline": "No eres tú. Después de un día entero, nadie tiene [ideas para jugar].",
+              "body": "Así que gana lo más fácil que hay en el cuarto, y lo más fácil siempre es una pantalla."
+            },
+            "asks": {
+              "headline": "No eres tú. Los niños quieren [lo que tú estás viendo].",
+              "body": "Un celular en tu mano es lo más interesante del cuarto. Suéltalo, y lo más interesante eres tú."
+            },
+            "both": {
+              "headline": "No eres tú. Con dos celulares, [el cuarto se queda callado].",
+              "body": "Cada quien espera a que el otro suelte el suyo primero. Nadie tiene que esperar si los dos celulares se pausan al mismo tiempo."
+            }
+          }
+        },
+        "evening": {
+          "headline": "En qué [se te va] la tarde."
+        },
+        "influence": {
+          "headline": "Entre más usamos el celular, más [piden pantalla] los niños."
+        },
+        "alternative": {
+          "headline": "Oyno [no pelea] con un hábito que ya tienes.",
+          "body": "Te da una mejor idea: un juego cortito con tu peque, a la medida de la energía que te queda.",
+          "variants": {
+            "low": {
+              "body": "Te da una mejor idea: un juego corto y tranquilo que puedes jugar aunque tengas la batería baja."
+            },
+            "full": {
+              "body": "Te da una mejor idea: un juego con tu peque que aprovecha la energía que todavía tienes."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Diez minutos [bastan].",
+          "body": "Los niños se acuerdan de cuando te tiraste al piso con ellos, no de cuánto duró el juego. Oyno elige uno que cabe en diez minutos y en la energía que te queda.",
+          "variants": {
+            "twenty": {
+              "headline": "Veinte minutos [son de sobra].",
+              "body": "Los niños se acuerdan de cuando te tiraste al piso con ellos, no de cuánto duró el juego. Oyno elige uno que cabe en veinte minutos y en la energía que te queda."
+            },
+            "thirty": {
+              "headline": "Treinta minutos son [más que suficiente].",
+              "body": "Los niños se acuerdan de cuando te tiraste al piso con ellos, no de cuánto duró el juego. Oyno elige uno a la medida de tu tarde y de la energía que te queda."
+            }
+          }
+        },
+        "plan": {
+          "headline": "Armando [tu plan]"
+        },
+        "account": {
+          "headline": "Tu plan está listo. [Guárdalo] para ver tu precio."
+        },
+        "paywall": {
+          "headline": "Vuelve al [planeta de tu peque]."
+        },
+        "checkout": {
+          "headline": "Datos de pago."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Tus apps en pausa durante el Tiempo en familia",
+          "Un juego fácil cada tarde",
+          "El planeta de tu familia, creciendo"
+        ],
+        "timeline": [
+          {
+            "title": "Hoy",
+            "detail": "Elige tus apps y tu Tiempo en familia. Tu primer juego ya está listo."
+          },
+          {
+            "title": "Esta semana",
+            "detail": "Diez minutos de juego juntos cada tarde, sin celular."
+          },
+          {
+            "title": "En un mes",
+            "detail": "Un peque más despierto: cada juego entrena el autocontrol y la memoria."
+          }
+        ],
+        "monthly": "Mensual",
+        "yearly": "Anual",
+        "perMonth": "/ mes",
+        "perYear": "/ año",
+        "perDay": "al día",
+        "cancelAnytime": "Cancela cuando quieras",
+        "billedYearly": "Se cobra una vez al año",
+        "save": "Ahorra {percent}",
+        "guarantee": "¿No es para ti? Pide el reembolso completo en los primeros 14 días.",
+        "continue": "Continuar"
+      },
+      "account": {
+        "signIn": "Iniciar sesión",
+        "haveAccount": "¿Ya tienes cuenta? Inicia sesión"
+      }
+    },
+    "pt-BR": {
+      "chrome": {
+        "continue": "Continuar",
+        "letsGo": "Vamos lá",
+        "intro": "Algumas perguntas · cerca de um minuto",
+        "back": "Voltar",
+        "progress": "Progresso"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Qual destas [tem a cara das suas noites]?",
+          "options": {
+            "scroll": "Rolo o feed em vez de brincar",
+            "ideas": "Sem energia para inventar brincadeira",
+            "asks": "Meu filho pede o meu celular",
+            "both": "Nós dois ficamos no celular"
+          }
+        },
+        "age": {
+          "headline": "Quantos anos tem o seu caçula?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "Quando o celular [mais ganha]?",
+          "options": {
+            "afterwork": "Logo depois do trabalho",
+            "dinner": "Na hora do jantar",
+            "weekend": "Fim de semana de manhã",
+            "bedtime": "Antes de dormir"
+          }
+        },
+        "pickups": {
+          "headline": "Quantas vezes você pega o celular [numa hora] com seu filho?",
+          "options": {
+            "rare": "Quase nunca",
+            "few": "Uma ou duas",
+            "often": "A cada poucos minutos",
+            "lost": "Perco a conta"
+          }
+        },
+        "apps": {
+          "headline": "Quais apps [te puxam de volta]?",
+          "description": "Marque quantos quiser",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Notícias",
+            "work": "E-mail e Slack",
+            "games": "Jogos"
+          }
+        },
+        "energy": {
+          "headline": "Quanta energia sobra [às 18h]?",
+          "options": {
+            "low": "Bateria baixa",
+            "okay": "Média",
+            "full": "De sobra"
+          }
+        },
+        "ideas": {
+          "headline": "Você costuma saber [do que brincar] com seu filho?",
+          "options": {
+            "often": "Quase sempre",
+            "sometimes": "Às vezes",
+            "rarely": "Raramente, me dá um branco"
+          }
+        },
+        "tried": {
+          "headline": "O que você [já tentou]?",
+          "options": {
+            "limits": "Limites do Tempo de Uso",
+            "room": "Celular em outro cômodo",
+            "delete": "Apagar apps",
+            "nothing": "Nada ainda"
+          }
+        },
+        "minutes": {
+          "headline": "Quantos minutos [por dia] você teria para brincar?",
+          "options": {
+            "ten": "10 minutos",
+            "twenty": "20 minutos",
+            "thirty": "30 minutos ou mais"
+          }
+        },
+        "soon": {
+          "headline": "Quando você quer suas noites de volta?",
+          "options": {
+            "tonight": "Hoje mesmo",
+            "week": "Esta semana",
+            "month": "Este mês",
+            "unsure": "Ainda não sei"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "A culpa não é sua. Os apps são [feitos para te prender].",
+          "body": "Cada app no seu celular tem uma equipe paga para ganhar o seu próximo minuto. Força de vontade às 18h não é uma briga justa.",
+          "variants": {
+            "ideas": {
+              "headline": "A culpa não é sua. Ninguém tem [ideia de brincadeira] depois de um dia cheio.",
+              "body": "Aí ganha o que estiver mais à mão, e o que está mais à mão é uma tela."
+            },
+            "asks": {
+              "headline": "A culpa não é sua. Criança quer [o que você está olhando].",
+              "body": "Um celular na sua mão é a coisa mais interessante da sala. Largue o celular, e a coisa mais interessante passa a ser você."
+            },
+            "both": {
+              "headline": "A culpa não é sua. Dois celulares deixam [a sala em silêncio].",
+              "body": "Cada um espera o outro largar o celular primeiro. Ninguém precisa esperar se os dois celulares pausarem ao mesmo tempo."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Para onde [vai] uma noite."
+        },
+        "influence": {
+          "headline": "Quanto mais a gente rola o feed, mais as crianças [pedem tela]."
+        },
+        "alternative": {
+          "headline": "O Oyno [não briga] com um hábito que você já tem.",
+          "body": "Ele te dá uma ideia melhor: uma brincadeira curta com seu filho, do tamanho da energia que sobrou.",
+          "variants": {
+            "low": {
+              "body": "Ele te dá uma ideia melhor: uma brincadeira curta e tranquila, que dá para fazer até com a bateria baixa."
+            },
+            "full": {
+              "body": "Ele te dá uma ideia melhor: uma brincadeira com seu filho que aproveita a energia que você ainda tem."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Dez minutos [bastam].",
+          "body": "As crianças lembram de quem sentou no chão com elas, não de quanto tempo durou a brincadeira. O Oyno escolhe uma que cabe em dez minutos e na energia que sobrou.",
+          "variants": {
+            "twenty": {
+              "headline": "Vinte minutos [é de sobra].",
+              "body": "As crianças lembram de quem sentou no chão com elas, não de quanto tempo durou a brincadeira. O Oyno escolhe uma que cabe em vinte minutos e na energia que sobrou."
+            },
+            "thirty": {
+              "headline": "Meia hora é [mais do que suficiente].",
+              "body": "As crianças lembram de quem sentou no chão com elas, não de quanto tempo durou a brincadeira. O Oyno escolhe uma que cabe na sua noite e na energia que sobrou."
+            }
+          }
+        },
+        "plan": {
+          "headline": "Montando [seu plano]"
+        },
+        "account": {
+          "headline": "Seu plano está pronto. [Salve] para ver o seu preço."
+        },
+        "paywall": {
+          "headline": "Volte ao [planeta do seu filho]."
+        },
+        "checkout": {
+          "headline": "Dados de pagamento."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Seus apps pausados no Tempo em família",
+          "Uma brincadeira fácil toda noite",
+          "O planeta da sua família crescendo"
+        ],
+        "timeline": [
+          {
+            "title": "Hoje",
+            "detail": "Escolha seus apps e seu Tempo em família. Sua primeira brincadeira já está pronta."
+          },
+          {
+            "title": "Esta semana",
+            "detail": "Dez minutos de brincadeira juntos, toda noite, celular de lado."
+          },
+          {
+            "title": "Em um mês",
+            "detail": "Uma criança mais esperta: cada brincadeira treina autocontrole e memória."
+          }
+        ],
+        "monthly": "Mensal",
+        "yearly": "Anual",
+        "perMonth": "/ mês",
+        "perYear": "/ ano",
+        "perDay": "por dia",
+        "cancelAnytime": "Cancele quando quiser",
+        "billedYearly": "Cobrado uma vez por ano",
+        "save": "Economize {percent}",
+        "guarantee": "Não curtiu? Peça o reembolso total em até 14 dias.",
+        "continue": "Continuar"
+      },
+      "account": {
+        "signIn": "Entrar",
+        "haveAccount": "Já tem conta? Entrar"
+      }
+    },
+    "it": {
+      "chrome": {
+        "continue": "Continua",
+        "letsGo": "Iniziamo",
+        "intro": "Qualche domanda · circa un minuto",
+        "back": "Indietro",
+        "progress": "Avanzamento"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Quale di queste [somiglia alle tue serate]?",
+          "options": {
+            "scroll": "Scorro il feed invece di giocare",
+            "ideas": "Non ho la forza di inventare un gioco",
+            "asks": "Il mio bambino mi chiede il telefono",
+            "both": "Siamo tutti e due al telefono"
+          }
+        },
+        "age": {
+          "headline": "Quanti anni ha il più piccolo?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "Quando il telefono [vince più spesso]?",
+          "options": {
+            "afterwork": "Appena finito il lavoro",
+            "dinner": "Verso l’ora di cena",
+            "weekend": "Le mattine del weekend",
+            "bedtime": "Prima della nanna"
+          }
+        },
+        "pickups": {
+          "headline": "Quante volte prendi in mano il telefono [in un’ora] quando state insieme?",
+          "options": {
+            "rare": "Quasi mai",
+            "few": "Una o due volte",
+            "often": "Ogni due per tre",
+            "lost": "Perdo il conto"
+          }
+        },
+        "apps": {
+          "headline": "Quali app [ti risucchiano]?",
+          "description": "Scegli tutte quelle che ti riguardano",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Notizie",
+            "work": "Email e Slack",
+            "games": "Giochi"
+          }
+        },
+        "energy": {
+          "headline": "Quanta energia ti resta [alle 18]?",
+          "options": {
+            "low": "Batteria scarica",
+            "okay": "Così così",
+            "full": "Tanta"
+          }
+        },
+        "ideas": {
+          "headline": "Di solito sai [a cosa giocare] con il tuo bambino?",
+          "options": {
+            "often": "Quasi sempre",
+            "sometimes": "A volte",
+            "rarely": "Di rado, ho il vuoto"
+          }
+        },
+        "tried": {
+          "headline": "Cosa hai [già provato]?",
+          "options": {
+            "limits": "Limiti di Tempo di utilizzo",
+            "room": "Telefono in un’altra stanza",
+            "delete": "Cancellare le app",
+            "nothing": "Niente, per ora"
+          }
+        },
+        "minutes": {
+          "headline": "Quanti minuti [al giorno] potresti dedicarci?",
+          "options": {
+            "ten": "10 minuti",
+            "twenty": "20 minuti",
+            "thirty": "30 minuti o più"
+          }
+        },
+        "soon": {
+          "headline": "Quando vuoi riprenderti le serate?",
+          "options": {
+            "tonight": "Stasera stessa",
+            "week": "Questa settimana",
+            "month": "Questo mese",
+            "unsure": "Non lo so ancora"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "Non è colpa tua. Le app sono [fatte per risucchiarti].",
+          "body": "Dietro ogni app sul tuo telefono c’è un team pagato per conquistare il tuo prossimo minuto. Alle sei di sera la forza di volontà parte già sconfitta.",
+          "variants": {
+            "ideas": {
+              "headline": "Non è colpa tua. Dopo una giornata piena nessuno ha [idee per giocare].",
+              "body": "Così vince la cosa più facile nella stanza, e la cosa più facile nella stanza è uno schermo."
+            },
+            "asks": {
+              "headline": "Non è colpa tua. I bambini vogliono [quello che guardi tu].",
+              "body": "Il telefono che hai in mano è la cosa più interessante della stanza. Mettilo giù e la cosa più interessante diventi tu."
+            },
+            "both": {
+              "headline": "Non è colpa tua. Due telefoni fanno [una stanza muta].",
+              "body": "Ognuno aspetta che l’altro metta giù il telefono per primo. Nessuno deve aspettare se entrambi i telefoni vanno in pausa insieme."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Dove [se ne va] una serata."
+        },
+        "influence": {
+          "headline": "Più scorriamo noi, più i bambini [chiedono schermi]."
+        },
+        "alternative": {
+          "headline": "Oyno [non combatte] un’abitudine che hai già.",
+          "body": "Ti dà un’idea migliore: un gioco breve con il tuo bambino, su misura per l’energia che ti resta.",
+          "variants": {
+            "low": {
+              "body": "Ti dà un’idea migliore: un gioco breve e tranquillo, che si fa anche a batteria scarica."
+            },
+            "full": {
+              "body": "Ti dà un’idea migliore: un gioco con il tuo bambino che sfrutta l’energia che hai ancora."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Dieci minuti [bastano].",
+          "body": "I bambini ricordano il genitore che si è seduto per terra con loro, non quanto è durato il gioco. Oyno ne sceglie uno da dieci minuti, adatto all’energia che ti resta.",
+          "variants": {
+            "twenty": {
+              "headline": "Venti minuti [sono tantissimi].",
+              "body": "I bambini ricordano il genitore che si è seduto per terra con loro, non quanto è durato il gioco. Oyno ne sceglie uno da venti minuti, adatto all’energia che ti resta."
+            },
+            "thirty": {
+              "headline": "Mezz’ora è [più che abbastanza].",
+              "body": "I bambini ricordano il genitore che si è seduto per terra con loro, non quanto è durato il gioco. Oyno ne sceglie uno adatto alla tua serata e all’energia che ti resta."
+            }
+          }
+        },
+        "plan": {
+          "headline": "Stiamo creando [il tuo piano]"
+        },
+        "account": {
+          "headline": "Il tuo piano è pronto. [Salvalo] per vedere il prezzo."
+        },
+        "paywall": {
+          "headline": "Il [pianeta del tuo bambino] ti aspetta."
+        },
+        "checkout": {
+          "headline": "Dati di pagamento."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Le tue app in pausa durante il Tempo in famiglia",
+          "Un gioco facile ogni sera",
+          "Il pianeta della tua famiglia che cresce"
+        ],
+        "timeline": [
+          {
+            "title": "Oggi",
+            "detail": "Scegli le app e il tuo Tempo in famiglia. Il primo gioco è pronto."
+          },
+          {
+            "title": "Questa settimana",
+            "detail": "Dieci minuti di gioco insieme, ogni sera, senza telefono."
+          },
+          {
+            "title": "Tra un mese",
+            "detail": "Un bambino più sveglio: ogni gioco allena autocontrollo e memoria."
+          }
+        ],
+        "monthly": "Mensile",
+        "yearly": "Annuale",
+        "perMonth": "/ mese",
+        "perYear": "/ anno",
+        "perDay": "al giorno",
+        "cancelAnytime": "Disdici quando vuoi",
+        "billedYearly": "Addebito annuale",
+        "save": "Risparmi il {percent}",
+        "guarantee": "Non fa per te? Chiedi il rimborso completo entro 14 giorni.",
+        "continue": "Continua"
+      },
+      "account": {
+        "signIn": "Accedi",
+        "haveAccount": "Hai già un account? Accedi"
+      }
+    },
+    "nl": {
+      "chrome": {
+        "continue": "Verder",
+        "letsGo": "Aan de slag",
+        "intro": "Een paar vragen · ongeveer een minuut",
+        "back": "Terug",
+        "progress": "Voortgang"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Wat [herken je] van je avonden?",
+          "options": {
+            "scroll": "Ik scrol terwijl ik wilde spelen",
+            "ideas": "Te moe om een spelletje te bedenken",
+            "asks": "Mijn kind vraagt om mijn telefoon",
+            "both": "We zitten allebei op onze telefoon"
+          }
+        },
+        "age": {
+          "headline": "Hoe oud is je jongste?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "Wanneer [wint de telefoon] het vaakst?",
+          "options": {
+            "afterwork": "Meteen na het werk",
+            "dinner": "Rond etenstijd",
+            "weekend": "Weekendochtenden",
+            "bedtime": "Voor het slapengaan"
+          }
+        },
+        "pickups": {
+          "headline": "Hoe vaak pak je je telefoon [per uur] als je bij je kind bent?",
+          "options": {
+            "rare": "Bijna nooit",
+            "few": "Een of twee keer",
+            "often": "Om de paar minuten",
+            "lost": "Ik raak de tel kwijt"
+          }
+        },
+        "apps": {
+          "headline": "Welke apps [zuigen je erin]?",
+          "description": "Kies alles wat past",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Nieuws",
+            "work": "Mail en Slack",
+            "games": "Games"
+          }
+        },
+        "energy": {
+          "headline": "Hoeveel energie heb je nog [om zes uur]?",
+          "options": {
+            "low": "Batterij bijna leeg",
+            "okay": "Gaat wel",
+            "full": "Nog genoeg"
+          }
+        },
+        "ideas": {
+          "headline": "Weet je meestal [wat je kunt spelen] met je kind?",
+          "options": {
+            "often": "Meestal wel",
+            "sometimes": "Soms",
+            "rarely": "Zelden, mijn hoofd is leeg"
+          }
+        },
+        "tried": {
+          "headline": "Wat heb je [al geprobeerd]?",
+          "options": {
+            "limits": "Schermtijdlimieten",
+            "room": "Telefoon in een andere kamer",
+            "delete": "Apps verwijderen",
+            "nothing": "Nog niks"
+          }
+        },
+        "minutes": {
+          "headline": "Hoeveel minuten [per dag] kun je vrijmaken?",
+          "options": {
+            "ten": "10 minuten",
+            "twenty": "20 minuten",
+            "thirty": "30 minuten of meer"
+          }
+        },
+        "soon": {
+          "headline": "Wanneer wil je je avonden terug?",
+          "options": {
+            "tonight": "Vanavond",
+            "week": "Deze week",
+            "month": "Deze maand",
+            "unsure": "Weet ik nog niet"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "Het ligt niet aan jou. Apps zijn [gemaakt om je vast te houden].",
+          "body": "Achter elke app op je telefoon zit een team dat betaald wordt om je volgende minuut te winnen. Met alleen wilskracht is dat om zes uur ’s avonds geen eerlijke strijd.",
+          "variants": {
+            "ideas": {
+              "headline": "Het ligt niet aan jou. Na een lange dag heeft niemand [ideeën voor spelletjes].",
+              "body": "Dus wint het makkelijkste in de kamer, en het makkelijkste in de kamer is een scherm."
+            },
+            "asks": {
+              "headline": "Het ligt niet aan jou. Kinderen willen [waar jij naar kijkt].",
+              "body": "Een telefoon in je hand is het interessantste in de kamer. Leg hem weg en dan ben jij het."
+            },
+            "both": {
+              "headline": "Het ligt niet aan jou. Twee telefoons maken [een stille kamer].",
+              "body": "Jullie wachten allebei tot de ander als eerste de telefoon weglegt. Niemand hoeft te wachten als beide telefoons tegelijk op pauze gaan."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Waar je avond [naartoe gaat]."
+        },
+        "influence": {
+          "headline": "Kinderen [vragen vaker om een scherm] als wij meer scrollen."
+        },
+        "alternative": {
+          "headline": "Oyno [vecht niet] tegen een gewoonte die je al hebt.",
+          "body": "Je krijgt er een beter idee voor terug: één kort spelletje met je kind, passend bij de energie die je nog hebt.",
+          "variants": {
+            "low": {
+              "body": "Je krijgt er een beter idee voor terug: een kort, rustig spelletje dat ook lukt met een bijna lege batterij."
+            },
+            "full": {
+              "body": "Je krijgt er een beter idee voor terug: een spelletje met je kind waarin je je energie kwijt kunt."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Tien minuten is [genoeg].",
+          "body": "Kinderen onthouden de ouder die bij ze op de grond ging zitten, niet hoe lang het spelletje duurde. Oyno kiest er een dat in tien minuten past en bij de energie die je nog hebt.",
+          "variants": {
+            "twenty": {
+              "headline": "Twintig minuten is [ruim voldoende].",
+              "body": "Kinderen onthouden de ouder die bij ze op de grond ging zitten, niet hoe lang het spelletje duurde. Oyno kiest er een dat in twintig minuten past en bij de energie die je nog hebt."
+            },
+            "thirty": {
+              "headline": "Dertig minuten is [meer dan genoeg].",
+              "body": "Kinderen onthouden de ouder die bij ze op de grond ging zitten, niet hoe lang het spelletje duurde. Oyno kiest er een dat bij je avond past en bij de energie die je nog hebt."
+            }
+          }
+        },
+        "plan": {
+          "headline": "We maken [je plan]"
+        },
+        "account": {
+          "headline": "Je plan is klaar. [Sla het op] om je prijs te zien."
+        },
+        "paywall": {
+          "headline": "Terug naar [de planeet van je kind]."
+        },
+        "checkout": {
+          "headline": "Betaalgegevens."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Je apps op pauze tijdens Gezinstijd",
+          "Elke avond één makkelijk spelletje",
+          "De planeet van je gezin groeit"
+        ],
+        "timeline": [
+          {
+            "title": "Vandaag",
+            "detail": "Kies je apps en je Gezinstijd. Je eerste spelletje staat klaar."
+          },
+          {
+            "title": "Deze week",
+            "detail": "Elke avond tien minuten samen spelen, telefoon weg."
+          },
+          {
+            "title": "Over een maand",
+            "detail": "Een pienter kind: elk spelletje traint zelfbeheersing en geheugen."
+          }
+        ],
+        "monthly": "Maandelijks",
+        "yearly": "Jaarlijks",
+        "perMonth": "/ maand",
+        "perYear": "/ jaar",
+        "perDay": "per dag",
+        "cancelAnytime": "Altijd opzegbaar",
+        "billedYearly": "Eén keer per jaar betalen",
+        "save": "Bespaar {percent}",
+        "guarantee": "Niks voor jou? Vraag binnen 14 dagen al je geld terug.",
+        "continue": "Verder"
+      },
+      "account": {
+        "signIn": "Inloggen",
+        "haveAccount": "Heb je al een account? Log in"
+      }
+    },
+    "pl": {
+      "chrome": {
+        "continue": "Dalej",
+        "letsGo": "Zaczynamy",
+        "intro": "Kilka pytań · około minuty",
+        "back": "Wstecz",
+        "progress": "Postęp"
+      },
+      "questions": {
+        "problem": {
+          "headline": "Co [pasuje do twoich wieczorów]?",
+          "options": {
+            "scroll": "Scrolluję, zamiast się bawić",
+            "ideas": "Brak mi sił, by wymyślić zabawę",
+            "asks": "Dziecko prosi o mój telefon",
+            "both": "Oboje siedzimy w telefonach"
+          }
+        },
+        "age": {
+          "headline": "Ile lat ma twoje najmłodsze dziecko?",
+          "options": {
+            "0-1": "0–1",
+            "1-3": "1–3",
+            "3-5": "3–5"
+          }
+        },
+        "hardest": {
+          "headline": "Kiedy telefon [wygrywa najczęściej]?",
+          "options": {
+            "afterwork": "Zaraz po pracy",
+            "dinner": "Przy kolacji",
+            "weekend": "W weekendowe poranki",
+            "bedtime": "Przed snem"
+          }
+        },
+        "pickups": {
+          "headline": "Jak często sięgasz po telefon [w ciągu godziny] spędzanej z dzieckiem?",
+          "options": {
+            "rare": "Prawie wcale",
+            "few": "Raz, może dwa",
+            "often": "Co kilka minut",
+            "lost": "Tracę rachubę"
+          }
+        },
+        "apps": {
+          "headline": "Które aplikacje [cię wciągają]?",
+          "description": "Zaznacz wszystkie pasujące",
+          "options": {
+            "instagram": "Instagram",
+            "tiktok": "TikTok",
+            "youtube": "YouTube",
+            "news": "Newsy",
+            "work": "Poczta i Slack",
+            "games": "Gry"
+          }
+        },
+        "energy": {
+          "headline": "Ile energii zostaje ci [o 18:00]?",
+          "options": {
+            "low": "Niska bateria",
+            "okay": "Średnio",
+            "full": "Mnóstwo"
+          }
+        },
+        "ideas": {
+          "headline": "Zwykle wiesz, [w co się pobawić] z dzieckiem?",
+          "options": {
+            "often": "Prawie zawsze",
+            "sometimes": "Czasami",
+            "rarely": "Rzadko, mam pustkę w głowie"
+          }
+        },
+        "tried": {
+          "headline": "Co [masz już za sobą]?",
+          "options": {
+            "limits": "Limity w Czasie przed ekranem",
+            "room": "Telefon w innym pokoju",
+            "delete": "Usuwanie aplikacji",
+            "nothing": "Jeszcze nic"
+          }
+        },
+        "minutes": {
+          "headline": "Ile minut [dziennie] znajdziesz na zabawę?",
+          "options": {
+            "ten": "10 minut",
+            "twenty": "20 minut",
+            "thirty": "30 minut lub więcej"
+          }
+        },
+        "soon": {
+          "headline": "Kiedy chcesz odzyskać swoje wieczory?",
+          "options": {
+            "tonight": "Już dziś",
+            "week": "W tym tygodniu",
+            "month": "W tym miesiącu",
+            "unsure": "Jeszcze nie wiem"
+          }
+        }
+      },
+      "steps": {
+        "why": {
+          "headline": "To nie twoja wina. Aplikacje są [stworzone, by cię wciągać].",
+          "body": "Za każdą aplikacją w twoim telefonie stoi zespół, któremu płacą za twoją kolejną minutę. O 18:00 silna wola nie ma szans w tej walce.",
+          "variants": {
+            "ideas": {
+              "headline": "To nie twoja wina. Po całym dniu nikt nie ma [pomysłów na zabawę].",
+              "body": "Wygrywa więc to, co najłatwiejsze. A najłatwiejszy jest ekran."
+            },
+            "asks": {
+              "headline": "To nie twoja wina. Dzieci chcą [tego, na co patrzysz].",
+              "body": "Telefon w twojej ręce to najciekawsza rzecz w pokoju. Odłóż go, a cała uwaga przejdzie na ciebie."
+            },
+            "both": {
+              "headline": "To nie twoja wina. Dwa telefony to [cisza w pokoju].",
+              "body": "Każde z was czeka, aż to drugie pierwsze odłoży telefon. Nikt nie musi czekać, jeśli oba telefony zamilkną naraz."
+            }
+          }
+        },
+        "evening": {
+          "headline": "Dokąd [ucieka] wieczór."
+        },
+        "influence": {
+          "headline": "Im więcej scrollujemy, tym częściej dzieci [proszą o ekran]."
+        },
+        "alternative": {
+          "headline": "Oyno [nie walczy] z twoim nawykiem.",
+          "body": "Daje ci lepszy pomysł: jedną krótką zabawę z dzieckiem, dopasowaną do energii, która ci została.",
+          "variants": {
+            "low": {
+              "body": "Daje ci lepszy pomysł: krótką, cichą zabawę, na którą wystarczy nawet niska bateria."
+            },
+            "full": {
+              "body": "Daje ci lepszy pomysł: zabawę z dzieckiem, która wykorzysta energię, jaką jeszcze masz."
+            }
+          }
+        },
+        "enough": {
+          "headline": "Dziesięć minut [wystarczy].",
+          "body": "Dzieci pamiętają, że rodzic usiadł z nimi na podłodze, a nie to, ile trwała zabawa. Oyno dobierze taką na dziesięć minut i na energię, która ci została.",
+          "variants": {
+            "twenty": {
+              "headline": "Dwadzieścia minut [w zupełności wystarczy].",
+              "body": "Dzieci pamiętają, że rodzic usiadł z nimi na podłodze, a nie to, ile trwała zabawa. Oyno dobierze taką na dwadzieścia minut i na energię, która ci została."
+            },
+            "thirty": {
+              "headline": "Pół godziny to [więcej, niż trzeba].",
+              "body": "Dzieci pamiętają, że rodzic usiadł z nimi na podłodze, a nie to, ile trwała zabawa. Oyno dobierze zabawę do twojego wieczoru i energii, która ci została."
+            }
+          }
+        },
+        "plan": {
+          "headline": "Układamy [twój plan]"
+        },
+        "account": {
+          "headline": "Plan gotowy. [Zapisz go], by zobaczyć cenę."
+        },
+        "paywall": {
+          "headline": "Wróć na [planetę swojego dziecka]."
+        },
+        "checkout": {
+          "headline": "Dane do płatności."
+        }
+      },
+      "paywall": {
+        "pros": [
+          "Aplikacje wstrzymane w Czasie z dzieckiem",
+          "Jedna łatwa zabawa każdego wieczoru",
+          "Planeta twojej rodziny rośnie"
+        ],
+        "timeline": [
+          {
+            "title": "Dziś",
+            "detail": "Wybierz aplikacje i Czas z dzieckiem. Pierwsza zabawa już czeka."
+          },
+          {
+            "title": "W tym tygodniu",
+            "detail": "Dziesięć minut wspólnej zabawy co wieczór, telefon odłożony."
+          },
+          {
+            "title": "Za miesiąc",
+            "detail": "Bystrzejsze dziecko: każda zabawa ćwiczy samokontrolę i pamięć."
+          }
+        ],
+        "monthly": "Miesięczna",
+        "yearly": "Roczna",
+        "perMonth": "/ mies.",
+        "perYear": "/ rok",
+        "perDay": "dziennie",
+        "cancelAnytime": "Anuluj w dowolnym momencie",
+        "billedYearly": "Płatność raz w roku",
+        "save": "Oszczędzasz {percent}",
+        "guarantee": "Nie dla ciebie? Poproś o pełny zwrot w ciągu 14 dni.",
+        "continue": "Dalej"
+      },
+      "account": {
+        "signIn": "Zaloguj się",
+        "haveAccount": "Masz już konto? Zaloguj się"
+      }
+    },
     "ru": {
       "chrome": {
         "continue": "Продолжить",
@@ -642,7 +2234,7 @@
           "headline": "План готов. [Сохраните его], чтобы узнать цену."
         },
         "paywall": {
-          "headline": "Вас ждёт [планета вашего ребёнка]."
+          "headline": "Вас ждёт [планета ребёнка]."
         },
         "checkout": {
           "headline": "Данные для оплаты."

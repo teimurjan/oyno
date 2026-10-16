@@ -11,6 +11,14 @@ export interface Market {
 
 export const MARKETS: Record<Lang, Market> = {
   en: { numberLocale: "en-US", currency: "USD" },
+  de: { numberLocale: "de-DE", currency: "USD" },
+  fr: { numberLocale: "fr-FR", currency: "USD" },
+  es: { numberLocale: "es-ES", currency: "USD" },
+  "es-MX": { numberLocale: "es-MX", currency: "USD" },
+  "pt-BR": { numberLocale: "pt-BR", currency: "USD" },
+  it: { numberLocale: "it-IT", currency: "USD" },
+  nl: { numberLocale: "nl-NL", currency: "USD" },
+  pl: { numberLocale: "pl-PL", currency: "USD" },
   ru: { numberLocale: "ru-RU", currency: "USD" },
 };
 

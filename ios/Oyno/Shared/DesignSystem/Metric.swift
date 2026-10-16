@@ -26,6 +26,8 @@ enum Metric {
     static let tapTarget: CGFloat = 44
     /// The one committing action per screen sits taller than everything around it.
     static let primaryButton: CGFloat = 52
+    /// The same, a size up in a window as wide as an iPad's.
+    static let primaryButtonRoomy: CGFloat = 56
     /// A control that shares a line rather than standing alone: the committing action where
     /// a screen keeps it in its header, and the filter and layout pair under a shelf.
     /// Shorter than the tap target on purpose — chrome beside a title is not the screen's
@@ -33,4 +35,9 @@ enum Metric {
     static let compactControl: CGFloat = 40
 
     static let barHeight: CGFloat = 4
+
+    /// The band down the middle of a wide window that nothing to tap sits in: the Duo's fold.
+    static let fold: CGFloat = 40
+    /// The widest one column runs before it centres in a wider window.
+    static let readableWidth: CGFloat = 600
 }

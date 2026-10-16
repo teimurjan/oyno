@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 /// How much a parent has left at the end of the day. Picks which game Oyno offers.
 enum Energy: String, CaseIterable, Codable, Identifiable {
@@ -90,8 +91,19 @@ struct Activity: Identifiable, Hashable {
 
     static func find(_ id: String) -> Activity? { all.first { $0.id == id } }
 
-    /// Every game, worded in the interface language.
-    static let all: [Activity] = ActivityCatalogue.bundled.activities(in: InterfaceLanguage.current)
+    /// Every game, worded in the interface language, so a language picked in Profile rewords them.
+    static var all: [Activity] {
+        let language = InterfaceLanguage.current
+        return worded.withLock { cache in
+            if let cache, cache.language == language { return cache.games }
+            let games = ActivityCatalogue.bundled.activities(in: language)
+            cache = (language, games)
+            return games
+        }
+    }
+
+    /// The games in the last language asked for, so a pick does not reword all 500.
+    private static let worded = OSAllocatedUnfairLock<(language: String, games: [Activity])?>(initialState: nil)
 }
 
 /// `Activities.json` as the phone reads it: `activities/en.json` for the games, the

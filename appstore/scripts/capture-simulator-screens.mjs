@@ -7,7 +7,8 @@
 // The simulator itself — boot, build, install, launch, the crash check — is
 // lib/simulator.mjs.
 //
-// Usage: node appstore/scripts/capture-simulator-screens.mjs ["iPhone 17"]
+// Usage: node appstore/scripts/capture-simulator-screens.mjs [--device=iphone|ipad|ipad-11|duo|duo-outer]
+//                                                            ["iPhone 17"]
 //                                                            [--locales=en,ru]
 //                                                            [--screens=play,03]
 
@@ -15,10 +16,13 @@ import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { localeFor } from "./lib/locales.mjs";
-import { ensureDir, resolveScreen, ROOT, SCREENS, SOURCE_DIR } from "./lib/screenshot-kit.mjs";
-import { captureScreen, clearStatusBar, DEFAULT_DEVICE, prepareSimulator, warmUp } from "./lib/simulator.mjs";
+import { deviceFor, ensureDir, pixelSize, resolveScreen, ROOT, SCREENS, SOURCE_DIR, sourceDirFor } from "./lib/screenshot-kit.mjs";
+import { captureScreen, clearStatusBar, prepareSimulator, warmUp } from "./lib/simulator.mjs";
 
-const DEVICE_NAME = (process.argv[2] && !process.argv[2].startsWith("--")) ? process.argv[2] : DEFAULT_DEVICE;
+/** Which store slot to capture for, and so which simulator and posture. */
+const DEVICE = process.argv.find((a) => a.startsWith("--device="))?.split("=")[1] ?? "iphone";
+const PROFILE = deviceFor(DEVICE);
+const DEVICE_NAME = process.argv.slice(2).find((a) => !a.startsWith("--")) ?? PROFILE.simulator;
 
 /** Which languages to capture. Passed to the app as launch arguments rather than
  * by switching the simulator's system language — they land in NSArgumentDomain,
@@ -55,11 +59,11 @@ async function main() {
   if (screens.length !== SCREENS.length) {
     console.log(`Capturing ${screens.length} of ${SCREENS.length} screens: ${screens.map((s) => s.screen).join(", ")}`);
   }
-  const device = prepareSimulator(DEVICE_NAME);
+  const device = prepareSimulator(DEVICE_NAME, PROFILE);
   await warmUp(device, screens[0].screen);
 
   for (const locale of LOCALES) {
-    const outDir = path.join(SOURCE_DIR, locale);
+    const outDir = sourceDirFor(DEVICE, locale);
     ensureDir(outDir);
     console.log(`Capturing ${locale} -> ${path.relative(ROOT, outDir)}`);
     await captureLocale(device, locale, outDir, screens);
@@ -68,13 +72,14 @@ async function main() {
   clearStatusBar(device);
 
   for (const locale of LOCALES) {
-    const captured = readdirSync(path.join(SOURCE_DIR, locale)).filter((f) => f.endsWith(".png"));
-    console.log(`Done — ${captured.length} raw ${locale} screenshots in appstore/source/${locale}/.`);
+    const outDir = sourceDirFor(DEVICE, locale);
+    const captured = readdirSync(outDir).filter((f) => f.endsWith(".png"));
+    console.log(`Done — ${captured.length} raw ${locale} screenshots in ${path.relative(ROOT, outDir)}/.`);
   }
   // The same subset, handed on: compositing the six frames this run did not touch would
   // rewrite six identical PNGs and, for the committed web set, six identical WebPs.
   const sources = screens.length === SCREENS.length ? "" : ` --sources=${screens.map((s) => s.nn).join(",")}`;
-  console.log(`Next: node appstore/scripts/generate-app-store-screenshots.mjs --locales=${LOCALES.join(",")}${sources}`);
+  console.log(`Next: node appstore/scripts/generate-app-store-screenshots.mjs --devices=${DEVICE} --locales=${LOCALES.join(",")}${sources}`);
 }
 
 async function captureLocale(device, locale, outDir, screens) {
@@ -89,6 +94,12 @@ async function captureLocale(device, locale, outDir, screens) {
     const file = path.join(outDir, `${nn}.png`);
     const extraArgs = camera ? ["--screenshot-camera", path.join(SOURCE_DIR, camera)] : [];
     await captureScreen(device, { screen, locale, sim: localeFor(locale).sim, file, delay, extraArgs });
+
+    // A device turned or folded mid-run photographs another slot's size, which deliver files elsewhere.
+    const { width, height } = pixelSize(file);
+    if (PROFILE.size && (width !== PROFILE.size.w || height !== PROFILE.size.h)) {
+      throw new Error(`${locale}: "${screen}" came out ${width}x${height}, not ${PROFILE.size.w}x${PROFILE.size.h}. Check the posture in Device Hub.`);
+    }
 
     const digest = createHash("sha1").update(readFileSync(file)).digest("hex");
     const twin = seen.get(digest);

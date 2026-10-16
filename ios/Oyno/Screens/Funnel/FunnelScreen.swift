@@ -45,6 +45,8 @@ struct FunnelScreen: View {
             }
             chrome
         }
+        // Drawn for a phone's width: a wider window centres it on the same sky.
+        .readableWidth()
         .background(FunnelSky(step: step))
         .keyboardDismissBar()
         .signingInOverlay()

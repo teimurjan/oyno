@@ -63,10 +63,10 @@ enum Typeface {
 }
 
 extension View {
-    /// A screen's large title, as the canvas draws it: heavy, tight.
-    func oynoTitle() -> some View {
-        font(Typeface.ui(28, .extrabold, relativeTo: .largeTitle))
-            .tracking(-0.8)
+    /// A screen's large title, as the canvas draws it: heavy, tight. `large` is iPad's.
+    func oynoTitle(large: Bool = false) -> some View {
+        font(Typeface.ui(large ? 40 : 28, .extrabold, relativeTo: .largeTitle))
+            .tracking(large ? -1.2 : -0.8)
             .foregroundStyle(Palette.ink)
     }
 

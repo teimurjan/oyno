@@ -8,12 +8,16 @@ struct BloomScore: View {
     let rounds: Int
     let togetherMinutes: Int
 
+    @Environment(\.adaptive) private var adaptive
+
     var body: some View {
         VStack(spacing: Metric.Space.s) {
-            VStack(spacing: -6) {
-                Text("Bloom").oynoEyebrow()
+            VStack(spacing: adaptive.roomy ? -8 : -6) {
+                Text("Bloom")
+                    .font(Typeface.ui(adaptive.roomy ? 14 : 13, .semibold, relativeTo: .caption))
+                    .foregroundStyle(Palette.muted)
                 Text(verbatim: "\(level)")
-                    .oynoHeadlineValue()
+                    .oynoHeadlineValue(adaptive.roomy ? 64 : 52)
                     .contentTransition(.numericText())
             }
             .accessibilityElement(children: .combine)
@@ -34,20 +38,22 @@ struct BloomScore: View {
     private func part(symbol: String, tint: Color, value: String, label: LocalizedStringResource) -> some View {
         VStack(spacing: 6) {
             HStack(spacing: 6) {
-                Glyph(symbol: symbol, size: 15, weight: .semibold, color: tint)
+                Glyph(symbol: symbol, size: adaptive.roomy ? 16 : 15, weight: .semibold, color: tint)
                 Text(verbatim: value)
-                    .oynoValue(17, .extrabold)
+                    .oynoValue(adaptive.roomy ? 18 : 17, .extrabold)
                     .contentTransition(.numericText())
             }
             .frame(maxWidth: .infinity)
-            .frame(height: Metric.tapTarget)
-            .glassCard(radius: Metric.tapTarget / 2)
+            .frame(height: chip)
+            .glassCard(radius: chip / 2)
             .overlay(Capsule().strokeBorder(tint, lineWidth: 1.5))
             Text(label).oynoCaption()
         }
         .padding(.horizontal, Metric.Space.xs)
         .accessibilityElement(children: .combine)
     }
+
+    private var chip: CGFloat { adaptive.roomy ? 48 : Metric.tapTarget }
 }
 
 /// A stem from the score splitting into three: one arm over the centre of each third.

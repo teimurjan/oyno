@@ -37,14 +37,76 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 export const SCREENS = [
   // The tally wheel rolls in after the lines, so it needs longer than the default to settle.
   { nn: "01", screen: "home" },
-  { nn: "02", screen: "play:low:0-1" },
-  { nn: "03", screen: "play:full:1-3" },
-  { nn: "04", screen: "play:okay:why" },
+  // Named games, so every language shows the three whose translations were reviewed.
+  { nn: "02", screen: "play:cushion-tunnel-toy" },
+  { nn: "03", screen: "play:sock-delivery" },
+  { nn: "04", screen: "play:cup-drum-turns:why" },
   { nn: "05", screen: "kidhours" },
   // The sheet slides up over the screen after launch.
   { nn: "06", screen: "schedule", delay: 6000 },
-  { nn: "07", screen: "worlds" },
+  // The iPad still shows the splash fading out at the default delay.
+  { nn: "07", screen: "worlds", delay: 6000 },
 ];
+
+/** The store slots the kit fills, one simulator each.
+ *
+ * The iPhone set is a 6.3" capture in the phone mockup on the 6.9" canvas. iPad 13" and the
+ * open iPhone Duo are photographed on their side, which is how the design canvas draws them:
+ * two columns either side of the centre line. The closed Duo stays upright on its outer
+ * display. Each capture is the slot's own size, so it is checked against `size`, and laid
+ * under the transparent screen of `mockup`, measured in that photograph's pixels, its corners
+ * clockwise from the top left. An upright photograph of a device shot on its side is
+ * `turned`. The files carry `prefix`, because deliver files every size in a locale's folder
+ * by its pixels. Both Duo sets fill the one iPhone Duo slot of ten, so the outer set keeps
+ * only the `slugs` it names. */
+export const DEVICES = {
+  iphone: { simulator: "iPhone 17", canvas: { w: 1290, h: 2796 }, prefix: "" },
+  ipad: {
+    simulator: "iPad Pro 13-inch (M5)",
+    canvas: { w: 2752, h: 2064 },
+    size: { w: 2752, h: 2064 },
+    prefix: "ipad-",
+    landscape: true,
+    mockup: { file: path.join(SOURCE_DIR, "ipad-frame.png"), w: 2290, h: 2960, screen: { x: 121, y: 114, w: 2048, h: 2732, radius: [37, 37, 37, 37] }, turned: true },
+  },
+  // The canvas's iPad, 1180x820pt. Its frame is the 13" one with the bezel lengthened to the
+  // taller screen, a cut made in the plain middle so the camera and corners keep their shape.
+  "ipad-11": {
+    simulator: "iPad Air 11-inch (M4)",
+    canvas: { w: 2360, h: 1640 },
+    size: { w: 2360, h: 1640 },
+    prefix: "ipad11-",
+    landscape: true,
+    mockup: { file: path.join(SOURCE_DIR, "ipad-11-frame.png"), w: 2290, h: 3175, screen: { x: 121, y: 114, w: 2048, h: 2947, radius: [37, 37, 37, 37] }, turned: true },
+  },
+  duo: {
+    simulator: "iPhone Duo",
+    canvas: { w: 2853, h: 2007 },
+    size: { w: 2853, h: 2007 },
+    prefix: "duo-",
+    landscape: true,
+    open: true,
+    mockup: { file: path.join(SOURCE_DIR, "duo-frame-open.png"), w: 1033, h: 750, screen: { x: 40, y: 40, w: 952, h: 670, radius: [55, 55, 55, 55] } },
+  },
+  "duo-outer": {
+    simulator: "iPhone Duo",
+    canvas: { w: 1398, h: 2034 },
+    size: { w: 1398, h: 2034 },
+    prefix: "duo-outer-",
+    open: false,
+    slugs: ["low", "kidhours"],
+    mockup: { file: path.join(SOURCE_DIR, "duo-frame.png"), w: 525, h: 732, screen: { x: 30, y: 27, w: 465, h: 677, radius: [9, 59, 59, 9] } },
+  },
+};
+
+export function deviceFor(name) {
+  const device = DEVICES[name];
+  if (!device) throw new Error(`Unknown device "${name}". Have: ${Object.keys(DEVICES).join(", ")}`);
+  return device;
+}
+
+/** The iPhone's captures stay at `source/<tag>/`, where the creatives read them. */
+export const sourceDirFor = (name, tag) => path.join(SOURCE_DIR, deviceFor(name).prefix ? name : "", tag);
 
 /** A screen named the way a person names it — "play", "02", or "2" — resolved to the
  * `nn` everything downstream keys on. Null for a name no screen answers to, so the caller

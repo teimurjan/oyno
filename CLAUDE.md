@@ -78,8 +78,9 @@ every running schedule are paused. Never-allowed apps are added to every schedul
 The 20-minute break is a one-off `kidHours.break` activity. App tokens never leave the phone.
 A paused app opens to `OynoShield`, the custom shield screen. It shows the planet's rounds, which
 `OynoStore` mirrors into `ShieldStats` in the App Group, and counts that app's pauses for today.
-`OynoShieldAction` answers its buttons. Apple's shield API has no action that opens an app, so
-"Open Oyno" posts a notification that opens Oyno on a tap.
+`OynoShieldAction` answers its buttons. "Open Oyno" answers `.openParentalControlsApp` on iOS 26.5
+and later, and leaves `ShieldRoute` in the App Group so `AppRoot` opens on Play. Before 26.5, it
+posts a notification that opens Oyno on a tap.
 Home's screen time card is drawn by the `OynoReport` DeviceActivityReport extension, the only
 process that may read per-app usage. It borrows `AppUsageCard` and the design system files from
 `Oyno/`. Home's "Together" figure is all time: the days `bankPausedMinutes` banked, plus today's
@@ -137,7 +138,8 @@ other three link to `/auth/callback` with a `token_hash`, which redeems in any b
 
 ## Language
 
-English and Russian. Three places hold the same locale list: `InterfaceLanguage.supported`,
+Ten languages: English, German, French, Spanish (Spain and Mexico), Brazilian Portuguese, Italian,
+Dutch, Polish and Russian. Three places hold the same locale list: `InterfaceLanguage.supported`,
 `LOCALES` in `lib/i18n.ts` and `LOCALES` in `appstore/scripts/lib/locales.mjs`. Every tag needs a
 site deck and a funnel deck. Use
 `String(interface:)`, never `String(localized:)`.

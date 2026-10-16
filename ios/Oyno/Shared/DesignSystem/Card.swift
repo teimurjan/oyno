@@ -56,6 +56,18 @@ extension View {
     }
 }
 
+extension View {
+    /// A capsule floating over the screen: Liquid Glass from iOS 26, the glass card before it.
+    @ViewBuilder
+    func floatingGlass() -> some View {
+        if #available(iOS 26, *) {
+            glassEffect(.regular.interactive(), in: .capsule)
+        } else {
+            glassCard(raised: true, radius: Metric.Radius.control)
+        }
+    }
+}
+
 /// A labelled free-text row inside a `RowCard`: the email and code fields on sign-in.
 struct TextFieldRow: View {
     let label: LocalizedStringResource

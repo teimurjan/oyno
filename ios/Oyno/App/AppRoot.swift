@@ -30,7 +30,7 @@ struct AppRoot: View {
     @AppStorage("oyno.didOnboard") private var didFinishFirstRun = false
     @AppStorage("oyno.didFunnel") private var didFunnel = false
     @AppStorage("oyno.didAskForReview") private var didAskForReview = false
-    @AppStorage(InterfaceLanguage.overrideKey) private var language = "en"
+    @AppStorage(InterfaceLanguage.overrideKey, store: InterfaceLanguage.store) private var language = "en"
 
     init() {
         Analytics.shared.configure(apiKey: AppConfig.amplitudeAPIKey, environment: AppConfig.analyticsEnvironment)
@@ -67,20 +67,19 @@ struct AppRoot: View {
                 await purchases.resolveCachedEntitlement()
                 isRestoring = needsEntitlement
                 didLoad = true
+                openPlayIfShieldAsked()
                 await refreshEntitlement()
                 await oyno.syncBackup()
                 await purchases.loadProducts()
                 if let resolved = await AppConfig.resolveAnalyticsEnvironment() {
                     Analytics.shared.setEnvironment(resolved)
                 }
-                mirrorEntitlementToShield()
             }
             .onChange(of: auth.currentUser?.id) { _, id in
                 guard let id else {
                     adoptedUserID = nil
                     purchases.forgetAccount()
                     kidHours.release()
-                    ShieldStats.clearEntitlement()
                     return
                 }
                 Analytics.shared.identify(userID: id)
@@ -94,11 +93,11 @@ struct AppRoot: View {
                     await refreshEntitlement()
                     // A reinstall signs in here: this is where the planet comes back.
                     await oyno.syncBackup()
-                    mirrorEntitlementToShield()
                 }
             }
             .onChange(of: scenePhase) { _, phase in
                 guard phase == .active else { return }
+                openPlayIfShieldAsked()
                 kidHours.refresh()
                 Task { await purchases.refreshServerEntitlement() }
             }
@@ -126,6 +125,7 @@ struct AppRoot: View {
             .environment(oyno)
             .environment(purchases)
             .environment(kidHours)
+            .adaptiveLayout()
     }
 
     /// Whether the first run is still waiting on this account's answer.
@@ -142,9 +142,10 @@ struct AppRoot: View {
         await purchases.refreshServerEntitlement()
     }
 
-    /// Mirrors entitlement status to App Group so the shield action can decide whether to open directly.
-    private func mirrorEntitlementToShield() {
-        ShieldStats.updateEntitlement(environment: AppConfig.analyticsEnvironment)
+    /// A paused app's "Open Oyno" lands on Play, on a cold launch or a return to the foreground.
+    private func openPlayIfShieldAsked() {
+        guard ShieldRoute.takePlay() else { return }
+        tab = .play
     }
 
     @ViewBuilder
@@ -175,35 +176,21 @@ struct AppRoot: View {
     }
 
     private var tabs: some View {
-        TabView(selection: $tab) {
+        RootTabs(selection: $tab) {
             NavigationStack {
                 HomeScreen(play: { tab = .play })
                     .tracksScreen(.home)
             }
-            // Its own key: "Home" is also the last world, and Russian names the two differently.
-            .tabItem {
-                Label {
-                    Text(LocalizedStringResource("Home tab", defaultValue: "Home"))
-                } icon: {
-                    Image(systemName: "globe.europe.africa.fill")
-                }
-            }
-            .tag(RootTab.home)
-
+        } play: {
             NavigationStack {
                 PlayScreen(onBack: { tab = .home }) { round = $0 }
                     .tracksScreen(.play)
             }
-            .tabItem { Label("Play", systemImage: "play.fill") }
-            .tag(RootTab.play)
-
+        } kidHours: {
             NavigationStack {
                 KidHoursScreen().tracksScreen(.kidHours)
             }
-            .tabItem { Label("Kid hours", systemImage: "clock.fill") }
-            .tag(RootTab.kidHours)
         }
-        .tint(Palette.accent)
         // A cover, not a push: the tab bar stays put under it instead of popping back in late.
         .fullScreenCover(item: $round, onDismiss: { roundPath = [] }) { activity in
             NavigationStack(path: $roundPath) {
@@ -232,8 +219,4 @@ struct AppRoot: View {
             }
         }
     }
-}
-
-enum RootTab: Hashable {
-    case home, play, kidHours
 }

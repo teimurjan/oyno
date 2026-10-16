@@ -69,5 +69,6 @@ struct TodayAppsView: View {
                 Label(token).labelStyle(.iconOnly)
             }
         }
+        .environment(\.locale, InterfaceLanguage.locale)
     }
 }

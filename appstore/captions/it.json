@@ -1,0 +1,12 @@
+{
+  "default": [
+    { "slug": "together", "photo": "together.jpg", "caption": "Stai sul pianeta del tuo bambino, [non sul tuo]" },
+    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 ora] in famiglia, senza telefono" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Batteria scarica? [Giochi facili per bebè]" },
+    { "slug": "full", "source": "03", "callout": "battery", "caption": "Batteria carica? [Giochi per scaricare l’energia]" },
+    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Ogni gioco [basato sulla ricerca]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Blocca le app] mentre giocate" },
+    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limiti di tempo] precisi al minuto" },
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Ogni partita [fa nascere un mondo]" }
+  ]
+}

@@ -3,13 +3,13 @@
 // one seeded screen per launch.
 
 import { execFileSync } from "node:child_process";
-import { copyFileSync, existsSync, mkdirSync, rmSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import path from "node:path";
-import { CACHE_DIR, IOS_PROJECT } from "./screenshot-kit.mjs";
+import { CACHE_DIR, DEVICES, IOS_PROJECT } from "./screenshot-kit.mjs";
 
 export const SCHEME = "Oyno";
 export const BUNDLE_ID = "com.teimurjan.oyno";
-export const DEFAULT_DEVICE = "iPhone 17";
+export const DEFAULT_DEVICE = DEVICES.iphone.simulator;
 
 // Long enough for a warm launch — at two seconds the quote and the tag frames came back as
 // photographs of the launch screen. The first launch after an install is slower still,
@@ -99,15 +99,48 @@ export function clearStatusBar(device) {
   simctl(["status_bar", device.udid, "clear"], { allowFail: true });
 }
 
-/** Resolve, boot, build, install, pin: the simulator ready to photograph. */
-export function prepareSimulator(name = DEFAULT_DEVICE) {
+/** Resolve, boot, build, install, pin: the simulator ready to photograph. `posture` asks for
+ * the device on its side, open or closed, and comes back as the display to photograph. */
+export function prepareSimulator(name = DEFAULT_DEVICE, posture = {}) {
   console.log(`Resolving simulator "${name}"…`);
   const device = resolveDevice(name);
   bootIfNeeded(device);
+  const display = posture.landscape || posture.open !== undefined ? litDisplay(device, posture) : null;
   buildDebugApp(device);
   installApp(device);
   pinStatusBar(device);
-  return device;
+  return { ...device, display };
+}
+
+/**
+ * The lit display, refused unless it is in `posture`. Only Device Hub turns or folds a
+ * simulator, so the run stops and says what to do there. `simctl io screenshot` reads the
+ * primary display by default, which on an open iPhone Duo is the dark outer one.
+ */
+function litDisplay(device, { landscape, open }) {
+  const file = path.join(CACHE_DIR, "displays.json");
+  mkdirSync(CACHE_DIR, { recursive: true });
+  execFileSync(
+    "xcrun",
+    ["devicectl", "device", "info", "displays", "--device", device.udid, "--timeout", "15", "--json-output", file],
+    { stdio: "ignore" },
+  );
+  const displays = JSON.parse(readFileSync(file, "utf8")).result.displays;
+  const lit = displays.find((display) => display.active) ?? displays[0];
+  if (open === true && lit.primary) {
+    throw new Error(`The ${device.name} simulator is closed. Open it in Device Hub, then run again.`);
+  }
+  if (open === false && !lit.primary) {
+    throw new Error(`The ${device.name} simulator is open. Close it in Device Hub, then run again.`);
+  }
+  const turned = ["rot90", "rot270"].includes(lit.currentOrientation);
+  if (landscape && !turned) {
+    throw new Error(`The ${device.name} simulator is upright. Turn it on its side in Device Hub, then run again.`);
+  }
+  if (!landscape && turned) {
+    throw new Error(`The ${device.name} simulator is on its side. Turn it upright in Device Hub, then run again.`);
+  }
+  return lit.displayId;
 }
 
 /**
@@ -129,7 +162,7 @@ export async function warmUp(device, screen) {
  * language is left alone, so locales can be captured back to back. `extraArgs` is for the
  * hero's `--screenshot-camera <file>`.
  *
- * @param {{ udid: string }} device
+ * @param {{ udid: string, display?: number | null }} device
  * @param {{ screen: string, locale?: string, sim?: string, file: string, delay?: number, extraArgs?: string[] }} options
  */
 export async function captureScreen(device, { screen, locale = "en", sim = "en_US", file, delay = DEFAULT_DELAY, extraArgs = [] }) {
@@ -144,7 +177,7 @@ export async function captureScreen(device, { screen, locale = "en", sim = "en_U
   ]);
   await sleep(delay);
   assertStillRunning(launched, `${locale}/${screen}`);
-  simctl(["io", device.udid, "screenshot", "--type", "png", file]);
+  simctl(["io", device.udid, "screenshot", "--type", "png", ...(device.display ? [`--display=${device.display}`] : []), file]);
   simctl(["terminate", device.udid, BUNDLE_ID], { allowFail: true });
 
   // Beside the capture, so the frame that lifts a widget out finds where it was drawn.
