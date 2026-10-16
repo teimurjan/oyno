@@ -74,7 +74,7 @@ struct PlayScreen: View {
             VStack(alignment: .leading, spacing: 0) {
                 topBar
                 header
-                title
+                paintedTitle(paintingWidth: 260)
                 meta.padding(.top, Metric.Space.s)
                 blurb.padding(.top, Metric.Space.m)
                 battery.screenshotCallout("battery").padding(.top, Metric.Space.xl)
@@ -105,7 +105,7 @@ struct PlayScreen: View {
                 VStack(alignment: .leading, spacing: 0) {
                     topBar
                     header
-                    title
+                    paintedTitle(paintingWidth: 320)
                     meta.padding(.top, Metric.Space.m)
                     blurb.padding(.top, 14)
                     if adaptive.bars == .top { battery.padding(.top, 28) }
@@ -186,6 +186,32 @@ struct PlayScreen: View {
     }
 
     // MARK: The game
+
+    /// The game's painting above its title, fading out at its foot where the title overlaps it
+    /// on a glow. Just the title for a game not painted yet.
+    @ViewBuilder
+    private func paintedTitle(paintingWidth width: CGFloat) -> some View {
+        if let art = ActivityArt.painting(for: activity) {
+            Image(uiImage: art)
+                .resizable()
+                .scaledToFit()
+                .frame(width: width, height: (width * 0.82).rounded())
+                .mask(LinearGradient(
+                    stops: [.init(color: .black, location: 0.66), .init(color: .clear, location: 0.98)],
+                    startPoint: .top, endPoint: .bottom
+                ))
+                .id(activity.id)
+                .transition(.opacity)
+                .accessibilityHidden(true)
+                .padding(.top, Metric.Space.s)
+            title
+                .shadow(color: Palette.canvas.opacity(0.95), radius: 9)
+                .shadow(color: Palette.canvas.opacity(0.9), radius: 1.5)
+                .padding(.top, -40)
+        } else {
+            title
+        }
+    }
 
     /// The eyebrow, and the kid's age as a quiet menu: it is set once and rarely changes.
     private var header: some View {
@@ -465,13 +491,15 @@ private struct Badge: View {
     }
 }
 
-/// A segmented control: a quiet track, the chosen option lifted onto solid white. Each
-/// option's tap area runs the track's full height.
+/// A segmented control: a quiet track, the chosen option lifted onto solid white that slides
+/// to the next choice. Each option's tap area runs the track's full height.
 private struct Segments<Option: Hashable, Face: View>: View {
     let accessibilityLabel: LocalizedStringResource
     let options: [Option]
     @Binding var selection: Option
     @ViewBuilder let face: (_ option: Option, _ active: Bool) -> Face
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Namespace private var pill
 
     var body: some View {
         HStack(spacing: 0) {
@@ -485,9 +513,12 @@ private struct Segments<Option: Hashable, Face: View>: View {
                         .padding(.horizontal, 10)
                         .frame(maxWidth: .infinity, minHeight: 36)
                         .background {
-                            Capsule()
-                                .fill(active ? Palette.surface : .clear)
-                                .shadow(color: active ? Palette.glassShadow : .clear, radius: 4, y: 2)
+                            if active {
+                                Capsule()
+                                    .fill(Palette.surface)
+                                    .shadow(color: Palette.glassShadow, radius: 4, y: 2)
+                                    .matchedGeometryEffect(id: "pill", in: pill)
+                            }
                         }
                         .padding(.vertical, 4)
                         .contentShape(.rect)
@@ -498,6 +529,7 @@ private struct Segments<Option: Hashable, Face: View>: View {
         }
         .padding(.horizontal, 4)
         .background(Palette.wash, in: .capsule)
+        .animation(reduceMotion ? nil : .snappy, value: selection)
         .accessibilityElement(children: .contain)
         .accessibilityLabel(Text(accessibilityLabel))
     }

@@ -65,6 +65,9 @@ The layers come from `art/source/*.png` through `bun run art:build`, which write
 `lib/art/manifest.ts` and the `Sky`, `Family` and `Planets/Planet-<id>` image sets. Commit all three together.
 Each of the 31 worlds is its own painting. Earth is `art/source/planet.png`, the master. The rest
 are `art/source/planets/<id>.png`, painted from Earth by `bun run art:planets` (OpenAI, `OPENAI_API_KEY`).
+Each game's illustration is `art/source/activities/<id>.png`, painted by `bun run art:activities` from its
+scene in `art/activity-scenes.json`. `art:build` ships it as `Resources/Activities/<id>.webp`, a bundle file
+and not an image set, because the catalog stores it six times larger. Play and search draw it where it exists.
 
 ## Kid hours (Screen Time)
 

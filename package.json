@@ -25,6 +25,7 @@
     "creatives:push": "node appstore/scripts/push-creative-assets.mjs",
     "art:build": "bun scripts/build-art.ts",
     "art:planets": "bun scripts/generate-planets.ts",
+    "art:activities": "bun scripts/generate-activity-art.ts",
     "chime:build": "bun scripts/build-chime.ts",
     "icons:build": "bun scripts/build-icons.ts"
   },

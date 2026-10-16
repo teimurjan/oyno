@@ -168,12 +168,19 @@ struct ActivitySearchScreen: View {
         } label: {
             HStack(spacing: Metric.Space.m) {
                 let tint = Palette.pastels[game.id.unicodeScalars.reduce(0) { $0 + Int($1.value) } % Palette.pastels.count]
-                Text(verbatim: String(game.title.prefix(1)))
-                    .font(Typeface.ui(15, .extrabold, relativeTo: .subheadline))
-                    .foregroundStyle(tint.ink)
-                    .frame(width: 40, height: 40)
-                    .background(tint.fill, in: .rect(cornerRadius: 14))
-                    .accessibilityHidden(true)
+                // The game's painting where it has one, else its first letter.
+                Group {
+                    if let art = ActivityArt.thumbnail(for: game, pixels: 120) {
+                        Image(uiImage: art).resizable().scaledToFit().padding(3)
+                    } else {
+                        Text(verbatim: String(game.title.prefix(1)))
+                            .font(Typeface.ui(15, .extrabold, relativeTo: .subheadline))
+                            .foregroundStyle(tint.ink)
+                    }
+                }
+                .frame(width: 40, height: 40)
+                .background(tint.fill, in: .rect(cornerRadius: 14))
+                .accessibilityHidden(true)
                 VStack(alignment: .leading, spacing: 1) {
                     Text(verbatim: game.title)
                         .font(Typeface.ui(15, .bold, relativeTo: .subheadline))
