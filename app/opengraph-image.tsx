@@ -9,12 +9,15 @@ export const alt = copyFor("en").home.meta.title;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const fromRoot = (file: string) => readFile(path.join(process.cwd(), file));
-
 export default async function Image() {
   const [font, planet] = await Promise.all([
-    fromRoot("ios/Oyno/Resources/Fonts/Figtree-ExtraBold.ttf"),
-    fromRoot("art/source/planet.png"),
+    readFile(path.join(process.cwd(), "ios/Oyno/Resources/Fonts/Figtree-ExtraBold.ttf")),
+    readFile(
+      path.join(
+        process.cwd(),
+        "ios/Oyno/Resources/Assets.xcassets/Planets/Planet-earth.imageset/planet-earth.png",
+      ),
+    ),
   ]);
   return new ImageResponse(
     <div
