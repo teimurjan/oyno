@@ -340,11 +340,14 @@ export const ptBR: FunnelCopy = {
     ],
     monthly: "Mensal",
     yearly: "Anual",
+    lifetime: "Vitalício",
     perMonth: "/ mês",
     perYear: "/ ano",
     perDay: "por dia",
+    oneTime: "pagamento único",
     cancelAnytime: "Cancele quando quiser",
     billedYearly: "Cobrado uma vez por ano",
+    payOnce: "Pague uma vez, use para sempre",
     save: "Economize {percent}",
     guarantee: "Não curtiu? Peça o reembolso total em até 14 dias.",
     continue: "Continuar",
@@ -367,7 +370,7 @@ export const ptBR: FunnelCopy = {
       },
       {
         question: "Posso pedir meu dinheiro de volta?",
-        answer: "Sim, em até 14 dias e sem precisar dizer o motivo. Escreva para support@oyno.app usando o e-mail com que você pagou.",
+        answer: "Sim, em até 14 dias e sem precisar dizer o motivo. Escreva para tim@oyno.app usando o e-mail com que você pagou.",
       },
       {
         question: "Em quais aparelhos funciona?",
@@ -396,6 +399,7 @@ export const ptBR: FunnelCopy = {
     total: "Total",
     renews: "Renova por {amount} / {cycle}. Cancele quando quiser.",
     cycles: { month: "mês", year: "ano" },
+    once: "Um único pagamento. Sem renovações.",
   },
 
   done: {

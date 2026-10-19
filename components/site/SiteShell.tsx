@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { copyFor } from "@/components/site/copy";
+import { BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/paths";
+import { GAMES_PATH } from "@/lib/games/hubs";
 import { funnelPath, LOCALE_NAMES, LOCALES, pathFor, type Lang, type SitePage } from "@/lib/i18n";
 
 /**
@@ -47,6 +49,9 @@ export function SiteShell({
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-6">
           <Logo />
           <nav className="flex flex-wrap items-center gap-5 text-[13px] text-muted">
+            {copy.nav.games && <Link href={GAMES_PATH} className="hover:text-ink">{copy.nav.games}</Link>}
+            {copy.nav.guides && <Link href={GUIDES_PATH} className="hover:text-ink">{copy.nav.guides}</Link>}
+            {copy.nav.blog && <Link href={BLOG_PATH} className="hover:text-ink">{copy.nav.blog}</Link>}
             <Link href={pathFor(lang, "pricing")} className="hover:text-ink">{copy.nav.pricing}</Link>
             <Link href={pathFor(lang, "support")} className="hover:text-ink">{copy.nav.support}</Link>
             <Link href={pathFor(lang, "privacy")} className="hover:text-ink">{copy.nav.privacy}</Link>
@@ -106,16 +111,11 @@ export function LanguageSwitch({ lang, page }: { lang: Lang; page: SitePage }) {
   );
 }
 
-/** A prose block. Legal copy is the one place on this site with long-form text, and it
- * needs a measure and a rhythm the marketing pages never do.
- *
- * The measure lives here rather than on the shell: the frame is the same width on every
- * page of the site, and it is the *paragraph* that has to stay narrow enough to read. A
- * 1024px line of 15px text is a line the eye loses its place on. Headings clear the sticky
- * header when linked to, as `/privacy#delete` is from Meta's app settings. */
+/** A prose block, the full width of the shell so it lines up with the header. Headings clear
+ * the sticky header when linked to, as `/privacy#delete` is from Meta's app settings. */
 export function Prose({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-3xl space-y-5 text-[15px] leading-[1.65] text-slate [&_a]:text-accent [&_a:hover]:text-accent-pressed [&_code]:font-mono [&_code]:text-[13px] [&_code]:text-ink [&_h2]:mt-10 [&_h2]:scroll-mt-24 [&_h2]:text-[19px] [&_h2]:font-semibold [&_h2]:text-ink [&_h3]:mt-7 [&_h3]:text-[16px] [&_h3]:font-semibold [&_h3]:text-ink [&_li]:mt-2 [&_ul]:list-disc [&_ul]:pl-5">
+    <div className="space-y-5 text-[15px] leading-[1.65] text-slate [&_a]:text-accent [&_a:hover]:text-accent-pressed [&_code]:font-mono [&_code]:text-[13px] [&_code]:text-ink [&_h2]:mt-10 [&_h2]:scroll-mt-24 [&_h2]:text-[19px] [&_h2]:font-semibold [&_h2]:text-ink [&_h3]:mt-7 [&_h3]:text-[16px] [&_h3]:font-semibold [&_h3]:text-ink [&_li]:mt-2 [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5">
       {children}
     </div>
   );

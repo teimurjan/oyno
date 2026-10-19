@@ -340,11 +340,14 @@ export const it: FunnelCopy = {
     ],
     monthly: "Mensile",
     yearly: "Annuale",
+    lifetime: "A vita",
     perMonth: "/ mese",
     perYear: "/ anno",
     perDay: "al giorno",
+    oneTime: "una tantum",
     cancelAnytime: "Disdici quando vuoi",
     billedYearly: "Addebito annuale",
+    payOnce: "Paghi una volta, tuo per sempre",
     save: "Risparmi il {percent}",
     guarantee: "Non fa per te? Chiedi il rimborso completo entro 14 giorni.",
     continue: "Continua",
@@ -367,7 +370,7 @@ export const it: FunnelCopy = {
       },
       {
         question: "Posso avere un rimborso?",
-        answer: "Sì, entro 14 giorni e senza dover dare spiegazioni. Scrivi a support@oyno.app dall’indirizzo con cui hai pagato.",
+        answer: "Sì, entro 14 giorni e senza dover dare spiegazioni. Scrivi a tim@oyno.app dall’indirizzo con cui hai pagato.",
       },
       {
         question: "Su quali dispositivi funziona?",
@@ -396,6 +399,7 @@ export const it: FunnelCopy = {
     total: "Totale",
     renews: "Si rinnova a {amount} / {cycle}. Disdici quando vuoi.",
     cycles: { month: "mese", year: "anno" },
+    once: "Un solo pagamento. Nessun rinnovo.",
   },
 
   done: {

@@ -68,6 +68,11 @@ are `art/source/planets/<id>.png`, painted from Earth by `bun run art:planets` (
 Each game's illustration is `art/source/activities/<id>.png`, painted by `bun run art:activities` from its
 scene in `art/activity-scenes.json`. `art:build` ships it as `Resources/Activities/<id>.webp`, a bundle file
 and not an image set, because the catalog stores it six times larger. Play and search draw it where it exists.
+The same bytes go to `public/art/activities/` for the site's game pages (`/games`, `lib/games/`), which
+read `activities/en.json` at build and are English only. The guides and posts (`/guides`, `/blog`) are TSX
+in `components/site/articles/content/`, registered in its `index.ts`. They follow the games' evidence rule:
+every claim is a `<Cite>`, citing a game source or `lib/articles/references.ts`, each checked against Crossref.
+`bun test lib` fails on an unlisted citation, an unknown game or a link to a page that is not built.
 
 ## Kid hours (Screen Time)
 
@@ -100,6 +105,9 @@ Apple StoreKit 2 sells in the app, and Dodo sells on the web. `readEntitlement` 
 `isPaid` learns there is more than one.
 
 - `expires_at IS NULL` is perpetual on the Apple row and **not live** on the web row.
+- The web lifetime unlock is its own table, `dodo_lifetime_entitlements`, one row per buyer keyed
+  by the Dodo payment. It never expires, and only a full refund or a lost dispute sets
+  `revoked_at`. It is on sale while `DODO_LIFETIME_ON_SALE` is `true`.
 - `environment` gates the web read and is only a label on the Apple one: App Review and
   TestFlight buy in Sandbox, which is held perpetual.
 - The buyer is linked by the Supabase uid carried through the biller (`appAccountToken`,

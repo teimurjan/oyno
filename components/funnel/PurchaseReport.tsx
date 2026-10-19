@@ -3,7 +3,7 @@ import { track } from "@/lib/analytics";
 import { metaTrack } from "@/lib/metaPixel";
 import { takePurchase } from "./session";
 
-/** What Dodo puts in the return url's `status` when the subscription actually started. */
+/** What Dodo puts in the return url's `status` when the subscription started or the one-time payment went through. */
 const SUCCEEDED = new Set(["active", "succeeded"]);
 
 /**
@@ -19,7 +19,8 @@ export function PurchaseReport() {
 
     const params = new URLSearchParams(window.location.search);
     const status = params.get("status");
-    if (!params.get("subscription_id") || (status && !SUCCEEDED.has(status))) return;
+    const purchased = params.get("subscription_id") ?? params.get("payment_id");
+    if (!purchased || (status && !SUCCEEDED.has(status))) return;
 
     metaTrack("Purchase", { value: purchase.value, currency: purchase.currency }, purchase.eventId);
     track({

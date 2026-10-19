@@ -9,24 +9,34 @@ import type { PlanQuote } from "@/lib/plans";
  * `PaywallStep` because `prewarm.ts` starts it while the reader is still answering questions.
  */
 
-let pending: Promise<PlanQuote | null> | null = null;
+interface Offer {
+  /** Null when the answer was unusable; the caller keeps `planListQuote`. */
+  quote: PlanQuote | null;
+  /** Whether the lifetime card is shown. */
+  lifetime: boolean;
+}
 
-/** Null when there is nothing to ask or the answer was unusable; the caller keeps
- * `planListQuote`. A failure is not remembered, so the paywall gets to ask again. */
-export function planQuote(): Promise<PlanQuote | null> {
-  pending ??= fetchQuote().then((quote) => {
-    if (!quote) pending = null;
-    return quote;
+let pending: Promise<Offer | null> | null = null;
+
+/** Null when the request failed. A missing quote is not remembered, so the paywall gets to ask again. */
+function offer(): Promise<Offer | null> {
+  pending ??= fetchOffer().then((answer) => {
+    if (!answer?.quote) pending = null;
+    return answer;
   });
   return pending;
 }
 
-async function fetchQuote(): Promise<PlanQuote | null> {
+export const planQuote = (): Promise<PlanQuote | null> => offer().then((answer) => answer?.quote ?? null);
+
+export const lifetimeOffered = (): Promise<boolean> => offer().then((answer) => answer?.lifetime ?? false);
+
+async function fetchOffer(): Promise<Offer | null> {
   try {
     const response = await fetch("/api/funnel/quote");
     if (!response.ok) return null;
     const result = (await response.json()) as QuoteResult;
-    return result.configured ? result.quote : null;
+    return { quote: result.configured ? result.quote : null, lifetime: result.lifetime };
   } catch {
     return null;
   }

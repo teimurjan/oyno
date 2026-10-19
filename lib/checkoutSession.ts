@@ -1,8 +1,15 @@
 import "server-only";
 import type { User } from "@supabase/supabase-js";
 import type { CheckoutSessionBillingAddress } from "dodopayments/resources/checkout-sessions";
-import { dodoBrowserMode, dodoClient, dodoProductId, isDodoCheckoutConfigured } from "./dodo";
-import { fromMinorUnits, type Plan, type PlanQuote } from "./plans";
+import {
+  dodoBrowserMode,
+  dodoClient,
+  dodoProductId,
+  isDodoCheckoutConfigured,
+  isLifetimeOffered,
+  isOnSale,
+} from "./dodo";
+import { fromMinorUnits, planListQuote, type Plan, type PlanQuote } from "./plans";
 
 /**
  * The two Dodo calls the web funnel's checkout step makes, behind `app/api/funnel/`.
@@ -40,8 +47,11 @@ export interface BrowserContext {
   funnel?: string;
 }
 
-/** The plan cards' prices, in the buyer's own currency; `null` when Dodo could not say. */
-export type QuoteResult = { configured: false } | { configured: true; quote: PlanQuote | null };
+/** The plan cards' prices, in the buyer's own currency; `null` when Dodo could not say.
+ * `lifetime` says whether the lifetime card is shown at all, priced from the list without a quote. */
+export type QuoteResult =
+  | { configured: false; lifetime: boolean }
+  | { configured: true; quote: PlanQuote | null; lifetime: boolean };
 
 export type CheckoutSessionResult =
   | { ok: true; checkoutUrl: string; mode: "live" | "test" }
@@ -53,9 +63,9 @@ export type CheckoutSessionResult =
  * Dodo is the merchant of record and quotes in the buyer's currency, so the cards ask what
  * this visitor will actually be charged rather than printing USD at everyone.
  *
- * Two calls, not one: Dodo allows a single subscription product per cart (`422 Only one
+ * One call per plan: Dodo allows a single subscription product per cart (`422 Only one
  * subscription product allowed per checkout`), so the plans have to be priced separately.
- * They run in parallel and are used **both or neither** — the yearly card strikes a year of
+ * They run in parallel and are used **all or none** — the yearly card strikes a year of
  * the monthly price through and states the saving between the two, so one localized price
  * beside one list price would advertise a discount computed across two currencies.
  *
@@ -67,7 +77,8 @@ export type CheckoutSessionResult =
  * already says.
  */
 export async function previewPlanQuote(country: string | undefined): Promise<QuoteResult> {
-  if (!isDodoCheckoutConfigured) return { configured: false };
+  const lifetime = isLifetimeOffered;
+  if (!isDodoCheckoutConfigured) return { configured: false, lifetime };
 
   const billing = country
     ? { billing_address: { country: country as CheckoutSessionBillingAddress["country"] } }
@@ -79,28 +90,40 @@ export async function previewPlanQuote(country: string | undefined): Promise<Quo
     });
 
   try {
-    const [monthly, yearly] = await Promise.all([priceOf("monthly"), priceOf("yearly")]);
-    // A buyer whose two plans priced in different currencies is a Dodo bug, but printing a
+    const [monthly, yearly, once] = await Promise.all([
+      priceOf("monthly"),
+      priceOf("yearly"),
+      lifetime ? priceOf("lifetime") : null,
+    ]);
+    // A buyer whose plans priced in different currencies is a Dodo bug, but printing a
     // saving across them would be ours.
-    if (monthly.currency !== yearly.currency) return { configured: true, quote: null };
+    const previews = once ? [monthly, yearly, once] : [monthly, yearly];
+    if (new Set(previews.map((preview) => preview.currency)).size > 1) {
+      return { configured: true, quote: null, lifetime };
+    }
 
+    const amount = (preview: typeof monthly) => fromMinorUnits(preview.total_price, preview.currency);
     return {
       configured: true,
+      lifetime,
       quote: {
         currency: monthly.currency,
-        monthly: fromMinorUnits(monthly.total_price, monthly.currency),
-        yearly: fromMinorUnits(yearly.total_price, yearly.currency),
+        monthly: amount(monthly),
+        yearly: amount(yearly),
+        // Never shown when not on sale, so the list price only fills the shape.
+        lifetime: once ? amount(once) : planListQuote.lifetime,
       },
     };
   } catch (cause) {
     // The list quote is already on screen; a failed preview is not worth an error.
     console.error("dodo price preview failed", cause);
-    return { configured: true, quote: null };
+    return { configured: true, quote: null, lifetime };
   }
 }
 
 /**
- * Mint a checkout session for one plan, for the signed-in buyer.
+ * Mint a checkout session for one plan, for the signed-in buyer. The lifetime product is a
+ * one-time payment, so its session makes a payment rather than a subscription.
  *
  * A Dodo session is single-use and fixed once created — there is no updating the plan of an
  * open checkout — which is why the step commits to a plan before revealing the form. The
@@ -111,7 +134,7 @@ export async function createCheckoutSession(
   plan: Plan,
   browser: BrowserContext,
 ): Promise<CheckoutSessionResult> {
-  if (!isDodoCheckoutConfigured) return { ok: false, error: "unconfigured" };
+  if (!isDodoCheckoutConfigured || !isOnSale(plan)) return { ok: false, error: "unconfigured" };
 
   try {
     const session = await dodoClient().checkoutSessions.create({

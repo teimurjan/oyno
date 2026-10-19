@@ -9,7 +9,8 @@ interface CheckoutBody {
   browser?: unknown;
 }
 
-const isPlan = (value: unknown): value is Plan => value === "monthly" || value === "yearly";
+const isPlan = (value: unknown): value is Plan =>
+  value === "monthly" || value === "yearly" || value === "lifetime";
 
 /** Only the shape the metadata bag needs is checked here; `metadataFor` bounds the rest,
  * since every key in it is the buyer's to edit. */

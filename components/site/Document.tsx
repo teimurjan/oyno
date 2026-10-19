@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { figtree, onest } from "@/app/fonts";
 import { AnalyticsBoot } from "@/components/AnalyticsBoot";
 import { MetaPixel } from "@/components/MetaPixel";
-import type { Lang } from "@/lib/i18n";
+import { SITE_URL, type Lang } from "@/lib/i18n";
+import { OPEN_GRAPH } from "@/lib/seo";
 
 /**
  * The `<html>` shell, shared by the four root layouts.
@@ -44,9 +45,12 @@ export function Document({
   );
 }
 
-/** The icons every root layout carries. Spread into each one's `metadata` rather than
- * repeated, so a new size is added in one place. */
-export const siteIcons: Pick<Metadata, "manifest" | "icons"> = {
+/** The metadata every root layout carries: icons, the origin relative URLs resolve against and
+ * the social card. Spread into each one's `metadata` rather than repeated. */
+export const siteMetadata: Pick<Metadata, "metadataBase" | "openGraph" | "twitter" | "manifest" | "icons"> = {
+  metadataBase: new URL(SITE_URL),
+  openGraph: OPEN_GRAPH,
+  twitter: { card: "summary_large_image" },
   manifest: "/ico/manifest.json",
   icons: {
     icon: [

@@ -2,11 +2,15 @@ import Link from "next/link";
 import { AppStoreBadge } from "@/components/AppStoreBadge";
 import { Logo } from "@/components/Logo";
 import { copyFor } from "@/components/site/copy";
+import { JsonLd } from "@/components/site/JsonLd";
 import { PlanetHero } from "@/components/site/PlanetHero";
 import { ScreenSlides } from "@/components/site/ScreenSlides";
 import { LanguageSwitch } from "@/components/site/SiteShell";
+import { BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/paths";
+import { GAMES_PATH } from "@/lib/games/hubs";
 import { funnelPath, pathFor, type Lang } from "@/lib/i18n";
 import { formatMoney, planListQuote } from "@/lib/plans";
+import { homeStructuredData } from "@/lib/seo";
 
 /**
  * Hero (the pain in the ad's words, beside the planet), one proof section (an evening with
@@ -19,6 +23,7 @@ export function HomePage({ lang }: { lang: Lang }) {
 
   return (
     <div className="sky min-h-screen">
+      <JsonLd data={homeStructuredData(lang, home.meta.description)} />
       <header className="sticky top-0 z-20 pt-3">
         <div className="shell">
           <div className="glass-bar flex items-center justify-between py-2 pl-5 pr-2">
@@ -132,6 +137,9 @@ export function HomePage({ lang }: { lang: Lang }) {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <Logo />
           <nav className="flex flex-wrap items-center gap-5 text-[13px] font-semibold text-muted">
+            {copy.nav.games && <Link href={GAMES_PATH} className="hover:text-ink">{copy.nav.games}</Link>}
+            {copy.nav.guides && <Link href={GUIDES_PATH} className="hover:text-ink">{copy.nav.guides}</Link>}
+            {copy.nav.blog && <Link href={BLOG_PATH} className="hover:text-ink">{copy.nav.blog}</Link>}
             <Link href={pathFor(lang, "pricing")} className="hover:text-ink">{copy.nav.pricing}</Link>
             <Link href={pathFor(lang, "support")} className="hover:text-ink">{copy.nav.support}</Link>
             <Link href={pathFor(lang, "privacy")} className="hover:text-ink">{copy.nav.privacy}</Link>

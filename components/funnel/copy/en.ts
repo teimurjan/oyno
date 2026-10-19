@@ -356,11 +356,14 @@ export const en = {
     ],
     monthly: "Monthly",
     yearly: "Yearly",
+    lifetime: "Lifetime",
     perMonth: "/ month",
     perYear: "/ year",
     perDay: "per day",
+    oneTime: "one time",
     cancelAnytime: "Cancel anytime",
     billedYearly: "Billed once a year",
+    payOnce: "Pay once, keep it for good",
     save: "Save {percent}",
     guarantee: "Not for you? Ask for a full refund within 14 days.",
     continue: "Continue",
@@ -383,7 +386,7 @@ export const en = {
       },
       {
         question: "Can I get my money back?",
-        answer: "Yes, within 14 days and without giving a reason. Write to support@oyno.app from the address you paid with.",
+        answer: "Yes, within 14 days and without giving a reason. Write to tim@oyno.app from the address you paid with.",
       },
       {
         question: "Which devices does it run on?",
@@ -412,6 +415,7 @@ export const en = {
     total: "Total",
     renews: "Renews at {amount} / {cycle}. Cancel anytime.",
     cycles: { month: "month", year: "year" },
+    once: "One payment. No renewals.",
   },
 
   done: {

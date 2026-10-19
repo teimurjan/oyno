@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Document, siteIcons } from "@/components/site/Document";
+import { Document, siteMetadata } from "@/components/site/Document";
 import "@/app/globals.css";
 import { copyFor } from "@/components/site/copy";
 
@@ -11,7 +11,7 @@ import { copyFor } from "@/components/site/copy";
  * the tag and the default metadata differ.
  */
 export const metadata: Metadata = {
-  ...siteIcons,
+  ...siteMetadata,
   title: copyFor("en").home.meta.title,
   description: copyFor("en").home.meta.description,
 };

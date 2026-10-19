@@ -340,11 +340,14 @@ export const nl: FunnelCopy = {
     ],
     monthly: "Maandelijks",
     yearly: "Jaarlijks",
+    lifetime: "Levenslang",
     perMonth: "/ maand",
     perYear: "/ jaar",
     perDay: "per dag",
+    oneTime: "eenmalig",
     cancelAnytime: "Altijd opzegbaar",
     billedYearly: "Eén keer per jaar betalen",
+    payOnce: "Eén keer betalen, voor altijd van jou",
     save: "Bespaar {percent}",
     guarantee: "Niks voor jou? Vraag binnen 14 dagen al je geld terug.",
     continue: "Verder",
@@ -367,7 +370,7 @@ export const nl: FunnelCopy = {
       },
       {
         question: "Kan ik mijn geld terugkrijgen?",
-        answer: "Ja, binnen 14 dagen en zonder opgave van reden. Mail naar support@oyno.app vanaf het adres waarmee je hebt betaald.",
+        answer: "Ja, binnen 14 dagen en zonder opgave van reden. Mail naar tim@oyno.app vanaf het adres waarmee je hebt betaald.",
       },
       {
         question: "Op welke apparaten werkt het?",
@@ -396,6 +399,7 @@ export const nl: FunnelCopy = {
     total: "Totaal",
     renews: "Wordt verlengd voor {amount} / {cycle}. Altijd opzegbaar.",
     cycles: { month: "maand", year: "jaar" },
+    once: "Eén betaling. Geen verlenging.",
   },
 
   done: {

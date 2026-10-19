@@ -23,7 +23,7 @@ export function ProsePage({
 
   return (
     <SiteShell lang={lang} page={page}>
-      <div className="max-w-3xl">
+      <header>
         <p className="eyebrow">{text.eyebrow}</p>
         <h1 className="mt-3 text-[34px] font-extrabold leading-tight tracking-[-0.03em] text-ink">
           {text.heading}
@@ -36,7 +36,7 @@ export function ProsePage({
         {text.intro && (
           <p className="mt-4 text-[16px] leading-relaxed text-muted">{text.intro}</p>
         )}
-      </div>
+      </header>
 
       <Prose>{text.body}</Prose>
     </SiteShell>

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
+import type { Payment } from "dodopayments/resources/payments";
 import type { Subscription } from "dodopayments/resources/subscriptions";
 import { dodoClient, dodoEnvironment, isDodoConfigured, planForProductId } from "@/lib/dodo";
-import { applyDodoEntitlementEvent } from "@/lib/entitlements";
+import { applyDodoEntitlementEvent, applyDodoLifetimeGrant, revokeDodoLifetime } from "@/lib/entitlements";
 import { logFields, withLogging } from "@/lib/log";
 import { isMetaConfigured, parseMetaBrowserIdentity, sendMetaPurchase } from "@/lib/meta";
 import { trackServerEvent, type ServerAnalyticsEvent } from "@/lib/serverAnalytics";
@@ -24,8 +25,9 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
  * written the same way and the status alone decides access (DODO_LIVE_STATUSES).
  *
  * `past_due` is in the SDK's types ahead of the docs' event list; subscribing to it in the
- * dashboard is optional, handling it here is free. Payment events are deliberately absent:
- * a renewal is `subscription.renewed`, and nothing this route does needs the payment. */
+ * dashboard is optional, handling it here is free. A subscription's own payments are
+ * ignored: a renewal is `subscription.renewed`. Payments matter only for the lifetime unlock,
+ * which `payment.succeeded`, `refund.succeeded` and `dispute.lost` grant and revoke. */
 const SUBSCRIPTION_EVENTS = new Set([
   "subscription.active",
   "subscription.updated",
@@ -42,8 +44,8 @@ const SUBSCRIPTION_EVENTS = new Set([
 ]);
 
 /**
- * Dodo Payments webhook — the durable record of a web subscription, and the only thing that
- * writes `dodo_entitlements`.
+ * Dodo Payments webhook — the durable record of a web purchase, and the only thing that
+ * writes `dodo_entitlements` and `dodo_lifetime_entitlements`.
  *
  * The Standard Webhooks signature is the authentication: no shared URL token, no bearer,
  * exactly as Apple's JWS is the authentication on the App Store notifications route.
@@ -87,6 +89,13 @@ export const POST = withLogging("dodo.webhook", async (request: Request) => {
   // under a fresh id. It is logged so a duplicate can be recognised as one.
   logFields({ type: event.type, webhookId: id });
 
+  if (event.type === "payment.succeeded") return applyLifetimePayment(event.data, event.timestamp);
+  // A partial refund leaves the unlock paid for.
+  if (event.type === "refund.succeeded" && !event.data.is_partial) {
+    return revokeLifetime(event.data.payment_id, event.timestamp);
+  }
+  if (event.type === "dispute.lost") return revokeLifetime(event.data.payment_id, event.timestamp);
+
   if (!SUBSCRIPTION_EVENTS.has(event.type)) {
     // Subscribed-to-but-unhandled, or Dodo adding a type. 2xx so it isn't retried for a
     // day; the type is in the log line if it turns out to matter.
@@ -116,7 +125,7 @@ async function applySubscription(type: string, subscription: Subscription, occur
     plan: planForProductId(productId) ?? "unknown",
   });
 
-  const { applied, isNewSubscription } = await applyDodoEntitlementEvent({
+  const { applied, isNewPurchase } = await applyDodoEntitlementEvent({
     userId,
     customerId: subscription.customer.customer_id,
     subscriptionId: subscription.subscription_id,
@@ -155,8 +164,19 @@ async function applySubscription(type: string, subscription: Subscription, occur
   // Whichever live event is first to see the id is the acquisition. The status check is
   // what keeps `subscription.failed` out: a mandate that was never created also inserts a
   // row, and is not a sale.
-  if (isNewSubscription && subscription.status === "active") {
-    await reportPurchase(subscription, userId, occurredAt);
+  if (isNewPurchase && subscription.status === "active") {
+    await reportPurchase({
+      eventId: subscription.metadata.eventId,
+      userId,
+      email: subscription.customer.email,
+      metadata: subscription.metadata,
+      // Dodo states the recurring amount before tax. The browser twin carries the exact
+      // charged total, and normally arrives first and wins deduplication, so this is the
+      // slightly conservative number on the fallback path rather than the usual one.
+      amountMinorUnits: subscription.recurring_pre_tax_amount,
+      currency: subscription.currency,
+      occurredAt,
+    });
   }
 
   // After the write, not before: a cancellation reported to Amplitude that we then failed
@@ -170,6 +190,66 @@ async function applySubscription(type: string, subscription: Subscription, occur
     );
   }
 
+  logFields({ outcome: "applied" });
+  return NextResponse.json({ ok: true });
+}
+
+/**
+ * The lifetime unlock: a one-time payment for the lifetime product. A subscription's charges
+ * arrive here too, and are left to the subscription's own lifecycle events.
+ */
+async function applyLifetimePayment(payment: Payment, occurredAt: string) {
+  const productId = payment.product_cart?.find(
+    (item) => planForProductId(item.product_id) === "lifetime",
+  )?.product_id;
+  if (payment.subscription_id || !productId) {
+    logFields({ outcome: "ignored" });
+    return NextResponse.json({ ok: true });
+  }
+
+  const userId = userIdFrom(payment.metadata);
+  if (!userId) {
+    logFields({ outcome: "no_user_id" });
+    return NextResponse.json({ ok: true });
+  }
+  logFields({ plan: "lifetime" });
+
+  const { applied, isNewPurchase } = await applyDodoLifetimeGrant({
+    userId,
+    customerId: payment.customer.customer_id,
+    paymentId: payment.payment_id,
+    productId,
+    eventAt: occurredAt,
+    environment: dodoEnvironment,
+  });
+  if (!applied) {
+    logFields({ outcome: "write_failed" });
+    return NextResponse.json({ error: "write_failed" }, { status: 500 });
+  }
+
+  if (isNewPurchase) {
+    await reportPurchase({
+      eventId: payment.metadata.eventId,
+      userId,
+      email: payment.customer.email,
+      metadata: payment.metadata,
+      amountMinorUnits: payment.total_amount,
+      currency: payment.currency,
+      occurredAt,
+    });
+  }
+
+  logFields({ outcome: "applied" });
+  return NextResponse.json({ ok: true });
+}
+
+/** A full refund or a lost dispute ends a lifetime unlock. Both name only the payment, and a
+ * subscription payment matches no row, so this is a no-op for those. */
+async function revokeLifetime(paymentId: string, occurredAt: string) {
+  if (!(await revokeDodoLifetime(paymentId, occurredAt))) {
+    logFields({ outcome: "write_failed" });
+    return NextResponse.json({ error: "write_failed" }, { status: 500 });
+  }
   logFields({ outcome: "applied" });
   return NextResponse.json({ ok: true });
 }
@@ -245,7 +325,7 @@ function lifecycleEvent(
  * Report a completed web purchase to Meta.
  *
  * This is the *only* Purchase signal that cannot be faked: it originates on the server, off
- * a subscription Dodo has actually activated, rather than mirroring something the browser
+ * a subscription or a payment Dodo has actually completed, rather than mirroring something the browser
  * claimed. Its browser twin fires from `/start/done` and the two carry the same `event_id`,
  * so Meta collapses them into one conversion.
  *
@@ -257,26 +337,31 @@ function lifecycleEvent(
  * costs one optimization signal, and a non-2xx would have Dodo redeliver an event that
  * already landed.
  */
-async function reportPurchase(subscription: Subscription, userId: string, occurredAt: string) {
+async function reportPurchase(purchase: {
+  eventId: unknown;
+  userId: string;
+  /** The payload carries the buyer's email — the strongest match signal Meta has — so it
+   * costs no extra API call to look one up. */
+  email: string;
+  metadata: Subscription["metadata"];
+  amountMinorUnits: number;
+  currency: string;
+  occurredAt: string;
+}) {
   if (!isMetaConfigured) {
     logFields({ outcome: "meta_unconfigured" });
     return;
   }
 
   await sendMetaPurchase({
-    eventId: asString(subscription.metadata.eventId),
-    userId,
-    // The subscription payload carries the buyer's email — the strongest match signal Meta
-    // has — so it costs no extra API call to look one up.
-    email: subscription.customer.email,
-    browser: parseMetaBrowserIdentity(subscription.metadata),
+    eventId: asString(purchase.eventId),
+    userId: purchase.userId,
+    email: purchase.email,
+    browser: parseMetaBrowserIdentity(purchase.metadata),
     eventSourceUrl: FUNNEL_SUCCESS_URL,
-    // Dodo states the recurring amount before tax. The browser twin carries the exact
-    // charged total, and normally arrives first and wins deduplication, so this is the
-    // slightly conservative number on the fallback path rather than the usual one.
-    amountMinorUnits: subscription.recurring_pre_tax_amount,
-    currency: subscription.currency,
-    eventAtSeconds: Math.floor(new Date(occurredAt).getTime() / 1000),
+    amountMinorUnits: purchase.amountMinorUnits,
+    currency: purchase.currency,
+    eventAtSeconds: Math.floor(new Date(purchase.occurredAt).getTime() / 1000),
   });
   logFields({ metaReported: true });
 }

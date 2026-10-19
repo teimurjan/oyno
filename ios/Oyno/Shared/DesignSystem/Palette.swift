@@ -53,14 +53,12 @@ enum Palette {
     static let glassEdge = Color.white.opacity(0.95)
     static let glassShadow = Color(hex: 0x305082).opacity(0.12)
 
-    /// The offer's sheen, mint to sky to lavender: the picked plan's ring, the timeline's nodes,
-    /// the glow under the offer button. Light enough that ink reads on it.
-    static let sheen = LinearGradient(
-        colors: [Color(hex: 0x8EDDB4), Color(hex: 0x86C4F2), Color(hex: 0xB9A6F0)],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-    static let sheenGlow = Color(hex: 0x86C4F2).opacity(0.45)
+    /// The offer's accent, the planet's blue: the picked plan's ring and tag, the timeline's line,
+    /// the glow under the offer button. White reads on it.
+    static let sheen = Color(hex: 0x3F70A8)
+    /// The filled timeline circle, with an ink glyph on it.
+    static let sheenTint = Color(hex: 0xE8F1F9)
+    static let sheenGlow = Color(hex: 0x3F70A8).opacity(0.14)
 
     /// The day sky behind every screen, top to bottom.
     static let sky = LinearGradient(

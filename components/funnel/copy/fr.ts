@@ -340,11 +340,14 @@ export const fr: FunnelCopy = {
     ],
     monthly: "Mensuel",
     yearly: "Annuel",
+    lifetime: "À vie",
     perMonth: "/ mois",
     perYear: "/ an",
     perDay: "par jour",
+    oneTime: "une fois",
     cancelAnytime: "Annulable à tout moment",
     billedYearly: "Facturé une fois par an",
+    payOnce: "Un seul paiement, pour toujours",
     save: "Économisez {percent}",
     guarantee: "Ça ne vous convient pas ? Remboursement intégral sur demande sous 14 jours.",
     continue: "Continuer",
@@ -367,7 +370,7 @@ export const fr: FunnelCopy = {
       },
       {
         question: "Puis-je me faire rembourser ?",
-        answer: "Oui, sous 14 jours et sans avoir à vous justifier. Écrivez à support@oyno.app depuis l’adresse utilisée pour payer.",
+        answer: "Oui, sous 14 jours et sans avoir à vous justifier. Écrivez à tim@oyno.app depuis l’adresse utilisée pour payer.",
       },
       {
         question: "Sur quels appareils fonctionne Oyno ?",
@@ -396,6 +399,7 @@ export const fr: FunnelCopy = {
     total: "Total",
     renews: "Renouvelé à {amount} / {cycle}. Annulable à tout moment.",
     cycles: { month: "mois", year: "an" },
+    once: "Un seul paiement. Aucun renouvellement.",
   },
 
   done: {

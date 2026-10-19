@@ -25,7 +25,7 @@ export function CheckoutSummary({
 
   const listed = formatMoney(quote[plan], quote.currency);
   const total = money(breakdown?.finalTotal ?? breakdown?.total) ?? listed;
-  const label = plan === "yearly" ? copy.paywall.yearly : copy.paywall.monthly;
+  const label = copy.paywall[plan];
   const adjustments = breakdown
     ? [
         breakdown.discount ? { label: words.discount, value: `−${money(breakdown.discount)}` } : null,
@@ -62,7 +62,9 @@ export function CheckoutSummary({
       </div>
 
       <p className="mt-2 text-[14.5px] leading-[1.5] text-muted">
-        {fill(words.renews, { amount: total, cycle: plan === "yearly" ? words.cycles.year : words.cycles.month })}
+        {plan === "lifetime"
+          ? words.once
+          : fill(words.renews, { amount: total, cycle: plan === "yearly" ? words.cycles.year : words.cycles.month })}
       </p>
     </div>
   );

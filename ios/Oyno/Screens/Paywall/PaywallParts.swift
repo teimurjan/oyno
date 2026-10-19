@@ -69,7 +69,7 @@ struct PlanCard: View {
     }
 }
 
-/// The capsule on a plan's top edge: filled with the sheen on the picked plan, outlined on
+/// The capsule on a plan's top edge: white on the accent on the picked plan, outlined on
 /// the other.
 private struct PlanTag: View {
     let text: String
@@ -81,7 +81,7 @@ private struct PlanTag: View {
             .tracking(1)
             .textCase(.uppercase)
             .lineLimit(1)
-            .foregroundStyle(Palette.ink)
+            .foregroundStyle(lit ? Palette.onAccent : Palette.ink)
             .padding(.horizontal, Metric.Space.m)
             .padding(.vertical, 5)
             .background {
@@ -160,7 +160,7 @@ private struct TimelineStep: View {
     }
 }
 
-/// A round sheen tile holding one ink glyph. Unlit, it is the sheen's ring on white.
+/// A round tile holding one ink glyph: the pale tint when lit, the accent's ring on white when not.
 struct SheenNode: View {
     let symbol: String
     var lit = true
@@ -171,7 +171,7 @@ struct SheenNode: View {
             .frame(width: side, height: side)
             .background {
                 if lit {
-                    Circle().fill(Palette.sheen)
+                    Circle().fill(Palette.sheenTint)
                 } else {
                     Circle().fill(Palette.surface).overlay(Circle().strokeBorder(Palette.sheen, lineWidth: 2))
                 }

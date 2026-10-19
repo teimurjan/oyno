@@ -49,7 +49,9 @@ export function PricingPage({ lang }: { lang: Lang }) {
         </div>
       </div>
 
-      <Prose>{text.body}</Prose>
+      <div className="max-w-3xl">
+        <Prose>{text.body}</Prose>
+      </div>
     </SiteShell>
   );
 }

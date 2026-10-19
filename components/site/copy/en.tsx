@@ -7,7 +7,7 @@ const to = (page: Parameters<typeof pathFor>[1]) => pathFor("en", page);
 const UPDATED = "9 October 2026";
 
 const SUPPORT = (
-  <a href="mailto:support@oyno.app">support@oyno.app</a>
+  <a href="mailto:tim@oyno.app">tim@oyno.app</a>
 );
 
 export const en: SiteCopy = {
@@ -18,6 +18,9 @@ export const en: SiteCopy = {
     terms: "Terms",
     switchLabel: "Switch language",
     start: "Get started",
+    games: "Games",
+    guides: "Guides",
+    blog: "Blog",
   },
 
   home: {
@@ -187,8 +190,8 @@ export const en: SiteCopy = {
     intro: (
       <>
         Write to{" "}
-        <a className="text-highlight" href="mailto:support@oyno.app">
-          support@oyno.app
+        <a className="text-highlight" href="mailto:tim@oyno.app">
+          tim@oyno.app
         </a>
         . A real person answers, usually within a day.
       </>

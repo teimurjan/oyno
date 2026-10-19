@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { dodoClient, isDodoConfigured } from "@/lib/dodo";
-import { getStoredDodoIds } from "@/lib/entitlements";
+import { getDodoCustomerId } from "@/lib/entitlements";
 import { logFields, withLogging } from "@/lib/log";
 import { getUserFromRequest } from "@/lib/supabase/auth";
 
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * A link to Dodo's customer portal — where a web subscription is cancelled, and its payment
- * method updated. There is no in-app equivalent: the App Store's own sheet handles an
+ * method updated. A lifetime buyer finds their receipt there. There is no in-app equivalent: the App Store's own sheet handles an
  * in-app subscription, and this handles the other kind, which is why `/api/entitlement`
  * carries `provider` at all.
  *
@@ -23,8 +23,8 @@ export const POST = withLogging("subscription.portal", async (request: Request) 
     return NextResponse.json({ error: "portal_unavailable" }, { status: 503 });
   }
 
-  const dodo = await getStoredDodoIds(user.id);
-  if (!dodo) {
+  const customerId = await getDodoCustomerId(user.id);
+  if (!customerId) {
     // An App Store subscriber reaching here means the client asked the wrong question —
     // theirs is managed by Apple, and `provider` on /api/entitlement says so.
     logFields({ outcome: "no_dodo_entitlement" });
@@ -33,7 +33,7 @@ export const POST = withLogging("subscription.portal", async (request: Request) 
 
   let url: string | undefined;
   try {
-    const session = await dodoClient().customers.customerPortal.create(dodo.customerId, {
+    const session = await dodoClient().customers.customerPortal.create(customerId, {
       return_url: process.env.SITE_URL ?? "https://oyno.app",
     });
     url = session.link;

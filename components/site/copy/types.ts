@@ -20,6 +20,10 @@ export interface NavCopy {
   switchLabel: string;
   /** The header's button into the funnel. */
   start: string;
+  /** The footer links to the games and articles, set only where they exist: English, for now. */
+  games?: string;
+  guides?: string;
+  blog?: string;
 }
 
 /** The words the planet hero needs, matching the funnel's `planet` section. */

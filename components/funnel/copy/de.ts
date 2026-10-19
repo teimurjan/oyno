@@ -340,11 +340,14 @@ export const de: FunnelCopy = {
     ],
     monthly: "Monatlich",
     yearly: "Jährlich",
+    lifetime: "Lebenslang",
     perMonth: "/ Monat",
     perYear: "/ Jahr",
     perDay: "pro Tag",
+    oneTime: "einmalig",
     cancelAnytime: "Jederzeit kündbar",
     billedYearly: "Jährliche Abrechnung",
+    payOnce: "Einmal zahlen, für immer nutzen",
     save: "{percent} sparen",
     guarantee: "Nicht das Richtige? Innerhalb von 14 Tagen bekommst du auf Anfrage dein ganzes Geld zurück.",
     continue: "Weiter",
@@ -367,7 +370,7 @@ export const de: FunnelCopy = {
       },
       {
         question: "Bekomme ich mein Geld zurück?",
-        answer: "Ja, innerhalb von 14 Tagen und ohne Angabe von Gründen. Schreib an support@oyno.app, und zwar von der Adresse, mit der du bezahlt hast.",
+        answer: "Ja, innerhalb von 14 Tagen und ohne Angabe von Gründen. Schreib an tim@oyno.app, und zwar von der Adresse, mit der du bezahlt hast.",
       },
       {
         question: "Auf welchen Geräten läuft Oyno?",
@@ -396,6 +399,7 @@ export const de: FunnelCopy = {
     total: "Gesamt",
     renews: "Verlängert sich für {amount} / {cycle}. Jederzeit kündbar.",
     cycles: { month: "Monat", year: "Jahr" },
+    once: "Eine Zahlung. Keine Verlängerung.",
   },
 
   done: {

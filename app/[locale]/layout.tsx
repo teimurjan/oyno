@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Document, siteIcons } from "@/components/site/Document";
+import { Document, siteMetadata } from "@/components/site/Document";
 import "@/app/globals.css";
 import { copyFor } from "@/components/site/copy";
 import { PREFIXED_LOCALES } from "@/lib/i18n";
@@ -23,7 +23,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: LocaleParams): Promise<Metadata> {
   const copy = copyFor(await langOf(props));
-  return { ...siteIcons, title: copy.home.meta.title, description: copy.home.meta.description };
+  return { ...siteMetadata, title: copy.home.meta.title, description: copy.home.meta.description };
 }
 
 export default async function LocaleLayout(props: LocaleParams & { children: React.ReactNode }) {

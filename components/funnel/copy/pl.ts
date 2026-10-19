@@ -340,11 +340,14 @@ export const pl: FunnelCopy = {
     ],
     monthly: "Miesięczna",
     yearly: "Roczna",
+    lifetime: "Dożywotnio",
     perMonth: "/ mies.",
     perYear: "/ rok",
     perDay: "dziennie",
+    oneTime: "jednorazowo",
     cancelAnytime: "Anuluj w dowolnym momencie",
     billedYearly: "Płatność raz w roku",
+    payOnce: "Płacisz raz, korzystasz na zawsze",
     save: "Oszczędzasz {percent}",
     guarantee: "Nie dla ciebie? Poproś o pełny zwrot w ciągu 14 dni.",
     continue: "Dalej",
@@ -367,7 +370,7 @@ export const pl: FunnelCopy = {
       },
       {
         question: "Czy mogę odzyskać pieniądze?",
-        answer: "Tak, w ciągu 14 dni i bez podawania przyczyny. Napisz na support@oyno.app z adresu użytego przy płatności.",
+        answer: "Tak, w ciągu 14 dni i bez podawania przyczyny. Napisz na tim@oyno.app z adresu użytego przy płatności.",
       },
       {
         question: "Na jakich urządzeniach działa Oyno?",
@@ -396,6 +399,7 @@ export const pl: FunnelCopy = {
     total: "Razem",
     renews: "Odnawia się za {amount} / {cycle}. Anuluj w dowolnym momencie.",
     cycles: { month: "mies.", year: "rok" },
+    once: "Jedna płatność. Bez odnowień.",
   },
 
   done: {

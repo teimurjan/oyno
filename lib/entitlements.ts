@@ -88,7 +88,7 @@ export async function applyEntitlementEvent(event: EntitlementEvent): Promise<bo
 }
 
 /** The Dodo side of the same idea, written by the webhook alone. Its own row, its own
- * ordering guard — see 0006_dodo_entitlements.sql for why this is not more columns on
+ * ordering guard — see 0002_dodo_entitlements.sql for why this is not more columns on
  * the Apple table. */
 export interface DodoEntitlementEvent {
   /** The Supabase uid the checkout session stamped into `metadata`. */
@@ -117,10 +117,10 @@ export interface DodoEntitlementResult {
    * loses a paid subscription for good. An event dropped by the RPC's ordering guard is
    * not a failure — it updates no rows and reports no error, the intended no-op. */
   applied: boolean;
-  /** First event ever seen for this subscription id — the acquisition signal. A renewal,
+  /** First event ever seen for this subscription or payment id — the acquisition signal. A renewal,
    * a redelivery and a dunning recovery all find the row already there and report false,
    * which is what keeps them out of Meta's conversion count. */
-  isNewSubscription: boolean;
+  isNewPurchase: boolean;
 }
 
 /** Single atomic writer for the Dodo webhook, with a `last_event_at` guard separate from
@@ -128,7 +128,7 @@ export interface DodoEntitlementResult {
 export async function applyDodoEntitlementEvent(
   event: DodoEntitlementEvent,
 ): Promise<DodoEntitlementResult> {
-  if (!isServiceConfigured) return { applied: false, isNewSubscription: false };
+  if (!isServiceConfigured) return { applied: false, isNewPurchase: false };
   const admin = createAdminClient();
   const { data, error } = await admin.rpc("apply_dodo_entitlement_event", {
     p_user_id: event.userId,
@@ -142,9 +142,60 @@ export async function applyDodoEntitlementEvent(
   });
   if (error) {
     console.error("applyDodoEntitlementEvent failed", error);
-    return { applied: false, isNewSubscription: false };
+    return { applied: false, isNewPurchase: false };
   }
-  return { applied: true, isNewSubscription: data === true };
+  return { applied: true, isNewPurchase: data === true };
+}
+
+/** The lifetime unlock bought on the web: a one-time Dodo payment, written from the webhook's
+ * `payment.succeeded` branch. Its own table and its own writer — see
+ * 0006_dodo_lifetime_entitlements.sql for why it is not a row on the subscription one. */
+export interface DodoLifetimeGrant {
+  /** The Supabase uid the checkout session stamped into `metadata`. */
+  userId: string;
+  customerId: string;
+  /** The one-time payment. Refunds and disputes arrive keyed on it. */
+  paymentId: string;
+  productId: string;
+  /** The webhook envelope's `timestamp` — the ordering key. Older events no-op. */
+  eventAt: string;
+  /** Which Dodo billed this; gates the read, as it does on the subscription row. */
+  environment: string;
+}
+
+/** Same contract as `applyDodoEntitlementEvent`, keyed on the payment. */
+export async function applyDodoLifetimeGrant(grant: DodoLifetimeGrant): Promise<DodoEntitlementResult> {
+  if (!isServiceConfigured) return { applied: false, isNewPurchase: false };
+  const admin = createAdminClient();
+  const { data, error } = await admin.rpc("apply_dodo_lifetime_grant", {
+    p_user_id: grant.userId,
+    p_dodo_customer_id: grant.customerId,
+    p_dodo_payment_id: grant.paymentId,
+    p_product_id: grant.productId,
+    p_environment: grant.environment,
+    p_event_at: grant.eventAt,
+  });
+  if (error) {
+    console.error("applyDodoLifetimeGrant failed", error);
+    return { applied: false, isNewPurchase: false };
+  }
+  return { applied: true, isNewPurchase: data === true };
+}
+
+/** End a lifetime unlock by the payment that bought it, the only identity a refund or a
+ * dispute carries. A payment this table never saw updates nothing, and that is not a failure. */
+export async function revokeDodoLifetime(paymentId: string, eventAt: string): Promise<boolean> {
+  if (!isServiceConfigured) return false;
+  const admin = createAdminClient();
+  const { error } = await admin.rpc("revoke_dodo_lifetime", {
+    p_dodo_payment_id: paymentId,
+    p_event_at: eventAt,
+  });
+  if (error) {
+    console.error("revokeDodoLifetime failed", error);
+    return false;
+  }
+  return true;
 }
 
 /** Is this user on the paid tier — do they hold a live subscription from either biller?
@@ -154,20 +205,16 @@ export async function isPaid(userId: string): Promise<boolean> {
   return paid;
 }
 
-/** The Dodo ids behind a user's web subscription, for minting a customer-portal
- * session. Null when they never bought on the web. */
-export async function getStoredDodoIds(
-  userId: string,
-): Promise<{ customerId: string; subscriptionId: string } | null> {
+/** The Dodo customer behind a user's web purchase, subscription first, for minting a
+ * customer-portal session. Null when they never bought on the web. */
+export async function getDodoCustomerId(userId: string): Promise<string | null> {
   if (!isServiceConfigured) return null;
   const admin = createAdminClient();
-  const { data } = await admin
-    .from("dodo_entitlements")
-    .select("dodo_customer_id, dodo_subscription_id")
-    .eq("user_id", userId)
-    .maybeSingle();
-  if (!data?.dodo_customer_id || !data.dodo_subscription_id) return null;
-  return { customerId: data.dodo_customer_id, subscriptionId: data.dodo_subscription_id };
+  const [subscription, lifetime] = await Promise.all([
+    admin.from("dodo_entitlements").select("dodo_customer_id").eq("user_id", userId).maybeSingle(),
+    admin.from("dodo_lifetime_entitlements").select("dodo_customer_id").eq("user_id", userId).maybeSingle(),
+  ]);
+  return subscription.data?.dodo_customer_id ?? lifetime.data?.dodo_customer_id ?? null;
 }
 
 export interface EntitlementStatus {
@@ -178,8 +225,8 @@ export interface EntitlementStatus {
   provider: EntitlementProvider | null;
 }
 
-/** The best of a set of live expiries: a perpetual grant (null — sandbox/App Review)
- * outranks any dated one, otherwise the one that runs longest. */
+/** The best of a set of live expiries: a perpetual grant (null — sandbox/App Review, or a
+ * lifetime unlock) outranks any dated one, otherwise the one that runs longest. */
 function furthestExpiry(expiries: (string | null)[]): string | null {
   if (expiries.some((expiry) => !expiry)) return null;
   return expiries.reduce((latest, expiry) => (latest && expiry! < latest ? latest : expiry));
@@ -192,15 +239,16 @@ function furthestExpiry(expiries: (string | null)[]): string | null {
  * `entitlements` is the App Store half; the generic name predates there being a second
  * biller. Someone can own more than one row there — an old lapsed subscription alongside
  * a current one — so it takes the best live grant rather than assuming a single row.
- * `dodo_entitlements` holds at most one row per account.
+ * `dodo_entitlements` and `dodo_lifetime_entitlements` hold at most one row per account
+ * each: the web subscription, and the web lifetime unlock.
  *
- * The two are read in parallel because this sits in front of every generation request.
+ * The three are read in parallel because this sits in front of every gated request.
  */
 export async function readEntitlement(userId: string): Promise<EntitlementStatus> {
   if (!isServiceConfigured) return { paid: false, expiresAt: null, provider: null };
   const admin = createAdminClient();
 
-  const [apple, dodo] = await Promise.all([
+  const [apple, dodo, lifetime] = await Promise.all([
     admin
       .from("entitlements")
       .select("active, expires_at")
@@ -211,19 +259,28 @@ export async function readEntitlement(userId: string): Promise<EntitlementStatus
       .select("status, current_period_end, environment")
       .eq("user_id", userId)
       .maybeSingle(),
+    admin
+      .from("dodo_lifetime_entitlements")
+      .select("environment, revoked_at")
+      .eq("user_id", userId)
+      .maybeSingle(),
   ]);
 
-  // Migration 0006 not applied yet — a deploy-ordering state rather than a fault, and it
-  // reads as "no web subscription" exactly as an empty table would. That is what keeps
-  // either deploy order safe. Once 0006 is everywhere this can never fire.
-  const dodoTableMissing = dodo.error?.code === "PGRST205";
+  // A Dodo migration not applied yet — a deploy-ordering state rather than a fault, and it
+  // reads as "nothing bought on the web" exactly as an empty table would. That is what keeps
+  // either deploy order safe. Once the migrations are everywhere this can never fire.
+  const tableMissing = (result: { error: { code?: string } | null }) =>
+    result.error?.code === "PGRST205";
 
   // Otherwise: a failed read is not the same answer as "unpaid", and until now it produced
   // one. Every gate turns a false into `403 requires_pro`, so a transient database error
   // showed the paywall to someone who had already paid — and the entitlement refresh
   // flipped a live subscriber to locked. Fail the request instead: a 500 says we don't
   // know, which is true, and the client retries rather than believing it.
-  const failure = apple.error ?? (dodoTableMissing ? null : dodo.error);
+  const failure =
+    apple.error ??
+    (tableMissing(dodo) ? null : dodo.error) ??
+    (tableMissing(lifetime) ? null : lifetime.error);
   if (failure) {
     console.error("readEntitlement failed", failure);
     throw new Error("entitlement_read_failed");
@@ -242,17 +299,23 @@ export async function readEntitlement(userId: string): Promise<EntitlementStatus
     Boolean(web.current_period_end) &&
     isUnexpired(web.current_period_end);
 
+  // The lifetime unlock never expires. It is live unless a refund or a lost dispute revoked
+  // it, and only on the environment that billed it — the same gate as the row above.
+  const unlock = lifetime.data;
+  const lifetimeLive = unlock?.environment === DODO_ENVIRONMENT && !unlock.revoked_at;
+
   const expiries = [
     ...appleLive.map((row) => row.expires_at as string | null),
     ...(dodoLive ? [web.current_period_end as string] : []),
+    ...(lifetimeLive ? [null] : []),
   ];
   if (expiries.length === 0) return { paid: false, expiresAt: null, provider: null };
 
   return {
     paid: true,
     expiresAt: furthestExpiry(expiries),
-    // Dodo wins when both are live: it's the one the user can only cancel off-device,
+    // Dodo wins when both are live: it's the one the user can only manage off-device,
     // so it's the one worth pointing them at.
-    provider: dodoLive ? "dodo" : "app_store",
+    provider: dodoLive || lifetimeLive ? "dodo" : "app_store",
   };
 }

@@ -157,7 +157,7 @@ export function CheckoutStep({
     <div className="flex flex-col gap-4">
       {/* Above the card field: a buyer who finds out the platform after paying is a refund. */}
       <p className="text-center text-[14.5px] leading-[1.5] text-muted">
-        {words.platforms} {words.cancelAnytime}
+        {words.platforms} {plan !== "lifetime" && words.cancelAnytime}
       </p>
       {payment()}
     </div>

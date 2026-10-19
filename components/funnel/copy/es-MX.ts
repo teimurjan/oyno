@@ -340,11 +340,14 @@ export const esMX: FunnelCopy = {
     ],
     monthly: "Mensual",
     yearly: "Anual",
+    lifetime: "De por vida",
     perMonth: "/ mes",
     perYear: "/ año",
     perDay: "al día",
+    oneTime: "pago único",
     cancelAnytime: "Cancela cuando quieras",
     billedYearly: "Se cobra una vez al año",
+    payOnce: "Pagas una vez y es tuyo para siempre",
     save: "Ahorra {percent}",
     guarantee: "¿No es para ti? Pide el reembolso completo en los primeros 14 días.",
     continue: "Continuar",
@@ -367,7 +370,7 @@ export const esMX: FunnelCopy = {
       },
       {
         question: "¿Me pueden devolver mi dinero?",
-        answer: "Sí, dentro de los primeros 14 días y sin dar explicaciones. Escribe a support@oyno.app desde el correo con el que pagaste.",
+        answer: "Sí, dentro de los primeros 14 días y sin dar explicaciones. Escribe a tim@oyno.app desde el correo con el que pagaste.",
       },
       {
         question: "¿En qué dispositivos funciona?",
@@ -396,6 +399,7 @@ export const esMX: FunnelCopy = {
     total: "Total",
     renews: "Se renueva por {amount} / {cycle}. Cancela cuando quieras.",
     cycles: { month: "mes", year: "año" },
+    once: "Un solo pago. Sin renovaciones.",
   },
 
   done: {

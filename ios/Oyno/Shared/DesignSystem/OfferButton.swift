@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// The offer's committing action, on the paywall and the profile's banner: the ink pill, lit
-/// from above and ringed in the sheen, with the price under the words when there is one.
+/// from above, with the price under the words when there is one.
 struct OfferButton: View {
     /// Already in the reader's language: some titles arrive from the funnel deck.
     let title: String
@@ -41,7 +41,6 @@ private struct OfferButtonStyle: ButtonStyle {
                 Capsule().fill(configuration.isPressed ? Palette.accentPressed : Palette.accent)
                 Capsule().fill(LinearGradient(colors: [.white.opacity(0.2), .clear], startPoint: .top, endPoint: .center))
             }
-            .overlay(Capsule().strokeBorder(Palette.sheen, lineWidth: 1.5))
             .shadow(color: Palette.sheenGlow, radius: 16, y: 8)
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .animation(.easeOut(duration: 0.12), value: configuration.isPressed)

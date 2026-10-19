@@ -146,10 +146,10 @@ export function FunnelShell() {
 
       {/* `min-h-0` keeps the chrome fixed and lets `main` scroll its own content. The gutter
           is reserved on both edges so a step that scrolls and one that doesn't are the same
-          width. */}
+          width. The paywall's pinned button brings its own floor, so it gets no bottom padding. */}
       <main
         ref={scroller}
-        className={`flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-5 [scrollbar-gutter:stable_both-edges] py-8 ${bare ? "paywall-page" : ""}`}
+        className={`flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-5 [scrollbar-gutter:stable_both-edges] ${bare ? "paywall-page pt-8" : "py-8"}`}
       >
         {/* `mb-auto`, not `my-auto`: centring put the title at a different height on a
             four-option step than on a six-option one, and moved it between two taps. The
@@ -257,7 +257,7 @@ function StepBody({
     return <AccountStep headline={step.headline ?? ""} />;
   }
 
-  // The family on the planet goes above the headline, so the paywall draws its own.
+  // Its headline is drawn inside the lazy chunk, with the plans it introduces.
   if (step.kind === "paywall") {
     return (
       <Suspense fallback={null}>

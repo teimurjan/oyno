@@ -12,7 +12,8 @@ import { WORLD_IDS } from "../lib/planet/scene";
  * The planets and the family are trimmed to their alpha bounds first, so `lib/planet/scene.ts`
  * can place them by their visible edges. Each planet is then fitted, foot down, into Earth's
  * box, so every world lands on the same shadow. Each game's illustration, `activities/<id>.png`,
- * ships in the app only, as `Resources/Activities/<id>.webp`. Output is committed: `bun run art:build`, then
+ * ships as `Resources/Activities/<id>.webp` in the app and as the same bytes in `public/art/activities/`
+ * for the game pages, which git stores once. Output is committed: `bun run art:build`, then
  * commit `public/art/`, `lib/art/manifest.ts` and the image sets together.
  */
 
@@ -50,6 +51,7 @@ const planet = (id: string): Layer => ({
  * 500 paintings cannot afford. 600px covers 300pt at 2× and the faded 260pt on a phone. */
 const ACTIVITY_ART = path.join(ROOT, "ios/Oyno/Resources/Activities");
 const ACTIVITY_WIDTH = 600;
+const ACTIVITY_WEB = path.join(OUT, "activities");
 
 const contentHash = (bytes: Uint8Array) =>
   new Bun.CryptoHasher("sha256").update(bytes).digest("hex").slice(0, 8);
@@ -149,6 +151,7 @@ export const ART = ${JSON.stringify(manifest, null, 2)} as const satisfies {
 
 await rm(ACTIVITY_ART, { recursive: true, force: true });
 await mkdir(ACTIVITY_ART, { recursive: true });
+await mkdir(ACTIVITY_WEB, { recursive: true });
 const paintings = (await readdir(path.join(SOURCE, "activities"))).filter((name) => name.endsWith(".png"));
 for (const file of paintings) {
   const webp = await sharp(path.join(SOURCE, "activities", file))
@@ -156,6 +159,8 @@ for (const file of paintings) {
     .resize({ width: ACTIVITY_WIDTH, withoutEnlargement: true })
     .webp({ quality: 70, alphaQuality: 80, effort: 6 })
     .toBuffer();
-  await Bun.write(path.join(ACTIVITY_ART, `${path.basename(file, ".png")}.webp`), webp);
+  const name = `${path.basename(file, ".png")}.webp`;
+  await Bun.write(path.join(ACTIVITY_ART, name), webp);
+  await Bun.write(path.join(ACTIVITY_WEB, name), webp);
 }
 console.log(`activities: ${paintings.length}`);

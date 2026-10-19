@@ -49,21 +49,33 @@ export function dodoClient(): DodoPayments {
   return client;
 }
 
+const PRODUCT_IDS: Record<Plan, string> = {
+  monthly: process.env.DODO_PRODUCT_MONTHLY ?? "",
+  yearly: process.env.DODO_PRODUCT_YEARLY ?? "",
+  lifetime: process.env.DODO_PRODUCT_LIFETIME ?? "",
+};
+
 /** The product being sold for a plan. Dodo has no separate price id — a product carries its
- * recurring price inline — so this one id is both. Server-side only: the checkout session is
- * minted here, so nothing about what we sell needs to reach the browser. */
+ * price inline — so this one id is both. Server-side only: the checkout session is minted
+ * here, so nothing about what we sell needs to reach the browser. Empty for a plan not on sale. */
 export function dodoProductId(plan: Plan): string {
-  return (
-    (plan === "yearly" ? process.env.DODO_PRODUCT_YEARLY : process.env.DODO_PRODUCT_MONTHLY) ?? ""
-  );
+  return PRODUCT_IDS[plan];
 }
+
+/** The lifetime unlock is a launch offer, switched off by the flag alone. The product id
+ * stays set after it ends, so a checkout still open, or a redelivered payment, still grants. */
+export const isLifetimeOffered =
+  Boolean(PRODUCT_IDS.lifetime) && process.env.DODO_LIFETIME_ON_SALE === "true";
+
+/** Whether a checkout for this plan may be minted now. */
+export const isOnSale = (plan: Plan): boolean =>
+  plan === "lifetime" ? isLifetimeOffered : Boolean(PRODUCT_IDS[plan]);
 
 /** Name the plan behind a product id, for logging. Unknown ids return null rather than
  * guessing — a product added in the Dodo dashboard but not in the env should be visible in
  * the logs, not silently filed as monthly. */
 export function planForProductId(productId: string | null | undefined): Plan | null {
   if (!productId) return null;
-  if (productId === dodoProductId("yearly")) return "yearly";
-  if (productId === dodoProductId("monthly")) return "monthly";
-  return null;
+  const plans = Object.keys(PRODUCT_IDS) as Plan[];
+  return plans.find((plan) => PRODUCT_IDS[plan] === productId) ?? null;
 }

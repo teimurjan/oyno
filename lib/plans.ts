@@ -1,5 +1,5 @@
 /**
- * The two plans sold on the web, and the money formatting every surface shares.
+ * The plans sold on the web, and the money formatting every surface shares.
  *
  * Nothing here is biller-specific and nothing here is secret, which is why the marketing
  * pages can import it: with Dodo the checkout session is minted on the server, so no
@@ -11,13 +11,10 @@
  * wording on the site belongs to the App Store button alone.
  */
 
-export type Plan = "monthly" | "yearly";
+/** `lifetime` is a one-time payment, sold only while `DODO_LIFETIME_ON_SALE` is on. */
+export type Plan = "monthly" | "yearly" | "lifetime";
 
-export interface PlanQuote {
-  currency: string;
-  monthly: number;
-  yearly: number;
-}
+export type PlanQuote = { currency: string } & Record<Plan, number>;
 
 /** Stands in until Dodo's localized preview answers, and if it never does. Dodo is the
  * merchant of record and quotes in the buyer's own currency, so this is what a US buyer
@@ -26,6 +23,7 @@ export const planListQuote: PlanQuote = {
   currency: "USD",
   monthly: 9.99,
   yearly: 59.99,
+  lifetime: 119.99,
 };
 
 /** Dodo quotes every amount in the currency's lowest denomination — as a number in the API,

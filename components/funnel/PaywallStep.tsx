@@ -1,17 +1,15 @@
-import type { ComponentChildren } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import { formatMoney, planListQuote, type Plan, type PlanQuote } from "@/lib/plans";
 import { Headline } from "./Headline";
 import { LegalNote } from "./LegalNote";
 import { fill, useLocale } from "./locale";
 import { Faq } from "./paywall/Faq";
-import { PlanetFamily } from "./paywall/PlanetFamily";
 import { Timeline } from "./paywall/Timeline";
-import { planQuote } from "./planQuote";
+import { lifetimeOffered, planQuote } from "./planQuote";
 
 /**
  * The offer, drawn as a page of its own: the shell hides the header, the progress bar and Back
- * on this step and hands the action here. The card field is the step after; the selection
+ * on this step and hands the action here, pinned to the bottom as the app's paywall pins it. The card field is the step after; the selection
  * lives in `FunnelShell` so Back returns to the plan that was picked. A Dodo session is minted
  * for one product, so the plan is settled here, before the form exists.
  *
@@ -36,6 +34,7 @@ export function PaywallStep({
   const { copy, market } = useLocale();
   const words = copy.paywall;
   const [quote, setQuote] = useState<PlanQuote>(planListQuote);
+  const [lifetime, setLifetime] = useState(false);
   const price = (amount: number) => formatMoney(amount, quote.currency);
   const yearOfMonthly = quote.monthly * 12;
   const saving = Math.round((1 - quote.yearly / yearOfMonthly) * 100);
@@ -47,6 +46,9 @@ export function PaywallStep({
     void planQuote().then((live) => {
       if (live && !cancelled) setQuote(live);
     });
+    void lifetimeOffered().then((offered) => {
+      if (!cancelled) setLifetime(offered);
+    });
     return () => {
       cancelled = true;
     };
@@ -57,17 +59,19 @@ export function PaywallStep({
   const perDay = (amount: number, days: number) => price(amount / days);
   const monthlyPerDay = perDay(quote.monthly, DAYS.monthly);
 
-  const billed =
-    plan === "yearly" ? `${price(quote.yearly)} ${words.perYear}` : `${price(quote.monthly)} ${words.perMonth}`;
+  const billed = {
+    yearly: `${price(quote.yearly)} ${words.perYear}`,
+    monthly: `${price(quote.monthly)} ${words.perMonth}`,
+    lifetime: `${price(quote.lifetime)} ${words.oneTime}`,
+  }[plan];
 
   return (
     <>
-      <PlanetFamily />
       <Headline text={headline} />
       <Timeline />
 
       {/* A list on a phone, a row to compare across once there is room for one. */}
-      <div className="flex flex-col gap-5 md:grid md:grid-cols-2 md:gap-3">
+      <div className={`flex flex-col gap-5 md:grid md:gap-3 ${lifetime ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
         <PlanCard
           label={words.yearly}
           price={price(quote.yearly)}
@@ -98,49 +102,54 @@ export function PaywallStep({
           selected={plan === "monthly"}
           onSelect={() => onSelect("monthly")}
         />
+        {/* Only while the server says it is on sale, so the list quote never offers it. */}
+        {lifetime && (
+          <PlanCard
+            label={words.lifetime}
+            figure={price(quote.lifetime)}
+            figureLabel={words.oneTime}
+            note={words.payOnce}
+            selected={plan === "lifetime"}
+            onSelect={() => onSelect("lifetime")}
+          />
+        )}
       </div>
 
-      <Commit label={words.continue} billed={billed} onContinue={onContinue}>
-        <p className="text-center text-[15.5px] text-muted">{words.guarantee}</p>
-      </Commit>
+      <p className="mt-4 text-center text-[15.5px] text-muted">{words.guarantee}</p>
 
       <Faq />
-
-      {/* The same action as the one above: a reader who read the questions should not have to
-          scroll back up to act on them. */}
-      <Commit label={words.continue} billed={billed} onContinue={onContinue} className="mt-12" />
 
       {/* Last on the page, under everything a buyer reads before agreeing to it. */}
       <div className="mt-8 flex justify-center">
         <LegalNote />
       </div>
+
+      <Commit label={words.continue} billed={billed} onContinue={onContinue} />
     </>
   );
 }
 
-/** The one thing to press, set off from what is above and held to a button's width on a wide paywall. */
+/**
+ * The one thing to press, in view from the first frame: last in the page so it rests under the
+ * legal note, and sticky so it never scrolls off before that. Bled across the shell's gutter so
+ * its hairline spans a phone's width, as `pinnedBar` draws it in the app.
+ */
 function Commit({
   label,
   billed,
   onContinue,
-  className = "mt-6",
-  children,
 }: {
   label: string;
   /** The picked plan's price and term, under the label as the app's offer button has it. */
   billed: string;
   onContinue: () => void;
-  /** The space above it: close under the plans, a section's worth after the questions. */
-  className?: string;
-  children?: ComponentChildren;
 }) {
   return (
-    <div className={`${className} flex w-full flex-col items-center gap-3 md:max-w-[420px] md:self-center`}>
-      <button onClick={onContinue} className="btn-offer">
+    <div className="paywall-commit sticky bottom-0 -mx-5 mt-6 flex justify-center border-t border-hairline bg-canvas px-5 pt-3 pb-5">
+      <button onClick={onContinue} className="btn-offer md:max-w-[420px]">
         <span className="text-[18.5px] font-bold leading-tight">{label}</span>
         <span className="num text-[13.5px] font-medium leading-tight opacity-72">{billed}</span>
       </button>
-      {children}
     </div>
   );
 }
@@ -209,7 +218,7 @@ function PlanCard({
   );
 }
 
-/** A radio, not a tick: two plans where exactly one is chosen. */
+/** A radio, not a tick: several plans where exactly one is chosen. */
 function Radio({ selected }: { selected: boolean }) {
   return (
     <svg

@@ -7,7 +7,7 @@ const to = (page: Parameters<typeof pathFor>[1]) => pathFor("it", page);
 const UPDATED = "9 ottobre 2026";
 
 const SUPPORT = (
-  <a href="mailto:support@oyno.app">support@oyno.app</a>
+  <a href="mailto:tim@oyno.app">tim@oyno.app</a>
 );
 
 export const it: SiteCopy = {
@@ -188,8 +188,8 @@ export const it: SiteCopy = {
     intro: (
       <>
         Scrivi a{" "}
-        <a className="text-highlight" href="mailto:support@oyno.app">
-          support@oyno.app
+        <a className="text-highlight" href="mailto:tim@oyno.app">
+          tim@oyno.app
         </a>
         . Ti risponde una persona vera, di solito entro un giorno.
       </>

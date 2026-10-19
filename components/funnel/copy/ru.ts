@@ -340,11 +340,14 @@ export const ru: FunnelCopy = {
     ],
     monthly: "Месячная",
     yearly: "Годовая",
+    lifetime: "Навсегда",
     perMonth: "/ мес.",
     perYear: "/ год",
     perDay: "в день",
+    oneTime: "один раз",
     cancelAnytime: "Отмена в любой момент",
     billedYearly: "Оплата раз в год",
+    payOnce: "Платите один раз, пользуетесь всегда",
     save: "Выгода {percent}",
     guarantee: "Не подошло? Вернём всю сумму, если напишете в течение 14 дней.",
     continue: "Продолжить",
@@ -367,7 +370,7 @@ export const ru: FunnelCopy = {
       },
       {
         question: "Можно вернуть деньги?",
-        answer: "Да, в течение 14 дней и без объяснения причин. Напишите на support@oyno.app с той почты, с которой платили.",
+        answer: "Да, в течение 14 дней и без объяснения причин. Напишите на tim@oyno.app с той почты, с которой платили.",
       },
       {
         question: "На каких устройствах работает Oyno?",
@@ -396,6 +399,7 @@ export const ru: FunnelCopy = {
     total: "Итого",
     renews: "Продление: {amount} / {cycle}. Отмена в любой момент.",
     cycles: { month: "мес.", year: "год" },
+    once: "Один платёж. Без продлений.",
   },
 
   done: {
