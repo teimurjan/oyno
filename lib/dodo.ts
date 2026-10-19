@@ -20,6 +20,12 @@ const WEBHOOK_KEY = process.env.DODO_PAYMENTS_WEBHOOK_KEY ?? "";
 const ENVIRONMENT: "live_mode" | "test_mode" =
   process.env.DODO_PAYMENTS_ENVIRONMENT === "test_mode" ? "test_mode" : "live_mode";
 
+const PRODUCT_IDS: Record<Plan, string> = {
+  monthly: process.env.DODO_PRODUCT_MONTHLY ?? "",
+  yearly: process.env.DODO_PRODUCT_YEARLY ?? "",
+  lifetime: process.env.DODO_PRODUCT_LIFETIME ?? "",
+};
+
 /** The webhook 503s until both are set rather than 200-ing work it did not do — a 200 is
  * what stops Dodo retrying, so a missing key here would lose a paid subscription for good. */
 export const isDodoConfigured = Boolean(API_KEY && WEBHOOK_KEY);
@@ -48,12 +54,6 @@ export function dodoClient(): DodoPayments {
   }
   return client;
 }
-
-const PRODUCT_IDS: Record<Plan, string> = {
-  monthly: process.env.DODO_PRODUCT_MONTHLY ?? "",
-  yearly: process.env.DODO_PRODUCT_YEARLY ?? "",
-  lifetime: process.env.DODO_PRODUCT_LIFETIME ?? "",
-};
 
 /** The product being sold for a plan. Dodo has no separate price id — a product carries its
  * price inline — so this one id is both. Server-side only: the checkout session is minted
