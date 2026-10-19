@@ -1,1 +1,4 @@
-- Cada uma das 500 brincadeiras agora tem sua própria ilustração. Você a vê em “Brincar” e ao lado de cada brincadeira na busca.
+- Um novo começo. O planeta começa escuro, como fica enquanto você está no celular. Segure-o e ele ganha vida, com a sua família em cima.
+- Em “Brincar”, uma nova brincadeira faz o título surgir em fusão, em vez de fazer a página pular.
+- “Lar” volta a rolar livremente sobre o cartão de Tempo de tela.
+- Trocar o idioma no perfil não deixa mais o cartão de Tempo de tela em “Lar” em branco.

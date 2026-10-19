@@ -117,7 +117,8 @@ Apple StoreKit 2 sells in the app, and Dodo sells on the web. `readEntitlement` 
 - A failed entitlement read throws and returns 500. It is never "unpaid".
 - Nothing above the paywall step imports the biller SDK.
 - A Dodo session is minted for one product, so the reader picks the plan on the paywall step.
-  The payment step mints the session after that. Success is the redirect to `/start/done`, where `PurchaseReport` fires
+  The payment step mounts hidden under it, mints the picked plan's session and loads Dodo's
+  frame, so Continue reveals a ready form. It reports nothing until it is shown. Success is the redirect to `/start/done`, where `PurchaseReport` fires
   the browser Purchase from `sessionStorage`.
 - "Manage subscription" opens Dodo's portal (`POST /api/subscription/portal`) when
   `provider == "dodo"`, otherwise StoreKit's sheet.

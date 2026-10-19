@@ -58,10 +58,11 @@ extension View {
 
 extension View {
     /// A capsule floating over the screen: Liquid Glass from iOS 26, the glass card before it.
+    /// Not `interactive` on a button's own label: the glass then tracks the touch and the button can miss the tap.
     @ViewBuilder
-    func floatingGlass() -> some View {
+    func floatingGlass(interactive: Bool = true) -> some View {
         if #available(iOS 26, *) {
-            glassEffect(.regular.interactive(), in: .capsule)
+            glassEffect(interactive ? .regular.interactive() : .regular, in: .capsule)
         } else {
             glassCard(raised: true, radius: Metric.Radius.control)
         }

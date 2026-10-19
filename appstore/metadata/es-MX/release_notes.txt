@@ -1,1 +1,4 @@
-- Cada uno de los 500 juegos ahora tiene su propia ilustración. La ves en Jugar y junto a cada juego en la búsqueda.
+- Un comienzo nuevo. El planeta empieza a oscuras, como está mientras tú ves el celular. Mantenlo presionado y vuelve a la vida, con tu familia encima.
+- En Jugar, un juego nuevo funde su título en lugar de hacer saltar la página.
+- Hogar vuelve a desplazarse libremente sobre la tarjeta de Tiempo en pantalla.
+- Cambiar el idioma en el perfil ya no deja en blanco la tarjeta de Tiempo en pantalla de Hogar.

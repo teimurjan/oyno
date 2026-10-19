@@ -4,9 +4,6 @@ import Foundation
 /// it stays put when the words on the screen change.
 enum FunnelStep: String, CaseIterable {
     case hookPlanet = "hook_planet"
-    case hookCloser = "hook_closer"
-    case hookEvenings = "hook_evenings"
-    case hookDimmed = "hook_dimmed"
     case pickups
     case interlude
     case badNews = "bad_news"
@@ -23,7 +20,7 @@ enum FunnelStep: String, CaseIterable {
 
     var kind: Kind {
         switch self {
-        case .hookPlanet, .hookCloser, .hookEvenings, .hookDimmed: .hook
+        case .hookPlanet: .hook
         case .pickups: .question
         case .interlude: .interlude
         case .badNews, .goodNews: .projection
@@ -34,8 +31,9 @@ enum FunnelStep: String, CaseIterable {
         }
     }
 
-    /// Advances on a tap anywhere, with the hint at the foot of the screen saying so.
-    var tapsToContinue: Bool { kind == .hook || kind == .interlude }
+    /// Advances on a tap anywhere, with the hint at the foot of the screen saying so. The hook
+    /// does not: it moves on by itself once the planet has been held back to life.
+    var tapsToContinue: Bool { self == .interlude }
 }
 
 /// The one question the funnel asks, and the sums it draws from the answer. The evening is

@@ -1,1 +1,4 @@
-- Jedes der 500 Spiele hat jetzt sein eigenes Bild. Du siehst es bei „Spielen“ und neben jedem Spiel in der Suche.
+- Ein neuer Anfang. Der Planet beginnt dunkel, so wie er ist, während du am Handy bist. Halte ihn fest, und er erwacht zum Leben, mit deiner Familie darauf.
+- Ein neues Spiel in „Spielen“ blendet seinen Titel jetzt sanft ein, statt die Seite springen zu lassen.
+- „Zuhause“ lässt sich wieder frei über die Bildschirmzeit-Karte scrollen.
+- Nach einem Sprachwechsel im Profil bleibt die Bildschirmzeit-Karte in „Zuhause“ nicht mehr leer.

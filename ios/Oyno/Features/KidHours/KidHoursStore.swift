@@ -133,10 +133,11 @@ final class KidHoursStore {
     private var seededNow: Date?
 
     /// The simulator has no Screen Time and no app tokens, so the frame stands in a parent who set it up.
-    func seedForScreenshot(schedules: [KidHoursSchedule], apps: [String], alwaysAllowed: [String], neverAllowed: [String], usage: AppUsage, pausedMinutes: Int, now: Date) {
+    func seedForScreenshot(schedules: [KidHoursSchedule], apps: [String], alwaysAllowed: [String], neverAllowed: [String], usage: AppUsage, pausedMinutes: Int, now: Date, earned: KidHoursEarned? = nil) {
         authorizationWatch?.cancel()
         isAuthorized = true
         settings.schedules = schedules
+        settings.earned = earned
         seededApps = apps
         seededAllowed = alwaysAllowed
         seededNever = neverAllowed

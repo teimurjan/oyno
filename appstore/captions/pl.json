@@ -1,12 +1,13 @@
 {
   "default": [
-    { "slug": "together", "photo": "together.jpg", "caption": "Bądź na planecie dziecka, [nie w telefonie]" },
-    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[Godzina] z rodziną, bez telefonu" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Padasz z nóg? [Łatwe zabawy dla niemowląt]" },
-    { "slug": "full", "source": "03", "callout": "battery", "caption": "Pełno energii? [Zabawy ruchowe dla malucha]" },
-    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Każda zabawa [poparta badaniami]" },
     { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Blokuj aplikacje], gdy się bawicie" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Padasz z nóg? [Jedna łatwa zabawa, 5 min]" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Po rundzie [aplikacje otwarte na 10 min]" },
+    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[Godzina] z rodziną, bez telefonu" },
+    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Każda zabawa [poparta badaniami]" },
+    { "slug": "find", "source": "09", "caption": "[500 zabaw] bez przygotowań" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limity czasu przed ekranem] co do minuty" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Z każdą rundą [rośnie nowy świat]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Z każdą rundą [rośnie nowy świat]" },
+    { "slug": "together", "photo": "together.jpg", "caption": "Bądź na planecie dziecka, [nie w telefonie]" }
   ]
 }

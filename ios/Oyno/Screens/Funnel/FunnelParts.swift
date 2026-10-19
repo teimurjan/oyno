@@ -23,10 +23,13 @@ struct FunnelLine: View {
     }
 }
 
-/// "Tap to continue", breathing at the foot of a screen that advances on a tap anywhere.
-struct FunnelTapHint: View {
+/// The hint breathing at the foot of a screen: "Tap to continue" where a tap anywhere
+/// advances, "Hold the planet" on the hook.
+struct FunnelHint: View {
+    let text: String
+
     var body: some View {
-        Text("Tap to continue")
+        Text(verbatim: text)
             .font(Typeface.ui(12, .semibold, relativeTo: .caption))
             .tracking(1.6)
             .textCase(.uppercase)

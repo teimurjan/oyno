@@ -278,9 +278,16 @@ struct HoldRing: View {
 extension View {
     /// Fires `action` once the finger has stayed down for two seconds — a tap is too easy to
     /// make without meaning it — filling `progress` on the way and emptying it on a lift.
-    func holdToConfirm(progress: Binding<CGFloat>, action: @escaping () -> Void) -> some View {
+    /// The whole `shape` fills too, so the finger never hides how far along it is.
+    func holdToConfirm(progress: Binding<CGFloat>, in shape: some Shape, action: @escaping () -> Void) -> some View {
         let seconds = 2.0
-        return onLongPressGesture(minimumDuration: seconds) {
+        return background {
+            GeometryReader { space in
+                Palette.ink.opacity(0.08).frame(width: space.size.width * progress.wrappedValue)
+            }
+            .clipShape(shape)
+        }
+        .onLongPressGesture(minimumDuration: seconds) {
             Haptics.success()
             progress.wrappedValue = 0
             action()

@@ -11,7 +11,7 @@ import { lifetimeOffered, planQuote } from "./planQuote";
  * The offer, drawn as a page of its own: the shell hides the header, the progress bar and Back
  * on this step and hands the action here, pinned to the bottom as the app's paywall pins it. The card field is the step after; the selection
  * lives in `FunnelShell` so Back returns to the plan that was picked. A Dodo session is minted
- * for one product, so the plan is settled here, before the form exists.
+ * for one product, so the shell keeps the picked plan's form loading, hidden, under this page.
  *
  * Nothing here needs an account or a configured biller; the cards render from the list quote.
  */

@@ -8,7 +8,7 @@ import type { CheckoutEvent, CheckoutMode } from "dodopayments-checkout";
  * for the conversions — so the single callback fans out to a listener set instead.
  *
  * Lazily imported so the SDK never lands in the bundle that gates the funnel's first paint.
- * **Nothing above the checkout step may import this module.**
+ * **Nothing above the paywall step may import this module.**
  *
  * `mode` comes from the server alongside the checkout url rather than from a public env var:
  * the url already encodes which Dodo minted it, and one value that cannot drift beats two

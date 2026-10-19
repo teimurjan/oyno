@@ -31,6 +31,7 @@ struct AppRoot: View {
     @AppStorage("oyno.didFunnel") private var didFunnel = false
     @AppStorage("oyno.didAskForReview") private var didAskForReview = false
     @AppStorage(InterfaceLanguage.overrideKey, store: InterfaceLanguage.store) private var language = "en"
+    @State private var didSwitchLanguage = false
 
     init() {
         Analytics.shared.configure(apiKey: AppConfig.amplitudeAPIKey, environment: AppConfig.analyticsEnvironment)
@@ -57,6 +58,7 @@ struct AppRoot: View {
             // A new language redraws every screen: fonts and game copy are read once per body,
             // not from the environment, so nothing short of a rebuild switches them all.
             .id(language)
+            .onChange(of: language) { didSwitchLanguage = true }
             .background(Palette.canvas.ignoresSafeArea())
             .task {
                 oyno.load()
@@ -178,7 +180,7 @@ struct AppRoot: View {
     private var tabs: some View {
         RootTabs(selection: $tab) {
             NavigationStack {
-                HomeScreen(play: { tab = .play })
+                HomeScreen(play: { tab = .play }, afterLanguageSwitch: didSwitchLanguage)
                     .tracksScreen(.home)
             }
         } play: {

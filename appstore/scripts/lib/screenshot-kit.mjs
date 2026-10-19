@@ -25,9 +25,10 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 
 /** Which seeded screen the capture run photographs, and what it is filed as.
  *
- * The order is the argument the store listing makes, after the photo frame that opens it: the
- * time together today, a game for each battery level and why it works, Kid hours and one
- * schedule's form, and the next world to earn.
+ * The listing's argument, after the photo frame that opens it: the time together today, a game
+ * for each battery level, every game there is and why they work, Kid hours and one schedule's
+ * form, the apps a round earns back, and the next world to earn. The captions put the frames
+ * in that order; the numbers here are the order the screens were added in.
  *
  * `nn` is what a caption's `source` points at, which is why adding a screen in the middle
  * renumbers the ones after it *and* every `appstore/captions/<tag>.json`. It lives here
@@ -46,6 +47,9 @@ export const SCREENS = [
   { nn: "06", screen: "schedule", delay: 6000 },
   // The iPad still shows the splash fading out at the default delay.
   { nn: "07", screen: "worlds", delay: 6000 },
+  // The round's end, the planet already tapped and the unlock it earned in the sheet.
+  { nn: "08", screen: "done:grown" },
+  { nn: "09", screen: "find" },
 ];
 
 /** The store slots the kit fills, one simulator each.
@@ -57,8 +61,8 @@ export const SCREENS = [
  * under the transparent screen of `mockup`, measured in that photograph's pixels, its corners
  * clockwise from the top left. An upright photograph of a device shot on its side is
  * `turned`. The files carry `prefix`, because deliver files every size in a locale's folder
- * by its pixels. Both Duo sets fill the one iPhone Duo slot of ten, so the outer set keeps
- * only the `slugs` it names. */
+ * by its pixels. Both Duo sets fill the one iPhone Duo slot of ten, so each keeps only the
+ * `slugs` it names: the open Duo drops the search. */
 export const DEVICES = {
   iphone: { simulator: "iPhone 17", canvas: { w: 1290, h: 2796 }, prefix: "" },
   ipad: {
@@ -86,6 +90,7 @@ export const DEVICES = {
     prefix: "duo-",
     landscape: true,
     open: true,
+    slugs: ["together", "together-time", "low", "science", "kidhours", "schedule", "unlock", "worlds"],
     mockup: { file: path.join(SOURCE_DIR, "duo-frame-open.png"), w: 1033, h: 750, screen: { x: 40, y: 40, w: 952, h: 670, radius: [55, 55, 55, 55] } },
   },
   "duo-outer": {

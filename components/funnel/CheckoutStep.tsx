@@ -39,8 +39,12 @@ async function requestCheckout(
 }
 
 /**
- * The card field, and only the card field: the plan was picked on the step before, because a
- * Dodo session is minted server-side for one product and cannot change it.
+ * The card field, and only the card field. A Dodo session is minted server-side for one product
+ * and cannot change it, so the plan is picked on the paywall.
+ *
+ * **Mounted hidden under the paywall**, so the session, the SDK and Dodo's frame load while the
+ * reader compares plans and Continue reveals a form that is already there. A plan change there
+ * mints that plan's session, once. Nothing is reported to Meta or Amplitude until `visible`.
  *
  * Two things ride into the session's `metadata`: the Supabase uid, which the route reads off
  * the bearer token so a buyer cannot claim to be somebody else, and an `eventId` minted once
@@ -53,11 +57,13 @@ export function CheckoutStep({
   answers,
   attribution,
   funnel,
+  visible,
 }: {
   plan: Plan;
   answers: FunnelAnswers;
   attribution: Attribution;
   funnel: string;
+  visible: boolean;
 }) {
   const { user, accessToken } = useAuth();
   const { copy, lang } = useLocale();
@@ -66,7 +72,10 @@ export function CheckoutStep({
   const [quote, setQuote] = useState<PlanQuote>(planListQuote);
   const [checkout, setCheckout] = useState<OpenCheckout | null>(null);
   const [state, setState] = useState<"opening" | "failed" | "unconfigured" | "open">("opening");
+  const [frameOpened, setFrameOpened] = useState(false);
   const started = useRef(false);
+  /** One session per plan for this mount, so flipping between plans does not mint again. */
+  const sessions = useRef(new Map<Plan, Promise<CheckoutSessionResult>>());
 
   useEffect(() => {
     void planQuote().then((live) => live && setQuote(live));
@@ -75,11 +84,7 @@ export function CheckoutStep({
   const handleCheckoutEvent = useCallback(
     (event: CheckoutEvent) => {
       if (event.event_type === "checkout.opened") {
-        if (!started.current) {
-          started.current = true;
-          metaTrack("InitiateCheckout", { content_name: plan });
-          track({ name: "checkout_started", plan });
-        }
+        setFrameOpened(true);
         // Provisional, at the list price: a missed conversion is worse than one a few cents
         // out. The breakdown below overwrites it with the charged total.
         rememberPurchase({ eventId, plan, value: quote[plan], currency: quote.currency });
@@ -98,14 +103,18 @@ export function CheckoutStep({
 
   useEffect(() => onDodoCheckoutEvent(handleCheckoutEvent), [handleCheckoutEvent]);
 
-  const open = useCallback(async () => {
-    setState("opening");
+  // When the reader sees the form, not when the hidden frame loads behind the paywall.
+  useEffect(() => {
+    if (!visible || !frameOpened || started.current) return;
+    started.current = true;
+    metaTrack("InitiateCheckout", { content_name: plan });
+    track({ name: "checkout_started", plan });
+  }, [visible, frameOpened, plan]);
+
+  const mint = useCallback(async (): Promise<CheckoutSessionResult> => {
     const token = await accessToken().catch(() => null);
-    if (!token) {
-      setState("failed");
-      return;
-    }
-    const result = await requestCheckout(token, plan, {
+    if (!token) return { ok: false, error: "failed" };
+    return requestCheckout(token, plan, {
       eventId,
       fbp: metaCookie("_fbp") ?? undefined,
       fbc: metaCookie("_fbc") ?? readClickId(),
@@ -114,17 +123,43 @@ export function CheckoutStep({
       attribution,
       funnel,
     });
-    if (!result.ok) {
-      setState(result.error === "unconfigured" ? "unconfigured" : "failed");
-      return;
-    }
-    setCheckout({ checkoutUrl: result.checkoutUrl, mode: result.mode });
-    setState("open");
   }, [accessToken, answers, attribution, eventId, funnel, plan]);
 
+  /** A failed session is forgotten, so Try again and a later return to the plan both ask anew. */
+  const sessionFor = useCallback(() => {
+    const cached = sessions.current.get(plan);
+    if (cached) return cached;
+    const pending = mint().then((result) => {
+      if (!result.ok) sessions.current.delete(plan);
+      return result;
+    });
+    sessions.current.set(plan, pending);
+    return pending;
+  }, [mint, plan]);
+
+  const open = useCallback(() => {
+    let cancelled = false;
+    setState("opening");
+    setCheckout(null);
+    setFrameOpened(false);
+    void sessionFor().then((result) => {
+      if (cancelled) return;
+      if (!result.ok) {
+        setState(result.error === "unconfigured" ? "unconfigured" : "failed");
+        return;
+      }
+      setCheckout({ checkoutUrl: result.checkoutUrl, mode: result.mode });
+      setState("open");
+    });
+    // A plan picked while the last one was still minting must not be overwritten by it.
+    return () => {
+      cancelled = true;
+    };
+  }, [sessionFor]);
+
   useEffect(() => {
-    if (user) void open();
-  }, [user?.id]);
+    if (user) return open();
+  }, [user?.id, plan]);
 
   function payment() {
     // Reachable signed-out only by deep link. Say why there is no form rather than show an inert one.
@@ -143,7 +178,7 @@ export function CheckoutStep({
       return (
         <Unavailable>
           {words.retry}{" "}
-          <button onClick={() => void open()} className="font-semibold underline underline-offset-4">
+          <button onClick={open} className="font-semibold underline underline-offset-4">
             {words.tryAgain}
           </button>
         </Unavailable>

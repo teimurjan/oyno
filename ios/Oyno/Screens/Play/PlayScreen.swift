@@ -451,10 +451,10 @@ struct PlayScreen: View {
                 .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
                 .foregroundStyle(Palette.muted)
         }
-        .padding(.horizontal, 6)
+        .padding(.horizontal, 12)
         .frame(height: Metric.tapTarget)
         .contentShape(.rect)
-        .holdToConfirm(progress: $holding) { kidHours.takeNotNow() }
+        .holdToConfirm(progress: $holding, in: .capsule) { kidHours.takeNotNow() }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(Text("Not now"))

@@ -16,7 +16,14 @@ struct ScreenshotHarness: View {
     @State private var oyno = ScreenshotFixtures.oyno()
     @State private var auth = ScreenshotFixtures.auth()
     @State private var purchases = ScreenshotFixtures.purchases()
-    @State private var kidHours = ScreenshotFixtures.kidHours()
+    @State private var kidHours: KidHoursStore
+
+    /// Only the round's end banks the unlock a round earns: on Kid hours it would add a strip
+    /// to the schedule on top.
+    init(screen: String) {
+        self.screen = screen
+        _kidHours = State(initialValue: ScreenshotFixtures.kidHours(roundEarned: screen == "done:grown"))
+    }
 
     var body: some View {
         framed { tabbed }
@@ -106,7 +113,9 @@ struct ScreenshotHarness: View {
                 .defaultScrollAnchor(parts.contains("why") ? .bottom : .top)
             if #available(iOS 26, *) { play.scrollEdgeEffectStyle(.soft, for: .top) } else { play }
         case "timer": TimerScreen(activity: Activity.all[0]) { _ in }
-        case "done": DoneScreen(minutes: 10, onKeepPlaying: {}, onLeave: {})
+        // `done:grown` is the planet already tapped, the unlock the round earned in its sheet.
+        case "done", "done:grown":
+            DoneScreen(minutes: 10, grown: screen == "done:grown", onKeepPlaying: {}, onLeave: {})
         case "find": ActivitySearchScreen(onPick: { _ in }, onStart: { _ in })
         case "kidhours": KidHoursScreen()
         case "schedule":
@@ -164,8 +173,13 @@ enum ScreenshotFixtures {
         return defaults
     }
 
-    static func kidHours() -> KidHoursStore {
+    /// `roundEarned` banks what a round just played in School nights earns, still claimable.
+    static func kidHours(roundEarned: Bool = false) -> KidHoursStore {
         let store = KidHoursStore()
+        let now = evening
+        let earned = roundEarned
+            ? KidHoursEarned(scheduleID: schedules[0].id, minutes: schedules[0].unlockMinutes, expiresAt: now.addingTimeInterval(KidHoursEarned.claimWindow))
+            : nil
         store.seedForScreenshot(
             schedules: schedules,
             apps: socialApps,
@@ -173,7 +187,8 @@ enum ScreenshotFixtures {
             neverAllowed: socialApps,
             usage: usage,
             pausedMinutes: 95,
-            now: evening
+            now: now,
+            earned: earned
         )
         return store
     }

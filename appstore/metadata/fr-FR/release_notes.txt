@@ -1,1 +1,4 @@
-- Chacun des 500 jeux a désormais sa propre illustration. Vous la voyez dans « Jouer » et à côté de chaque jeu dans la recherche.
+- Une nouvelle ouverture. La planète commence dans le noir, comme quand vous êtes sur votre téléphone. Gardez le doigt dessus, et elle reprend vie, avec votre famille dessus.
+- Dans « Jouer », un nouveau jeu fait apparaître son titre en fondu au lieu de faire sauter la page.
+- « Maison » défile à nouveau librement par-dessus la carte Temps d’écran.
+- Changer de langue dans le profil ne laisse plus la carte Temps d’écran de « Maison » vide.

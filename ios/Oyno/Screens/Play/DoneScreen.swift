@@ -14,10 +14,18 @@ struct DoneScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.adaptive) private var adaptive
-    @State private var tapped = false
+    @State private var tapped: Bool
     @State private var bursts = 0
     @State private var lastBurst = Date.distantPast
     @State private var holding: CGFloat = 0
+
+    /// `grown` opens on the planet already tapped, for the screenshot harness.
+    init(minutes: Int, grown: Bool = false, onKeepPlaying: @escaping () -> Void, onLeave: @escaping () -> Void) {
+        self.minutes = minutes
+        self.onKeepPlaying = onKeepPlaying
+        self.onLeave = onLeave
+        _tapped = State(initialValue: grown)
+    }
 
     /// The points before this round, which the planet shows until the tap grows it.
     private var pointsBefore: Int { max(0, oyno.points - Bloom.points(rounds: 1, minutes: minutes)) }
@@ -228,7 +236,7 @@ struct DoneScreen: View {
         .frame(maxWidth: .infinity)
         .frame(height: Metric.tapTarget)
         .contentShape(.rect)
-        .holdToConfirm(progress: $holding, action: claim)
+        .holdToConfirm(progress: $holding, in: .capsule, action: claim)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(Text("Unlock my apps"))
@@ -291,5 +299,6 @@ struct DoneScreen: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .screenshotCallout("unlock")
     }
 }

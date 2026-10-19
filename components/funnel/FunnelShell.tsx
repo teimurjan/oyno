@@ -15,7 +15,7 @@ import { PlanStep } from "./PlanStep";
 import { prewarmOffer } from "./prewarm";
 import { QuestionCard } from "./QuestionCard";
 import { StatementStep } from "./StatementStep";
-import { useFunnelSession, type Attribution } from "./session";
+import { useFunnelSession } from "./session";
 import {
   WEB_FUNNEL,
   stepAt,
@@ -124,6 +124,9 @@ export function FunnelShell() {
   /** A page of its own: the one screen asking for a decision, so no header counting down the
    * survey over it, no Back under it, and its own action inside it. */
   const bare = step.kind === "paywall";
+  /** Mounted from the paywall on, outside the re-keyed step, so the frame loaded behind the
+   * plans is the one Continue reveals. Re-mounting it would reload Dodo's iframe. */
+  const checkoutMounted = bare || step.kind === "checkout";
 
   const multi = step.question?.multi ?? false;
   // A generic "Continue" beside a "Create account" button, or above Dodo's own Pay button,
@@ -154,7 +157,7 @@ export function FunnelShell() {
         {/* `mb-auto`, not `my-auto`: centring put the title at a different height on a
             four-option step than on a six-option one, and moved it between two taps. The
             paywall widens on a desktop so its plans and reviews can sit side by side. */}
-        <div className={`mb-auto flex w-full max-w-[520px] flex-col ${bare ? "md:max-w-[56rem]" : ""}`}>
+        <div className={`relative mb-auto flex w-full max-w-[520px] flex-col ${bare ? "md:max-w-[56rem]" : ""}`}>
           <div
             // Re-keyed per step so `.anim-step` restarts. It brings this column's children in one
             // after another, which is why **every step component returns a fragment**: the title,
@@ -166,7 +169,6 @@ export function FunnelShell() {
               step={step}
               index={index}
               answers={answers}
-              attribution={attribution}
               plan={plan}
               onSelectPlan={setPlan}
               onPick={pick}
@@ -174,6 +176,29 @@ export function FunnelShell() {
               onPlanBuilt={() => setPlanBuilt(true)}
             />
           </div>
+          {checkoutMounted && (
+            <div
+              // Clipped and inert under the paywall: laid out at its real width so the form is
+              // ready, but out of sight, out of the tab order and out of the scroll height.
+              inert={bare}
+              aria-hidden={bare}
+              className={
+                bare
+                  ? "invisible pointer-events-none absolute inset-x-0 top-0 mx-auto h-0 max-w-[520px] overflow-hidden"
+                  : "anim-step mt-4 flex flex-col"
+              }
+            >
+              <Suspense fallback={null}>
+                <CheckoutStep
+                  plan={plan}
+                  answers={answers}
+                  attribution={attribution}
+                  funnel={WEB_FUNNEL.id}
+                  visible={!bare}
+                />
+              </Suspense>
+            </div>
+          )}
         </div>
       </main>
 
@@ -221,7 +246,6 @@ interface StepProps {
   step: FunnelStep;
   index: number;
   answers: FunnelAnswers;
-  attribution: Attribution;
   plan: Plan;
   onSelectPlan: (plan: Plan) => void;
   onPick: (value: string) => void;
@@ -234,7 +258,6 @@ function StepBody({
   step,
   index,
   answers,
-  attribution,
   plan,
   onSelectPlan,
   onPick,
@@ -266,20 +289,7 @@ function StepBody({
     );
   }
 
-  // Every remaining kind opens with the step's own copy, which is what `StatementStep` draws.
-  const heading = <StatementStep step={step} answers={answers} />;
-
-  if (step.kind === "checkout") {
-    // A fragment around a block, not a fragment of siblings: the frame is one piece.
-    return (
-      <>
-        {heading}
-        <Suspense fallback={null}>
-          <CheckoutStep plan={plan} answers={answers} attribution={attribution} funnel={WEB_FUNNEL.id} />
-        </Suspense>
-      </>
-    );
-  }
-
-  return heading;
+  // Every remaining kind is the step's own copy, which is what `StatementStep` draws. The
+  // checkout's frame sits under it, drawn by the shell.
+  return <StatementStep step={step} answers={answers} />;
 }

@@ -3121,64 +3121,6 @@
         }
       }
     },
-    "A planet this small only grows when its family shows up." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "So ein kleiner Planet wächst nur, wenn seine Familie für ihn da ist."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Un planeta tan pequeño solo crece si su familia está ahí."
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Un planeta así de chiquito solo crece cuando su familia está ahí."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Une si petite planète ne grandit que si sa famille est là."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Un pianeta così piccolo cresce solo quando la sua famiglia c’è."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zo’n kleine planeet groeit alleen als het gezin er echt bij is."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tak mała planeta rośnie tylko wtedy, gdy jest przy niej rodzina."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Um planeta tão pequeno só cresce quando a família marca presença."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Такая маленькая планета растёт, только когда рядом её семья."
-          }
-        }
-      }
-    },
     "A preview of Oyno's notification: Open Oyno. Tap to pick tonight's game." : {
       "localizations" : {
         "de" : {
@@ -3987,6 +3929,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Всегда открыты"
+          }
+        }
+      }
+    },
+    "And this is what it's like with you." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Und so ist es, wenn du da bist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Y así es contigo."
+          }
+        },
+        "es-MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Y así es contigo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Et voici ce que ça donne avec vous."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E così è quando ci sei tu."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En zo is het met jou erbij."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A tak jest z tobą."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E é assim com você."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "А так она выглядит, когда вы рядом."
           }
         }
       }
@@ -5564,64 +5564,6 @@
         }
       }
     },
-    "Closer…" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Komm näher…"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Más cerca…"
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Más cerca…"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Approchez…"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Avviciniamoci…"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dichterbij…"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bliżej…"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mais perto…"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ближе…"
-          }
-        }
-      }
-    },
     "Cloud" : {
       "localizations" : {
         "de" : {
@@ -6314,64 +6256,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Другая игра"
-          }
-        }
-      }
-    },
-    "Dimmed by a feed, a ping, and everything else pulling at you." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Getrübt vom Feed, vom Pling und von allem, was an dir zerrt."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apagadas por las redes, los avisos y todo lo que te reclama."
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se apagan entre el feed, las notificaciones y todo lo que te roba la atención."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Assombries par un fil d’actu, une notif et tout ce qui vous tire par la manche."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Offuscate da un feed, da una notifica e da tutto ciò che ti tira per la giacca."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gedimd door een feed, een melding en al het andere dat aan je trekt."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przygasza je scrollowanie, powiadomienia i wszystko, co cię rozprasza."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apagadas pelo feed, pelas notificações e por tudo que disputa a sua atenção."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Но их гасят лента, уведомления и всё, что вас отвлекает."
           }
         }
       }
@@ -8738,6 +8622,64 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не сейчас? Зажмите"
+          }
+        }
+      }
+    },
+    "Hold the planet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Halte den Planeten fest"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén pulsado el planeta"
+          }
+        },
+        "es-MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén presionado el planeta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gardez le doigt sur la planète"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tieni premuto il pianeta"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd de planeet vast"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przytrzymaj planetę"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Segure o planeta"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удерживайте планету"
           }
         }
       }
@@ -18272,6 +18214,64 @@
         }
       }
     },
+    "This is your kid's planet while you're on your phone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das ist der Planet deines Kindes, während du am Handy bist."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este es el planeta de tu peque mientras estás con el móvil."
+          }
+        },
+        "es-MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este es el planeta de tu peque mientras estás en el celular."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voici la planète de votre enfant pendant que vous êtes sur votre téléphone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo è il pianeta del tuo piccolo mentre sei al telefono."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit is de planeet van je kind terwijl jij op je telefoon zit."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To planeta twojego dziecka, kiedy ty jesteś w telefonie."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este é o planeta do seu filho enquanto você está no celular."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это планета вашего ребёнка, пока вы в телефоне."
+          }
+        }
+      }
+    },
     "To" : {
       "localizations" : {
         "de" : {
@@ -19374,6 +19374,64 @@
         }
       }
     },
+    "Wake the planet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planeten wecken"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Despertar el planeta"
+          }
+        },
+        "es-MX" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Despertar el planeta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réveiller la planète"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sveglia il pianeta"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planeet wakker maken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obudź planetę"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acordar o planeta"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разбудить планету"
+          }
+        }
+      }
+    },
     "We remind you that your trial ends tomorrow." : {
       "localizations" : {
         "de" : {
@@ -20247,64 +20305,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваш заряд"
-          }
-        }
-      }
-    },
-    "Your evenings are like this too." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mit deinen Abenden ist es genauso."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tus tardes también son así."
-          }
-        },
-        "es-MX" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tus tardes también son así."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vos soirées aussi ressemblent à ça."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anche le tue serate sono così."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zo zien jouw avonden er ook uit."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Twoje wieczory też takie są."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Suas noites também são assim."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваши вечера тоже такие."
           }
         }
       }

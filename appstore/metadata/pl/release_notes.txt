@@ -1,1 +1,4 @@
-- Każda z 500 zabaw ma teraz własną ilustrację. Zobaczysz ją w „Graj” i obok każdej zabawy w wyszukiwaniu.
+- Nowy początek. Planeta zaczyna w ciemności, tak jak wtedy, gdy jesteś w telefonie. Przytrzymaj ją, a ożyje, z twoją rodziną na niej.
+- W „Graj” nowa zabawa płynnie zmienia tytuł, zamiast przeskakiwać stronę.
+- „Dom” znów przewija się swobodnie nad kartą Czas przed ekranem.
+- Zmiana języka w profilu nie zostawia już pustej karty Czas przed ekranem na ekranie „Dom”.

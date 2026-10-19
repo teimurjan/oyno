@@ -14,10 +14,15 @@ struct HomeScreen: View {
     @State private var profileOpen = false
     /// The world the gallery opens on, when Home appears with it open.
     private let showingWorld: World.ID?
+    /// A language switch rebuilt the screens, and Screen Time's report comes back blank from a
+    /// rebuild until it is mounted again.
+    private let afterLanguageSwitch: Bool
+    @State private var reportMount = 0
 
-    init(play: @escaping () -> Void, showingWorld: World.ID? = nil) {
+    init(play: @escaping () -> Void, showingWorld: World.ID? = nil, afterLanguageSwitch: Bool = false) {
         self.play = play
         self.showingWorld = showingWorld
+        self.afterLanguageSwitch = afterLanguageSwitch
         _worldsOpen = State(initialValue: showingWorld != nil)
     }
 
@@ -148,9 +153,8 @@ struct HomeScreen: View {
             }
             .padding(.horizontal, adaptive.roomy ? 28 : 24)
             .frame(height: adaptive.roomy ? Metric.primaryButtonRoomy : Metric.primaryButton)
-            .floatingGlass()
         }
-        .buttonStyle(.plain)
+        .buttonStyle(FloatingGlassStyle())
     }
 
     private var screenTime: some View {
@@ -170,8 +174,25 @@ struct HomeScreen: View {
     }
 
     /// Drawn by `OynoReport`: only Screen Time's own process may read what each app took.
+    /// It has nothing to tap, and a hosted report would otherwise keep the drag from the scroll view.
     private var report: some View {
         let today = DateInterval(start: Calendar.current.startOfDay(for: .now), duration: 86_400)
         return DeviceActivityReport(.todayApps, filter: DeviceActivityFilter(segment: .daily(during: today), users: .all, devices: .init([.iPhone])))
+            .allowsHitTesting(false)
+            .id(reportMount)
+            .task(id: afterLanguageSwitch) {
+                guard afterLanguageSwitch, (try? await Task.sleep(for: .seconds(1))) != nil else { return }
+                reportMount += 1
+            }
+    }
+}
+
+/// The glass under the start, pressed in like the system's own glass buttons.
+private struct FloatingGlassStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .floatingGlass(interactive: false)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }

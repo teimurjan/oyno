@@ -1,12 +1,13 @@
 {
   "default": [
-    { "slug": "together", "photo": "together.jpg", "caption": "Vive en el planeta de tu peque, [no en el tuyo]" },
-    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 h] en familia, sin móvil" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "¿Sin pilas? [Juegos fáciles para bebés]" },
-    { "slug": "full", "source": "03", "callout": "battery", "caption": "¿Batería llena? [Juegos para desfogarse]" },
-    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Cada juego, [avalado por la ciencia]" },
     { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Bloquea apps] mientras jugáis" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "¿Sin pilas? [Un juego fácil, 5 min]" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Partida jugada, [tus apps se abren 10 min]" },
+    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 h] en familia, sin móvil" },
+    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Cada juego, [avalado por la ciencia]" },
+    { "slug": "find", "source": "09", "caption": "[500 juegos], sin preparar nada" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limita las pantallas] al minuto exacto" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Cada partida [hace crecer un mundo nuevo]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Cada partida [hace crecer un mundo nuevo]" },
+    { "slug": "together", "photo": "together.jpg", "caption": "Vive en el planeta de tu peque, [no en el tuyo]" }
   ]
 }

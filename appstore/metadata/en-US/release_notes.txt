@@ -1,1 +1,4 @@
-- Every one of the 500 games now has its own painting. You see it on Play and next to each game in search.
+- A new opening. The planet starts dark, the way it is while you're on your phone. Hold it, and it comes to life with your family on it.
+- Dealing another game on Play crossfades its title instead of jumping the page.
+- Home scrolls freely over the screen time card again.
+- Switching the language in Profile no longer leaves the screen time card on Home blank.

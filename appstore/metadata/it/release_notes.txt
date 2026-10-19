@@ -1,1 +1,4 @@
-- Ognuno dei 500 giochi ora ha la sua illustrazione. La vedi in “Gioca” e accanto a ogni gioco nella ricerca.
+- Un nuovo inizio. Il pianeta parte al buio, com’è mentre sei al telefono. Tienilo premuto e torna a vivere, con la tua famiglia sopra.
+- In “Gioca”, un nuovo gioco fa apparire il titolo in dissolvenza invece di far saltare la pagina.
+- “Casa” scorre di nuovo liberamente sopra la scheda Tempo davanti allo schermo.
+- Cambiare lingua nel profilo non lascia più vuota la scheda Tempo davanti allo schermo in “Casa”.
