@@ -1,4 +1,2 @@
-- Nowy początek. Planeta zaczyna w ciemności, tak jak wtedy, gdy jesteś w telefonie. Przytrzymaj ją, a ożyje, z twoją rodziną na niej.
-- W „Graj” nowa zabawa płynnie zmienia tytuł, zamiast przeskakiwać stronę.
-- „Dom” znów przewija się swobodnie nad kartą Czas przed ekranem.
-- Zmiana języka w profilu nie zostawia już pustej karty Czas przed ekranem na ekranie „Dom”.
+- Runda pojawia się teraz na ekranie blokady i w Dynamic Island. Odłóż telefon, a i tak zobaczysz, ile czasu zostało.
+- Jeśli wyjdziesz z Oyno w trakcie rundy, powiadomienie zadzwoni, gdy czas minie.

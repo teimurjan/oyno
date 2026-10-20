@@ -1,4 +1,2 @@
-- Un nuovo inizio. Il pianeta parte al buio, com’è mentre sei al telefono. Tienilo premuto e torna a vivere, con la tua famiglia sopra.
-- In “Gioca”, un nuovo gioco fa apparire il titolo in dissolvenza invece di far saltare la pagina.
-- “Casa” scorre di nuovo liberamente sopra la scheda Tempo davanti allo schermo.
-- Cambiare lingua nel profilo non lascia più vuota la scheda Tempo davanti allo schermo in “Casa”.
+- Ora la partita compare sulla schermata di blocco e nella Dynamic Island. Metti giù il telefono e vedi comunque il tempo che resta.
+- Se esci da Oyno durante una partita, una notifica suona quando il tempo è scaduto.

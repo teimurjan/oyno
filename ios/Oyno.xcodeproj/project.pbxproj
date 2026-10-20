@@ -14,6 +14,7 @@
 		5C000000000000000000005C /* OynoReport.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 5C0000000000000000000050 /* OynoReport.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5C000000000000000000006C /* OynoShield.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5C0000000000000000000060 /* OynoShield.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5C000000000000000000007C /* OynoShieldAction.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5C0000000000000000000070 /* OynoShieldAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5C000000000000000000008D /* OynoLive.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 5C0000000000000000000081 /* OynoLive.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,13 @@
 			remoteGlobalIDString = 5C0000000000000000000074;
 			remoteInfo = OynoShieldAction;
 		};
+		5C000000000000000000008F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5C0000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5C0000000000000000000085;
+			remoteInfo = OynoLive;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +72,7 @@
 				5C000000000000000000004D /* OynoMonitor.appex in Embed Foundation Extensions */,
 				5C000000000000000000006C /* OynoShield.appex in Embed Foundation Extensions */,
 				5C000000000000000000007C /* OynoShieldAction.appex in Embed Foundation Extensions */,
+				5C000000000000000000008D /* OynoLive.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,6 +100,7 @@
 		5C0000000000000000000050 /* OynoReport.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = OynoReport.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C0000000000000000000060 /* OynoShield.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OynoShield.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C0000000000000000000070 /* OynoShieldAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OynoShieldAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C0000000000000000000081 /* OynoLive.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OynoLive.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -170,6 +180,36 @@
 			);
 			target = 5C0000000000000000000074 /* OynoShieldAction */;
 		};
+		5C0000000000000000000083 /* Exceptions for "OynoLive" folder in "OynoLive" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 5C0000000000000000000085 /* OynoLive */;
+		};
+		5C0000000000000000000084 /* Exceptions for "Oyno" folder in "OynoLive" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Domain/Countdown.swift,
+				Domain/Formatting.swift,
+				Domain/RoundActivity.swift,
+				"Resources/Fonts/Figtree-Bold.ttf",
+				"Resources/Fonts/Figtree-ExtraBold.ttf",
+				"Resources/Fonts/Figtree-Medium.ttf",
+				"Resources/Fonts/Figtree-Regular.ttf",
+				"Resources/Fonts/Figtree-SemiBold.ttf",
+				"Resources/Fonts/Onest-Bold.ttf",
+				"Resources/Fonts/Onest-ExtraBold.ttf",
+				"Resources/Fonts/Onest-Medium.ttf",
+				"Resources/Fonts/Onest-Regular.ttf",
+				"Resources/Fonts/Onest-SemiBold.ttf",
+				Resources/Localizable.xcstrings,
+				Shared/DesignSystem/Palette.swift,
+				Shared/DesignSystem/Typeface.swift,
+				Shared/Localization/InterfaceLanguage.swift,
+			);
+			target = 5C0000000000000000000085 /* OynoLive */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -180,6 +220,7 @@
 				5C0000000000000000000053 /* Exceptions for "Oyno" folder in "OynoReport" target */,
 				5C0000000000000000000063 /* Exceptions for "Oyno" folder in "OynoShield" target */,
 				5C0000000000000000000073 /* Exceptions for "Oyno" folder in "OynoShieldAction" target */,
+				5C0000000000000000000084 /* Exceptions for "Oyno" folder in "OynoLive" target */,
 			);
 			path = Oyno;
 			sourceTree = "<group>";
@@ -224,6 +265,14 @@
 				5C0000000000000000000072 /* Exceptions for "OynoShieldAction" folder in "OynoShieldAction" target */,
 			);
 			path = OynoShieldAction;
+			sourceTree = "<group>";
+		};
+		5C0000000000000000000082 /* OynoLive */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				5C0000000000000000000083 /* Exceptions for "OynoLive" folder in "OynoLive" target */,
+			);
+			path = OynoLive;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -274,6 +323,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5C0000000000000000000087 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -286,6 +342,7 @@
 				5C0000000000000000000051 /* OynoReport */,
 				5C0000000000000000000061 /* OynoShield */,
 				5C0000000000000000000071 /* OynoShieldAction */,
+				5C0000000000000000000082 /* OynoLive */,
 				5C0000000000000000000032 /* OynoTests */,
 				5C0000000000000000000012 /* Config */,
 				5C0000000000000000000003 /* Products */,
@@ -301,6 +358,7 @@
 				5C0000000000000000000050 /* OynoReport.appex */,
 				5C0000000000000000000060 /* OynoShield.appex */,
 				5C0000000000000000000070 /* OynoShieldAction.appex */,
+				5C0000000000000000000081 /* OynoLive.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -335,6 +393,7 @@
 				5C000000000000000000005D /* PBXTargetDependency */,
 				5C000000000000000000006D /* PBXTargetDependency */,
 				5C000000000000000000007D /* PBXTargetDependency */,
+				5C000000000000000000008E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				5C0000000000000000000006 /* Oyno */,
@@ -465,6 +524,29 @@
 			productReference = 5C0000000000000000000070 /* OynoShieldAction.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		5C0000000000000000000085 /* OynoLive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5C000000000000000000008C /* Build configuration list for PBXNativeTarget "OynoLive" */;
+			buildPhases = (
+				5C0000000000000000000086 /* Sources */,
+				5C0000000000000000000087 /* Frameworks */,
+				5C0000000000000000000088 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				5C0000000000000000000043 /* KidHoursShared */,
+				5C0000000000000000000082 /* OynoLive */,
+			);
+			name = OynoLive;
+			packageProductDependencies = (
+			);
+			productName = OynoLive;
+			productReference = 5C0000000000000000000081 /* OynoLive.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -492,6 +574,9 @@
 						CreatedOnToolsVersion = 26.0;
 					};
 					5C0000000000000000000074 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					5C0000000000000000000085 = {
 						CreatedOnToolsVersion = 26.0;
 					};
 				};
@@ -529,6 +614,7 @@
 				5C0000000000000000000054 /* OynoReport */,
 				5C0000000000000000000064 /* OynoShield */,
 				5C0000000000000000000074 /* OynoShieldAction */,
+				5C0000000000000000000085 /* OynoLive */,
 			);
 		};
 /* End PBXProject section */
@@ -570,6 +656,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		5C0000000000000000000077 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5C0000000000000000000088 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -621,6 +714,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5C0000000000000000000086 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -648,6 +748,11 @@
 			isa = PBXTargetDependency;
 			target = 5C0000000000000000000074 /* OynoShieldAction */;
 			targetProxy = 5C000000000000000000007E /* PBXContainerItemProxy */;
+		};
+		5C000000000000000000008E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5C0000000000000000000085 /* OynoLive */;
+			targetProxy = 5C000000000000000000008F /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -712,13 +817,14 @@
 				CODE_SIGN_ENTITLEMENTS = Oyno/Oyno.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3KRA7CQWB6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Oyno/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Oyno;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -728,7 +834,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.teimurjan.oyno;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -747,7 +853,7 @@
 				CODE_SIGN_ENTITLEMENTS = Oyno/Oyno.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3KRA7CQWB6;
 				ENABLE_PREVIEWS = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = ScreenshotIcons.xcassets;
@@ -755,6 +861,7 @@
 				INFOPLIST_FILE = Oyno/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Oyno;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -764,7 +871,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.teimurjan.oyno;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -812,13 +919,14 @@
 				CODE_SIGN_ENTITLEMENTS = Oyno/Oyno.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 3KRA7CQWB6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Oyno/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Oyno;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -828,7 +936,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.teimurjan.oyno;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1219,6 +1327,87 @@
 			};
 			name = "Debug-Local";
 		};
+		5C0000000000000000000089 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = OynoLive/OynoLive.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3KRA7CQWB6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OynoLive/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OynoLive;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teimurjan.oyno.live;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5C000000000000000000008A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = OynoLive/OynoLive.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3KRA7CQWB6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OynoLive/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OynoLive;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teimurjan.oyno.live;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		5C000000000000000000008B /* Debug-Local */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = OynoLive/OynoLive.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3KRA7CQWB6;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OynoLive/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OynoLive;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.teimurjan.oyno.live;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug-Local";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1288,6 +1477,16 @@
 				5C0000000000000000000079 /* Debug */,
 				5C000000000000000000007A /* Release */,
 				5C000000000000000000007B /* Debug-Local */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5C000000000000000000008C /* Build configuration list for PBXNativeTarget "OynoLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C0000000000000000000089 /* Debug */,
+				5C000000000000000000008A /* Release */,
+				5C000000000000000000008B /* Debug-Local */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

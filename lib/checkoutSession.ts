@@ -133,12 +133,26 @@ export async function createCheckoutSession(
   user: User,
   plan: Plan,
   browser: BrowserContext,
+  discountCode: string | null = null,
 ): Promise<CheckoutSessionResult> {
   if (!isDodoCheckoutConfigured || !isOnSale(plan)) return { ok: false, error: "unconfigured" };
 
+  const result = await mintSession(user, plan, browser, discountCode);
+  // A code already redeemed must not cost the reader the checkout itself.
+  if (!result.ok && discountCode) return mintSession(user, plan, browser, null);
+  return result;
+}
+
+async function mintSession(
+  user: User,
+  plan: Plan,
+  browser: BrowserContext,
+  discountCode: string | null,
+): Promise<CheckoutSessionResult> {
   try {
     const session = await dodoClient().checkoutSessions.create({
       product_cart: [{ product_id: dodoProductId(plan), quantity: 1 }],
+      ...(discountCode ? { discount_codes: [discountCode] } : {}),
       ...(user.email ? { customer: { email: user.email } } : {}),
       metadata: metadataFor(user.id, browser),
       return_url: `${siteUrl()}/start/done`,
@@ -169,7 +183,7 @@ export async function createCheckoutSession(
         },
       },
       feature_flags: {
-        // We run no discounts, and an empty promo field only invites hunting for one.
+        // The reminder's code is applied above; an empty promo field only invites hunting for one.
         allow_discount_code: false,
         allow_phone_number_collection: false,
       },

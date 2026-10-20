@@ -1,4 +1,2 @@
-- Ein neuer Anfang. Der Planet beginnt dunkel, so wie er ist, während du am Handy bist. Halte ihn fest, und er erwacht zum Leben, mit deiner Familie darauf.
-- Ein neues Spiel in „Spielen“ blendet seinen Titel jetzt sanft ein, statt die Seite springen zu lassen.
-- „Zuhause“ lässt sich wieder frei über die Bildschirmzeit-Karte scrollen.
-- Nach einem Sprachwechsel im Profil bleibt die Bildschirmzeit-Karte in „Zuhause“ nicht mehr leer.
+- Eine Runde erscheint jetzt auf dem Sperrbildschirm und in der Dynamic Island. Leg das Handy weg und sieh trotzdem, wie viel Zeit bleibt.
+- Wenn du Oyno während einer Runde verlässt, ertönt eine Mitteilung, sobald die Zeit um ist.

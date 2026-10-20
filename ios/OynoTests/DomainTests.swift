@@ -319,6 +319,23 @@ struct CountdownTests {
         countdown.extend(by: 300)
         #expect(countdown.secondsLeft(at: start + 200) == 760)
     }
+
+    @Test func theEndMovesWithPausesAndFiveMoreMinutes() {
+        var countdown = Countdown(total: 600, startedAt: start)
+        countdown.pause(at: start + 100)
+        countdown.resume(at: start + 160)
+        countdown.extend(by: 300)
+        #expect(countdown.endsAt == start + 960)
+    }
+
+    @Test func thePausedIslandHoldsWhatWasLeft() {
+        var countdown = Countdown(total: 600, startedAt: start)
+        countdown.pause(at: start + 150)
+        let state = RoundAttributes.ContentState(countdown)
+        #expect(state.interval == start...(start + 600))
+        #expect(state.leftWhenPaused == 0.75)
+        #expect(state.pausedSecondsLeft == countdown.secondsLeft(at: start + 400))
+    }
 }
 
 struct ActivityTests {

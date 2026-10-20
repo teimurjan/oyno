@@ -62,6 +62,9 @@ export function dodoProductId(plan: Plan): string {
   return PRODUCT_IDS[plan];
 }
 
+/** Every product configured on this deployment, for a discount that covers whichever is bought. */
+export const dodoProductIds = (): string[] => Object.values(PRODUCT_IDS).filter(Boolean);
+
 /** The lifetime unlock is a launch offer, switched off by the flag alone. The product id
  * stays set after it ends, so a checkout still open, or a redelivered payment, still grants. */
 export const isLifetimeOffered =

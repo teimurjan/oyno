@@ -1,4 +1,2 @@
-- Een nieuw begin. De planeet begint donker, zoals hij is terwijl jij op je telefoon zit. Houd hem vast en hij komt tot leven, met je gezin erop.
-- Bij ‘Spelen’ vervaagt de titel van een nieuw spelletje in plaats van dat de pagina verspringt.
-- ‘Thuis’ scrolt weer vrij over de Schermtijd-kaart.
-- Van taal wisselen in je profiel laat de Schermtijd-kaart bij ‘Thuis’ niet meer leeg.
+- Een rondje staat nu op het toegangsscherm en in het Dynamic Island. Leg je telefoon weg en zie toch hoeveel tijd er nog is.
+- Ga je tijdens een rondje uit Oyno, dan klinkt er een melding als de tijd om is.

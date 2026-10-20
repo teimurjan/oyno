@@ -5,7 +5,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { track } from "@/lib/analytics";
 import type { BrowserContext, CheckoutSessionResult } from "@/lib/checkoutSession";
 import { onDodoCheckoutEvent } from "@/lib/dodoCheckout";
-import { funnelPath } from "@/lib/i18n";
+import { funnelPath, type Lang } from "@/lib/i18n";
 import { metaCookie, metaTrack } from "@/lib/metaPixel";
 import { fromMinorUnits, planListQuote, type Plan, type PlanQuote } from "@/lib/plans";
 import { InlineCheckout } from "./InlineCheckout";
@@ -23,12 +23,13 @@ async function requestCheckout(
   accessToken: string,
   plan: Plan,
   browser: BrowserContext,
+  lang: Lang,
 ): Promise<CheckoutSessionResult> {
   try {
     const response = await fetch("/api/funnel/checkout", {
       method: "POST",
       headers: { "content-type": "application/json", authorization: `Bearer ${accessToken}` },
-      body: JSON.stringify({ plan, browser }),
+      body: JSON.stringify({ plan, browser, lang }),
     });
     if (!response.ok) return { ok: false, error: response.status === 503 ? "unconfigured" : "failed" };
     const session = (await response.json()) as { checkoutUrl: string; mode: "live" | "test" };
@@ -122,8 +123,8 @@ export function CheckoutStep({
       answers,
       attribution,
       funnel,
-    });
-  }, [accessToken, answers, attribution, eventId, funnel, plan]);
+    }, lang);
+  }, [accessToken, answers, attribution, eventId, funnel, lang, plan]);
 
   /** A failed session is forgotten, so Try again and a later return to the plan both ask anew. */
   const sessionFor = useCallback(() => {

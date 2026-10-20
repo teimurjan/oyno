@@ -99,6 +99,16 @@ Distribution needs Apple's Family Controls (Distribution) entitlement for `com.t
 `com.teimurjan.oyno.shield-action`. Development builds work without it. Screen Time does not run in the
 simulator.
 
+## The round away from the app
+
+`TimerScreen` hands the round to `RoundLive`, which shows it as a Live Activity. `RoundLive` also
+schedules one `round.end` notification for the end. It rings `Chime.wav`, and the default sound
+with the bell off. The
+`OynoLive` widget extension draws the Lock Screen and the Dynamic Island from `RoundAttributes`.
+It gets dates only, and the system counts them down, so the app updates it only on a pause, a
+resume or "+5 min". A round that ran out in the background does not chime again on return. The
+extension needs no Family Controls entitlement.
+
 ## Payments: two billers, one entitlement
 
 Apple StoreKit 2 sells in the app, and Dodo sells on the web. `readEntitlement` is the union, and no caller of
@@ -120,6 +130,10 @@ Apple StoreKit 2 sells in the app, and Dodo sells on the web. `readEntitlement` 
   The payment step mounts hidden under it, mints the picked plan's session and loads Dodo's
   frame, so Continue reveals a ready form. It reports nothing until it is shown. Success is the redirect to `/start/done`, where `PurchaseReport` fires
   the browser Purchase from `sessionStorage`.
+- Resend sends two emails (`lib/checkoutReminder/`, `lib/welcomeEmail/`). An hour after the funnel
+  last minted a session for an unpaid account, the cron (`vercel.json`) sends one reminder, ever,
+  with a single-use 20% Dodo code. The code is tied to the account, and `/api/funnel/checkout`
+  applies it, so nobody types it. A new web purchase gets the welcome email from the webhook.
 - "Manage subscription" opens Dodo's portal (`POST /api/subscription/portal`) when
   `provider == "dodo"`, otherwise StoreKit's sheet.
 

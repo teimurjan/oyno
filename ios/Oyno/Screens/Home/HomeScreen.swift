@@ -14,15 +14,10 @@ struct HomeScreen: View {
     @State private var profileOpen = false
     /// The world the gallery opens on, when Home appears with it open.
     private let showingWorld: World.ID?
-    /// A language switch rebuilt the screens, and Screen Time's report comes back blank from a
-    /// rebuild until it is mounted again.
-    private let afterLanguageSwitch: Bool
-    @State private var reportMount = 0
 
-    init(play: @escaping () -> Void, showingWorld: World.ID? = nil, afterLanguageSwitch: Bool = false) {
+    init(play: @escaping () -> Void, showingWorld: World.ID? = nil) {
         self.play = play
         self.showingWorld = showingWorld
-        self.afterLanguageSwitch = afterLanguageSwitch
         _worldsOpen = State(initialValue: showingWorld != nil)
     }
 
@@ -179,11 +174,6 @@ struct HomeScreen: View {
         let today = DateInterval(start: Calendar.current.startOfDay(for: .now), duration: 86_400)
         return DeviceActivityReport(.todayApps, filter: DeviceActivityFilter(segment: .daily(during: today), users: .all, devices: .init([.iPhone])))
             .allowsHitTesting(false)
-            .id(reportMount)
-            .task(id: afterLanguageSwitch) {
-                guard afterLanguageSwitch, (try? await Task.sleep(for: .seconds(1))) != nil else { return }
-                reportMount += 1
-            }
     }
 }
 

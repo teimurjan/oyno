@@ -2,7 +2,8 @@ import SwiftUI
 
 /// D4 on the canvas: the countdown for the whole round, every step of the game at once, five
 /// more minutes, a pause, and a way to end early. Leaving asks first: a left round is lost. The screen stays awake while it runs, so the phone can lie
-/// on the rug, and the round ends on a chime unless the bell is turned off.
+/// on the rug, and the round ends on a chime unless the bell is turned off. Away from the app,
+/// the Lock Screen and the Dynamic Island count it down, and a notification rings the end.
 struct TimerScreen: View {
     let activity: Activity
     let onFinish: (_ minutes: Int) -> Void
@@ -55,8 +56,14 @@ struct TimerScreen: View {
         .onAppear {
             countdown = Countdown(total: countdown.total)
             UIApplication.shared.isIdleTimerDisabled = true
+            showLive()
         }
-        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
+        .onChange(of: countdown) { showLive() }
+        .onChange(of: chimes) { showLive() }
+        .onDisappear {
+            UIApplication.shared.isIdleTimerDisabled = false
+            RoundLive.end()
+        }
         .modifier(LeaveConfirmation(isPresented: $confirmingLeave, asAlert: adaptive.barsAreSystem) { dismiss() })
     }
 
@@ -146,12 +153,19 @@ struct TimerScreen: View {
         }
     }
 
-    /// A round counts in whole minutes, at least one: ending early still played.
+    private func showLive() {
+        RoundLive.show(title: activity.title, countdown: countdown, chimes: chimes)
+    }
+
+    /// A round counts in whole minutes, at least one: ending early still played. One that ran
+    /// out while the app was away already rang, from the notification.
     private func finish(at now: Date) {
         guard !finished else { return }
         finished = true
+        RoundLive.end()
         Haptics.success()
-        if chimes { Chime.play() }
+        let rang = !countdown.isPaused && now.timeIntervalSince(countdown.endsAt) > 2
+        if chimes, !rang { Chime.play() }
         onFinish(max(1, Int((countdown.elapsed(at: now) / 60).rounded())))
     }
 

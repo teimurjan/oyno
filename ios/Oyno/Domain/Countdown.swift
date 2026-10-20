@@ -2,7 +2,7 @@ import Foundation
 
 /// A round's clock, pauses taken out. Pure, so the timer screen only asks it questions on
 /// each tick and the arithmetic can be tested without one.
-struct Countdown {
+struct Countdown: Equatable {
     private(set) var total: TimeInterval
     private(set) var startedAt: Date
     private(set) var pausedAt: Date?
@@ -14,6 +14,9 @@ struct Countdown {
     }
 
     var isPaused: Bool { pausedAt != nil }
+
+    /// When the round ends if nothing else pauses it.
+    var endsAt: Date { startedAt + pausedFor + total }
 
     /// How much of the round has run by `now`, never past `total`.
     func elapsed(at now: Date) -> TimeInterval {

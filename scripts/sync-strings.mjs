@@ -15,7 +15,7 @@ import { join } from "node:path";
 const PROJECT = "ios/Oyno.xcodeproj";
 const SCHEME = "Oyno";
 /** The app and every extension with copy of its own. */
-const TARGETS = ["Oyno", "OynoShield", "OynoShieldAction"];
+const TARGETS = ["Oyno", "OynoShield", "OynoShieldAction", "OynoLive"];
 const CATALOGS = [
   "ios/Oyno/Resources/Localizable.xcstrings",
 ];

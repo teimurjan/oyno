@@ -6,6 +6,7 @@ import { applyDodoEntitlementEvent, applyDodoLifetimeGrant, revokeDodoLifetime }
 import { logFields, withLogging } from "@/lib/log";
 import { isMetaConfigured, parseMetaBrowserIdentity, sendMetaPurchase } from "@/lib/meta";
 import { trackServerEvent, type ServerAnalyticsEvent } from "@/lib/serverAnalytics";
+import { isWelcomeEmailConfigured, sendWelcomeEmail } from "@/lib/welcomeEmail/send";
 
 export const dynamic = "force-dynamic";
 
@@ -177,6 +178,7 @@ async function applySubscription(type: string, subscription: Subscription, occur
       currency: subscription.currency,
       occurredAt,
     });
+    await welcomeBuyer(userId, subscription.subscription_id);
   }
 
   // After the write, not before: a cancellation reported to Amplitude that we then failed
@@ -237,6 +239,7 @@ async function applyLifetimePayment(payment: Payment, occurredAt: string) {
       currency: payment.currency,
       occurredAt,
     });
+    await welcomeBuyer(userId, payment.payment_id);
   }
 
   logFields({ outcome: "applied" });
@@ -364,6 +367,16 @@ async function reportPurchase(purchase: {
     eventAtSeconds: Math.floor(new Date(purchase.occurredAt).getTime() / 1000),
   });
   logFields({ metaReported: true });
+}
+
+/** Where the app is and which account the purchase is on. Once per purchase, and unable to
+ * fail the request for the reason `reportPurchase` gives. */
+async function welcomeBuyer(userId: string, purchaseId: string) {
+  if (!isWelcomeEmailConfigured) {
+    logFields({ welcomeEmail: "unconfigured" });
+    return;
+  }
+  logFields({ welcomeEmail: await sendWelcomeEmail(userId, purchaseId) });
 }
 
 /** The Supabase uid the checkout session stamped into `metadata` when it was created. */

@@ -1,4 +1,2 @@
-- Une nouvelle ouverture. La planète commence dans le noir, comme quand vous êtes sur votre téléphone. Gardez le doigt dessus, et elle reprend vie, avec votre famille dessus.
-- Dans « Jouer », un nouveau jeu fait apparaître son titre en fondu au lieu de faire sauter la page.
-- « Maison » défile à nouveau librement par-dessus la carte Temps d’écran.
-- Changer de langue dans le profil ne laisse plus la carte Temps d’écran de « Maison » vide.
+- La partie s’affiche maintenant sur l’écran verrouillé et dans la Dynamic Island. Posez le téléphone et voyez toujours le temps qui reste.
+- Si vous quittez Oyno pendant une partie, une notification sonne quand le temps est écoulé.

@@ -1,4 +1,2 @@
-- Un comienzo nuevo. El planeta empieza a oscuras, como está mientras tú miras el móvil. Mantenlo pulsado y vuelve a la vida, con tu familia encima.
-- En “Jugar”, un juego nuevo funde su título en vez de hacer saltar la página.
-- “Hogar” vuelve a desplazarse libremente sobre la tarjeta de Tiempo de pantalla.
-- Cambiar el idioma en el perfil ya no deja en blanco la tarjeta de Tiempo de pantalla de “Hogar”.
+- Ahora la partida aparece en la pantalla de bloqueo y en la Dynamic Island. Deja el móvil y sigue viendo el tiempo que queda.
+- Si sales de Oyno durante una partida, una notificación suena cuando se acaba el tiempo.
