@@ -191,7 +191,9 @@ funnel decks.
 - Backend: `bun run typecheck && bun run build && bun test lib`.
 - iOS: build Debug and Release (Release whenever payments, Kid hours or an xcconfig changed).
 - Funnel: `bun run funnel:build`. If you edit `steps.ts` or a deck, run `bun run funnel:export-ios`
-  and commit `Funnel.json`. Check every step at 390×650.
+  and commit `Funnel.json`. Check every step at 390×650. Then read the canvas's `project/canvas.json`
+  and run `bun run funnel:canvas --index <that copy>`. Publish `.canvas/project/` to the canvas, and
+  remove each artboard it reports stale. The `Funnel-*` row is captured, never drawn by hand.
 - Games: if you edit `activities/`, `bun run activities:build`, then `bun run activities:check`, and
   commit `Activities.json`.
 - Store: `bun run metadata:check` before any deliver.

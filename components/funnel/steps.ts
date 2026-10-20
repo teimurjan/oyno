@@ -125,14 +125,14 @@ const PROBLEM: QuestionShape = {
  * step falls back to the opener's own problem rather than to the default copy. */
 const OPENER_DECLINED = "none";
 
-/** The problem the one opener asks about: the phone eating the evening. */
+/** The problem the one opener asks about: "one sec" to the kid, and still on the phone. */
 const OPENER_PROBLEM: Problem = "scroll";
 
 /** Names the opener in Amplitude's `opener` user property. */
 export const OPENER_ID = "evening";
 
 /**
- * Step 0 for every web visit: one yes/no on the phone eating the evening. Same `key` as
+ * Step 0 for every web visit: one yes/no on telling the kid "one sec". Same `key` as
  * `PROBLEM` and "Yes" is `scroll`, so the branch and the Amplitude join read
  * as a four-way answer would. The app's first run keeps the four-way question.
  */

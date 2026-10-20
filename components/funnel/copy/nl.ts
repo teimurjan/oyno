@@ -16,7 +16,7 @@ export const nl: FunnelCopy = {
   },
 
   openers: {
-    headline: "Slokt je telefoon [je avonden] met je kind op?",
+    headline: "Ooit [‘momentje’] tegen je kind gezegd en op je telefoon gebleven?",
     yes: "Ja",
     no: "Niet echt",
   },
@@ -133,7 +133,7 @@ export const nl: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Waar je avond [naartoe gaat].",
+      headline: "Elk ‘momentje’ [telt op].",
     },
     influence: {
       headline: "Kinderen [vragen vaker om een scherm] als wij meer scrollen.",
@@ -184,7 +184,7 @@ export const nl: FunnelCopy = {
     work: "Werk",
     kid: "Tijd met je kind",
     phone: "Telefoon",
-    summary: "{n} keer weggekeken van je kleintje",
+    summary: "{n} keer ‘momentje’ tegen je kleintje",
   },
 
   influence: {

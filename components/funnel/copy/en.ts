@@ -19,7 +19,7 @@ export const en = {
   },
 
   openers: {
-    headline: "Does your phone [eat the evening] with your kid?",
+    headline: "Ever told your kid [‘one sec’] and stayed on your phone?",
     yes: "Yes",
     no: "Not really",
   },
@@ -136,7 +136,7 @@ export const en = {
       },
     },
     evening: {
-      headline: "Where an evening [goes].",
+      headline: "Every ‘one sec’ [adds up].",
     },
     influence: {
       headline: "Kids [ask for screens] more when we scroll more.",
@@ -188,7 +188,7 @@ export const en = {
     work: "Work",
     kid: "Time with your kid",
     phone: "Phone",
-    summary: "{n} interruptions from your kiddo",
+    summary: "{n} ‘one secs’ in time with your kid",
   },
 
   /** Domoff et al. (2021), Table 3: kids 2 to 5, by their parent's daily social media. */

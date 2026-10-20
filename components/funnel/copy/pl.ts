@@ -16,7 +16,7 @@ export const pl: FunnelCopy = {
   },
 
   openers: {
-    headline: "Czy telefon [zjada ci wieczory] z dzieckiem?",
+    headline: "Zdarzyło ci się powiedzieć dziecku [„chwileczkę”] i dalej siedzieć w telefonie?",
     yes: "Tak",
     no: "Raczej nie",
   },
@@ -133,7 +133,7 @@ export const pl: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Dokąd [ucieka] wieczór.",
+      headline: "Każde „chwileczkę” [się sumuje].",
     },
     influence: {
       headline: "Im więcej scrollujemy, tym częściej dzieci [proszą o ekran].",
@@ -184,7 +184,7 @@ export const pl: FunnelCopy = {
     work: "Praca",
     kid: "Z dzieckiem",
     phone: "Telefon",
-    summary: "Przerwy w czasie z dzieckiem: {n}",
+    summary: "„Chwileczkę” w czasie z dzieckiem: {n}",
   },
 
   influence: {

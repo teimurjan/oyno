@@ -16,7 +16,7 @@ export const it: FunnelCopy = {
   },
 
   openers: {
-    headline: "Il telefono [ti ruba la serata] con il tuo bambino?",
+    headline: "Hai mai detto [“un attimo”] al tuo bambino e sei rimasto sul telefono?",
     yes: "Sì",
     no: "Non proprio",
   },
@@ -133,7 +133,7 @@ export const it: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Dove [se ne va] una serata.",
+      headline: "Ogni “un attimo” [si accumula].",
     },
     influence: {
       headline: "Più scorriamo noi, più i bambini [chiedono schermi].",
@@ -184,7 +184,7 @@ export const it: FunnelCopy = {
     work: "Lavoro",
     kid: "Tempo con il bambino",
     phone: "Telefono",
-    summary: "{n} interruzioni mentre sei con il tuo piccolo",
+    summary: "{n} volte “un attimo” mentre sei con il tuo piccolo",
   },
 
   influence: {

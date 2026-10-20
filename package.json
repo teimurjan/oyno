@@ -12,6 +12,7 @@
     "lint:fix": "oxlint --fix",
     "funnel:build": "bun scripts/build-funnel.tsx",
     "funnel:export-ios": "bun scripts/build-funnel-ios.ts",
+    "funnel:canvas": "bun scripts/build-funnel-canvas.ts",
     "activities:build": "bun scripts/build-activities.ts",
     "activities:check": "bun scripts/check-activities.ts",
     "activities:translate": "bun scripts/translate-activities.ts",

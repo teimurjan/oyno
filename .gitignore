@@ -70,3 +70,6 @@ shorts/
 # Scene art originals, read only by `bun run art:build`, `art:planets` and `creatives:render`.
 # The committed outputs are public/art/, lib/art/manifest.ts and the asset catalog. ~74 MB, never history.
 art/source/
+
+# The funnel's design-canvas artboards. Build output of `bun run funnel:canvas`, published to the canvas, never history.
+.canvas/

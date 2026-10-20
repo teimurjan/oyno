@@ -16,7 +16,7 @@ export const es: FunnelCopy = {
   },
 
   openers: {
-    headline: "¿El móvil [se come tus tardes] con tu peque?",
+    headline: "¿Alguna vez le has dicho a tu peque [«un segundo»] y has seguido con el móvil?",
     yes: "Sí",
     no: "No mucho",
   },
@@ -133,7 +133,7 @@ export const es: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Así [se va] una tarde.",
+      headline: "Cada «un segundo» [suma].",
     },
     influence: {
       headline: "Cuanto más scroll hacemos, más [piden pantallas] los peques.",
@@ -184,7 +184,7 @@ export const es: FunnelCopy = {
     work: "Trabajo",
     kid: "Tiempo con tu peque",
     phone: "Móvil",
-    summary: "{n} interrupciones en el rato con tu peque",
+    summary: "{n} veces «un segundo» en el rato con tu peque",
   },
 
   influence: {

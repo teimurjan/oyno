@@ -16,7 +16,7 @@ export const de: FunnelCopy = {
   },
 
   openers: {
-    headline: "Frisst dein Handy [den Abend] mit deinem Kind auf?",
+    headline: "Schon mal zu deinem Kind [„Moment noch“] gesagt und weiter aufs Handy geschaut?",
     yes: "Ja",
     no: "Eher nicht",
   },
@@ -133,7 +133,7 @@ export const de: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Wohin ein Abend [verschwindet].",
+      headline: "Jedes „Moment noch“ [läppert sich].",
     },
     influence: {
       headline: "Je mehr wir scrollen, desto öfter [wollen Kinder an den Bildschirm].",
@@ -184,7 +184,7 @@ export const de: FunnelCopy = {
     work: "Arbeit",
     kid: "Zeit mit deinem Kind",
     phone: "Handy",
-    summary: "{n}-mal fürs Handy unterbrochen",
+    summary: "{n}-mal „Moment noch“ in der Zeit mit deinem Kind",
   },
 
   influence: {

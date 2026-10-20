@@ -16,7 +16,7 @@ export const fr: FunnelCopy = {
   },
 
   openers: {
-    headline: "Votre téléphone [vous vole la soirée] avec votre enfant ?",
+    headline: "Déjà dit [« deux secondes »] à votre enfant sans lâcher votre téléphone ?",
     yes: "Oui",
     no: "Pas vraiment",
   },
@@ -133,7 +133,7 @@ export const fr: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Où [file] une soirée.",
+      headline: "Chaque « deux secondes » [s’additionne].",
     },
     influence: {
       headline: "Plus on scrolle, plus les enfants [réclament un écran].",
@@ -184,7 +184,7 @@ export const fr: FunnelCopy = {
     work: "Travail",
     kid: "Temps avec votre enfant",
     phone: "Téléphone",
-    summary: "{n} interruptions du temps avec votre tout-petit",
+    summary: "{n} « deux secondes » pendant le temps avec votre tout-petit",
   },
 
   influence: {

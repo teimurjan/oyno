@@ -16,7 +16,7 @@ export const ptBR: FunnelCopy = {
   },
 
   openers: {
-    headline: "O celular [rouba suas noites] com seu filho?",
+    headline: "Já disse [“só um segundo”] pro seu filho e continuou no celular?",
     yes: "Sim",
     no: "Nem tanto",
   },
@@ -133,7 +133,7 @@ export const ptBR: FunnelCopy = {
       },
     },
     evening: {
-      headline: "Para onde [vai] uma noite.",
+      headline: "Cada “só um segundo” [vai somando].",
     },
     influence: {
       headline: "Quanto mais a gente rola o feed, mais as crianças [pedem tela].",
@@ -184,7 +184,7 @@ export const ptBR: FunnelCopy = {
     work: "Trabalho",
     kid: "Tempo com seu filho",
     phone: "Celular",
-    summary: "{n} interrupções no tempo com seu pequeno",
+    summary: "{n} vezes “só um segundo” no tempo com seu pequeno",
   },
 
   influence: {

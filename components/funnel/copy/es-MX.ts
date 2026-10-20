@@ -16,7 +16,7 @@ export const esMX: FunnelCopy = {
   },
 
   openers: {
-    headline: "¿El celular [se come tus tardes] con tu peque?",
+    headline: "¿Alguna vez le dijiste a tu peque [“un segundo”] y seguiste en el celular?",
     yes: "Sí",
     no: "La verdad, no",
   },
@@ -133,7 +133,7 @@ export const esMX: FunnelCopy = {
       },
     },
     evening: {
-      headline: "En qué [se te va] la tarde.",
+      headline: "Cada “un segundo” [se va sumando].",
     },
     influence: {
       headline: "Entre más usamos el celular, más [piden pantalla] los niños.",
@@ -184,7 +184,7 @@ export const esMX: FunnelCopy = {
     work: "Trabajo",
     kid: "Tiempo con tu peque",
     phone: "Celular",
-    summary: "{n} interrupciones en el tiempo con tu peque",
+    summary: "{n} veces “un segundo” en el tiempo con tu peque",
   },
 
   influence: {
