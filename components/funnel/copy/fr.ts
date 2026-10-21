@@ -171,7 +171,7 @@ export const fr: FunnelCopy = {
       headline: "Votre programme est prêt. [Enregistrez-le] pour voir votre tarif.",
     },
     paywall: {
-      headline: "Revenez sur [la planète de votre enfant].",
+      headline: "Échangez le scroll contre un enfant plus vif.",
     },
     checkout: {
       headline: "Informations de paiement.",
@@ -328,37 +328,47 @@ export const fr: FunnelCopy = {
   legal: { terms: "Conditions d’utilisation", privacy: "Politique de confidentialité" },
 
   paywall: {
+    subhead: "Dix minutes de jeu par jour qui entraînent sa maîtrise de soi et sa mémoire. Vos apps attendent que vous ayez fini.",
+    nudge: {
+      title: "10 minutes pour un enfant plus vif",
+      body: "{game} est prêt. Instagram peut attendre.",
+      time: "maintenant",
+    },
+    game: {
+      title: "Le petit docteur",
+      skills: ["Mémoire", "Flexibilité mentale"],
+      meta: "10 min · Allongés · 1–3 ans",
+    },
     pros: [
       "Vos apps en pause pendant le Temps en famille",
       "Un jeu facile chaque soir",
       "Une planète qui grandit avec votre famille",
     ],
-    timeline: [
-      { title: "Aujourd’hui", detail: "Choisissez vos apps et votre Temps en famille. Votre premier jeu est prêt." },
-      { title: "Cette semaine", detail: "Dix minutes de jeu ensemble, chaque soir, téléphone posé." },
-      { title: "Dans un mois", detail: "Un enfant plus vif : chaque jeu entraîne la maîtrise de soi et la mémoire." },
-    ],
+    plans: "Formules",
     monthly: "Mensuel",
     yearly: "Annuel",
     lifetime: "À vie",
     perMonth: "/ mois",
     perYear: "/ an",
-    perDay: "par jour",
-    oneTime: "une fois",
+    aMonth: "par mois",
+    payOnce: "paiement unique",
     cancelAnytime: "Annulable à tout moment",
-    billedYearly: "Facturé une fois par an",
-    payOnce: "Un seul paiement, pour toujours",
     save: "Économisez {percent}",
-    guarantee: "Ça ne vous convient pas ? Remboursement intégral sur demande sous 14 jours.",
-    continue: "Continuer",
+    billed: {
+      yearly: "Facturé {price} par an",
+      monthly: "Facturé {price} par mois",
+      lifetime: "{price} une fois, à vous pour toujours",
+    },
+    refund: "Remboursement intégral sous 14 jours",
+    continue: "Commencer ce soir",
   },
 
   faq: {
     title: "Questions fréquentes",
     items: [
       {
-        question: "Les deux formules incluent-elles tout ?",
-        answer: "Oui. Mensuel ou annuel, vous débloquez le même Oyno : le Temps en famille, tous les jeux et tous les mondes. Seule la façon de payer change.",
+        question: "Chaque formule inclut-elle tout ?",
+        answer: "Oui. Chaque formule débloque le même Oyno : le Temps en famille, tous les jeux et tous les mondes. Seule la façon de payer change.",
       },
       {
         question: "Quel téléphone est mis en pause ?",

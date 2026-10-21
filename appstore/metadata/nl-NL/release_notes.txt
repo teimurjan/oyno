@@ -1,2 +1,2 @@
-- Een rondje staat nu op het toegangsscherm en in het Dynamic Island. Leg je telefoon weg en zie toch hoeveel tijd er nog is.
-- Ga je tijdens een rondje uit Oyno, dan klinkt er een melding als de tijd om is.
+- Een nieuw scherm met de abonnementen. Het laat de avond met Oyno zien: je apps wachten en een spelletje van tien minuten staat klaar.
+- Je profiel toont je abonnement en wanneer het verlengt. Met een maandabonnement stap je daar over op jaarlijks en bespaar je.

@@ -4,14 +4,14 @@ import SwiftUI
 /// The one place the app asks for money — the web funnel's offer (`PaywallStep.tsx`), sold
 /// through StoreKit.
 ///
-/// **The web's page, with the App Store's rules on it.** The same headline, the same three
-/// lines of what the money buys, the same two plan cards opening on the yearly, on the same
-/// sky, in the web deck's words (`FunnelContent`). Where it differs, a rule decided it:
-/// - the billed amount is the big figure on each card and the price per day sits small
-///   beside it. The web leads with the per-day figure; App Review rejects a subscription
-///   whose calculated price is more prominent than the one it bills (3.1.2).
-/// - no money-back guarantee: an App Store purchase is refunded by Apple, so the promise is
-///   not ours to make here.
+/// **The web's page, with the App Store's rules on it.** The same headline, the same picture
+/// of a paused phone and the game it offers, the same two plans opening on the yearly, on the
+/// same sky, in the web deck's words (`FunnelContent`). Where it differs, a rule decided it:
+/// - each plan shows the amount it bills. The web sells the yearly by its month; App Review
+///   rejects a subscription whose calculated price is more prominent than the one it bills
+///   (3.1.2).
+/// - no money-back guarantee and no questions: an App Store purchase is refunded by Apple,
+///   and the web's answers name Dodo, so neither is ours to say here.
 /// What Apple requires at the point of sale is added instead: the trial's terms, Restore, and
 /// the renewal disclosure with the licence and the privacy policy.
 ///
@@ -26,9 +26,6 @@ import SwiftUI
 /// **It has a way out, deliberately.** There is no free tier, but the wall stands in
 /// front of *playing* rather than in front of opening the app: the planet and past rounds go
 /// on opening. So the close button is a real answer.
-///
-/// **Dressed after Opal's offer.** The trial told day by day, the picked plan ringed in the
-/// sheen with its tag on the edge, and the button pinned under the scroll with its price.
 struct PaywallScreen: View {
     /// Why the reader is looking at this, for the funnel. A refused edit and a lapse are
     /// the same sheet and a different event.
@@ -50,10 +47,6 @@ struct PaywallScreen: View {
     private static let termsURL = URL(string: "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")!
     private static let privacyURL = URL(string: "https://oyno.app/privacy")!
 
-    /// A month is 30 days and not 30.44: the figure illustrates scale, and a buyer checking
-    /// it will divide by 30.
-    private static let days: [Plan: Decimal] = [.monthly: 30, .yearly: 365]
-
     private enum Plan: CaseIterable {
         case yearly, monthly
 
@@ -66,31 +59,42 @@ struct PaywallScreen: View {
     }
 
     var body: some View {
-        let copy = FunnelContent.bundled.copy()
+        let words = FunnelContent.bundled.copy()
 
-        ScrollView {
-            VStack(spacing: Metric.Space.xl) {
-                PaywallHeadline(text: copy.steps["paywall"]?.headline ?? "")
-                    .padding(.bottom, Metric.Space.s)
-                story(copy.paywall)
-                plans(copy.paywall)
-                    .padding(.top, Metric.Space.s)
-                fineprint
+        GeometryReader { screen in
+            ScrollView {
+                VStack(spacing: 0) {
+                    PaywallHeadline(text: words.steps["paywall"]?.headline ?? "")
+                    Text(verbatim: words.paywall.subhead)
+                        .font(Typeface.ui(15.5, .regular, relativeTo: .body))
+                        .foregroundStyle(Palette.slate)
+                        .multilineTextAlignment(.center)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 10)
+                    PaywallHero(words: words.paywall)
+                        .padding(.top, Metric.Space.xl)
+                    // Puts the plans and the button at the foot of a tall phone, as the canvas does.
+                    Spacer(minLength: Metric.Space.xl)
+                    plans(words.paywall)
+                    commit(words.paywall)
+                    fineprint
+                        .padding(.top, Metric.Space.s)
+                }
+                .frame(maxWidth: Self.column)
+                .padding(.horizontal, Metric.gutter)
+                .padding(.top, Metric.tapTarget + Metric.Space.s)
+                .padding(.bottom, Metric.Space.s)
+                .frame(maxWidth: .infinity, minHeight: screen.size.height)
             }
-            .frame(maxWidth: Self.column)
-            .padding(.horizontal, Metric.gutter)
-            .padding(.top, Metric.tapTarget + Metric.Space.xl)
-            .padding(.bottom, Metric.Space.l)
-            .containerRelativeFrame(.horizontal)
+            .scrollIndicators(.hidden)
+            .scrollBounceBehavior(.basedOnSize)
         }
-        .scrollIndicators(.hidden)
         .overlay(alignment: .topTrailing) {
             GlassIconButton(symbol: "xmark", label: "Close") { close() }
                 .padding(.trailing, Metric.gutter)
                 .padding(.top, Metric.Space.s)
         }
-        .pinnedBar { commit(copy.paywall) }
-        .background(PaywallWash())
+        .background(Palette.sky.ignoresSafeArea())
         .task {
             Analytics.shared.track(.paywallViewed(context: context))
             await purchases.loadProducts()
@@ -110,83 +114,26 @@ struct PaywallScreen: View {
 
     private static let column: CGFloat = 520
 
-    /// Above the price, what the reader gets: the trial day by day when there is one, what the
-    /// money buys when there is not. Waits for the products, which decide which it is.
-    @ViewBuilder
-    private func story(_ words: FunnelCopy.Paywall) -> some View {
-        if purchases.didLoadProducts {
-            if let selection, purchases.isEligibleForIntroOffer {
-                TrialTimeline(renewal: renewal(selection, words))
-            } else {
-                PaywallPros(lines: words.pros)
-            }
-        }
-    }
-
     @ViewBuilder
     private func plans(_ words: FunnelCopy.Paywall) -> some View {
         if !purchases.didLoadProducts {
-            ProgressView().frame(maxWidth: .infinity).padding(.vertical, Metric.Space.xl)
+            ProgressView().frame(maxWidth: .infinity, minHeight: 130)
         } else if purchases.products.isEmpty {
             Text("Plans aren't available right now. Check your connection and try again.")
                 .oynoCaption()
         } else {
-            // Room for the tag that rides each card's top edge.
-            VStack(spacing: Metric.Space.xl) {
+            VStack(spacing: 10) {
                 ForEach(Plan.allCases, id: \.self) { plan in
                     if let product = purchases.product(billedEvery: plan.unit) {
-                        card(plan, product, words)
+                        PlanPill(
+                            label: plan == .yearly ? words.yearly : words.monthly,
+                            price: renewal(product, words),
+                            selected: self.plan == plan
+                        ) { self.plan = plan }
                     }
                 }
             }
         }
-    }
-
-    private func card(_ plan: Plan, _ product: Product, _ words: FunnelCopy.Paywall) -> some View {
-        PlanCard(
-            label: plan == .yearly ? words.yearly : words.monthly,
-            price: product.displayPrice,
-            note: note(plan, words),
-            perDay: Self.days[plan].map { perDay(product, days: $0, words: words) },
-            tag: plan == .yearly ? yearlyTag(words) : nil,
-            selected: self.plan == plan
-        ) { self.plan = plan }
-    }
-
-    /// The trial where there is one, the web's line where there is not.
-    private func note(_ plan: Plan, _ words: FunnelCopy.Paywall) -> String {
-        if purchases.isEligibleForIntroOffer { return String(interface: "3-day free trial") }
-        return switch plan {
-        case .monthly: words.cancelAnytime
-        case .yearly: words.billedYearly
-        }
-    }
-
-    private func yearlyTag(_ words: FunnelCopy.Paywall) -> String? {
-        if purchases.isEligibleForIntroOffer { return String(interface: "3 days free") }
-        return yearlySaving.map { FunnelCopy.fill(words.save, ["percent": Format.percent(Decimal($0), decimals: 0)]) }
-    }
-
-    /// Keeps the currency's own precision: a per-day figure rounded to whole units would read
-    /// as the same number on two cards.
-    private func perDay(_ product: Product, days: Decimal, words: FunnelCopy.Paywall) -> AttributedString {
-        var figure = AttributedString((product.price / days).formatted(product.priceFormatStyle))
-        figure.font = Typeface.figures(13.5, .medium, relativeTo: .footnote)
-        figure.foregroundColor = Palette.slate
-        var label = AttributedString(" \(words.perDay)")
-        label.foregroundColor = Palette.muted
-        return figure + label
-    }
-
-    /// The yearly's saving against twelve months, in whole percent, nil unless it is
-    /// actually cheaper.
-    private var yearlySaving: Int? {
-        guard let monthly = purchases.product(billedEvery: .month),
-              let yearly = purchases.product(billedEvery: .year),
-              monthly.price > 0 else { return nil }
-        let share = NSDecimalNumber(decimal: yearly.price / (monthly.price * 12)).doubleValue
-        let saving = Int(((1 - share) * 100).rounded())
-        return saving > 0 ? saving : nil
     }
 
     /// The picked plan, or the first one there is if the App Store did not return it.
@@ -200,25 +147,31 @@ struct PaywallScreen: View {
         return "\(product.displayPrice) \(term)"
     }
 
-    /// Pinned under the scroll, as Opal keeps it: the reassurance, then the button with the
-    /// price it commits to.
+    /// The trial's terms or the bill over the button, then the button: what it costs is in view
+    /// before the tap that agrees to it.
     private func commit(_ words: FunnelCopy.Paywall) -> some View {
         let trial = purchases.isEligibleForIntroOffer && selection?.subscription != nil
-        let renewal = selection.map { renewal($0, words) }
-        return VStack(spacing: Metric.Space.s) {
-            Text(verbatim: words.cancelAnytime)
-                .oynoCaption()
+        return VStack(spacing: Metric.Space.m) {
+            if let selection {
+                Text(verbatim: "\(trial ? String(interface: "3-day free trial") : billed(selection, words)) · \(words.cancelAnytime)")
+                    .font(Typeface.figures(13.5, .regular, relativeTo: .footnote))
+                    .foregroundStyle(Palette.muted)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
             OfferButton(
                 title: trial ? String(interface: "Start my free trial") : words.continue,
-                subtitle: renewal.map { trial ? String(interface: "Nothing today, then \($0)") : $0 },
+                subtitle: trial ? selection.map { String(interface: "Nothing today, then \(renewal($0, words))") } : nil,
                 enabled: selection != nil && !purchases.isPurchasing
             ) { buy() }
         }
-        .frame(maxWidth: Self.column)
-        .padding(.horizontal, Metric.gutter)
-        .padding(.top, Metric.Space.m)
-        .padding(.bottom, Metric.Space.s)
-        .frame(maxWidth: .infinity)
+        .padding(.top, 14)
+    }
+
+    /// "Billed as $39.99 a year", in the deck's words.
+    private func billed(_ product: Product, _ words: FunnelCopy.Paywall) -> String {
+        let template = product.subscription?.subscriptionPeriod.unit == .month ? words.billed.monthly : words.billed.yearly
+        return FunnelCopy.fill(template, ["price": product.displayPrice])
     }
 
     /// Restore, the renewal disclosure and the two documents Apple requires at the point of

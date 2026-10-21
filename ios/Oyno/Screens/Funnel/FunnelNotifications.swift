@@ -71,14 +71,9 @@ struct FunnelNotifications: View {
 /// The banner a paused app's "Open Oyno" sends, drawn as iOS draws it, in the words
 /// `ParentApp.notify` sends.
 private struct NotificationBannerPreview: View {
-    private static let iconSide: CGFloat = 38
-
     var body: some View {
         HStack(spacing: 10) {
-            Image("SplashMark")
-                .resizable()
-                .frame(width: Self.iconSide, height: Self.iconSide)
-                .background(Palette.sky, in: .rect(cornerRadius: 9))
+            AppIconTile()
             VStack(alignment: .leading, spacing: 1) {
                 HStack(alignment: .firstTextBaseline) {
                     Text("Open Oyno")

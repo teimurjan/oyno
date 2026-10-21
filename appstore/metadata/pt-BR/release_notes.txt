@@ -1,2 +1,2 @@
-- Agora a rodada aparece na Tela Bloqueada e na Dynamic Island. Deixe o celular de lado e continue vendo o tempo que falta.
-- Se você sair do Oyno durante uma rodada, uma notificação toca quando o tempo acabar.
+- Uma nova tela de planos. Ela mostra a noite com o Oyno: seus apps esperam e uma brincadeira de dez minutos está pronta.
+- O perfil mostra seu plano e quando ele renova. No plano mensal, mude para o anual por lá e economize.

@@ -171,7 +171,7 @@ export const it: FunnelCopy = {
       headline: "Il tuo piano è pronto. [Salvalo] per vedere il prezzo.",
     },
     paywall: {
-      headline: "Il [pianeta del tuo bambino] ti aspetta.",
+      headline: "Scambia lo scroll con un bambino più sveglio.",
     },
     checkout: {
       headline: "Dati di pagamento.",
@@ -328,37 +328,47 @@ export const it: FunnelCopy = {
   legal: { terms: "Termini", privacy: "Informativa sulla privacy" },
 
   paywall: {
+    subhead: "Dieci minuti di gioco al giorno che allenano autocontrollo e memoria. Le tue app aspettano che abbiate finito.",
+    nudge: {
+      title: "10 minuti per un bambino più sveglio",
+      body: "{game} è pronto. Instagram può aspettare.",
+      time: "ora",
+    },
+    game: {
+      title: "Il piccolo dottore",
+      skills: ["Memoria", "Flessibilità mentale"],
+      meta: "10 min · Da sdraiati · 1–3 anni",
+    },
     pros: [
       "Le tue app in pausa durante il Tempo in famiglia",
       "Un gioco facile ogni sera",
       "Il pianeta della tua famiglia che cresce",
     ],
-    timeline: [
-      { title: "Oggi", detail: "Scegli le app e il tuo Tempo in famiglia. Il primo gioco è pronto." },
-      { title: "Questa settimana", detail: "Dieci minuti di gioco insieme, ogni sera, senza telefono." },
-      { title: "Tra un mese", detail: "Un bambino più sveglio: ogni gioco allena autocontrollo e memoria." },
-    ],
+    plans: "Piani",
     monthly: "Mensile",
     yearly: "Annuale",
     lifetime: "A vita",
     perMonth: "/ mese",
     perYear: "/ anno",
-    perDay: "al giorno",
-    oneTime: "una tantum",
+    aMonth: "al mese",
+    payOnce: "una tantum",
     cancelAnytime: "Disdici quando vuoi",
-    billedYearly: "Addebito annuale",
-    payOnce: "Paghi una volta, tuo per sempre",
     save: "Risparmi il {percent}",
-    guarantee: "Non fa per te? Chiedi il rimborso completo entro 14 giorni.",
-    continue: "Continua",
+    billed: {
+      yearly: "Addebito di {price} all’anno",
+      monthly: "Addebito di {price} al mese",
+      lifetime: "{price} una volta, tuo per sempre",
+    },
+    refund: "Rimborso completo entro 14 giorni",
+    continue: "Inizia stasera",
   },
 
   faq: {
     title: "Domande frequenti",
     items: [
       {
-        question: "Entrambi i piani includono tutto?",
-        answer: "Sì. Mensile e annuale sbloccano lo stesso Oyno: Tempo in famiglia, tutti i giochi e tutti i mondi. Cambia solo il modo in cui paghi.",
+        question: "Ogni piano include tutto?",
+        answer: "Sì. Ogni piano sblocca lo stesso Oyno: Tempo in famiglia, tutti i giochi e tutti i mondi. Cambia solo il modo in cui paghi.",
       },
       {
         question: "Il telefono di chi viene messo in pausa?",

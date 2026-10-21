@@ -1,2 +1,2 @@
-- La partie s’affiche maintenant sur l’écran verrouillé et dans la Dynamic Island. Posez le téléphone et voyez toujours le temps qui reste.
-- Si vous quittez Oyno pendant une partie, une notification sonne quand le temps est écoulé.
+- Un nouvel écran d’offre. Il montre la soirée avec Oyno : vos apps attendent et un jeu de dix minutes est prêt.
+- Le profil affiche votre formule et sa date de renouvellement. Avec la formule mensuelle, passez à l’annuelle depuis le profil et économisez.

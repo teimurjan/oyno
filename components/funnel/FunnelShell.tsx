@@ -149,15 +149,14 @@ export function FunnelShell() {
 
       {/* `min-h-0` keeps the chrome fixed and lets `main` scroll its own content. The gutter
           is reserved on both edges so a step that scrolls and one that doesn't are the same
-          width. The paywall's pinned button brings its own floor, so it gets no bottom padding. */}
+          width. */}
       <main
         ref={scroller}
-        className={`flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-5 [scrollbar-gutter:stable_both-edges] ${bare ? "paywall-page pt-8" : "py-8"}`}
+        className={`flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-5 [scrollbar-gutter:stable_both-edges] py-8 ${bare ? "paywall-page" : ""}`}
       >
         {/* `mb-auto`, not `my-auto`: centring put the title at a different height on a
-            four-option step than on a six-option one, and moved it between two taps. The
-            paywall widens on a desktop so its plans and reviews can sit side by side. */}
-        <div className={`relative mb-auto flex w-full max-w-[520px] flex-col ${bare ? "md:max-w-[56rem]" : ""}`}>
+            four-option step than on a six-option one, and moved it between two taps. */}
+        <div className="relative mb-auto flex w-full max-w-[520px] flex-col">
           <div
             // Re-keyed per step so `.anim-step` restarts. It brings this column's children in one
             // after another, which is why **every step component returns a fragment**: the title,

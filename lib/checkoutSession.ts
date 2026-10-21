@@ -1,14 +1,8 @@
 import "server-only";
 import type { User } from "@supabase/supabase-js";
 import type { CheckoutSessionBillingAddress } from "dodopayments/resources/checkout-sessions";
-import {
-  dodoBrowserMode,
-  dodoClient,
-  dodoProductId,
-  isDodoCheckoutConfigured,
-  isLifetimeOffered,
-  isOnSale,
-} from "./dodo";
+import { dodoBrowserMode, dodoClient, isDodoCheckoutConfigured } from "./dodo";
+import { dodoProductId, isLifetimeOffered, isOnSale } from "./dodoProducts";
 import { fromMinorUnits, planListQuote, type Plan, type PlanQuote } from "./plans";
 
 /**

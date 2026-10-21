@@ -171,7 +171,7 @@ export const esMX: FunnelCopy = {
       headline: "Tu plan está listo. [Guárdalo] para ver tu precio.",
     },
     paywall: {
-      headline: "Vuelve al [planeta de tu peque].",
+      headline: "Cambia el scroll por un peque más despierto.",
     },
     checkout: {
       headline: "Datos de pago.",
@@ -328,37 +328,47 @@ export const esMX: FunnelCopy = {
   legal: { terms: "Términos", privacy: "Aviso de privacidad" },
 
   paywall: {
+    subhead: "Diez minutos de juego al día que entrenan su autocontrol y su memoria. Tus apps esperan hasta que terminen.",
+    nudge: {
+      title: "10 minutos para un peque más despierto",
+      body: "{game} ya está listo. Instagram puede esperar.",
+      time: "ahora",
+    },
+    game: {
+      title: "Doctor peque",
+      skills: ["Memoria", "Flexibilidad mental"],
+      meta: "10 min · Acostados · 1 a 3 años",
+    },
     pros: [
       "Tus apps en pausa durante el Tiempo en familia",
       "Un juego fácil cada tarde",
       "El planeta de tu familia, creciendo",
     ],
-    timeline: [
-      { title: "Hoy", detail: "Elige tus apps y tu Tiempo en familia. Tu primer juego ya está listo." },
-      { title: "Esta semana", detail: "Diez minutos de juego juntos cada tarde, sin celular." },
-      { title: "En un mes", detail: "Un peque más despierto: cada juego entrena el autocontrol y la memoria." },
-    ],
+    plans: "Planes",
     monthly: "Mensual",
     yearly: "Anual",
     lifetime: "De por vida",
     perMonth: "/ mes",
     perYear: "/ año",
-    perDay: "al día",
-    oneTime: "pago único",
+    aMonth: "al mes",
+    payOnce: "pago único",
     cancelAnytime: "Cancela cuando quieras",
-    billedYearly: "Se cobra una vez al año",
-    payOnce: "Pagas una vez y es tuyo para siempre",
     save: "Ahorra {percent}",
-    guarantee: "¿No es para ti? Pide el reembolso completo en los primeros 14 días.",
-    continue: "Continuar",
+    billed: {
+      yearly: "Se cobra {price} al año",
+      monthly: "Se cobra {price} al mes",
+      lifetime: "{price} una vez, tuyo para siempre",
+    },
+    refund: "Reembolso completo en 14 días",
+    continue: "Empezar esta noche",
   },
 
   faq: {
     title: "Preguntas frecuentes",
     items: [
       {
-        question: "¿Los dos planes incluyen todo?",
-        answer: "Sí. El mensual y el anual desbloquean el mismo Oyno: Tiempo en familia, todos los juegos y todos los mundos. Solo cambia la forma de pagar.",
+        question: "¿Todos los planes incluyen todo?",
+        answer: "Sí. Todos los planes desbloquean el mismo Oyno: Tiempo en familia, todos los juegos y todos los mundos. Solo cambia la forma de pagar.",
       },
       {
         question: "¿En qué celular se pausan las apps?",

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import type { Payment } from "dodopayments/resources/payments";
 import type { Subscription } from "dodopayments/resources/subscriptions";
-import { dodoClient, dodoEnvironment, isDodoConfigured, planForProductId } from "@/lib/dodo";
+import { dodoClient, dodoEnvironment, isDodoConfigured } from "@/lib/dodo";
+import { planForProductId } from "@/lib/dodoProducts";
 import { applyDodoEntitlementEvent, applyDodoLifetimeGrant, revokeDodoLifetime } from "@/lib/entitlements";
 import { logFields, withLogging } from "@/lib/log";
 import { isMetaConfigured, parseMetaBrowserIdentity, sendMetaPurchase } from "@/lib/meta";

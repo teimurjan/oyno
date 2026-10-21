@@ -95,17 +95,38 @@ struct FunnelCopy: Decodable {
     }
 
     struct Paywall: Decodable {
+        let subhead: String
+        let nudge: Nudge
+        let game: Game
         let pros: [String]
         let monthly: String
         let yearly: String
         let perMonth: String
         let perYear: String
-        let perDay: String
         let cancelAnytime: String
-        let billedYearly: String
         let save: String
-        let guarantee: String
+        let billed: Billed
         let `continue`: String
+
+        /// The notification in the paywall's picture. `{game}` in `body` is `Game.title`.
+        struct Nudge: Decodable {
+            let title: String
+            let body: String
+            let time: String
+        }
+
+        /// The game card under the notification.
+        struct Game: Decodable {
+            let title: String
+            let skills: [String]
+            let meta: String
+        }
+
+        /// The line under the plans. `{price}` is what the plan bills.
+        struct Billed: Decodable {
+            let yearly: String
+            let monthly: String
+        }
     }
 
     struct Account: Decodable {

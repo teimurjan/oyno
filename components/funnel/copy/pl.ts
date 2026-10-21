@@ -171,7 +171,7 @@ export const pl: FunnelCopy = {
       headline: "Plan gotowy. [Zapisz go], by zobaczyć cenę.",
     },
     paywall: {
-      headline: "Wróć na [planetę swojego dziecka].",
+      headline: "Zamień scrollowanie na bystrzejsze dziecko.",
     },
     checkout: {
       headline: "Dane do płatności.",
@@ -328,37 +328,47 @@ export const pl: FunnelCopy = {
   legal: { terms: "Regulamin", privacy: "Polityka prywatności" },
 
   paywall: {
+    subhead: "Dziesięć minut zabawy dziennie, które ćwiczą samokontrolę i pamięć. Aplikacje poczekają, aż skończycie.",
+    nudge: {
+      title: "10 minut dla bystrzejszego dziecka",
+      body: "„{game}” czeka. Instagram może poczekać.",
+      time: "teraz",
+    },
+    game: {
+      title: "Mały doktor",
+      skills: ["Pamięć", "Elastyczne myślenie"],
+      meta: "10 min · Na leżąco · 1–3 lata",
+    },
     pros: [
       "Aplikacje wstrzymane w Czasie z dzieckiem",
       "Jedna łatwa zabawa każdego wieczoru",
       "Planeta twojej rodziny rośnie",
     ],
-    timeline: [
-      { title: "Dziś", detail: "Wybierz aplikacje i Czas z dzieckiem. Pierwsza zabawa już czeka." },
-      { title: "W tym tygodniu", detail: "Dziesięć minut wspólnej zabawy co wieczór, telefon odłożony." },
-      { title: "Za miesiąc", detail: "Bystrzejsze dziecko: każda zabawa ćwiczy samokontrolę i pamięć." },
-    ],
+    plans: "Plany",
     monthly: "Miesięczna",
     yearly: "Roczna",
     lifetime: "Dożywotnio",
     perMonth: "/ mies.",
     perYear: "/ rok",
-    perDay: "dziennie",
-    oneTime: "jednorazowo",
+    aMonth: "miesięcznie",
+    payOnce: "jednorazowo",
     cancelAnytime: "Anuluj w dowolnym momencie",
-    billedYearly: "Płatność raz w roku",
-    payOnce: "Płacisz raz, korzystasz na zawsze",
     save: "Oszczędzasz {percent}",
-    guarantee: "Nie dla ciebie? Poproś o pełny zwrot w ciągu 14 dni.",
-    continue: "Dalej",
+    billed: {
+      yearly: "{price} płatne raz w roku",
+      monthly: "{price} płatne co miesiąc",
+      lifetime: "{price} jednorazowo, na zawsze",
+    },
+    refund: "Pełny zwrot w ciągu 14 dni",
+    continue: "Zacznij dziś wieczorem",
   },
 
   faq: {
     title: "Częste pytania",
     items: [
       {
-        question: "Czy obie subskrypcje obejmują wszystko?",
-        answer: "Tak. Miesięczna i roczna dają dokładnie to samo: Czas z dzieckiem, wszystkie zabawy i wszystkie światy. Różni je tylko sposób płacenia.",
+        question: "Czy każdy plan obejmuje wszystko?",
+        answer: "Tak. Każdy plan daje dokładnie to samo: Czas z dzieckiem, wszystkie zabawy i wszystkie światy. Różni je tylko sposób płacenia.",
       },
       {
         question: "Na czyim telefonie działa pauza?",

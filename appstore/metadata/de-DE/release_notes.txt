@@ -1,2 +1,2 @@
-- Eine Runde erscheint jetzt auf dem Sperrbildschirm und in der Dynamic Island. Leg das Handy weg und sieh trotzdem, wie viel Zeit bleibt.
-- Wenn du Oyno während einer Runde verlässt, ertönt eine Mitteilung, sobald die Zeit um ist.
+- Ein neuer Angebotsbildschirm. Er zeigt den Abend mit Oyno: Deine Apps warten, und ein Zehn-Minuten-Spiel ist bereit.
+- Im Profil siehst du dein Abo und wann es sich verlängert. Mit einem Monatsabo wechselst du dort zum Jahresabo und sparst.

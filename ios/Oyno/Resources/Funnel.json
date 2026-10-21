@@ -443,45 +443,49 @@
           "headline": "Your plan is ready. [Save it] to see your price."
         },
         "paywall": {
-          "headline": "Come back to [your kid's planet]."
+          "headline": "Trade the scroll for a sharper kid."
         },
         "checkout": {
           "headline": "Payment details."
         }
       },
       "paywall": {
+        "subhead": "Ten minutes of play a day that trains their self-control and memory. Your apps wait until you're done.",
+        "nudge": {
+          "title": "10 minutes that make them sharper",
+          "body": "{game} is ready. Instagram can wait.",
+          "time": "now"
+        },
+        "game": {
+          "title": "Doctor Kid",
+          "skills": [
+            "Memory",
+            "Flexible thinking"
+          ],
+          "meta": "10 min · Lying down · Age 1–3"
+        },
         "pros": [
           "Your apps paused during Kid hours",
           "One easy game every evening",
           "Your family's planet, growing"
         ],
-        "timeline": [
-          {
-            "title": "Today",
-            "detail": "Pick your apps and your Kid hours. Your first game is ready."
-          },
-          {
-            "title": "This week",
-            "detail": "Ten minutes of play together, every evening, phone down."
-          },
-          {
-            "title": "In a month",
-            "detail": "A sharper kid: every game trains self-control and memory."
-          }
-        ],
+        "plans": "Plans",
         "monthly": "Monthly",
         "yearly": "Yearly",
         "lifetime": "Lifetime",
         "perMonth": "/ month",
         "perYear": "/ year",
-        "perDay": "per day",
-        "oneTime": "one time",
+        "aMonth": "a month",
+        "payOnce": "pay once",
         "cancelAnytime": "Cancel anytime",
-        "billedYearly": "Billed once a year",
-        "payOnce": "Pay once, keep it for good",
         "save": "Save {percent}",
-        "guarantee": "Not for you? Ask for a full refund within 14 days.",
-        "continue": "Continue"
+        "billed": {
+          "yearly": "Billed as {price} a year",
+          "monthly": "Billed as {price} a month",
+          "lifetime": "{price} once, yours for good"
+        },
+        "refund": "Full refund within 14 days",
+        "continue": "Start tonight"
       },
       "account": {
         "signIn": "Sign in",
@@ -645,45 +649,49 @@
           "headline": "Dein Plan ist fertig. [Speichere ihn], um deinen Preis zu sehen."
         },
         "paywall": {
-          "headline": "[Der Planet deines Kindes] wartet auf dich."
+          "headline": "Tausch das Scrollen gegen ein wacheres Kind."
         },
         "checkout": {
           "headline": "Zahlungsdaten."
         }
       },
       "paywall": {
+        "subhead": "Zehn Minuten Spiel am Tag, die Selbstkontrolle und Gedächtnis trainieren. Deine Apps warten, bis ihr fertig seid.",
+        "nudge": {
+          "title": "10 Minuten für ein wacheres Kind",
+          "body": "{game} ist bereit. Instagram kann warten.",
+          "time": "jetzt"
+        },
+        "game": {
+          "title": "Kinderdoktor",
+          "skills": [
+            "Gedächtnis",
+            "Flexibles Denken"
+          ],
+          "meta": "10 Min. · Im Liegen · 1–3 Jahre"
+        },
         "pros": [
           "Deine Apps pausieren in der Familienzeit",
           "Jeden Abend ein leichtes Spiel",
           "Der Planet deiner Familie wächst"
         ],
-        "timeline": [
-          {
-            "title": "Heute",
-            "detail": "Wähle deine Apps und deine Familienzeit. Dein erstes Spiel ist bereit."
-          },
-          {
-            "title": "Diese Woche",
-            "detail": "Jeden Abend zehn Minuten gemeinsam spielen, Handy weg."
-          },
-          {
-            "title": "In einem Monat",
-            "detail": "Ein wacheres Kind: Jedes Spiel trainiert Selbstkontrolle und Gedächtnis."
-          }
-        ],
+        "plans": "Tarife",
         "monthly": "Monatlich",
         "yearly": "Jährlich",
         "lifetime": "Lebenslang",
         "perMonth": "/ Monat",
         "perYear": "/ Jahr",
-        "perDay": "pro Tag",
-        "oneTime": "einmalig",
+        "aMonth": "im Monat",
+        "payOnce": "einmal zahlen",
         "cancelAnytime": "Jederzeit kündbar",
-        "billedYearly": "Jährliche Abrechnung",
-        "payOnce": "Einmal zahlen, für immer nutzen",
         "save": "{percent} sparen",
-        "guarantee": "Nicht das Richtige? Innerhalb von 14 Tagen bekommst du auf Anfrage dein ganzes Geld zurück.",
-        "continue": "Weiter"
+        "billed": {
+          "yearly": "{price} jährlich abgerechnet",
+          "monthly": "{price} monatlich abgerechnet",
+          "lifetime": "{price} einmalig, für immer deins"
+        },
+        "refund": "Volle Erstattung innerhalb von 14 Tagen",
+        "continue": "Heute Abend starten"
       },
       "account": {
         "signIn": "Anmelden",
@@ -847,45 +855,49 @@
           "headline": "Votre programme est prêt. [Enregistrez-le] pour voir votre tarif."
         },
         "paywall": {
-          "headline": "Revenez sur [la planète de votre enfant]."
+          "headline": "Échangez le scroll contre un enfant plus vif."
         },
         "checkout": {
           "headline": "Informations de paiement."
         }
       },
       "paywall": {
+        "subhead": "Dix minutes de jeu par jour qui entraînent sa maîtrise de soi et sa mémoire. Vos apps attendent que vous ayez fini.",
+        "nudge": {
+          "title": "10 minutes pour un enfant plus vif",
+          "body": "{game} est prêt. Instagram peut attendre.",
+          "time": "maintenant"
+        },
+        "game": {
+          "title": "Le petit docteur",
+          "skills": [
+            "Mémoire",
+            "Flexibilité mentale"
+          ],
+          "meta": "10 min · Allongés · 1–3 ans"
+        },
         "pros": [
           "Vos apps en pause pendant le Temps en famille",
           "Un jeu facile chaque soir",
           "Une planète qui grandit avec votre famille"
         ],
-        "timeline": [
-          {
-            "title": "Aujourd’hui",
-            "detail": "Choisissez vos apps et votre Temps en famille. Votre premier jeu est prêt."
-          },
-          {
-            "title": "Cette semaine",
-            "detail": "Dix minutes de jeu ensemble, chaque soir, téléphone posé."
-          },
-          {
-            "title": "Dans un mois",
-            "detail": "Un enfant plus vif : chaque jeu entraîne la maîtrise de soi et la mémoire."
-          }
-        ],
+        "plans": "Formules",
         "monthly": "Mensuel",
         "yearly": "Annuel",
         "lifetime": "À vie",
         "perMonth": "/ mois",
         "perYear": "/ an",
-        "perDay": "par jour",
-        "oneTime": "une fois",
+        "aMonth": "par mois",
+        "payOnce": "paiement unique",
         "cancelAnytime": "Annulable à tout moment",
-        "billedYearly": "Facturé une fois par an",
-        "payOnce": "Un seul paiement, pour toujours",
         "save": "Économisez {percent}",
-        "guarantee": "Ça ne vous convient pas ? Remboursement intégral sur demande sous 14 jours.",
-        "continue": "Continuer"
+        "billed": {
+          "yearly": "Facturé {price} par an",
+          "monthly": "Facturé {price} par mois",
+          "lifetime": "{price} une fois, à vous pour toujours"
+        },
+        "refund": "Remboursement intégral sous 14 jours",
+        "continue": "Commencer ce soir"
       },
       "account": {
         "signIn": "Se connecter",
@@ -1049,45 +1061,49 @@
           "headline": "Tu plan está listo. [Guárdalo] para ver tu precio."
         },
         "paywall": {
-          "headline": "Vuelve [al planeta de tu peque]."
+          "headline": "Cambia el scroll por un peque más espabilado."
         },
         "checkout": {
           "headline": "Datos de pago."
         }
       },
       "paywall": {
+        "subhead": "Diez minutos de juego al día que entrenan su autocontrol y su memoria. Tus apps esperan hasta que terminéis.",
+        "nudge": {
+          "title": "10 minutos para un peque más espabilado",
+          "body": "«{game}» ya está listo. Instagram puede esperar.",
+          "time": "ahora"
+        },
+        "game": {
+          "title": "El peque pasa consulta",
+          "skills": [
+            "Memoria",
+            "Flexibilidad mental"
+          ],
+          "meta": "10 min · Tumbados · 1–3 años"
+        },
         "pros": [
           "Tus apps en pausa durante el Tiempo en familia",
           "Un juego fácil cada tarde",
           "El planeta de tu familia, cada vez más grande"
         ],
-        "timeline": [
-          {
-            "title": "Hoy",
-            "detail": "Elige tus apps y tu Tiempo en familia. Tu primer juego ya está listo."
-          },
-          {
-            "title": "Esta semana",
-            "detail": "Diez minutos de juego juntos cada tarde, sin móvil."
-          },
-          {
-            "title": "En un mes",
-            "detail": "Un peque más espabilado: cada juego entrena el autocontrol y la memoria."
-          }
-        ],
+        "plans": "Planes",
         "monthly": "Mensual",
         "yearly": "Anual",
         "lifetime": "De por vida",
         "perMonth": "/ mes",
         "perYear": "/ año",
-        "perDay": "al día",
-        "oneTime": "pago único",
+        "aMonth": "al mes",
+        "payOnce": "pago único",
         "cancelAnytime": "Cancela cuando quieras",
-        "billedYearly": "Un solo pago al año",
-        "payOnce": "Pagas una vez y es tuyo para siempre",
         "save": "Ahorra {percent}",
-        "guarantee": "¿No es para ti? Te devolvemos todo el dinero si lo pides en 14 días.",
-        "continue": "Continuar"
+        "billed": {
+          "yearly": "Se cobra {price} al año",
+          "monthly": "Se cobra {price} al mes",
+          "lifetime": "{price} una vez, tuyo para siempre"
+        },
+        "refund": "Reembolso completo en 14 días",
+        "continue": "Empezar esta noche"
       },
       "account": {
         "signIn": "Iniciar sesión",
@@ -1251,45 +1267,49 @@
           "headline": "Tu plan está listo. [Guárdalo] para ver tu precio."
         },
         "paywall": {
-          "headline": "Vuelve al [planeta de tu peque]."
+          "headline": "Cambia el scroll por un peque más despierto."
         },
         "checkout": {
           "headline": "Datos de pago."
         }
       },
       "paywall": {
+        "subhead": "Diez minutos de juego al día que entrenan su autocontrol y su memoria. Tus apps esperan hasta que terminen.",
+        "nudge": {
+          "title": "10 minutos para un peque más despierto",
+          "body": "{game} ya está listo. Instagram puede esperar.",
+          "time": "ahora"
+        },
+        "game": {
+          "title": "Doctor peque",
+          "skills": [
+            "Memoria",
+            "Flexibilidad mental"
+          ],
+          "meta": "10 min · Acostados · 1 a 3 años"
+        },
         "pros": [
           "Tus apps en pausa durante el Tiempo en familia",
           "Un juego fácil cada tarde",
           "El planeta de tu familia, creciendo"
         ],
-        "timeline": [
-          {
-            "title": "Hoy",
-            "detail": "Elige tus apps y tu Tiempo en familia. Tu primer juego ya está listo."
-          },
-          {
-            "title": "Esta semana",
-            "detail": "Diez minutos de juego juntos cada tarde, sin celular."
-          },
-          {
-            "title": "En un mes",
-            "detail": "Un peque más despierto: cada juego entrena el autocontrol y la memoria."
-          }
-        ],
+        "plans": "Planes",
         "monthly": "Mensual",
         "yearly": "Anual",
         "lifetime": "De por vida",
         "perMonth": "/ mes",
         "perYear": "/ año",
-        "perDay": "al día",
-        "oneTime": "pago único",
+        "aMonth": "al mes",
+        "payOnce": "pago único",
         "cancelAnytime": "Cancela cuando quieras",
-        "billedYearly": "Se cobra una vez al año",
-        "payOnce": "Pagas una vez y es tuyo para siempre",
         "save": "Ahorra {percent}",
-        "guarantee": "¿No es para ti? Pide el reembolso completo en los primeros 14 días.",
-        "continue": "Continuar"
+        "billed": {
+          "yearly": "Se cobra {price} al año",
+          "monthly": "Se cobra {price} al mes",
+          "lifetime": "{price} una vez, tuyo para siempre"
+        },
+        "refund": "Reembolso completo en 14 días",
+        "continue": "Empezar esta noche"
       },
       "account": {
         "signIn": "Iniciar sesión",
@@ -1453,45 +1473,49 @@
           "headline": "Seu plano está pronto. [Salve] para ver o seu preço."
         },
         "paywall": {
-          "headline": "Volte ao [planeta do seu filho]."
+          "headline": "Troque a rolagem por uma criança mais esperta."
         },
         "checkout": {
           "headline": "Dados de pagamento."
         }
       },
       "paywall": {
+        "subhead": "Dez minutos de brincadeira por dia que treinam o autocontrole e a memória. Seus apps esperam vocês terminarem.",
+        "nudge": {
+          "title": "10 minutos para uma criança mais esperta",
+          "body": "“{game}” está pronta. O Instagram pode esperar.",
+          "time": "agora"
+        },
+        "game": {
+          "title": "Hora da consulta",
+          "skills": [
+            "Memória",
+            "Flexibilidade mental"
+          ],
+          "meta": "10 min · Deitados · 1 a 3 anos"
+        },
         "pros": [
           "Seus apps pausados no Tempo em família",
           "Uma brincadeira fácil toda noite",
           "O planeta da sua família crescendo"
         ],
-        "timeline": [
-          {
-            "title": "Hoje",
-            "detail": "Escolha seus apps e seu Tempo em família. Sua primeira brincadeira já está pronta."
-          },
-          {
-            "title": "Esta semana",
-            "detail": "Dez minutos de brincadeira juntos, toda noite, celular de lado."
-          },
-          {
-            "title": "Em um mês",
-            "detail": "Uma criança mais esperta: cada brincadeira treina autocontrole e memória."
-          }
-        ],
+        "plans": "Planos",
         "monthly": "Mensal",
         "yearly": "Anual",
         "lifetime": "Vitalício",
         "perMonth": "/ mês",
         "perYear": "/ ano",
-        "perDay": "por dia",
-        "oneTime": "pagamento único",
+        "aMonth": "por mês",
+        "payOnce": "pagamento único",
         "cancelAnytime": "Cancele quando quiser",
-        "billedYearly": "Cobrado uma vez por ano",
-        "payOnce": "Pague uma vez, use para sempre",
         "save": "Economize {percent}",
-        "guarantee": "Não curtiu? Peça o reembolso total em até 14 dias.",
-        "continue": "Continuar"
+        "billed": {
+          "yearly": "Cobrado {price} por ano",
+          "monthly": "Cobrado {price} por mês",
+          "lifetime": "{price} uma vez, seu para sempre"
+        },
+        "refund": "Reembolso total em até 14 dias",
+        "continue": "Começar hoje à noite"
       },
       "account": {
         "signIn": "Entrar",
@@ -1655,45 +1679,49 @@
           "headline": "Il tuo piano è pronto. [Salvalo] per vedere il prezzo."
         },
         "paywall": {
-          "headline": "Il [pianeta del tuo bambino] ti aspetta."
+          "headline": "Scambia lo scroll con un bambino più sveglio."
         },
         "checkout": {
           "headline": "Dati di pagamento."
         }
       },
       "paywall": {
+        "subhead": "Dieci minuti di gioco al giorno che allenano autocontrollo e memoria. Le tue app aspettano che abbiate finito.",
+        "nudge": {
+          "title": "10 minuti per un bambino più sveglio",
+          "body": "{game} è pronto. Instagram può aspettare.",
+          "time": "ora"
+        },
+        "game": {
+          "title": "Il piccolo dottore",
+          "skills": [
+            "Memoria",
+            "Flessibilità mentale"
+          ],
+          "meta": "10 min · Da sdraiati · 1–3 anni"
+        },
         "pros": [
           "Le tue app in pausa durante il Tempo in famiglia",
           "Un gioco facile ogni sera",
           "Il pianeta della tua famiglia che cresce"
         ],
-        "timeline": [
-          {
-            "title": "Oggi",
-            "detail": "Scegli le app e il tuo Tempo in famiglia. Il primo gioco è pronto."
-          },
-          {
-            "title": "Questa settimana",
-            "detail": "Dieci minuti di gioco insieme, ogni sera, senza telefono."
-          },
-          {
-            "title": "Tra un mese",
-            "detail": "Un bambino più sveglio: ogni gioco allena autocontrollo e memoria."
-          }
-        ],
+        "plans": "Piani",
         "monthly": "Mensile",
         "yearly": "Annuale",
         "lifetime": "A vita",
         "perMonth": "/ mese",
         "perYear": "/ anno",
-        "perDay": "al giorno",
-        "oneTime": "una tantum",
+        "aMonth": "al mese",
+        "payOnce": "una tantum",
         "cancelAnytime": "Disdici quando vuoi",
-        "billedYearly": "Addebito annuale",
-        "payOnce": "Paghi una volta, tuo per sempre",
         "save": "Risparmi il {percent}",
-        "guarantee": "Non fa per te? Chiedi il rimborso completo entro 14 giorni.",
-        "continue": "Continua"
+        "billed": {
+          "yearly": "Addebito di {price} all’anno",
+          "monthly": "Addebito di {price} al mese",
+          "lifetime": "{price} una volta, tuo per sempre"
+        },
+        "refund": "Rimborso completo entro 14 giorni",
+        "continue": "Inizia stasera"
       },
       "account": {
         "signIn": "Accedi",
@@ -1857,45 +1885,49 @@
           "headline": "Je plan is klaar. [Sla het op] om je prijs te zien."
         },
         "paywall": {
-          "headline": "Terug naar [de planeet van je kind]."
+          "headline": "Ruil het scrollen in voor een pienter kind."
         },
         "checkout": {
           "headline": "Betaalgegevens."
         }
       },
       "paywall": {
+        "subhead": "Tien minuten spelen per dag die zelfbeheersing en geheugen trainen. Je apps wachten tot jullie klaar zijn.",
+        "nudge": {
+          "title": "10 minuten voor een pienter kind",
+          "body": "{game} staat klaar. Instagram kan wachten.",
+          "time": "nu"
+        },
+        "game": {
+          "title": "Dokter Kind",
+          "skills": [
+            "Geheugen",
+            "Flexibel denken"
+          ],
+          "meta": "10 min · Liggend · 1–3 jaar"
+        },
         "pros": [
           "Je apps op pauze tijdens Gezinstijd",
           "Elke avond één makkelijk spelletje",
           "De planeet van je gezin groeit"
         ],
-        "timeline": [
-          {
-            "title": "Vandaag",
-            "detail": "Kies je apps en je Gezinstijd. Je eerste spelletje staat klaar."
-          },
-          {
-            "title": "Deze week",
-            "detail": "Elke avond tien minuten samen spelen, telefoon weg."
-          },
-          {
-            "title": "Over een maand",
-            "detail": "Een pienter kind: elk spelletje traint zelfbeheersing en geheugen."
-          }
-        ],
+        "plans": "Opties",
         "monthly": "Maandelijks",
         "yearly": "Jaarlijks",
         "lifetime": "Levenslang",
         "perMonth": "/ maand",
         "perYear": "/ jaar",
-        "perDay": "per dag",
-        "oneTime": "eenmalig",
+        "aMonth": "per maand",
+        "payOnce": "eenmalig",
         "cancelAnytime": "Altijd opzegbaar",
-        "billedYearly": "Eén keer per jaar betalen",
-        "payOnce": "Eén keer betalen, voor altijd van jou",
         "save": "Bespaar {percent}",
-        "guarantee": "Niks voor jou? Vraag binnen 14 dagen al je geld terug.",
-        "continue": "Verder"
+        "billed": {
+          "yearly": "Je betaalt {price} per jaar",
+          "monthly": "Je betaalt {price} per maand",
+          "lifetime": "{price} eenmalig, voor altijd van jou"
+        },
+        "refund": "Binnen 14 dagen je geld terug",
+        "continue": "Begin vanavond"
       },
       "account": {
         "signIn": "Inloggen",
@@ -2059,45 +2091,49 @@
           "headline": "Plan gotowy. [Zapisz go], by zobaczyć cenę."
         },
         "paywall": {
-          "headline": "Wróć na [planetę swojego dziecka]."
+          "headline": "Zamień scrollowanie na bystrzejsze dziecko."
         },
         "checkout": {
           "headline": "Dane do płatności."
         }
       },
       "paywall": {
+        "subhead": "Dziesięć minut zabawy dziennie, które ćwiczą samokontrolę i pamięć. Aplikacje poczekają, aż skończycie.",
+        "nudge": {
+          "title": "10 minut dla bystrzejszego dziecka",
+          "body": "„{game}” czeka. Instagram może poczekać.",
+          "time": "teraz"
+        },
+        "game": {
+          "title": "Mały doktor",
+          "skills": [
+            "Pamięć",
+            "Elastyczne myślenie"
+          ],
+          "meta": "10 min · Na leżąco · 1–3 lata"
+        },
         "pros": [
           "Aplikacje wstrzymane w Czasie z dzieckiem",
           "Jedna łatwa zabawa każdego wieczoru",
           "Planeta twojej rodziny rośnie"
         ],
-        "timeline": [
-          {
-            "title": "Dziś",
-            "detail": "Wybierz aplikacje i Czas z dzieckiem. Pierwsza zabawa już czeka."
-          },
-          {
-            "title": "W tym tygodniu",
-            "detail": "Dziesięć minut wspólnej zabawy co wieczór, telefon odłożony."
-          },
-          {
-            "title": "Za miesiąc",
-            "detail": "Bystrzejsze dziecko: każda zabawa ćwiczy samokontrolę i pamięć."
-          }
-        ],
+        "plans": "Plany",
         "monthly": "Miesięczna",
         "yearly": "Roczna",
         "lifetime": "Dożywotnio",
         "perMonth": "/ mies.",
         "perYear": "/ rok",
-        "perDay": "dziennie",
-        "oneTime": "jednorazowo",
+        "aMonth": "miesięcznie",
+        "payOnce": "jednorazowo",
         "cancelAnytime": "Anuluj w dowolnym momencie",
-        "billedYearly": "Płatność raz w roku",
-        "payOnce": "Płacisz raz, korzystasz na zawsze",
         "save": "Oszczędzasz {percent}",
-        "guarantee": "Nie dla ciebie? Poproś o pełny zwrot w ciągu 14 dni.",
-        "continue": "Dalej"
+        "billed": {
+          "yearly": "{price} płatne raz w roku",
+          "monthly": "{price} płatne co miesiąc",
+          "lifetime": "{price} jednorazowo, na zawsze"
+        },
+        "refund": "Pełny zwrot w ciągu 14 dni",
+        "continue": "Zacznij dziś wieczorem"
       },
       "account": {
         "signIn": "Zaloguj się",
@@ -2261,45 +2297,49 @@
           "headline": "План готов. [Сохраните его], чтобы узнать цену."
         },
         "paywall": {
-          "headline": "Вас ждёт [планета ребёнка]."
+          "headline": "Меньше ленты, сообразительнее ребёнок."
         },
         "checkout": {
           "headline": "Данные для оплаты."
         }
       },
       "paywall": {
+        "subhead": "Десять минут игры в день тренируют самоконтроль и память. Приложения подождут, пока вы не закончите.",
+        "nudge": {
+          "title": "10 минут, чтобы ребёнок стал сообразительнее",
+          "body": "«{game}» уже ждёт. Instagram подождёт.",
+          "time": "сейчас"
+        },
+        "game": {
+          "title": "Маленький Айболит",
+          "skills": [
+            "Память",
+            "Гибкость мышления"
+          ],
+          "meta": "10 мин · Лёжа · 1–3 года"
+        },
         "pros": [
           "Приложения на паузе в Детское время",
           "Одна простая игра каждый вечер",
           "Планета вашей семьи растёт"
         ],
-        "timeline": [
-          {
-            "title": "Сегодня",
-            "detail": "Выберите приложения и Детское время. Первая игра уже готова."
-          },
-          {
-            "title": "На этой неделе",
-            "detail": "Каждый вечер десять минут игры вместе, без телефона."
-          },
-          {
-            "title": "Через месяц",
-            "detail": "Ребёнок становится сообразительнее: каждая игра тренирует самоконтроль и память."
-          }
-        ],
+        "plans": "Тарифы",
         "monthly": "Месячная",
         "yearly": "Годовая",
         "lifetime": "Навсегда",
         "perMonth": "/ мес.",
         "perYear": "/ год",
-        "perDay": "в день",
-        "oneTime": "один раз",
+        "aMonth": "в месяц",
+        "payOnce": "один раз",
         "cancelAnytime": "Отмена в любой момент",
-        "billedYearly": "Оплата раз в год",
-        "payOnce": "Платите один раз, пользуетесь всегда",
         "save": "Выгода {percent}",
-        "guarantee": "Не подошло? Вернём всю сумму, если напишете в течение 14 дней.",
-        "continue": "Продолжить"
+        "billed": {
+          "yearly": "{price} в год, одним платежом",
+          "monthly": "{price} в месяц",
+          "lifetime": "{price} один раз, навсегда"
+        },
+        "refund": "Полный возврат в течение 14 дней",
+        "continue": "Начать сегодня вечером"
       },
       "account": {
         "signIn": "Войти",

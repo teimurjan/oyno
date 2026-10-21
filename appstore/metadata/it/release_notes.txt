@@ -1,2 +1,2 @@
-- Ora la partita compare sulla schermata di blocco e nella Dynamic Island. Metti giù il telefono e vedi comunque il tempo che resta.
-- Se esci da Oyno durante una partita, una notifica suona quando il tempo è scaduto.
+- Una nuova schermata dei piani. Mostra la serata con Oyno: le tue app aspettano e un gioco di dieci minuti è pronto.
+- Il profilo mostra il tuo piano e quando si rinnova. Con il piano mensile, passa all’annuale da lì e risparmia.

@@ -171,7 +171,7 @@ export const de: FunnelCopy = {
       headline: "Dein Plan ist fertig. [Speichere ihn], um deinen Preis zu sehen.",
     },
     paywall: {
-      headline: "[Der Planet deines Kindes] wartet auf dich.",
+      headline: "Tausch das Scrollen gegen ein wacheres Kind.",
     },
     checkout: {
       headline: "Zahlungsdaten.",
@@ -328,37 +328,47 @@ export const de: FunnelCopy = {
   legal: { terms: "AGB", privacy: "Datenschutzerklärung" },
 
   paywall: {
+    subhead: "Zehn Minuten Spiel am Tag, die Selbstkontrolle und Gedächtnis trainieren. Deine Apps warten, bis ihr fertig seid.",
+    nudge: {
+      title: "10 Minuten für ein wacheres Kind",
+      body: "{game} ist bereit. Instagram kann warten.",
+      time: "jetzt",
+    },
+    game: {
+      title: "Kinderdoktor",
+      skills: ["Gedächtnis", "Flexibles Denken"],
+      meta: "10 Min. · Im Liegen · 1–3 Jahre",
+    },
     pros: [
       "Deine Apps pausieren in der Familienzeit",
       "Jeden Abend ein leichtes Spiel",
       "Der Planet deiner Familie wächst",
     ],
-    timeline: [
-      { title: "Heute", detail: "Wähle deine Apps und deine Familienzeit. Dein erstes Spiel ist bereit." },
-      { title: "Diese Woche", detail: "Jeden Abend zehn Minuten gemeinsam spielen, Handy weg." },
-      { title: "In einem Monat", detail: "Ein wacheres Kind: Jedes Spiel trainiert Selbstkontrolle und Gedächtnis." },
-    ],
+    plans: "Tarife",
     monthly: "Monatlich",
     yearly: "Jährlich",
     lifetime: "Lebenslang",
     perMonth: "/ Monat",
     perYear: "/ Jahr",
-    perDay: "pro Tag",
-    oneTime: "einmalig",
+    aMonth: "im Monat",
+    payOnce: "einmal zahlen",
     cancelAnytime: "Jederzeit kündbar",
-    billedYearly: "Jährliche Abrechnung",
-    payOnce: "Einmal zahlen, für immer nutzen",
     save: "{percent} sparen",
-    guarantee: "Nicht das Richtige? Innerhalb von 14 Tagen bekommst du auf Anfrage dein ganzes Geld zurück.",
-    continue: "Weiter",
+    billed: {
+      yearly: "{price} jährlich abgerechnet",
+      monthly: "{price} monatlich abgerechnet",
+      lifetime: "{price} einmalig, für immer deins",
+    },
+    refund: "Volle Erstattung innerhalb von 14 Tagen",
+    continue: "Heute Abend starten",
   },
 
   faq: {
     title: "Häufige Fragen",
     items: [
       {
-        question: "Ist in beiden Abos alles drin?",
-        answer: "Ja. Monatlich und jährlich schalten dasselbe Oyno frei: Familienzeit, alle Spiele und alle Welten. Nur die Zahlweise ist anders.",
+        question: "Ist in jedem Tarif alles drin?",
+        answer: "Ja. Jeder Tarif schaltet dasselbe Oyno frei: Familienzeit, alle Spiele und alle Welten. Nur die Zahlweise ist anders.",
       },
       {
         question: "Wessen Handy wird pausiert?",

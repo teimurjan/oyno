@@ -41,6 +41,14 @@ const ANSWERS: FunnelAnswers = {
   soon: "tonight",
 };
 
+/** Raster images the funnel draws, by site path, and the canvas upload that holds each. A capture
+ * can inline an SVG but not upload a picture, so a new one is uploaded to the canvas by hand
+ * and named here. */
+const CANVAS_IMAGES: Record<string, string> = {
+  "/ico/apple-icon-180x180.png": "/_blob/291256662c89f5ed9fdd23c75cffc2bb",
+  "/art/activities/doctor-kid-patient.webp": "/_blob/1c53e159508732e96df3a0a9cd95f8e9",
+};
+
 /** The steps that run a demo or build something before they settle. */
 const SETTLE_MS: Record<string, number> = { evening: 4500, plan: 7000, influence: 2500 };
 const DEFAULT_SETTLE_MS = 1500;
@@ -118,7 +126,7 @@ async function capture(page: Page, board: Board): Promise<{ markup: string; heig
     await page.waitForTimeout(300);
   }
 
-  const markup = await page.evaluate(async (files: string[]) => {
+  const markup = await page.evaluate(async ({ files, images }: { files: string[]; images: Record<string, string> }) => {
     const root = document.querySelector("#funnel-root")?.firstElementChild?.cloneNode(true) as HTMLElement | undefined;
     if (!root) throw new Error("the funnel did not render");
     root.classList.remove("h-dvh", "min-h-dvh");
@@ -134,12 +142,17 @@ async function capture(page: Page, board: Board): Promise<{ markup: string; heig
       const svg = await (await fetch(image.src)).text();
       image.outerHTML = svg.replace(/<!--[\s\S]*?-->/g, "").trim();
     }
+    for (const image of root.querySelectorAll("img")) {
+      const source = image.getAttribute("src") ?? "";
+      if (!images[source]) throw new Error(`${source} has no canvas upload: add it to CANVAS_IMAGES`);
+      image.setAttribute("src", images[source]);
+    }
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     for (let text = walker.nextNode(); text; text = walker.nextNode()) {
       text.nodeValue = text.nodeValue?.replaceAll("{{", "{ {") ?? null;
     }
     return root.outerHTML;
-  }, STEP_FILES);
+  }, { files: STEP_FILES, images: CANVAS_IMAGES });
 
   return { markup, height };
 }

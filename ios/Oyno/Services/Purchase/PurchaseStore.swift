@@ -31,6 +31,12 @@ final class PurchaseStore {
     /// Who bills this account, from the server: "app_store" or "dodo". Decides whether
     /// "Manage subscription" opens StoreKit's sheet or Dodo's customer portal.
     private(set) var provider: String?
+    /// What the live grant is, from the server, for Profile. `nil` until it answers, when
+    /// nothing is live, or for a product it does not know.
+    private(set) var plan: PaidPlan?
+    /// When the live grant renews or ends, from the server. `nil` for a lifetime unlock and for
+    /// the perpetual grant App Review and TestFlight buy in Sandbox.
+    private(set) var expiresAt: Date?
     var isPaid: Bool { serverPaid ?? localPaid }
     /// The App Store subscription group, read off a loaded product. Scopes the
     /// manage-subscriptions sheet to this app — StoreKit's unscoped sheet can
@@ -313,6 +319,8 @@ final class PurchaseStore {
         else { return }
         serverPaid = decoded.paid
         provider = decoded.provider
+        plan = decoded.plan.flatMap(PaidPlan.init(rawValue:))
+        expiresAt = decoded.expiresAt
         Self.cacheServerPaid(decoded.paid, for: uid)
     }
 
@@ -334,6 +342,8 @@ final class PurchaseStore {
     func forgetAccount() {
         serverRefreshGeneration += 1
         provider = nil
+        plan = nil
+        expiresAt = nil
         seedCachedServerPaid(for: nil)
     }
 
@@ -407,6 +417,29 @@ final class PurchaseStore {
         products.first { $0.subscription?.subscriptionPeriod.unit == unit }
     }
 
+    /// The yearly's saving against twelve months, in whole percent, nil unless it is
+    /// actually cheaper.
+    var yearlySaving: Int? {
+        guard let monthly = product(billedEvery: .month),
+              let yearly = product(billedEvery: .year),
+              monthly.price > 0 else { return nil }
+        let share = NSDecimalNumber(decimal: yearly.price / (monthly.price * 12)).doubleValue
+        let saving = Int(((1 - share) * 100).rounded())
+        return saving > 0 ? saving : nil
+    }
+
+    /// Whether this Apple ID's subscription renews, from StoreKit. `nil` when it holds none
+    /// live, as a web subscriber's phone does not.
+    func appStoreWillRenew() async -> Bool? {
+        guard let groupID = subscriptionGroupID,
+              let statuses = try? await Product.SubscriptionInfo.status(for: groupID) else { return nil }
+        let live: Set<Product.SubscriptionInfo.RenewalState> = [.subscribed, .inGracePeriod, .inBillingRetryPeriod]
+        for status in statuses where live.contains(status.state) {
+            if case let .verified(renewal) = status.renewalInfo { return renewal.willAutoRenew }
+        }
+        return nil
+    }
+
     /// Sort key: yearly (0) ahead of monthly (1), so the better-value plan reads first.
     private func periodRank(_ product: Product) -> Int {
         switch product.subscription?.subscriptionPeriod.unit {
@@ -420,8 +453,16 @@ final class PurchaseStore {
 /// The `/api/entitlement` and `/api/subscription/sync` response shape.
 private struct EntitlementResponse: Decodable {
     let paid: Bool
-    /// Absent on `/api/subscription/sync`.
+    /// Absent on `/api/subscription/sync`, as are the two below.
     let provider: String?
+    /// A string rather than `PaidPlan`, so a plan added on the server cannot fail the whole read.
+    let plan: String?
+    let expiresAt: Date?
+}
+
+/// What a live entitlement bought, as `/api/entitlement` names it.
+enum PaidPlan: String {
+    case monthly, yearly, lifetime
 }
 
 private struct PortalResponse: Decodable {

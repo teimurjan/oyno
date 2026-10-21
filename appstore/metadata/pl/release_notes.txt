@@ -1,2 +1,2 @@
-- Runda pojawia się teraz na ekranie blokady i w Dynamic Island. Odłóż telefon, a i tak zobaczysz, ile czasu zostało.
-- Jeśli wyjdziesz z Oyno w trakcie rundy, powiadomienie zadzwoni, gdy czas minie.
+- Nowy ekran z planami. Pokazuje wieczór z Oyno: aplikacje czekają, a dziesięciominutowa zabawa jest gotowa.
+- Profil pokazuje twój plan i datę odnowienia. Z planem miesięcznym przejdziesz tam na roczny i zaoszczędzisz.

@@ -1,25 +1,20 @@
 import { useEffect, useState } from "preact/hooks";
 import { formatMoney, planListQuote, type Plan, type PlanQuote } from "@/lib/plans";
-import { Headline } from "./Headline";
 import { LegalNote } from "./LegalNote";
-import { fill, useLocale } from "./locale";
+import { Accented, fill, useLocale } from "./locale";
 import { Faq } from "./paywall/Faq";
-import { Timeline } from "./paywall/Timeline";
+import { Hero } from "./paywall/Hero";
 import { lifetimeOffered, planQuote } from "./planQuote";
 
 /**
  * The offer, drawn as a page of its own: the shell hides the header, the progress bar and Back
- * on this step and hands the action here, pinned to the bottom as the app's paywall pins it. The card field is the step after; the selection
- * lives in `FunnelShell` so Back returns to the plan that was picked. A Dodo session is minted
- * for one product, so the shell keeps the picked plan's form loading, hidden, under this page.
+ * on this step and hands the action here, once under the plans and again under the questions.
+ * The card field is the step after; the selection lives in `FunnelShell` so Back returns to the
+ * plan that was picked. A Dodo session is minted for one product, so the shell keeps the picked
+ * plan's form loading, hidden, under this page.
  *
- * Nothing here needs an account or a configured biller; the cards render from the list quote.
+ * Nothing here needs an account or a configured biller; the plans render from the list quote.
  */
-
-/** A month is 30 and not 30.44: the figure illustrates scale, and a buyer checking it will
- * divide by 30. */
-const DAYS = { monthly: 30, yearly: 365 };
-
 export function PaywallStep({
   headline,
   plan,
@@ -36,8 +31,7 @@ export function PaywallStep({
   const [quote, setQuote] = useState<PlanQuote>(planListQuote);
   const [lifetime, setLifetime] = useState(false);
   const price = (amount: number) => formatMoney(amount, quote.currency);
-  const yearOfMonthly = quote.monthly * 12;
-  const saving = Math.round((1 - quote.yearly / yearOfMonthly) * 100);
+  const saving = Math.round((1 - quote.yearly / (quote.monthly * 12)) * 100);
 
   // Usually already answered: `prewarm.ts` asks for this while the reader is still in the
   // survey, and `planQuote` hands both callers the one round trip.
@@ -54,182 +48,178 @@ export function PaywallStep({
     };
   }, []);
 
-  /** Keeps the currency's own precision: three decimal-free days' worth would read as the
-   * same number on two cards. */
-  const perDay = (amount: number, days: number) => price(amount / days);
-  const monthlyPerDay = perDay(quote.monthly, DAYS.monthly);
-
-  const billed = {
-    yearly: `${price(quote.yearly)} ${words.perYear}`,
-    monthly: `${price(quote.monthly)} ${words.perMonth}`,
-    lifetime: `${price(quote.lifetime)} ${words.oneTime}`,
-  }[plan];
+  /** The yearly sold by its month, the gap to the monthly doing the selling. */
+  const yearlyMonth = price(quote.yearly / 12);
+  // Withheld if the yearly plan isn't actually cheaper: a saving that isn't one reads as a mistake.
+  const badge =
+    saving > 0
+      ? fill(words.save, { percent: (saving / 100).toLocaleString(market.numberLocale, { style: "percent" }) })
+      : undefined;
+  const billed = `${fill(words.billed[plan], { price: price(quote[plan]) })} · ${words.refund}`;
 
   return (
     <>
-      <Headline text={headline} />
-      <Timeline />
+      <h1 className="text-center font-extrabold leading-[1.06] tracking-[-0.035em] text-balance text-ink text-[clamp(28px,8.2vw,34px)]">
+        <Accented text={headline} />
+      </h1>
+      <p className="mt-0.5 text-center text-[15.5px] leading-[1.45] text-pretty text-slate">{words.subhead}</p>
 
-      {/* A list on a phone, a row to compare across once there is room for one. */}
-      <div className={`flex flex-col gap-5 md:grid md:gap-3 ${lifetime ? "md:grid-cols-3" : "md:grid-cols-2"}`}>
-        <PlanCard
-          label={words.yearly}
-          price={price(quote.yearly)}
-          term={words.perYear}
-          figure={perDay(quote.yearly, DAYS.yearly)}
-          figureLabel={words.perDay}
-          // Withheld if the yearly plan isn't actually cheaper: a struck figure lower than the
-          // one beside it reads as a mistake.
-          wasFigure={saving > 0 ? monthlyPerDay : undefined}
-          badge={
-            saving > 0
-              ? fill(words.save, {
-                  percent: (saving / 100).toLocaleString(market.numberLocale, { style: "percent" }),
-                })
-              : undefined
-          }
-          note={words.billedYearly}
-          selected={plan === "yearly"}
-          onSelect={() => onSelect("yearly")}
-        />
-        <PlanCard
-          label={words.monthly}
-          price={price(quote.monthly)}
-          term={words.perMonth}
-          figure={monthlyPerDay}
-          figureLabel={words.perDay}
-          note={words.cancelAnytime}
-          selected={plan === "monthly"}
-          onSelect={() => onSelect("monthly")}
-        />
-        {/* Only while the server says it is on sale, so the list quote never offers it. */}
-        {lifetime && (
-          <PlanCard
+      <Hero />
+
+      {/* Two plans read as a list. A third, the lifetime anchor, flanks the yearly instead. The
+          row is as tall as a picked tile, so a tile growing never moves the page under it. */}
+      {lifetime ? (
+        <div role="group" aria-label={words.plans} className="mx-auto mt-3 grid h-32 w-full max-w-[360px] grid-cols-[1fr_1.2fr_1fr] items-end gap-2">
+          <PlanTile
+            label={words.monthly}
+            price={price(quote.monthly)}
+            unit={words.aMonth}
+            selected={plan === "monthly"}
+            onSelect={() => onSelect("monthly")}
+          />
+          <PlanTile
+            label={words.yearly}
+            price={yearlyMonth}
+            unit={words.aMonth}
+            badge={badge}
+            selected={plan === "yearly"}
+            onSelect={() => onSelect("yearly")}
+          />
+          <PlanTile
             label={words.lifetime}
-            figure={price(quote.lifetime)}
-            figureLabel={words.oneTime}
-            note={words.payOnce}
+            price={price(quote.lifetime)}
+            unit={words.payOnce}
             selected={plan === "lifetime"}
             onSelect={() => onSelect("lifetime")}
           />
-        )}
-      </div>
+        </div>
+      ) : (
+        <div role="group" aria-label={words.plans} className="flex flex-col gap-2.5">
+          <PlanRow
+            label={words.yearly}
+            price={`${yearlyMonth} ${words.perMonth}`}
+            selected={plan === "yearly"}
+            onSelect={() => onSelect("yearly")}
+          />
+          <PlanRow
+            label={words.monthly}
+            price={`${price(quote.monthly)} ${words.perMonth}`}
+            selected={plan === "monthly"}
+            onSelect={() => onSelect("monthly")}
+          />
+        </div>
+      )}
 
-      <p className="mt-4 text-center text-[15.5px] text-muted">{words.guarantee}</p>
+      <Commit label={words.continue} billed={billed} onContinue={onContinue} />
 
       <Faq />
 
-      {/* Last on the page, under everything a buyer reads before agreeing to it. */}
-      <div className="mt-8 flex justify-center">
+      {/* Again under the questions, so a reader who scrolled them commits from where they are. */}
+      <div className="mt-8 flex flex-col items-center gap-3">
+        <Commit label={words.continue} billed={billed} onContinue={onContinue} billedLast />
         <LegalNote />
       </div>
-
-      <Commit label={words.continue} billed={billed} onContinue={onContinue} />
     </>
   );
 }
 
-/**
- * The one thing to press, in view from the first frame: last in the page so it rests under the
- * legal note, and sticky so it never scrolls off before that. Bled across the shell's gutter so
- * its hairline spans a phone's width, as `pinnedBar` draws it in the app.
- */
+/** The picked plan's bill over the button, or under it at the foot of the page. */
 function Commit({
   label,
   billed,
   onContinue,
+  billedLast = false,
 }: {
   label: string;
-  /** The picked plan's price and term, under the label as the app's offer button has it. */
   billed: string;
   onContinue: () => void;
+  billedLast?: boolean;
 }) {
+  const note = <p className="num text-center text-[13.5px] text-muted">{billed}</p>;
   return (
-    <div className="paywall-commit sticky bottom-0 -mx-5 mt-6 flex justify-center border-t border-hairline bg-canvas px-5 pt-3 pb-5">
-      <button onClick={onContinue} className="btn-offer md:max-w-[420px]">
-        <span className="text-[18.5px] font-bold leading-tight">{label}</span>
-        <span className="num text-[13.5px] font-medium leading-tight opacity-72">{billed}</span>
+    <div className={`flex w-full flex-col gap-3 ${billedLast ? "" : "mt-3.5"}`}>
+      {!billedLast && note}
+      <button onClick={onContinue} className="btn h-14 text-[17.5px]">
+        {label}
       </button>
+      {billedLast && note}
     </div>
   );
 }
 
-function PlanCard({
+/** How a plan eases into and out of being picked. The border and the weight stay put, so
+ * nothing jumps a pixel: only size, colour, shadow and the price's type move. */
+const PICK =
+  "transition-[height,border-color,background-color,color,box-shadow,font-size,letter-spacing] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]";
+
+/** A plan beside two others: the picked one stands taller, ringed in ink. */
+function PlanTile({
   label,
   price,
-  term = "",
-  figure,
-  figureLabel,
-  wasFigure,
+  unit,
   badge,
-  note,
   selected,
   onSelect,
 }: {
   label: string;
-  /** The recurring price, small, under the label. Omitted by the plan whose price is already
-   * the big figure on the right. */
-  price?: string;
-  /** Spelled out by the caller: a card that derives this from the plan silently prints
-   * "/ month" under anything it has not heard of. */
-  term?: string;
-  figure: string;
-  figureLabel: string;
-  /** The figure this one undercuts, struck through above it. */
-  wasFigure?: string;
+  price: string;
+  unit: string;
   badge?: string;
-  note: string;
   selected: boolean;
   onSelect: () => void;
 }) {
   return (
     <button
       onClick={onSelect}
-      data-selected={selected}
-      className="offer-card relative flex items-start justify-between gap-3 px-4 py-4 text-left"
+      aria-pressed={selected}
+      className={`relative flex flex-col items-center justify-center gap-1 rounded-[22px] border-2 px-1.5 ${PICK} ${
+        selected
+          ? "h-32 border-ink bg-white/95 text-ink shadow-[0_10px_24px_rgba(48,80,130,0.18)]"
+          : "h-28 border-white/95 bg-white/50 text-muted shadow-[0_10px_24px_rgba(48,80,130,0)]"
+      }`}
     >
-      {badge && <span className="offer-tag absolute top-0 right-5 -translate-y-1/2">{badge}</span>}
-      <span className="min-w-0">
-        <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-          <Radio selected={selected} />
-          <span className="text-[18.5px] font-extrabold tracking-[-0.02em] text-ink">{label}</span>
+      {badge && (
+        <span className="absolute -top-3 left-1/2 flex h-[22px] -translate-x-1/2 items-center rounded-full bg-ink px-2.5 text-[11px] font-extrabold tracking-[0.08em] whitespace-nowrap text-white uppercase">
+          {badge}
         </span>
-        {price && (
-          <span className="mt-1.5 block">
-            <span className="num text-[17.5px] font-medium text-ink">{price}</span>{" "}
-            <span className="text-[15.5px] text-muted">{term}</span>
-          </span>
-        )}
-        <span className="mt-1 block text-[15px] text-muted">{note}</span>
+      )}
+      <span className="text-[13.5px] font-extrabold">{label}</span>
+      <span
+        className={`num font-extrabold leading-[1.05] text-ink ${PICK} ${
+          selected ? "text-[30px] tracking-[-0.035em]" : "text-[21px] tracking-[-0.03em]"
+        }`}
+      >
+        {price}
       </span>
-
-      <span className="shrink-0 text-right">
-        {wasFigure && (
-          <span className="num block text-[14.5px] text-muted line-through">{wasFigure}</span>
-        )}
-        <span className="num block text-[30px] font-extrabold leading-none tracking-[-0.03em] text-ink">
-          {figure}
-        </span>
-        <span className="mt-1 block text-[12px] uppercase tracking-[0.08em] text-muted">
-          {figureLabel}
-        </span>
-      </span>
+      <span className="text-[12px] text-muted">{unit}</span>
     </button>
   );
 }
 
-/** A radio, not a tick: several plans where exactly one is chosen. */
-function Radio({ selected }: { selected: boolean }) {
+/** A plan in a list of two: its name and its price on one line. */
+function PlanRow({
+  label,
+  price,
+  selected,
+  onSelect,
+}: {
+  label: string;
+  price: string;
+  selected: boolean;
+  onSelect: () => void;
+}) {
   return (
-    <svg
-      aria-hidden
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      className={`shrink-0 ${selected ? "text-accent" : "text-faint"}`}
+    <button
+      onClick={onSelect}
+      aria-pressed={selected}
+      className={`flex h-15 items-center justify-between rounded-full border-2 px-6 text-[17px] font-extrabold ${PICK} ${
+        selected
+          ? "border-ink bg-white/95 text-ink shadow-[0_8px_20px_rgba(48,80,130,0.12)]"
+          : "border-white/95 bg-white/50 text-muted shadow-[0_8px_20px_rgba(48,80,130,0)]"
+      }`}
     >
-      <circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.5" />
-      {selected && <circle cx="10" cy="10" r="4.5" fill="currentColor" />}
-    </svg>
+      <span>{label}</span>
+      <span className="num">{price}</span>
+    </button>
   );
 }

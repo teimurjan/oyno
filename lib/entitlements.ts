@@ -1,5 +1,7 @@
 import "server-only";
 import { accountExists } from "./account";
+import { planForProductId } from "./dodoProducts";
+import type { Plan } from "./plans";
 import { createAdminClient, isServiceConfigured } from "./supabase/admin";
 
 /** A grant is live only while unexpired; a null expiry is a perpetual unlock.
@@ -223,13 +225,32 @@ export interface EntitlementStatus {
   /** Null when nothing is live. Additive on /api/entitlement — binaries that predate it
    * decode `paid`/`expiresAt` and ignore this. */
   provider: EntitlementProvider | null;
+  /** The plan behind `expiresAt`, for Profile. Null when nothing is live or the product is
+   * not one we know. Additive, as `provider` is. */
+  plan: Plan | null;
 }
 
-/** The best of a set of live expiries: a perpetual grant (null — sandbox/App Review, or a
- * lifetime unlock) outranks any dated one, otherwise the one that runs longest. */
-function furthestExpiry(expiries: (string | null)[]): string | null {
-  if (expiries.some((expiry) => !expiry)) return null;
-  return expiries.reduce((latest, expiry) => (latest && expiry! < latest ? latest : expiry));
+/** A live grant from either biller: when it ends (null never) and what was bought. */
+interface Grant {
+  expiresAt: string | null;
+  plan: Plan | null;
+}
+
+/** The best of a set of live grants: a perpetual one (sandbox/App Review, or a lifetime
+ * unlock) outranks any dated one, otherwise the one that runs longest. */
+function bestGrant(grants: Grant[]): Grant {
+  return grants.reduce((best, grant) => {
+    if (!best.expiresAt) return best;
+    if (!grant.expiresAt) return grant;
+    return grant.expiresAt > best.expiresAt ? grant : best;
+  });
+}
+
+/** The App Store products are `com.teimurjan.oyno.fullaccess.<plan>`. */
+function applePlan(productId: string | null): Plan | null {
+  if (productId?.endsWith(".yearly")) return "yearly";
+  if (productId?.endsWith(".monthly")) return "monthly";
+  return null;
 }
 
 /**
@@ -245,18 +266,19 @@ function furthestExpiry(expiries: (string | null)[]): string | null {
  * The three are read in parallel because this sits in front of every gated request.
  */
 export async function readEntitlement(userId: string): Promise<EntitlementStatus> {
-  if (!isServiceConfigured) return { paid: false, expiresAt: null, provider: null };
+  const unpaid: EntitlementStatus = { paid: false, expiresAt: null, provider: null, plan: null };
+  if (!isServiceConfigured) return unpaid;
   const admin = createAdminClient();
 
   const [apple, dodo, lifetime] = await Promise.all([
     admin
       .from("entitlements")
-      .select("active, expires_at")
+      .select("expires_at, product_id")
       .eq("user_id", userId)
       .eq("active", true),
     admin
       .from("dodo_entitlements")
-      .select("status, current_period_end, environment")
+      .select("status, current_period_end, environment, product_id")
       .eq("user_id", userId)
       .maybeSingle(),
     admin
@@ -304,16 +326,16 @@ export async function readEntitlement(userId: string): Promise<EntitlementStatus
   const unlock = lifetime.data;
   const lifetimeLive = unlock?.environment === DODO_ENVIRONMENT && !unlock.revoked_at;
 
-  const expiries = [
-    ...appleLive.map((row) => row.expires_at as string | null),
-    ...(dodoLive ? [web.current_period_end as string] : []),
-    ...(lifetimeLive ? [null] : []),
+  const grants: Grant[] = [
+    ...appleLive.map((row) => ({ expiresAt: row.expires_at as string | null, plan: applePlan(row.product_id) })),
+    ...(dodoLive ? [{ expiresAt: web.current_period_end as string, plan: planForProductId(web.product_id) }] : []),
+    ...(lifetimeLive ? [{ expiresAt: null, plan: "lifetime" as const }] : []),
   ];
-  if (expiries.length === 0) return { paid: false, expiresAt: null, provider: null };
+  if (grants.length === 0) return unpaid;
 
   return {
     paid: true,
-    expiresAt: furthestExpiry(expiries),
+    ...bestGrant(grants),
     // Dodo wins when both are live: it's the one the user can only manage off-device,
     // so it's the one worth pointing them at.
     provider: dodoLive || lifetimeLive ? "dodo" : "app_store",

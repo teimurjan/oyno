@@ -1,2 +1,2 @@
-- A round now shows on the Lock Screen and in the Dynamic Island. Put the phone down and still see the time left.
-- If you leave Oyno during a round, a notification rings when the time is up.
+- A new offer screen. It shows the evening Oyno gives you: your apps wait, and a ten-minute game is ready.
+- Profile shows your plan and when it renews. On a monthly plan, switch to yearly from there and save.

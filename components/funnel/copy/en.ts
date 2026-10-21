@@ -174,7 +174,7 @@ export const en = {
       headline: "Your plan is ready. [Save it] to see your price.",
     },
     paywall: {
-      headline: "Come back to [your kid's planet].",
+      headline: "Trade the scroll for a sharper kid.",
     },
     checkout: {
       headline: "Payment details.",
@@ -343,38 +343,50 @@ export const en = {
   legal: { terms: "Terms", privacy: "Privacy Policy" },
 
   paywall: {
+    subhead: "Ten minutes of play a day that trains their self-control and memory. Your apps wait until you're done.",
+    /** The notification over the paused phone in the paywall's picture. `{game}` is `game.title`. */
+    nudge: {
+      title: "10 minutes that make them sharper",
+      body: "{game} is ready. Instagram can wait.",
+      time: "now",
+    },
+    /** The game card under it: "Doctor Kid", worded as the game catalogue words it. */
+    game: {
+      title: "Doctor Kid",
+      skills: ["Memory", "Flexible thinking"],
+      meta: "10 min · Lying down · Age 1–3",
+    },
     pros: [
       "Your apps paused during Kid hours",
       "One easy game every evening",
       "Your family's planet, growing",
     ],
-    /** The web paywall's timeline, top to bottom: what starts today, this week, in a month. */
-    timeline: [
-      { title: "Today", detail: "Pick your apps and your Kid hours. Your first game is ready." },
-      { title: "This week", detail: "Ten minutes of play together, every evening, phone down." },
-      { title: "In a month", detail: "A sharper kid: every game trains self-control and memory." },
-    ],
+    plans: "Plans",
     monthly: "Monthly",
     yearly: "Yearly",
     lifetime: "Lifetime",
     perMonth: "/ month",
     perYear: "/ year",
-    perDay: "per day",
-    oneTime: "one time",
+    aMonth: "a month",
+    payOnce: "pay once",
     cancelAnytime: "Cancel anytime",
-    billedYearly: "Billed once a year",
-    payOnce: "Pay once, keep it for good",
     save: "Save {percent}",
-    guarantee: "Not for you? Ask for a full refund within 14 days.",
-    continue: "Continue",
+    /** Under the plans, for the picked one. `{price}` is what it bills. */
+    billed: {
+      yearly: "Billed as {price} a year",
+      monthly: "Billed as {price} a month",
+      lifetime: "{price} once, yours for good",
+    },
+    refund: "Full refund within 14 days",
+    continue: "Start tonight",
   },
 
   faq: {
     title: "FAQ",
     items: [
       {
-        question: "Do both plans include everything?",
-        answer: "Yes. Monthly and yearly unlock the same Oyno: Kid hours, every game and every world. Only the way you pay differs.",
+        question: "Does every plan include everything?",
+        answer: "Yes. Every plan unlocks the same Oyno: Kid hours, every game and every world. Only the way you pay differs.",
       },
       {
         question: "Whose phone does it pause?",

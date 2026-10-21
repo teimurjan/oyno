@@ -171,7 +171,7 @@ export const nl: FunnelCopy = {
       headline: "Je plan is klaar. [Sla het op] om je prijs te zien.",
     },
     paywall: {
-      headline: "Terug naar [de planeet van je kind].",
+      headline: "Ruil het scrollen in voor een pienter kind.",
     },
     checkout: {
       headline: "Betaalgegevens.",
@@ -328,37 +328,47 @@ export const nl: FunnelCopy = {
   legal: { terms: "Voorwaarden", privacy: "Privacybeleid" },
 
   paywall: {
+    subhead: "Tien minuten spelen per dag die zelfbeheersing en geheugen trainen. Je apps wachten tot jullie klaar zijn.",
+    nudge: {
+      title: "10 minuten voor een pienter kind",
+      body: "{game} staat klaar. Instagram kan wachten.",
+      time: "nu",
+    },
+    game: {
+      title: "Dokter Kind",
+      skills: ["Geheugen", "Flexibel denken"],
+      meta: "10 min · Liggend · 1–3 jaar",
+    },
     pros: [
       "Je apps op pauze tijdens Gezinstijd",
       "Elke avond één makkelijk spelletje",
       "De planeet van je gezin groeit",
     ],
-    timeline: [
-      { title: "Vandaag", detail: "Kies je apps en je Gezinstijd. Je eerste spelletje staat klaar." },
-      { title: "Deze week", detail: "Elke avond tien minuten samen spelen, telefoon weg." },
-      { title: "Over een maand", detail: "Een pienter kind: elk spelletje traint zelfbeheersing en geheugen." },
-    ],
+    plans: "Opties",
     monthly: "Maandelijks",
     yearly: "Jaarlijks",
     lifetime: "Levenslang",
     perMonth: "/ maand",
     perYear: "/ jaar",
-    perDay: "per dag",
-    oneTime: "eenmalig",
+    aMonth: "per maand",
+    payOnce: "eenmalig",
     cancelAnytime: "Altijd opzegbaar",
-    billedYearly: "Eén keer per jaar betalen",
-    payOnce: "Eén keer betalen, voor altijd van jou",
     save: "Bespaar {percent}",
-    guarantee: "Niks voor jou? Vraag binnen 14 dagen al je geld terug.",
-    continue: "Verder",
+    billed: {
+      yearly: "Je betaalt {price} per jaar",
+      monthly: "Je betaalt {price} per maand",
+      lifetime: "{price} eenmalig, voor altijd van jou",
+    },
+    refund: "Binnen 14 dagen je geld terug",
+    continue: "Begin vanavond",
   },
 
   faq: {
     title: "Veelgestelde vragen",
     items: [
       {
-        question: "Zit in beide abonnementen alles?",
-        answer: "Ja. Maandelijks en jaarlijks geven je precies hetzelfde Oyno: Gezinstijd, alle spelletjes en alle werelden. Alleen de manier van betalen verschilt.",
+        question: "Zit bij elke optie alles inbegrepen?",
+        answer: "Ja. Elke optie geeft je precies hetzelfde Oyno: Gezinstijd, alle spelletjes en alle werelden. Alleen de manier van betalen verschilt.",
       },
       {
         question: "Welke telefoon gaat op pauze?",
