@@ -4694,7 +4694,6 @@
       }
     },
     "Bath and bed" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -15100,7 +15099,6 @@
       }
     },
     "School nights" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -19839,7 +19837,6 @@
       }
     },
     "Weekend mornings" : {
-      "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {

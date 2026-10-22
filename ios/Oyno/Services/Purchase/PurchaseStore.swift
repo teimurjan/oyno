@@ -428,14 +428,21 @@ final class PurchaseStore {
         return saving > 0 ? saving : nil
     }
 
-    /// Whether this Apple ID's subscription renews, from StoreKit. `nil` when it holds none
-    /// live, as a web subscriber's phone does not.
-    func appStoreWillRenew() async -> Bool? {
+    /// This Apple ID's live subscription as StoreKit sees it: its plan, when it renews or ends,
+    /// and whether it renews. Truer than the server for an App Store plan, which holds a Sandbox
+    /// grant perpetual. `nil` before the products load, or when it holds none, as a web
+    /// subscriber's phone does not.
+    func appStoreTerm() async -> AppStoreTerm? {
         guard let groupID = subscriptionGroupID,
               let statuses = try? await Product.SubscriptionInfo.status(for: groupID) else { return nil }
         let live: Set<Product.SubscriptionInfo.RenewalState> = [.subscribed, .inGracePeriod, .inBillingRetryPeriod]
         for status in statuses where live.contains(status.state) {
-            if case let .verified(renewal) = status.renewalInfo { return renewal.willAutoRenew }
+            guard case let .verified(transaction) = status.transaction else { continue }
+            let unit = products.first { $0.id == transaction.productID }?.subscription?.subscriptionPeriod.unit
+            let willRenew: Bool? = if case let .verified(renewal) = status.renewalInfo { renewal.willAutoRenew } else { nil }
+            return AppStoreTerm(plan: unit == .year ? .yearly : .monthly,
+                                expiresAt: transaction.expirationDate,
+                                willRenew: willRenew)
         }
         return nil
     }
@@ -463,6 +470,13 @@ private struct EntitlementResponse: Decodable {
 /// What a live entitlement bought, as `/api/entitlement` names it.
 enum PaidPlan: String {
     case monthly, yearly, lifetime
+}
+
+/// An App Store subscription as StoreKit reports it, for Profile.
+struct AppStoreTerm {
+    let plan: PaidPlan
+    let expiresAt: Date?
+    let willRenew: Bool?
 }
 
 private struct PortalResponse: Decodable {

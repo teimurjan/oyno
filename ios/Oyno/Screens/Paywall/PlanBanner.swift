@@ -7,14 +7,15 @@ struct PlanBanner: View {
     let action: () -> Void
 
     @Environment(PurchaseStore.self) private var purchases
-    /// Asked of StoreKit, so a cancelled App Store plan says when it ends rather than renews.
-    @State private var willRenew: Bool?
+    /// Asked of StoreKit once the products load: an App Store plan reads from the phone, a web
+    /// plan from the server.
+    @State private var appStore: AppStoreTerm?
 
     var body: some View {
         if purchases.isPaid {
             subscribed
-                .task(id: purchases.provider) {
-                    willRenew = purchases.provider == "app_store" ? await purchases.appStoreWillRenew() : nil
+                .task(id: purchases.subscriptionGroupID) {
+                    appStore = await purchases.appStoreTerm()
                 }
         } else {
             offer
@@ -42,7 +43,7 @@ struct PlanBanner: View {
                 }
             }
             // A lifetime unlock has nothing to manage.
-            if purchases.plan != .lifetime {
+            if plan != .lifetime {
                 PrimaryButton(title: "Manage subscription", action: action)
             }
             if let saving = switchSaving {
@@ -95,8 +96,14 @@ struct PlanBanner: View {
         endPoint: .bottom
     )
 
+    /// StoreKit's word on an App Store plan. Nil for a web plan, which Dodo bills and the
+    /// server describes.
+    private var term: AppStoreTerm? { purchases.provider == "dodo" ? nil : appStore }
+
+    private var plan: PaidPlan? { term?.plan ?? purchases.plan }
+
     private var planName: String {
-        switch purchases.plan {
+        switch plan {
         case .yearly: String(interface: "Oyno Yearly")
         case .monthly: String(interface: "Oyno Monthly")
         case .lifetime: String(interface: "Oyno Lifetime")
@@ -104,19 +111,19 @@ struct PlanBanner: View {
         }
     }
 
-    /// "Renews Oct 21, 2027", or "Ends" once it will not. Nothing for a grant with no end
-    /// date but a plan that has one: App Review's Sandbox purchase.
+    /// "Renews Oct 21, 2027", or "Ends" once it will not. Nothing when neither StoreKit nor the
+    /// server has a date.
     private var planTerm: String? {
-        if purchases.plan == .lifetime { return String(interface: "Yours for good") }
-        guard let expiresAt = purchases.expiresAt else { return nil }
+        if plan == .lifetime { return String(interface: "Yours for good") }
+        guard let expiresAt = term?.expiresAt ?? purchases.expiresAt else { return nil }
         let date = expiresAt.formatted(Date.FormatStyle(date: .abbreviated, time: .omitted, locale: InterfaceLanguage.locale))
-        return willRenew == false ? String(interface: "Ends \(date)") : String(interface: "Renews \(date)")
+        return term?.willRenew == false ? String(interface: "Ends \(date)") : String(interface: "Renews \(date)")
     }
 
     /// Offered to a monthly App Store subscriber only: StoreKit can move them in place, a web
     /// plan changes in Dodo's portal.
     private var switchSaving: Int? {
-        guard purchases.plan == .monthly, purchases.provider == "app_store",
+        guard plan == .monthly, term != nil,
               purchases.product(billedEvery: .year) != nil else { return nil }
         return purchases.yearlySaving
     }
@@ -125,7 +132,10 @@ struct PlanBanner: View {
     private func switchToYearly() {
         guard let yearly = purchases.product(billedEvery: .year) else { return }
         Analytics.shared.track(.purchaseStarted(productID: yearly.id))
-        Task { await purchases.purchase(yearly) }
+        Task {
+            await purchases.purchase(yearly)
+            appStore = await purchases.appStoreTerm()
+        }
     }
 
     // MARK: Not subscribed
