@@ -1,13 +1,15 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { ImageResponse } from "next/og";
+import sharp from "sharp";
 import { copyFor } from "@/components/site/copy";
 
-/** The card a shared link shows, drawn once at build from the planet and the home headline. */
+/** The card a shared link shows, drawn once at build from the planet and the home headline.
+ * A JPEG, because WhatsApp drops a preview image over about 300 KB and the PNG is 450. */
 
 export const alt = copyFor("en").home.meta.title;
 export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export const contentType = "image/jpeg";
 
 export default async function Image() {
   const [font, planet] = await Promise.all([
@@ -19,7 +21,7 @@ export default async function Image() {
       ),
     ),
   ]);
-  return new ImageResponse(
+  const card = new ImageResponse(
     <div
       style={{
         display: "flex",
@@ -43,4 +45,6 @@ export default async function Image() {
     </div>,
     { ...size, fonts: [{ name: "Figtree", data: font, weight: 800 }] },
   );
+  const jpeg = await sharp(Buffer.from(await card.arrayBuffer())).jpeg({ quality: 86 }).toBuffer();
+  return new Response(new Uint8Array(jpeg), { headers: { "content-type": contentType } });
 }

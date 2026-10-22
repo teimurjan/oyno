@@ -9,7 +9,7 @@ import { SITE_URL, type Lang } from "@/lib/i18n";
 export const OPEN_GRAPH = {
   siteName: "Oyno",
   type: "website",
-  images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+  images: [{ url: "/opengraph-image", width: 1200, height: 630, type: "image/jpeg" }],
 };
 
 /** Metadata for a page that exists in English only: a canonical and a card that match the title.

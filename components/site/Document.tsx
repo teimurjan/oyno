@@ -56,6 +56,9 @@ export const siteMetadata: Pick<Metadata, "metadataBase" | "openGraph" | "twitte
     icon: [
       { url: "/ico/favicon.ico", sizes: "any" },
       { url: "/ico/icon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/ico/icon-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/ico/icon-96.png", type: "image/png", sizes: "96x96" },
+      { url: "/ico/icon-192.png", type: "image/png", sizes: "192x192" },
     ],
     apple: [{ url: "/ico/apple-icon-180x180.png", sizes: "180x180" }],
   },

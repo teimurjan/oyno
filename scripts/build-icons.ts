@@ -16,6 +16,8 @@ const SHIELD_ASSETS = path.join(ROOT, "ios/OynoShield/Assets.xcassets");
 
 const WEB_ICONS = [
   { out: "public/ico/icon-32.png", size: 32 },
+  { out: "public/ico/icon-48.png", size: 48 },
+  { out: "public/ico/icon-96.png", size: 96 },
   { out: "public/ico/icon-192.png", size: 192 },
   { out: "public/ico/icon-512.png", size: 512 },
   { out: "public/ico/apple-icon-180x180.png", size: 180 },
@@ -23,6 +25,26 @@ const WEB_ICONS = [
 
 const rasterize = (svg: string) => sharp(Buffer.from(svg)).png().toBuffer();
 const render = (size: number) => rasterize(markSvg(size));
+
+/** An .ico of PNG payloads. Google Search wants a side that is a multiple of 48, so it carries 48. */
+async function renderIco(sizes: readonly number[]) {
+  const pngs = await Promise.all(sizes.map(render));
+  const header = Buffer.alloc(6 + 16 * sizes.length);
+  header.writeUInt16LE(1, 2);
+  header.writeUInt16LE(sizes.length, 4);
+  let offset = header.length;
+  sizes.forEach((size, index) => {
+    const entry = 6 + 16 * index;
+    header.writeUInt8(size, entry);
+    header.writeUInt8(size, entry + 1);
+    header.writeUInt16LE(1, entry + 4);
+    header.writeUInt16LE(32, entry + 6);
+    header.writeUInt32LE(pngs[index].length, entry + 8);
+    header.writeUInt32LE(offset, entry + 12);
+    offset += pngs[index].length;
+  });
+  return Buffer.concat([header, ...pngs]);
+}
 
 /** A tall strip, stretched to the screen by the launch storyboard and the splash alike. */
 const skySvg = `<svg xmlns="http://www.w3.org/2000/svg" width="8" height="1024"><defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${MARK.sky[0]}"/><stop offset="1" stop-color="${MARK.sky[1]}"/></linearGradient></defs><rect width="8" height="1024" fill="url(#sky)"/></svg>`;
@@ -54,8 +76,7 @@ for (const { out, size } of WEB_ICONS) {
   await Bun.write(path.join(ROOT, out), await render(size));
   console.log(`  ${out}  ${size}×${size}`);
 }
-// Browsers accept a PNG payload inside an .ico.
-await Bun.write(path.join(ROOT, "public/ico/favicon.ico"), await render(32));
+await Bun.write(path.join(ROOT, "public/ico/favicon.ico"), await renderIco([16, 32, 48]));
 await Bun.write(
   path.join(ROOT, "public/ico/manifest.json"),
   `${JSON.stringify(
