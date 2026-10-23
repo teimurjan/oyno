@@ -35,15 +35,15 @@
     "@apple/app-store-server-library": "^3.1.0",
     "@supabase/ssr": "^0.12.5",
     "@supabase/supabase-js": "^2.45.4",
-    "next": "^16.2.9",
+    "dodopayments": "^2.49.0",
+    "dodopayments-checkout": "^1.9.9",
+    "next": "^16.4.2",
     "preact": "^10.29.8",
     "preact-render-to-string": "^6.7.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "server-only": "^0.0.1",
-    "zod": "^4.1.0",
-    "dodopayments": "^2.49.0",
-    "dodopayments-checkout": "^1.9.9"
+    "zod": "^4.1.0"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.132.1",
