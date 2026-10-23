@@ -135,6 +135,10 @@ export const fr: FunnelCopy = {
     evening: {
       headline: "Chaque « deux secondes » [s’additionne].",
     },
+    promise: {
+      headline: "Et si tous ces « deux secondes » devenaient [un jeu] ?",
+      body: "Oyno vous propose un jeu facile pour vous deux, prêt quand votre soirée commence. Quelques questions, et il s’adapte à votre enfant et à vos soirées.",
+    },
     influence: {
       headline: "Plus on scrolle, plus les enfants [réclament un écran].",
     },
@@ -184,6 +188,16 @@ export const fr: FunnelCopy = {
     kid: "Temps avec votre enfant",
     phone: "Téléphone",
     summary: "{n} « deux secondes » pendant le temps avec votre tout-petit",
+  },
+
+  promise: {
+    caption: "La même soirée, avec Oyno",
+    summary: "Un jeu, toute votre attention",
+    games: [
+      { title: "Petit singe", minutes: "5 min", tag: "Sans matériel" },
+      { title: "Le zoo des ombres", minutes: "8 min", tag: "Allongés" },
+      { title: "Chut au quatre", minutes: "8 min", tag: "Au calme" },
+    ],
   },
 
   influence: {

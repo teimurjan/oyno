@@ -135,6 +135,10 @@ export const de: FunnelCopy = {
     evening: {
       headline: "Jedes „Moment noch“ [läppert sich].",
     },
+    promise: {
+      headline: "Was, wenn aus all den „Moment noch“ [ein Spiel] wird?",
+      body: "Oyno gibt dir ein leichtes Spiel für euch beide, bereit, wenn euer Abend beginnt. Ein paar Fragen, und es passt zu deinem Kind und euren Abenden.",
+    },
     influence: {
       headline: "Je mehr wir scrollen, desto öfter [wollen Kinder an den Bildschirm].",
     },
@@ -184,6 +188,16 @@ export const de: FunnelCopy = {
     kid: "Zeit mit deinem Kind",
     phone: "Handy",
     summary: "{n}-mal „Moment noch“ in der Zeit mit deinem Kind",
+  },
+
+  promise: {
+    caption: "Derselbe Abend, mit Oyno",
+    summary: "Ein Spiel, deine ganze Aufmerksamkeit",
+    games: [
+      { title: "Grimassen-Echo", minutes: "5 Min.", tag: "Ohne Material" },
+      { title: "Schattenzoo", minutes: "8 Min.", tag: "Im Liegen" },
+      { title: "Stopp bei vier", minutes: "8 Min.", tag: "Ruhig" },
+    ],
   },
 
   influence: {

@@ -12,6 +12,7 @@ import { EveningStep } from "./EveningStep";
 import { FunnelHeader } from "./FunnelChrome";
 import { InfluenceStep } from "./InfluenceStep";
 import { PlanStep } from "./PlanStep";
+import { PromiseStep } from "./PromiseStep";
 import { prewarmOffer } from "./prewarm";
 import { QuestionCard } from "./QuestionCard";
 import { StatementStep } from "./StatementStep";
@@ -39,6 +40,7 @@ const DEMOS: Partial<
   Record<FunnelStepKind, ComponentType<{ step: FunnelStep; answers: FunnelAnswers }>>
 > = {
   evening: EveningStep,
+  promise: PromiseStep,
   apps: AppsStep,
   influence: InfluenceStep,
   alternative: AlternativeStep,

@@ -135,6 +135,10 @@ export const pl: FunnelCopy = {
     evening: {
       headline: "Każde „chwileczkę” [się sumuje].",
     },
+    promise: {
+      headline: "A gdyby te wszystkie „chwileczkę” zamieniły się w [jedną zabawę]?",
+      body: "Oyno podsuwa ci jedną łatwą zabawę dla was obojga, gotową, gdy zaczyna się wasz wieczór. Kilka pytań i będzie dopasowana do twojego dziecka i waszych wieczorów.",
+    },
     influence: {
       headline: "Im więcej scrollujemy, tym częściej dzieci [proszą o ekran].",
     },
@@ -184,6 +188,16 @@ export const pl: FunnelCopy = {
     kid: "Z dzieckiem",
     phone: "Telefon",
     summary: "„Chwileczkę” w czasie z dzieckiem: {n}",
+  },
+
+  promise: {
+    caption: "Ten sam wieczór, z Oyno",
+    summary: "Jedna zabawa, cała twoja uwaga",
+    games: [
+      { title: "Małpka", minutes: "5 min", tag: "Bez rekwizytów" },
+      { title: "Zoo z cieni", minutes: "8 min", tag: "Na leżąco" },
+      { title: "Cisza na czwórce", minutes: "8 min", tag: "Po cichu" },
+    ],
   },
 
   influence: {

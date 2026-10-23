@@ -135,6 +135,10 @@ export const nl: FunnelCopy = {
     evening: {
       headline: "Elk ‘momentje’ [telt op].",
     },
+    promise: {
+      headline: "Wat als al die ‘momentjes’ [één spelletje] werden?",
+      body: "Oyno geeft je één makkelijk spelletje voor jullie samen, klaar als jullie avond begint. Een paar vragen en het past bij je kind en jullie avonden.",
+    },
     influence: {
       headline: "Kinderen [vragen vaker om een scherm] als wij meer scrollen.",
     },
@@ -184,6 +188,16 @@ export const nl: FunnelCopy = {
     kid: "Tijd met je kind",
     phone: "Telefoon",
     summary: "{n} keer ‘momentje’ tegen je kleintje",
+  },
+
+  promise: {
+    caption: "Dezelfde avond, met Oyno",
+    summary: "Eén spelletje, al je aandacht",
+    games: [
+      { title: "Na-aapje", minutes: "5 min", tag: "Niks nodig" },
+      { title: "Schaduwdierentuin", minutes: "8 min", tag: "Liggend" },
+      { title: "Stop bij vier", minutes: "8 min", tag: "Rustig" },
+    ],
   },
 
   influence: {

@@ -138,6 +138,10 @@ export const en = {
     evening: {
       headline: "Every ‘one sec’ [adds up].",
     },
+    promise: {
+      headline: "What if those ‘one secs’ became [one game]?",
+      body: "Oyno hands you one easy game for the two of you, ready when your evening starts. A few questions, and it fits your kid and your evenings.",
+    },
     influence: {
       headline: "Kids [ask for screens] more when we scroll more.",
     },
@@ -188,6 +192,18 @@ export const en = {
     kid: "Time with your kid",
     phone: "Phone",
     summary: "{n} ‘one secs’ in time with your kid",
+  },
+
+  /** The calendar's evening again, its phone lines folded into one game. */
+  promise: {
+    caption: "The same evening, with Oyno",
+    summary: "One game, all of your attention",
+    /** "copy-cat-faces", "shadow-zoo-wall" and "countdown-stop": one per age band, all low energy. */
+    games: [
+      { title: "Copy Cat", minutes: "5 min", tag: "Nothing to grab" },
+      { title: "Shadow Zoo", minutes: "8 min", tag: "Lying down" },
+      { title: "Stop at Four", minutes: "8 min", tag: "Quiet" },
+    ],
   },
 
   /** Domoff et al. (2021), Table 3: kids 2 to 5, by their parent's daily social media. */

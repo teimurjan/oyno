@@ -135,6 +135,10 @@ export const ptBR: FunnelCopy = {
     evening: {
       headline: "Cada “só um segundo” [vai somando].",
     },
+    promise: {
+      headline: "E se todos esses “só um segundo” virassem [uma brincadeira]?",
+      body: "O Oyno te dá uma brincadeira fácil para vocês dois, pronta quando a noite começa. Algumas perguntas e ela se ajusta ao seu filho e às suas noites.",
+    },
     influence: {
       headline: "Quanto mais a gente rola o feed, mais as crianças [pedem tela].",
     },
@@ -184,6 +188,16 @@ export const ptBR: FunnelCopy = {
     kid: "Tempo com seu filho",
     phone: "Celular",
     summary: "{n} vezes “só um segundo” no tempo com seu pequeno",
+  },
+
+  promise: {
+    caption: "A mesma noite, com o Oyno",
+    summary: "Uma brincadeira, toda a sua atenção",
+    games: [
+      { title: "Macaquinho de imitação", minutes: "5 min", tag: "Sem material" },
+      { title: "Zoológico de sombras", minutes: "8 min", tag: "Deitados" },
+      { title: "Pare no quatro", minutes: "8 min", tag: "Sem barulho" },
+    ],
   },
 
   influence: {

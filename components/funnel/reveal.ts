@@ -51,21 +51,27 @@ export function useRamp(key: string, delayMs: number, durationMs: number): numbe
   return progress;
 }
 
-/** How many of `count` items have arrived. Jumps to `count` on a second visit. */
-export function useStagger(key: string, count: number, delayMs: number, everyMs: number): number {
-  const [shown, setShown] = useState(() => (played.has(key) ? count : 0));
+/** How many of `times` (ms after mount) have passed. Jumps to all of them on a second visit. */
+export function useTimeline(key: string, times: number[]): number {
+  const [passed, setPassed] = useState(() => (played.has(key) ? times.length : 0));
 
   useEffect(() => {
     if (skips(key)) {
-      setShown(count);
+      setPassed(times.length);
       return;
     }
     played.add(key);
-    const timers = Array.from({ length: count }, (_, index) =>
-      window.setTimeout(() => setShown(index + 1), delayMs + index * everyMs),
-    );
+    const timers = times.map((at, index) => window.setTimeout(() => setPassed(index + 1), at));
     return () => timers.forEach(window.clearTimeout);
   }, []);
 
-  return shown;
+  return passed;
+}
+
+/** How many of `count` items have arrived. Jumps to `count` on a second visit. */
+export function useStagger(key: string, count: number, delayMs: number, everyMs: number): number {
+  return useTimeline(
+    key,
+    Array.from({ length: count }, (_, index) => delayMs + index * everyMs),
+  );
 }

@@ -20,6 +20,7 @@ const IOS_KINDS = new Set([
   "question",
   "statement",
   "evening",
+  "promise",
   "apps",
   "influence",
   "alternative",

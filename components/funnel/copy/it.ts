@@ -135,6 +135,10 @@ export const it: FunnelCopy = {
     evening: {
       headline: "Ogni “un attimo” [si accumula].",
     },
+    promise: {
+      headline: "E se tutti quegli “un attimo” diventassero [un gioco]?",
+      body: "Oyno ti propone un gioco facile da fare insieme, pronto quando inizia la vostra serata. Qualche domanda e si adatta al tuo bambino e alle vostre serate.",
+    },
     influence: {
       headline: "Più scorriamo noi, più i bambini [chiedono schermi].",
     },
@@ -184,6 +188,16 @@ export const it: FunnelCopy = {
     kid: "Tempo con il bambino",
     phone: "Telefono",
     summary: "{n} volte “un attimo” mentre sei con il tuo piccolo",
+  },
+
+  promise: {
+    caption: "La stessa serata, con Oyno",
+    summary: "Un gioco, tutta la tua attenzione",
+    games: [
+      { title: "Il pappagallo", minutes: "5 min", tag: "Senza oggetti" },
+      { title: "Lo zoo delle ombre", minutes: "8 min", tag: "Da sdraiati" },
+      { title: "Zitti al quattro", minutes: "8 min", tag: "Tranquillo" },
+    ],
   },
 
   influence: {

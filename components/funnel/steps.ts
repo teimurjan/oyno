@@ -22,6 +22,8 @@ export type FunnelStepKind =
   | "statement"
   /** An example evening as a calendar, the phone interrupting the kid's hours. Self-running. */
   | "evening"
+  /** The same evening, its phone lines folding into one game. Self-running. */
+  | "promise"
   /** The feeds the apps are built around, drifting and knocking at the reader. */
   | "apps"
   /** What a parent's scrolling does to a kid's asking for screens, as a bar chart. */
@@ -232,11 +234,12 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
     { id: "problem", kind: "question", question: PROBLEM },
     { id: "why", kind: "apps", branch: { on: "problem" } },
     { id: "evening", kind: "evening" },
-    { id: "age", kind: "question", question: AGE },
-    { id: "hardest", kind: "question", question: HARDEST },
+    { id: "promise", kind: "promise" },
     { id: "pickups", kind: "question", question: PICKUPS },
+    { id: "hardest", kind: "question", question: HARDEST },
     { id: "apps", kind: "question", question: APPS },
     { id: "influence", kind: "influence" },
+    { id: "age", kind: "question", question: AGE },
     { id: "energy", kind: "question", question: ENERGY },
     { id: "ideas", kind: "question", question: IDEAS },
     { id: "tried", kind: "question", question: TRIED },

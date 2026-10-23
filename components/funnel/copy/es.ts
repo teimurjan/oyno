@@ -135,6 +135,10 @@ export const es: FunnelCopy = {
     evening: {
       headline: "Cada «un segundo» [suma].",
     },
+    promise: {
+      headline: "¿Y si todos esos «un segundo» se convirtieran en [un juego]?",
+      body: "Oyno te da un juego fácil para los dos, listo cuando empieza vuestra tarde. Unas preguntas y se ajusta a tu peque y a vuestras tardes.",
+    },
     influence: {
       headline: "Cuanto más scroll hacemos, más [piden pantallas] los peques.",
     },
@@ -184,6 +188,16 @@ export const es: FunnelCopy = {
     kid: "Tiempo con tu peque",
     phone: "Móvil",
     summary: "{n} veces «un segundo» en el rato con tu peque",
+  },
+
+  promise: {
+    caption: "La misma tarde, con Oyno",
+    summary: "Un juego, toda tu atención",
+    games: [
+      { title: "Copiones", minutes: "5 min", tag: "Sin material" },
+      { title: "Zoo de sombras", minutes: "8 min", tag: "Tumbados" },
+      { title: "Alto en el cuatro", minutes: "8 min", tag: "Tranquilo" },
+    ],
   },
 
   influence: {
