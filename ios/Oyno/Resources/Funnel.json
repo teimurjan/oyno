@@ -27,15 +27,15 @@
         }
       },
       {
-        "id": "evening",
-        "kind": "evening"
-      },
-      {
         "id": "why",
         "kind": "apps",
         "branch": {
           "on": "problem"
         }
+      },
+      {
+        "id": "evening",
+        "kind": "evening"
       },
       {
         "id": "age",

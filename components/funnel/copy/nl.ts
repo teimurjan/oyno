@@ -180,8 +180,7 @@ export const nl: FunnelCopy = {
 
   evening: {
     caption: "Een doordeweekse avond",
-    hours: ["15:00", "16:00", "17:00", "18:00", "19:00", "20:00"],
-    work: "Werk",
+    hours: ["16:00", "17:00", "18:00", "19:00", "20:00"],
     kid: "Tijd met je kind",
     phone: "Telefoon",
     summary: "{n} keer ‘momentje’ tegen je kleintje",

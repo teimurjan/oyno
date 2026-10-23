@@ -7,20 +7,21 @@ import type { FunnelAnswers, FunnelStep } from "./steps";
 const HOUR_PX = 56;
 
 /** The app's default Kid hours (`KidHoursSchedule.afterWork`), 4:30 to 7:30 PM, in minutes
- * after 3 PM. */
-const KID_FROM = 90;
-const KID_UNTIL = 270;
+ * after 4 PM. */
+const KID_FROM = 30;
+const KID_UNTIL = 210;
 
-/** An example evening, labelled as one: minutes after 3 PM when the phone pulls the parent
+/** An example evening, labelled as one: minutes after 4 PM when the phone pulls the parent
  * away. Illustrative, not a statistic. */
-const INTERRUPTIONS = [124, 142, 159, 178, 194, 213, 231, 250];
+const INTERRUPTIONS = [64, 82, 99, 118, 134, 153, 171, 190];
 
 const px = (minutes: number) => (minutes / 60) * HOUR_PX;
 
 /**
- * Widget A: the pain as a calendar. Work until half past four, then the kid's hours, and the phone
- * landing on them one red line after another. Plays once on arrival and shows the end state
- * on a second visit. Red is the phone, the one thing on this screen costing the reader.
+ * Widget A: the pain as a calendar. The kid's hours, and the phone landing on them one red line
+ * after another. No work block: a parent home all day reads it as their evening too. Plays once
+ * on arrival and shows the end state on a second visit. Red is the phone, the one thing on this
+ * screen costing the reader.
  */
 export function EveningStep({ step, answers }: { step: FunnelStep; answers: FunnelAnswers }) {
   const { copy } = useLocale();
@@ -58,7 +59,6 @@ export function EveningStep({ step, answers }: { step: FunnelStep; answers: Funn
               />
             ))}
 
-            <Event title={words.work} top={0} height={px(KID_FROM)} className="border-highlight bg-highlight/12" />
             <Event
               title={words.kid}
               top={px(KID_FROM)}

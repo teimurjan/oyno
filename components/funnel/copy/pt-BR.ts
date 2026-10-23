@@ -180,8 +180,7 @@ export const ptBR: FunnelCopy = {
 
   evening: {
     caption: "Uma noite de dia útil",
-    hours: ["15h", "16h", "17h", "18h", "19h", "20h"],
-    work: "Trabalho",
+    hours: ["16h", "17h", "18h", "19h", "20h"],
     kid: "Tempo com seu filho",
     phone: "Celular",
     summary: "{n} vezes “só um segundo” no tempo com seu pequeno",

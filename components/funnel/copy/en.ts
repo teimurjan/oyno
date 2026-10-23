@@ -183,9 +183,8 @@ export const en = {
 
   evening: {
     caption: "A weekday evening",
-    /** One label per hour line, the first at 3 PM. */
-    hours: ["3 PM", "4 PM", "5 PM", "6 PM", "7 PM", "8 PM"],
-    work: "Work",
+    /** One label per hour line, the first at 4 PM. */
+    hours: ["4 PM", "5 PM", "6 PM", "7 PM", "8 PM"],
     kid: "Time with your kid",
     phone: "Phone",
     summary: "{n} ‘one secs’ in time with your kid",

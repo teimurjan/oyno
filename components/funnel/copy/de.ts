@@ -180,8 +180,7 @@ export const de: FunnelCopy = {
 
   evening: {
     caption: "Ein Abend unter der Woche",
-    hours: ["15 Uhr", "16 Uhr", "17 Uhr", "18 Uhr", "19 Uhr", "20 Uhr"],
-    work: "Arbeit",
+    hours: ["16 Uhr", "17 Uhr", "18 Uhr", "19 Uhr", "20 Uhr"],
     kid: "Zeit mit deinem Kind",
     phone: "Handy",
     summary: "{n}-mal „Moment noch“ in der Zeit mit deinem Kind",
