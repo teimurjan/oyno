@@ -136,8 +136,7 @@ export const pl: FunnelCopy = {
       headline: "Każde „chwileczkę” [się sumuje].",
     },
     promise: {
-      headline: "A gdyby te wszystkie „chwileczkę” zamieniły się w [jedną zabawę]?",
-      body: "Oyno podsuwa ci jedną łatwą zabawę dla was obojga, gotową, gdy zaczyna się wasz wieczór. Kilka pytań i będzie dopasowana do twojego dziecka i waszych wieczorów.",
+      headline: "A gdyby te wszystkie „chwileczkę” zamieniły się w [łatwe zabawy]?",
     },
     influence: {
       headline: "Im więcej scrollujemy, tym częściej dzieci [proszą o ekran].",

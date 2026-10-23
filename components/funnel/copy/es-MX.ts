@@ -136,8 +136,7 @@ export const esMX: FunnelCopy = {
       headline: "Cada “un segundo” [se va sumando].",
     },
     promise: {
-      headline: "¿Y si todos esos “un segundo” se volvieran [un juego]?",
-      body: "Oyno te da un juego fácil para los dos, listo cuando empieza su tarde. Unas preguntas y se ajusta a tu peque y a sus tardes.",
+      headline: "¿Y si todos esos “un segundo” se volvieran [juegos fáciles]?",
     },
     influence: {
       headline: "Entre más usamos el celular, más [piden pantalla] los niños.",

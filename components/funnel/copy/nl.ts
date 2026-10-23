@@ -136,8 +136,7 @@ export const nl: FunnelCopy = {
       headline: "Elk ‘momentje’ [telt op].",
     },
     promise: {
-      headline: "Wat als al die ‘momentjes’ [één spelletje] werden?",
-      body: "Oyno geeft je één makkelijk spelletje voor jullie samen, klaar als jullie avond begint. Een paar vragen en het past bij je kind en jullie avonden.",
+      headline: "Wat als al die ‘momentjes’ [makkelijke spelletjes] werden?",
     },
     influence: {
       headline: "Kinderen [vragen vaker om een scherm] als wij meer scrollen.",

@@ -136,8 +136,7 @@ export const es: FunnelCopy = {
       headline: "Cada «un segundo» [suma].",
     },
     promise: {
-      headline: "¿Y si todos esos «un segundo» se convirtieran en [un juego]?",
-      body: "Oyno te da un juego fácil para los dos, listo cuando empieza vuestra tarde. Unas preguntas y se ajusta a tu peque y a vuestras tardes.",
+      headline: "¿Y si todos esos «un segundo» se convirtieran en [juegos fáciles]?",
     },
     influence: {
       headline: "Cuanto más scroll hacemos, más [piden pantallas] los peques.",

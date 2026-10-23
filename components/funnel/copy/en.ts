@@ -139,8 +139,7 @@ export const en = {
       headline: "Every ‘one sec’ [adds up].",
     },
     promise: {
-      headline: "What if those ‘one secs’ became [one game]?",
-      body: "Oyno hands you one easy game for the two of you, ready when your evening starts. A few questions, and it fits your kid and your evenings.",
+      headline: "What if those ‘one secs’ became [easy games]?",
     },
     influence: {
       headline: "Kids [ask for screens] more when we scroll more.",

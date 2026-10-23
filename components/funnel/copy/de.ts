@@ -136,8 +136,7 @@ export const de: FunnelCopy = {
       headline: "Jedes „Moment noch“ [läppert sich].",
     },
     promise: {
-      headline: "Was, wenn aus all den „Moment noch“ [ein Spiel] wird?",
-      body: "Oyno gibt dir ein leichtes Spiel für euch beide, bereit, wenn euer Abend beginnt. Ein paar Fragen, und es passt zu deinem Kind und euren Abenden.",
+      headline: "Was, wenn aus all den „Moment noch“ [leichte Spiele] werden?",
     },
     influence: {
       headline: "Je mehr wir scrollen, desto öfter [wollen Kinder an den Bildschirm].",
