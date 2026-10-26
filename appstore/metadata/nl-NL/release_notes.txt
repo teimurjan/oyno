@@ -1,2 +1,3 @@
-- Een nieuw scherm met de abonnementen. Het laat de avond met Oyno zien: je apps wachten en een spelletje van tien minuten staat klaar.
-- Je profiel toont je abonnement en wanneer het verlengt. Met een maandabonnement stap je daar over op jaarlijks en bespaar je.
+- “Niet nu” en “Apps vrijgeven” lopen nu soepel vol als je vasthoudt. Zolang je apps open zijn, doet vasthouden niets.
+- Oyno start sneller op.
+- De sluitknop in je profiel werkt weer.

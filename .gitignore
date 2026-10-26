@@ -73,3 +73,5 @@ art/source/
 
 # The funnel's design-canvas artboards. Build output of `bun run funnel:canvas`, published to the canvas, never history.
 .canvas/
+
+.tmp

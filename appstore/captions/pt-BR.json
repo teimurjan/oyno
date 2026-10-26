@@ -1,13 +1,12 @@
 {
   "default": [
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Bloqueie apps] enquanto vocês brincam" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Sem pique? [Uma brincadeira fácil, 5 min]" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Rodada feita, [apps liberados por 10 min]" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Sem pique? [Brinque sem sair do sofá]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps pausados] durante a brincadeira" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Brinque primeiro, [depois 10 min de celular]" },
+    { "slug": "find", "source": "09", "caption": "[500 brincadeiras fáceis], sem preparo" },
     { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1h] em família, celular de lado" },
     { "slug": "science", "source": "04", "callout": "evidence", "caption": "Toda brincadeira [com base científica]" },
-    { "slug": "find", "source": "09", "caption": "[500 brincadeiras], sem preparo" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limite o tempo de tela] minuto a minuto" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Cada rodada [faz crescer um mundo novo]" },
-    { "slug": "together", "photo": "together.jpg", "caption": "No planeta do seu filho, [não no seu]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Cada rodada [faz crescer um mundo novo]" }
   ]
 }

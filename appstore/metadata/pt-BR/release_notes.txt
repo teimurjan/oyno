@@ -1,2 +1,3 @@
-- Uma nova tela de planos. Ela mostra a noite com o Oyno: seus apps esperam e uma brincadeira de dez minutos está pronta.
-- O perfil mostra seu plano e quando ele renova. No plano mensal, mude para o anual por lá e economize.
+- “Agora não” e “Desbloquear meus apps” se enchem suavemente enquanto você segura. Com seus apps abertos, segurar não faz nada.
+- O Oyno abre mais rápido.
+- O botão de fechar do perfil voltou a funcionar.

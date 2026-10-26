@@ -242,7 +242,8 @@ final class KidHoursStore {
     /// "Not now": the apps open without a round, then Kid hours pick back up on their own.
     @discardableResult
     func takeNotNow(now: Date = .now) -> Bool {
-        unlock(.notNow, minutes: Self.notNowMinutes, now: now)
+        guard isOnNow else { return false }
+        return unlock(.notNow, minutes: Self.notNowMinutes, now: now)
     }
 
     func lockNow() {

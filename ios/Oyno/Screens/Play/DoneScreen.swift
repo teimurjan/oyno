@@ -18,6 +18,8 @@ struct DoneScreen: View {
     @State private var bursts = 0
     @State private var lastBurst = Date.distantPast
     @State private var holding: CGFloat = 0
+    /// The offer being claimed, kept on screen until it leaves: claiming clears it in the store.
+    @State private var claimed: KidHoursEarned?
 
     /// `grown` opens on the planet already tapped, for the screenshot harness.
     init(minutes: Int, grown: Bool = false, onKeepPlaying: @escaping () -> Void, onLeave: @escaping () -> Void) {
@@ -236,7 +238,7 @@ struct DoneScreen: View {
         .frame(maxWidth: .infinity)
         .frame(height: Metric.tapTarget)
         .contentShape(.rect)
-        .holdToConfirm(progress: $holding, in: .capsule, action: claim)
+        .holdToConfirm(progress: $holding, in: .capsule, enabled: claimed == nil, action: claim)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(Text("Unlock my apps"))
@@ -244,7 +246,11 @@ struct DoneScreen: View {
     }
 
     private func claim() {
-        guard kidHours.claimEarned() else { return Haptics.warning() }
+        claimed = kidHours.claimable
+        guard kidHours.claimEarned() else {
+            claimed = nil
+            return Haptics.warning()
+        }
         onLeave()
     }
 
@@ -268,7 +274,7 @@ struct DoneScreen: View {
     /// another round or the end of the evening.
     private var choices: some View {
         VStack(spacing: 14) {
-            if let earned = kidHours.claimable {
+            if let earned = claimed ?? kidHours.claimable {
                 HStack(spacing: Metric.Space.m) {
                     Glyph(symbol: "lock.open", size: 19, weight: .semibold, color: Palette.pastelAmber.ink)
                         .frame(width: Metric.tapTarget, height: Metric.tapTarget)

@@ -100,12 +100,12 @@ export function clearStatusBar(device) {
 }
 
 /** Resolve, boot, build, install, pin: the simulator ready to photograph. `posture` asks for
- * the device on its side, open or closed, and comes back as the display to photograph. */
+ * the device on its side or closed, and comes back as the display to photograph. */
 export function prepareSimulator(name = DEFAULT_DEVICE, posture = {}) {
   console.log(`Resolving simulator "${name}"…`);
   const device = resolveDevice(name);
   bootIfNeeded(device);
-  const display = posture.landscape || posture.open !== undefined ? litDisplay(device, posture) : null;
+  const display = posture.landscape || posture.closed ? litDisplay(device, posture) : null;
   buildDebugApp(device);
   installApp(device);
   pinStatusBar(device);
@@ -114,10 +114,9 @@ export function prepareSimulator(name = DEFAULT_DEVICE, posture = {}) {
 
 /**
  * The lit display, refused unless it is in `posture`. Only Device Hub turns or folds a
- * simulator, so the run stops and says what to do there. `simctl io screenshot` reads the
- * primary display by default, which on an open iPhone Duo is the dark outer one.
+ * simulator, so the run stops and says what to do there.
  */
-function litDisplay(device, { landscape, open }) {
+function litDisplay(device, { landscape, closed }) {
   const file = path.join(CACHE_DIR, "displays.json");
   mkdirSync(CACHE_DIR, { recursive: true });
   execFileSync(
@@ -127,10 +126,7 @@ function litDisplay(device, { landscape, open }) {
   );
   const displays = JSON.parse(readFileSync(file, "utf8")).result.displays;
   const lit = displays.find((display) => display.active) ?? displays[0];
-  if (open === true && lit.primary) {
-    throw new Error(`The ${device.name} simulator is closed. Open it in Device Hub, then run again.`);
-  }
-  if (open === false && !lit.primary) {
+  if (closed && !lit.primary) {
     throw new Error(`The ${device.name} simulator is open. Close it in Device Hub, then run again.`);
   }
   const turned = ["rot90", "rot270"].includes(lit.currentOrientation);

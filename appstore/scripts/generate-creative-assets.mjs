@@ -46,10 +46,11 @@ const PLACEMENTS = {
   search: { w: 3840, h: 2560, sizes: [250, 228, 208, 190, 172] },
 };
 
-/** Each asset borrows a caption the listing already has, so nothing new needs translating. */
+/** Each asset borrows a caption the listing already has, so nothing new needs translating.
+ * Search carries the hook, the header the round's payoff beside the planet it grew. */
 const CREATIVES = [
-  { name: "header", placement: "header", caption: "together", screen: "home" },
-  { name: "search", placement: "search", caption: "kidhours", screen: "kidhours" },
+  { name: "header", placement: "header", caption: "unlock", screen: "done:grown" },
+  { name: "search", placement: "search", caption: "low", screen: "play:cushion-tunnel-toy" },
 ];
 
 /** A capture in the phone, leaning, with the shadow the screenshot frames give it. */

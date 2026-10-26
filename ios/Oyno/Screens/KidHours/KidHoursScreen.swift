@@ -19,6 +19,9 @@ struct KidHoursScreen: View {
         Group {
             if adaptive.columns == .two { split } else { column }
         }
+        // On the whole screen, so the card and everything under it move with the strip.
+        .animation(.snappy, value: kidHours.settings.unlock)
+        .animation(.snappy, value: kidHours.settings.earned)
         .toolbar {
             if adaptive.bars == .side, kidHours.isAuthorized {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -191,8 +194,6 @@ struct KidHoursScreen: View {
                     .buttonStyle(.plain)
                     unlock
                 }
-                .animation(.snappy, value: kidHours.settings.unlock)
-                .animation(.snappy, value: kidHours.settings.earned)
             }
         } else {
             Card(raised: true) {

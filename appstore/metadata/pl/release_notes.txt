@@ -1,2 +1,3 @@
-- Nowy ekran z planami. Pokazuje wieczór z Oyno: aplikacje czekają, a dziesięciominutowa zabawa jest gotowa.
-- Profil pokazuje twój plan i datę odnowienia. Z planem miesięcznym przejdziesz tam na roczny i zaoszczędzisz.
+- „Nie teraz” i „Odblokuj aplikacje” wypełniają się płynnie, gdy przytrzymujesz. Gdy aplikacje są otwarte, przytrzymanie nic nie robi.
+- Oyno uruchamia się szybciej.
+- Przycisk zamykania w profilu znów działa.

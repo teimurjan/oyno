@@ -1,2 +1,3 @@
-- Ein neuer Angebotsbildschirm. Er zeigt den Abend mit Oyno: Deine Apps warten, und ein Zehn-Minuten-Spiel ist bereit.
-- Im Profil siehst du dein Abo und wann es sich verlängert. Mit einem Monatsabo wechselst du dort zum Jahresabo und sparst.
+- „Nicht jetzt“ und „Apps freigeben“ füllen sich beim Halten jetzt gleichmäßig. Solange deine Apps offen sind, passiert beim Halten nichts.
+- Oyno startet schneller.
+- Der Schließen-Knopf im Profil funktioniert wieder.

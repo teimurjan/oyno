@@ -1,2 +1,3 @@
-- A new offer screen. It shows the evening Oyno gives you: your apps wait, and a ten-minute game is ready.
-- Profile shows your plan and when it renews. On a monthly plan, switch to yearly from there and save.
+- Holding “Not now” or “Unlock my apps” fills smoothly now. While your apps are open, the hold does nothing.
+- Oyno opens faster.
+- The close button in Profile works again.

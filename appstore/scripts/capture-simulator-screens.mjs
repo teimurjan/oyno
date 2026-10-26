@@ -7,7 +7,7 @@
 // The simulator itself — boot, build, install, launch, the crash check — is
 // lib/simulator.mjs.
 //
-// Usage: node appstore/scripts/capture-simulator-screens.mjs [--device=iphone|ipad|ipad-11|duo|duo-outer]
+// Usage: node appstore/scripts/capture-simulator-screens.mjs [--device=iphone|ipad|ipad-11|duo-outer]
 //                                                            ["iPhone 17"]
 //                                                            [--locales=en,ru]
 //                                                            [--screens=play,03]

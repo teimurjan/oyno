@@ -1,2 +1,3 @@
-- Un nouvel écran d’offre. Il montre la soirée avec Oyno : vos apps attendent et un jeu de dix minutes est prêt.
-- Le profil affiche votre formule et sa date de renouvellement. Avec la formule mensuelle, passez à l’annuelle depuis le profil et économisez.
+- « Pas maintenant » et « Débloquer mes apps » se remplissent en douceur quand vous maintenez. Tant que vos apps sont ouvertes, l’appui ne fait rien.
+- Oyno s’ouvre plus vite.
+- Le bouton de fermeture du profil fonctionne à nouveau.

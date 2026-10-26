@@ -1,13 +1,12 @@
 {
   "default": [
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Blokkeer apps] terwijl je speelt" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Batterij leeg? [Eén simpel spelletje, 5 min]" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Rondje klaar, [je apps 10 min open]" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Batterij leeg? [Speel vanaf de bank]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps op pauze] terwijl je speelt" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Eerst spelen, [dan 10 min scrollen]" },
+    { "slug": "find", "source": "09", "caption": "[500 makkelijke spelletjes], zonder voorbereiding" },
     { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 uur] samen, telefoon weg" },
     { "slug": "science", "source": "04", "callout": "evidence", "caption": "Elk spelletje [wetenschappelijk onderbouwd]" },
-    { "slug": "find", "source": "09", "caption": "[500 spelletjes], zonder voorbereiding" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Schermtijd beperken], tot op de minuut" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Met elk rondje [groeit er een wereld bij]" },
-    { "slug": "together", "photo": "together.jpg", "caption": "Op de planeet van je kind, [niet op je eigen]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Met elk rondje [groeit er een wereld bij]" }
   ]
 }

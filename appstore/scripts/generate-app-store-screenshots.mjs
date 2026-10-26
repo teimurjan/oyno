@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 // Composites the raw simulator captures (appstore/source/<tag>/*.png) into App
 // Store Connect assets for the iPhone 6.9" slot (1290x2796) — one framed
-// screenshot per captured screen. `--devices=ipad,ipad-11,duo,duo-outer` does the same for
-// the iPad 13" slot (2752x2064), the iPad 11" slot (2360x1640) and the iPhone Duo slot, inner
-// display (2853x2007) and outer display (1398x2034), from appstore/source/<device>/<tag>/.
+// screenshot per captured screen. `--devices=ipad,ipad-11,duo-outer` does the same for
+// the iPad 13" slot (2752x2064), the iPad 11" slot (2360x1640) and the iPhone Duo slot on its
+// outer display (1398x2034), from appstore/source/<device>/<tag>/.
 // Renders with headless Chromium (Playwright); everything is inlined as data
 // URIs, so there's no external asset serving.
 //
 // Usage: node appstore/scripts/generate-app-store-screenshots.mjs [--locales=en,de,fr]
 //                                                                 [--sources=03,play]
-//                                                                 [--devices=iphone,ipad,ipad-11,duo,duo-outer]
+//                                                                 [--devices=iphone,ipad,ipad-11,duo-outer]
 //
 // Where each render lands:
 //   appstore/screenshots/<ASC locale>/               deliver's screenshots_path, uploaded as-is
@@ -41,7 +41,6 @@ import {
   deviceFor,
   deviceGeometry,
   ensureDir,
-  escapeHtml,
   FACES,
   fontFaceCss,
   HIGHLIGHT_CSS,
@@ -53,7 +52,6 @@ import {
   ROOT,
   SCREENS,
   SCREENSHOTS_DIR,
-  SOURCE_DIR,
   sourceDirFor,
   WEB_DIR,
   WEB_FRAME,
@@ -84,45 +82,6 @@ const CAPTION_TOP = 120;
  * Fixed rather than derived from each caption's height: the store shows the set as a
  * filmstrip, and a device that moved frame to frame would read as a wobble. */
 const DEVICE_TOP = 560;
-
-/** A photo frame has no phone: the photo bleeds to every edge and fades into the canvas over
- * its lower part, where the caption sits, as on the funnel's teaser screen. The caption is
- * measured from the foot. A landscape canvas would crop the upright photo to a strip of
- * ceiling, so there the photo takes the left of the canvas at full height and the caption
- * sits beside it. */
-const PHOTO_CAPTION_ROOM = 596;
-const PHOTO_SIDE = { share: 0.46, gap: 120 };
-const PHOTO_MIMES = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png" };
-
-function photoFrameHtml(frame, canvas) {
-  const photoPath = path.join(SOURCE_DIR, frame.photo);
-  if (!existsSync(photoPath)) throw new Error(`No photo at ${path.relative(ROOT, photoPath)} for frame "${frame.slug}"`);
-  const mime = PHOTO_MIMES[path.extname(photoPath).toLowerCase()];
-  if (!mime) throw new Error(`${frame.photo}: expected a .jpg or .png`);
-  const photo = dataUri(photoPath, mime);
-  const captionStyle = `font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};`;
-
-  if (canvas.w > canvas.h) {
-    const width = canvas.w * PHOTO_SIDE.share;
-    return `
-  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
-    <img src="${photo}" style="position:absolute; left:0; top:0; width:${width}px; height:100%; object-fit:cover; object-position:center top;">
-    <div style="position:absolute; left:0; top:0; width:${width}px; height:100%; background:linear-gradient(to right, rgba(255,248,239,0) 72%, ${PALETTE.canvas} 100%);"></div>
-    <div class="caption" style="position:absolute; top:50%; transform:translateY(-50%); left:${width + PHOTO_SIDE.gap}px; right:${PHOTO_SIDE.gap}px; ${captionStyle}">
-      ${captionHtml(frame.caption)}
-    </div>
-  </div>`;
-  }
-
-  return `
-  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; background:${PALETTE.canvas};">
-    <img src="${photo}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;">
-    <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(255,248,239,0) 60%, ${PALETTE.canvas} 78%);"></div>
-    <div class="caption" style="position:absolute; top:${canvas.h - PHOTO_CAPTION_ROOM}px; left:88px; right:88px; ${captionStyle}">
-      ${captionHtml(frame.caption)}
-    </div>
-  </div>`;
-}
 
 /** A callout lifts one widget off the screen: the same capture, cropped to the widget the app
  * reported, drawn larger over it with the phone's shadow while a veil quiets the rest. */
@@ -169,7 +128,7 @@ function calloutHtml(frame, sourceDir, shotDataUri) {
     <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; border-radius:${toCanvas(CALLOUT.radiusPt) * zoom}px; overflow:hidden; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.28)); background-image:url('${shotDataUri}'); background-repeat:no-repeat; background-size:${capture.width * scale}px ${capture.height * scale}px; background-position:${-from.x * report.scale * scale}px ${-from.y * report.scale * scale}px;"></div>`;
 }
 
-/** iPad and iPhone Duo sit under a caption lined up with them, running off the foot like
+/** iPad and the closed iPhone Duo sit under a caption lined up with them, running off the foot like
  * the phone. The capture is the canvas's own size, so it fills the photograph's screen. */
 const SLATE = { top: 440, bleed: 120 };
 
@@ -217,7 +176,6 @@ function slateFrameHtml(frame, sourceDir, canvas, mockup) {
 
 function frameHtml(frame, sourceDir, device) {
   const { canvas, mockup } = deviceFor(device);
-  if (frame.photo) return photoFrameHtml(frame, canvas);
   if (device !== "iphone") return slateFrameHtml(frame, sourceDir, canvas, mockup);
   const sourcePath = path.join(sourceDir, `${frame.source}.png`);
   const shotDataUri = existsSync(sourcePath) ? dataUri(sourcePath, "image/png") : null;
@@ -258,12 +216,8 @@ const CAPTION_SIZES = [129, 115, 104, 92];
 const CAPTION_GAP = 28;
 const CAPTION_CEILING = DEVICE_TOP - CAPTION_GAP;
 
-/** Where a frame's caption must end: above the device, or for a photo, above the foot. */
-function captionCeiling(frame, device) {
-  const { canvas } = deviceFor(device);
-  if (frame.photo) return canvas.h - CAPTION_TOP;
-  return device === "iphone" ? CAPTION_CEILING : SLATE.top - CAPTION_GAP;
-}
+/** Where a frame's caption must end: above the device. */
+const captionCeiling = (device) => (device === "iphone" ? CAPTION_CEILING : SLATE.top - CAPTION_GAP);
 
 async function fitCaption(page, label, ceiling = CAPTION_CEILING) {
   for (const size of CAPTION_SIZES) {
@@ -407,12 +361,12 @@ async function renderLocale({ page, webPage, device, locale, sources }) {
     const nn = pad2(index + 1);
     await page.setContent(pageHtml(frame, { sourceDir, device }), { waitUntil: "load" });
     await page.evaluate(() => document.fonts.ready);
-    await fitCaption(page, `${device}/${locale}/${frame.slug}`, captionCeiling(frame, device));
+    await fitCaption(page, `${device}/${locale}/${frame.slug}`, captionCeiling(device));
 
     const png = path.join(outDir, `${prefix}${nn}-${frame.slug}.png`);
     await page.screenshot({ path: png });
     if (webDir) await writeWebFrame(webPage, png, path.join(webDir, `${nn}-${frame.slug}.webp`));
-    if (webDir && frame.source) {
+    if (webDir) {
       await writeWebFrame(webPage, path.join(sourceDir, `${frame.source}.png`), path.join(webDir, "screens", `${frame.slug}.webp`));
     }
     console.log(`  composited  ${prefix}${nn}-${frame.slug}.png`);

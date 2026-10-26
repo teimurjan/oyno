@@ -1,13 +1,12 @@
 {
   "default": [
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Blocca le app] mentre giocate" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Batteria scarica? [Un gioco facile, 5 min]" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Partita finita, [app sbloccate per 10 min]" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Batteria scarica? [Gioca dal divano]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[App in pausa] mentre giocate" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Prima giocate, [poi 10 min di telefono]" },
+    { "slug": "find", "source": "09", "caption": "[500 giochi facili], niente da preparare" },
     { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 ora] in famiglia, senza telefono" },
     { "slug": "science", "source": "04", "callout": "evidence", "caption": "Ogni gioco [basato sulla ricerca]" },
-    { "slug": "find", "source": "09", "caption": "[500 giochi], niente da preparare" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limiti di tempo] precisi al minuto" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Ogni partita [fa nascere un mondo]" },
-    { "slug": "together", "photo": "together.jpg", "caption": "Stai sul pianeta del tuo bambino, [non sul tuo]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Ogni partita [fa nascere un mondo]" }
   ]
 }

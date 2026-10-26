@@ -59,13 +59,21 @@ struct AppRoot: View {
             .id(language)
             .background(Palette.canvas.ignoresSafeArea())
             .task {
+                // The 3 MB game catalogue decodes under the splash, not when the tabs first draw.
+                Task.detached(priority: .userInitiated) { _ = ActivityCatalogue.bundled }
                 RoundLive.end()
                 oyno.load()
                 if let id = auth.currentUser?.id {
                     adoptedUserID = id
                     oyno.adopt(userID: id)
                 }
-                await purchases.resolveCachedEntitlement()
+                // Past the first run the entitlement gates writes, not what opens, so the
+                // splash does not wait on StoreKit.
+                if didFinishFirstRun {
+                    Task { await purchases.resolveCachedEntitlement() }
+                } else {
+                    await purchases.resolveCachedEntitlement()
+                }
                 isRestoring = needsEntitlement
                 didLoad = true
                 openPlayIfShieldAsked()

@@ -1,2 +1,3 @@
-- Una nuova schermata dei piani. Mostra la serata con Oyno: le tue app aspettano e un gioco di dieci minuti è pronto.
-- Il profilo mostra il tuo piano e quando si rinnova. Con il piano mensile, passa all’annuale da lì e risparmia.
+- «Non ora» e «Sblocca le app» si riempiono in modo fluido mentre tieni premuto. Finché le app sono aperte, tenerli premuti non fa nulla.
+- Oyno si apre più in fretta.
+- Il pulsante di chiusura del profilo funziona di nuovo.

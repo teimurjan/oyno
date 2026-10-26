@@ -38,7 +38,7 @@ function requireFastlane() {
   }
 }
 
-/** App Store Connect holds one iPhone Duo set per locale, both displays in it. */
+/** App Store Connect holds one iPhone Duo set of ten per locale. */
 const DUO_SET_LIMIT = 10;
 
 /** deliver learned the iPhone Duo's sizes after 2.241.0 (fastlane#30444). Before that it
@@ -47,13 +47,13 @@ const DUO_SET_LIMIT = 10;
 function requireDuoSupport() {
   const duoCounts = localeDirs(SCREENSHOTS_DIR).map((locale) => ({
     locale,
-    count: readdirSync(path.join(SCREENSHOTS_DIR, locale)).filter((file) => file.startsWith(DEVICES.duo.prefix)).length,
+    count: readdirSync(path.join(SCREENSHOTS_DIR, locale)).filter((file) => file.startsWith(DEVICES["duo-outer"].prefix)).length,
   }));
   if (!duoCounts.some(({ count }) => count)) return;
   const over = duoCounts.filter(({ count }) => count > DUO_SET_LIMIT);
   if (over.length) {
     const list = over.map(({ locale, count }) => `${locale} (${count})`).join(", ");
-    throw new Error(`The iPhone Duo set takes ${DUO_SET_LIMIT} screenshots, inner and outer together: ${list}. Delete the extra duo-* files.`);
+    throw new Error(`The iPhone Duo set takes ${DUO_SET_LIMIT} screenshots: ${list}. Delete the extra duo-outer-* files.`);
   }
   const version = execFileSync("fastlane", ["--version"]).toString().match(/fastlane (\d+)\.(\d+)\.(\d+)/)?.slice(1).map(Number);
   const known = version && (version[0] - 2 || version[1] - 241 || version[2]) > 0;

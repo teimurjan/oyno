@@ -425,7 +425,7 @@ struct HoldRow: View {
         .frame(height: adaptive.roomy ? 56 : 52)
         .contentShape(.rect)
         // The top row of its card, so the fill keeps the card's upper corners.
-        .holdToConfirm(progress: $progress, in: UnevenRoundedRectangle(topLeadingRadius: Metric.Radius.card, topTrailingRadius: Metric.Radius.card), action: action)
+        .holdToConfirm(progress: $progress, in: UnevenRoundedRectangle(topLeadingRadius: Metric.Radius.card, topTrailingRadius: Metric.Radius.card), enabled: enabled, action: action)
         .disabled(!enabled)
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)

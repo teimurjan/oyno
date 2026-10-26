@@ -1,13 +1,12 @@
 {
   "default": [
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Blokuj aplikacje], gdy się bawicie" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Padasz z nóg? [Jedna łatwa zabawa, 5 min]" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Po rundzie [aplikacje otwarte na 10 min]" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Padasz z nóg? [Baw się na leżąco]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Aplikacje pauzują] w czasie zabawy" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Najpierw zabawa, [potem 10 min telefonu]" },
+    { "slug": "find", "source": "09", "caption": "[500 łatwych zabaw] bez przygotowań" },
     { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[Godzina] z rodziną, bez telefonu" },
     { "slug": "science", "source": "04", "callout": "evidence", "caption": "Każda zabawa [poparta badaniami]" },
-    { "slug": "find", "source": "09", "caption": "[500 zabaw] bez przygotowań" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limity czasu przed ekranem] co do minuty" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Z każdą rundą [rośnie nowy świat]" },
-    { "slug": "together", "photo": "together.jpg", "caption": "Bądź na planecie dziecka, [nie w telefonie]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Z każdą rundą [rośnie nowy świat]" }
   ]
 }

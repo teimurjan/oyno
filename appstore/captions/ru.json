@@ -1,13 +1,12 @@
 {
   "default": [
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Приложения на паузе], пока вы играете" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Батарейка на нуле? [Одна лёгкая игра, 5 мин]" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Раунд сыгран — [приложения открыты на 10 мин]" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Батарейка на нуле? [Играйте лёжа]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Приложения на паузе] на время игры" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Сначала игра, [потом 10 мин в телефоне]" },
+    { "slug": "find", "source": "09", "caption": "[500 лёгких игр] без подготовки" },
     { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 час] всей семьёй — без телефона" },
     { "slug": "science", "source": "04", "callout": "evidence", "caption": "Каждая игра — [с опорой на науку]" },
-    { "slug": "find", "source": "09", "caption": "[500 игр] без подготовки" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Экранное время] по расписанию" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Каждый раунд [приближает новый мир]" },
-    { "slug": "together", "photo": "together.jpg", "caption": "Будьте на планете ребёнка, [а не на своей]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Каждый раунд [приближает новый мир]" }
   ]
 }

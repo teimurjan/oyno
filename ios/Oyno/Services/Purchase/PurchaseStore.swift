@@ -246,10 +246,9 @@ final class PurchaseStore {
     /// Everything this device can answer with no network: the App Store's own record of
     /// what this Apple ID owns, and the last server answer cached for this account.
     ///
-    /// Awaited before the first frame, because the entitlement is now what decides
-    /// whether the app opens at all — resolving it a moment later would flash the
-    /// paywall at somebody who has paid, on every cold launch, in a garage with no
-    /// signal. The authoritative read follows behind it and corrects both ways.
+    /// Awaited under the splash during the first run, where the entitlement decides
+    /// whether the paywall shows: resolving it a moment later would flash the paywall at
+    /// somebody who has paid. The authoritative read follows behind it and corrects both ways.
     func resolveCachedEntitlement() async {
         await refreshLocalEntitlement()
         seedCachedServerPaid(for: await userID())

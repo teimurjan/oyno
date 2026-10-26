@@ -25,10 +25,10 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 
 /** Which seeded screen the capture run photographs, and what it is filed as.
  *
- * The listing's argument, after the photo frame that opens it: the time together today, a game
- * for each battery level, every game there is and why they work, Kid hours and one schedule's
- * form, the apps a round earns back, and the next world to earn. The captions put the frames
- * in that order; the numbers here are the order the screens were added in.
+ * The screens behind the listing: the time together today, a game for each battery level, why
+ * the games work, Kid hours and one schedule's form, the next world to earn, the apps a round
+ * earns back and every game there is. The captions set the frames' order; the numbers here are
+ * the order the screens were added in.
  *
  * `nn` is what a caption's `source` points at, which is why adding a screen in the middle
  * renumbers the ones after it *and* every `appstore/captions/<tag>.json`. It lives here
@@ -54,15 +54,14 @@ export const SCREENS = [
 
 /** The store slots the kit fills, one simulator each.
  *
- * The iPhone set is a 6.3" capture in the phone mockup on the 6.9" canvas. iPad 13" and the
- * open iPhone Duo are photographed on their side, which is how the design canvas draws them:
- * two columns either side of the centre line. The closed Duo stays upright on its outer
- * display. Each capture is the slot's own size, so it is checked against `size`, and laid
- * under the transparent screen of `mockup`, measured in that photograph's pixels, its corners
- * clockwise from the top left. An upright photograph of a device shot on its side is
- * `turned`. The files carry `prefix`, because deliver files every size in a locale's folder
- * by its pixels. Both Duo sets fill the one iPhone Duo slot of ten, so each keeps only the
- * `slugs` it names: the open Duo drops the search. */
+ * The iPhone set is a 6.3" capture in the phone mockup on the 6.9" canvas. The iPads are
+ * photographed on their side, which is how the design canvas draws them. The iPhone Duo is
+ * shown closed, upright on its outer display. Each capture is the slot's own size, so it is
+ * checked against `size`, and laid under the transparent screen of `mockup`, measured in that
+ * photograph's pixels, its corners clockwise from the top left. An upright photograph of a
+ * device shot on its side is `turned`. The files carry `prefix`, because deliver files every
+ * size in a locale's folder by its pixels. A device with `slugs` keeps only the frames it
+ * has captures for. */
 export const DEVICES = {
   iphone: { simulator: "iPhone 17", canvas: { w: 1290, h: 2796 }, prefix: "" },
   ipad: {
@@ -83,23 +82,13 @@ export const DEVICES = {
     landscape: true,
     mockup: { file: path.join(SOURCE_DIR, "ipad-11-frame.png"), w: 2290, h: 3175, screen: { x: 121, y: 114, w: 2048, h: 2947, radius: [37, 37, 37, 37] }, turned: true },
   },
-  duo: {
-    simulator: "iPhone Duo",
-    canvas: { w: 2853, h: 2007 },
-    size: { w: 2853, h: 2007 },
-    prefix: "duo-",
-    landscape: true,
-    open: true,
-    slugs: ["together", "together-time", "low", "science", "kidhours", "schedule", "unlock", "worlds"],
-    mockup: { file: path.join(SOURCE_DIR, "duo-frame-open.png"), w: 1033, h: 750, screen: { x: 40, y: 40, w: 952, h: 670, radius: [55, 55, 55, 55] } },
-  },
   "duo-outer": {
     simulator: "iPhone Duo",
     canvas: { w: 1398, h: 2034 },
     size: { w: 1398, h: 2034 },
     prefix: "duo-outer-",
-    open: false,
-    slugs: ["low", "kidhours"],
+    closed: true,
+    slugs: ["low", "kidhours", "together-time", "science", "schedule", "worlds"],
     mockup: { file: path.join(SOURCE_DIR, "duo-frame.png"), w: 525, h: 732, screen: { x: 30, y: 27, w: 465, h: 677, radius: [9, 59, 59, 9] } },
   },
 };
@@ -222,7 +211,7 @@ export function captionsFor(tag) {
   // which uploads perfectly happily.
   for (const [index, frame] of frames.entries()) {
     if (!frame.slug) throw new Error(`${tag}: frame ${index + 1} has no slug`);
-    if (!frame.source === !frame.photo) throw new Error(`${tag}: frame ${index + 1} needs a source or a photo, not both`);
+    if (!frame.source) throw new Error(`${tag}: frame ${index + 1} has no source`);
   }
   return frames;
 }

@@ -176,18 +176,24 @@ struct IconButton: View {
     var tint: Color = Palette.ink
     let action: () -> Void
 
-    @State private var pressed = false
-
     var body: some View {
         Button(action: {
             Haptics.tap()
             action()
         }) {
             Glyph(symbol: symbol, size: size, color: tint)
-                .glyphButtonFace(side: side, pressed: pressed)
         }
-        .buttonStyle(.plain)
-        .onLongPressGesture(minimumDuration: 0, pressing: { pressed = $0 }, perform: {})
+        .buttonStyle(GlyphButtonStyle(side: side))
+    }
+}
+
+/// The pressed face comes from the style: a press gesture on top of the button would take
+/// the touch, and the action would never run.
+private struct GlyphButtonStyle: ButtonStyle {
+    let side: CGFloat
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.glyphButtonFace(side: side, pressed: configuration.isPressed)
     }
 }
 
@@ -278,24 +284,65 @@ struct HoldRing: View {
 extension View {
     /// Fires `action` once the finger has stayed down for two seconds — a tap is too easy to
     /// make without meaning it — filling `progress` on the way and emptying it on a lift.
-    /// The whole `shape` fills too, so the finger never hides how far along it is.
-    func holdToConfirm(progress: Binding<CGFloat>, in shape: some Shape, action: @escaping () -> Void) -> some View {
-        let seconds = 2.0
-        return background {
-            GeometryReader { space in
-                Palette.ink.opacity(0.08).frame(width: space.size.width * progress.wrappedValue)
+    /// The whole `shape` fills too, so the finger never hides how far along it is. Off, it
+    /// ignores the finger.
+    func holdToConfirm(
+        progress: Binding<CGFloat>,
+        in shape: some Shape,
+        enabled: Bool = true,
+        action: @escaping () -> Void
+    ) -> some View {
+        modifier(HoldToConfirm(progress: progress, shape: shape, enabled: enabled, action: action))
+    }
+}
+
+/// The hold keeps its own clock, so the fill that closes is the hold that fires. A finished
+/// hold stays full until the finger lifts or the control turns off, then fades.
+private struct HoldToConfirm<Fill: Shape>: ViewModifier {
+    @Binding var progress: CGFloat
+    let shape: Fill
+    let enabled: Bool
+    let action: () -> Void
+
+    @State private var clock: Task<Void, Never>?
+    @State private var confirmed = false
+
+    private static var seconds: Double { 2 }
+
+    func body(content: Content) -> some View {
+        content
+            .background {
+                GeometryReader { space in
+                    Palette.ink.opacity(0.08).frame(width: space.size.width * progress)
+                }
+                .clipShape(shape)
             }
-            .clipShape(shape)
-        }
-        .onLongPressGesture(minimumDuration: seconds) {
+            // Never performs: it only reports the finger going down and lifting.
+            .onLongPressGesture(minimumDuration: .infinity, maximumDistance: Metric.tapTarget, perform: {}, onPressingChanged: press)
+            .onChange(of: enabled) { _, on in
+                if !on { release() }
+            }
+            .onDisappear { clock?.cancel() }
+    }
+
+    private func press(_ down: Bool) {
+        guard down else { return release() }
+        guard enabled else { return }
+        confirmed = false
+        withAnimation(.linear(duration: Self.seconds)) { progress = 1 }
+        clock = Task {
+            try? await Task.sleep(for: .seconds(Self.seconds))
+            guard !Task.isCancelled else { return }
+            confirmed = true
             Haptics.success()
-            progress.wrappedValue = 0
-            action()
-        } onPressingChanged: { pressing in
-            withAnimation(pressing ? .linear(duration: seconds) : .easeOut(duration: 0.2)) {
-                progress.wrappedValue = pressing ? 1 : 0
-            }
+            withAnimation(.easeInOut(duration: 0.35)) { action() }
         }
+    }
+
+    private func release() {
+        clock?.cancel()
+        clock = nil
+        withAnimation(.easeOut(duration: confirmed ? 0.4 : 0.2)) { progress = 0 }
     }
 }
 

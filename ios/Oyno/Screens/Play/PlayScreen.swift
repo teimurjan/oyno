@@ -438,7 +438,7 @@ struct PlayScreen: View {
                 }
                 .buttonStyle(.plain)
                 Spacer()
-                if kidHours.isOnNow { notNow }
+                if kidHours.isOnNow { notNow.transition(.opacity) }
             }
         }
     }
@@ -454,7 +454,7 @@ struct PlayScreen: View {
         .padding(.horizontal, 12)
         .frame(height: Metric.tapTarget)
         .contentShape(.rect)
-        .holdToConfirm(progress: $holding, in: .capsule) { kidHours.takeNotNow() }
+        .holdToConfirm(progress: $holding, in: .capsule, enabled: kidHours.isOnNow) { kidHours.takeNotNow() }
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(.isButton)
         .accessibilityLabel(Text("Not now"))

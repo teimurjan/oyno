@@ -1,13 +1,12 @@
 {
   "default": [
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps sperren], während ihr spielt" },
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Akku leer? [Ein leichtes Spiel, 5 Min.]" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Runde gespielt, [Apps 10 Min. lang frei]" },
+    { "slug": "low", "source": "02", "callout": "battery", "caption": "Akku leer? [Spielen im Liegen]" },
+    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps pausieren], während ihr spielt" },
+    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Erst spielen, [dann 10 Min. scrollen]" },
+    { "slug": "find", "source": "09", "caption": "[500 leichte Spiele] ohne Vorbereitung" },
     { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 Std.] gemeinsam, Handy weg" },
     { "slug": "science", "source": "04", "callout": "evidence", "caption": "Jedes Spiel [wissenschaftlich fundiert]" },
-    { "slug": "find", "source": "09", "caption": "[500 Spiele] ohne Vorbereitung" },
     { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Bildschirmzeit-Limits] minutengenau" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Mit jeder Runde [wächst eine neue Welt]" },
-    { "slug": "together", "photo": "together.jpg", "caption": "Sei in der Welt deines Kindes, [nicht in deiner]" }
+    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Mit jeder Runde [wächst eine neue Welt]" }
   ]
 }
