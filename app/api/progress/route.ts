@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
-import { mergeProgress, Tally } from "@/lib/progress";
+import { Backup, mergeHistory, mergeProgress } from "@/lib/progress";
 import { getUserFromRequest } from "@/lib/supabase/auth";
 import { logFields, withLogging } from "@/lib/log";
 
 export const dynamic = "force-dynamic";
 
-/** Backs up the planet. The phone sends its totals and gets back the account's, so one call
- * both saves after a round and restores after a reinstall. Not gated on a subscription:
+/** Backs up the planet. The phone sends its totals, rounds and firsts and gets back the
+ * account's, so one call both saves after a round and restores after a reinstall. Not gated on a subscription:
  * the rounds it counts were already gated when they were played. */
 export const POST = withLogging("progress", async (request: Request) => {
   const user = await getUserFromRequest(request);
@@ -18,15 +18,19 @@ export const POST = withLogging("progress", async (request: Request) => {
   } catch {
     return NextResponse.json({ error: "bad_request" }, { status: 400 });
   }
-  const tally = Tally.safeParse(body);
-  if (!tally.success) return NextResponse.json({ error: "bad_request" }, { status: 400 });
+  const backup = Backup.safeParse(body);
+  if (!backup.success) return NextResponse.json({ error: "bad_request" }, { status: 400 });
 
-  const merged = await mergeProgress(user.id, tally.data);
-  if (!merged) {
+  const { history, ...tally } = backup.data;
+  const [merged, mergedHistory] = await Promise.all([
+    mergeProgress(user.id, tally),
+    history ? mergeHistory(user.id, history) : undefined,
+  ]);
+  if (!merged || mergedHistory === null) {
     logFields({ outcome: "write_failed" });
     return NextResponse.json({ error: "write_failed" }, { status: 500 });
   }
 
   logFields({ outcome: "merged", rounds: merged.rounds });
-  return NextResponse.json(merged);
+  return NextResponse.json(mergedHistory ? { ...merged, history: mergedHistory } : merged);
 });
