@@ -93,9 +93,9 @@ export const it: SiteCopy = {
           body: "Di’ a Oyno quanta batteria ti resta. Ti dà un gioco da dieci minuti, senza niente da preparare.",
         },
         {
-          shot: "/screenshots/it/screens/science.webp",
+          shot: "/screenshots/it/screens/growth.webp",
           title: "Giocare fa crescere",
-          body: "Ogni gioco allena attenzione, memoria o autocontrollo, e cita lo studio e la guida su cui si basa.",
+          body: "Ogni gioco allena attenzione, memoria o autocontrollo. Progressi mostra cosa avete allenato insieme, abilità per abilità.",
         },
         {
           shot: "/screenshots/it/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const it: SiteCopy = {
           body: "Quando il timer finisce, il tuo bambino tocca il pianeta. Il pianeta fiorisce e, dopo qualche partita, si apre un nuovo mondo.",
         },
         {
-          shot: "/screenshots/it/screens/together-time.webp",
-          title: "Il tempo insieme, contato",
-          body: "La schermata Home mostra per quanto tempo oggi il telefono è rimasto da parte, così vedi la serata che hai recuperato.",
+          shot: "/screenshots/it/screens/keepsake.webp",
+          title: "Un ricordo ogni sera",
+          body: "Ogni partita lascia un ricordo accanto al pianeta. La domenica, il pianeta vi scrive la lettera della settimana.",
         },
       ],
     },

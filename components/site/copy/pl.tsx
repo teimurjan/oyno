@@ -93,9 +93,9 @@ export const pl: SiteCopy = {
           body: "Powiedz Oyno, ile baterii ci zostało. Dostaniesz jedną zabawę na dziesięć minut, bez żadnych przygotowań.",
         },
         {
-          shot: "/screenshots/pl/screens/science.webp",
+          shot: "/screenshots/pl/screens/growth.webp",
           title: "Zabawa, która rozwija",
-          body: "Każda zabawa ćwiczy skupienie, pamięć lub samokontrolę i podaje badanie oraz poradnik, na których się opiera.",
+          body: "Każda zabawa ćwiczy skupienie, pamięć lub samokontrolę. Ekran Rozwój pokazuje, co ćwiczyliście razem, umiejętność po umiejętności.",
         },
         {
           shot: "/screenshots/pl/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const pl: SiteCopy = {
           body: "Gdy minutnik się skończy, dziecko dotyka planety. Planeta rozkwita, a co kilka rund otwiera się nowy świat.",
         },
         {
-          shot: "/screenshots/pl/screens/together-time.webp",
-          title: "Wspólny czas, policzony",
-          body: "Ekran Start pokazuje, jak długo telefon leżał dziś odłożony. Widać na nim wieczór, który udało ci się odzyskać.",
+          shot: "/screenshots/pl/screens/keepsake.webp",
+          title: "Pamiątka co wieczór",
+          body: "Każda runda zostawia pamiątkę przy planecie. W niedzielę planeta pisze do was list podsumowujący tydzień.",
         },
       ],
     },

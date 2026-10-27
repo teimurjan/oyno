@@ -96,9 +96,9 @@ export const en: SiteCopy = {
           body: "Tell Oyno how much battery you have left. It hands you one game for ten minutes, with nothing to set up.",
         },
         {
-          shot: "/screenshots/en-US/screens/science.webp",
+          shot: "/screenshots/en-US/screens/growth.webp",
           title: "Play that builds",
-          body: "Every game trains focus, memory or self-control, and names the study and the guide behind it.",
+          body: "Every game trains focus, memory or self-control. Growth shows what you two practiced, skill by skill.",
         },
         {
           shot: "/screenshots/en-US/screens/worlds.webp",
@@ -106,9 +106,9 @@ export const en: SiteCopy = {
           body: "When the timer ends, your kid taps the planet. It blooms, and every few rounds a new world opens.",
         },
         {
-          shot: "/screenshots/en-US/screens/together-time.webp",
-          title: "Time together, counted",
-          body: "Home shows how long the phone stayed down today, so you can see the evening you got back.",
+          shot: "/screenshots/en-US/screens/keepsake.webp",
+          title: "A keepsake each evening",
+          body: "A round leaves a keepsake by the planet. On Sunday, the planet writes you the week’s letter.",
         },
       ],
     },

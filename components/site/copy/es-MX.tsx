@@ -93,9 +93,9 @@ export const esMX: SiteCopy = {
           body: "Dile a Oyno cuánta batería te queda. Te da un juego de diez minutos, sin nada que preparar.",
         },
         {
-          shot: "/screenshots/es-MX/screens/science.webp",
+          shot: "/screenshots/es-MX/screens/growth.webp",
           title: "Juegos que entrenan",
-          body: "Cada juego entrena la atención, la memoria o el autocontrol, y te dice qué estudio y qué guía lo respaldan.",
+          body: "Cada juego entrena la atención, la memoria o el autocontrol. Crecimiento muestra lo que practicaron juntos, habilidad por habilidad.",
         },
         {
           shot: "/screenshots/es-MX/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const esMX: SiteCopy = {
           body: "Cuando suena el temporizador, tu peque toca el planeta. Florece, y cada pocas rondas se abre un mundo nuevo.",
         },
         {
-          shot: "/screenshots/es-MX/screens/together-time.webp",
-          title: "El tiempo juntos, contado",
-          body: "Inicio te muestra cuánto tiempo estuvo guardado el celular hoy, para que veas la tarde que recuperaste.",
+          shot: "/screenshots/es-MX/screens/keepsake.webp",
+          title: "Un recuerdo cada tarde",
+          body: "Cada ronda deja un recuerdo junto al planeta. El domingo, el planeta les escribe la carta de la semana.",
         },
       ],
     },

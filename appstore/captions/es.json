@@ -1,12 +1,12 @@
 {
   "default": [
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "¿Sin pilas? [Juega desde el sofá]" },
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps en pausa] mientras jugáis" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Primero jugad, [luego 10 min de móvil]" },
-    { "slug": "find", "source": "09", "caption": "[500 juegos fáciles], sin preparar nada" },
-    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 h] en familia, sin móvil" },
-    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Cada juego, [avalado por la ciencia]" },
-    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limita las pantallas] al minuto exacto" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Cada partida [hace crecer un mundo nuevo]" }
+    { "slug": "low", "source": "01", "callout": "battery", "caption": "¿Sin pilas? [Juega desde el sofá]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Juego con base científica, [niños más listos]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Deja el scroll, [invierte en tu peque]" },
+    { "slug": "keepsake", "source": "04", "caption": "Cada partida deja [un recuerdo]" },
+    { "slug": "home", "source": "05", "caption": "Vuestras tardes [hacen crecer un planeta]" },
+    { "slug": "letter", "source": "06", "caption": "Cada domingo, [una carta de vuestro planeta]" },
+    { "slug": "find", "source": "07", "caption": "[500 juegos fáciles], sin preparar nada" },
+    { "slug": "worlds", "source": "08", "callout": "worlds", "caption": "Cada partida [hace crecer un mundo nuevo]" }
   ]
 }

@@ -93,9 +93,9 @@ export const es: SiteCopy = {
           body: "Dile a Oyno cuánta batería te queda. Te da un juego de diez minutos, sin nada que preparar.",
         },
         {
-          shot: "/screenshots/es-ES/screens/science.webp",
+          shot: "/screenshots/es-ES/screens/growth.webp",
           title: "Juegos que suman",
-          body: "Cada juego entrena la atención, la memoria o el autocontrol, y cita el estudio y la guía en los que se basa.",
+          body: "Cada juego entrena la atención, la memoria o el autocontrol. Crecimiento muestra lo que habéis practicado juntos, habilidad a habilidad.",
         },
         {
           shot: "/screenshots/es-ES/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const es: SiteCopy = {
           body: "Cuando termina el temporizador, tu peque toca el planeta. Florece, y cada pocas partidas se desbloquea un mundo nuevo.",
         },
         {
-          shot: "/screenshots/es-ES/screens/together-time.webp",
-          title: "El tiempo juntos, contado",
-          body: "Inicio muestra cuánto rato ha estado hoy el móvil apartado, para que veas la tarde que has recuperado.",
+          shot: "/screenshots/es-ES/screens/keepsake.webp",
+          title: "Un recuerdo cada tarde",
+          body: "Cada partida deja un recuerdo junto al planeta. El domingo, el planeta os escribe la carta de la semana.",
         },
       ],
     },

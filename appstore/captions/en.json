@@ -1,12 +1,12 @@
 {
   "default": [
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Too tired to play? [Play lying down]" },
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps pause] while you play" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Play first, [then scroll for 10 min]" },
-    { "slug": "find", "source": "09", "caption": "[500 easy games], nothing to set up" },
-    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1h] of family time, phone down" },
-    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Every game [backed by research]" },
-    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Screen time limits] to the minute" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Every round [grows a new world]" }
+    { "slug": "low", "source": "01", "callout": "battery", "caption": "Too tired to play? [Play lying down]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Science-backed play, [smarter kids]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop doomscrolling, [invest in your kid]" },
+    { "slug": "keepsake", "source": "04", "caption": "Every round leaves [a keepsake]" },
+    { "slug": "home", "source": "05", "caption": "Your evenings [grow a little planet]" },
+    { "slug": "letter", "source": "06", "caption": "On Sunday, [a letter from your planet]" },
+    { "slug": "find", "source": "07", "caption": "[500 easy games], nothing to set up" },
+    { "slug": "worlds", "source": "08", "callout": "worlds", "caption": "Every round [grows a new world]" }
   ]
 }

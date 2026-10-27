@@ -93,9 +93,9 @@ export const ptBR: SiteCopy = {
           body: "Conte ao Oyno quanta bateria ainda te resta. Ele te dá uma brincadeira de dez minutos, sem nada para preparar.",
         },
         {
-          shot: "/screenshots/pt-BR/screens/science.webp",
+          shot: "/screenshots/pt-BR/screens/growth.webp",
           title: "Brincadeira que desenvolve",
-          body: "Cada brincadeira treina foco, memória ou autocontrole, e mostra o estudo e o guia por trás dela.",
+          body: "Cada brincadeira treina foco, memória ou autocontrole. Crescimento mostra o que vocês praticaram juntos, habilidade por habilidade.",
         },
         {
           shot: "/screenshots/pt-BR/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const ptBR: SiteCopy = {
           body: "Quando o timer acaba, seu filho toca no planeta. Ele floresce, e a cada poucas rodadas um novo mundo se abre.",
         },
         {
-          shot: "/screenshots/pt-BR/screens/together-time.webp",
-          title: "Tempo juntos, na ponta do lápis",
-          body: "A tela inicial mostra quanto tempo o celular ficou de lado hoje, para você ver a noite que recuperou.",
+          shot: "/screenshots/pt-BR/screens/keepsake.webp",
+          title: "Uma lembrança por noite",
+          body: "Cada rodada deixa uma lembrança perto do planeta. No domingo, o planeta escreve a carta da semana para vocês.",
         },
       ],
     },

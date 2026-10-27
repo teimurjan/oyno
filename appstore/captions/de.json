@@ -1,12 +1,12 @@
 {
   "default": [
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Akku leer? [Spielen im Liegen]" },
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[Apps pausieren], während ihr spielt" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Erst spielen, [dann 10 Min. scrollen]" },
-    { "slug": "find", "source": "09", "caption": "[500 leichte Spiele] ohne Vorbereitung" },
-    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 Std.] gemeinsam, Handy weg" },
-    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Jedes Spiel [wissenschaftlich fundiert]" },
-    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Bildschirmzeit-Limits] minutengenau" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Mit jeder Runde [wächst eine neue Welt]" }
+    { "slug": "low", "source": "01", "callout": "battery", "caption": "Akku leer? [Spielen im Liegen]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Spielen mit Wissenschaft, [klügere Kinder]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Schluss mit Doomscrolling, [Zeit fürs Kind]" },
+    { "slug": "keepsake", "source": "04", "caption": "Jede Runde hinterlässt [ein Andenken]" },
+    { "slug": "home", "source": "05", "caption": "Eure Abende [lassen einen Planeten wachsen]" },
+    { "slug": "letter", "source": "06", "caption": "Sonntags [ein Brief von eurem Planeten]" },
+    { "slug": "find", "source": "07", "caption": "[500 leichte Spiele] ohne Vorbereitung" },
+    { "slug": "worlds", "source": "08", "callout": "worlds", "caption": "Mit jeder Runde [wächst eine neue Welt]" }
   ]
 }

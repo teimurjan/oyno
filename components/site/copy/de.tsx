@@ -93,9 +93,9 @@ export const de: SiteCopy = {
           body: "Sag Oyno, wie voll dein Akku noch ist. Du bekommst ein Spiel für zehn Minuten, ganz ohne Vorbereitung.",
         },
         {
-          shot: "/screenshots/de-DE/screens/science.webp",
+          shot: "/screenshots/de-DE/screens/growth.webp",
           title: "Spielen, das stärkt",
-          body: "Jedes Spiel trainiert Konzentration, Gedächtnis oder Selbstkontrolle und nennt die Studie und den Leitfaden dahinter.",
+          body: "Jedes Spiel trainiert Konzentration, Gedächtnis oder Selbstkontrolle. Unter „Entwicklung“ siehst du, was ihr zusammen geübt habt, Fähigkeit für Fähigkeit.",
         },
         {
           shot: "/screenshots/de-DE/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const de: SiteCopy = {
           body: "Wenn der Timer abläuft, tippt dein Kind auf den Planeten. Er erblüht, und alle paar Runden öffnet sich eine neue Welt.",
         },
         {
-          shot: "/screenshots/de-DE/screens/together-time.webp",
-          title: "Gemeinsame Zeit, gezählt",
-          body: "Unter „Start“ siehst du, wie lange das Handy heute weggelegt blieb – den Abend, den du dir zurückgeholt hast.",
+          shot: "/screenshots/de-DE/screens/keepsake.webp",
+          title: "Ein Andenken pro Abend",
+          body: "Eine Runde lässt ein Andenken beim Planeten zurück. Am Sonntag schreibt euch der Planet den Brief der Woche.",
         },
       ],
     },

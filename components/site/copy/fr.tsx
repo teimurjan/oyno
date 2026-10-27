@@ -93,9 +93,9 @@ export const fr: SiteCopy = {
           body: "Dites à Oyno combien de batterie il vous reste. Il vous propose un jeu de dix minutes, sans rien à préparer.",
         },
         {
-          shot: "/screenshots/fr-FR/screens/science.webp",
+          shot: "/screenshots/fr-FR/screens/growth.webp",
           title: "Jouer pour grandir",
-          body: "Chaque jeu entraîne l’attention, la mémoire ou la maîtrise de soi, et cite l’étude et le guide sur lesquels il s’appuie.",
+          body: "Chaque jeu entraîne l’attention, la mémoire ou la maîtrise de soi. L’onglet Progrès montre ce que vous avez pratiqué ensemble, compétence par compétence.",
         },
         {
           shot: "/screenshots/fr-FR/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const fr: SiteCopy = {
           body: "Quand le minuteur sonne, votre enfant touche la planète. Elle fleurit et, au bout de quelques parties, un nouveau monde s’ouvre.",
         },
         {
-          shot: "/screenshots/fr-FR/screens/together-time.webp",
-          title: "Le temps ensemble, compté",
-          body: "L’onglet Accueil montre combien de temps le téléphone est resté posé aujourd’hui : vous voyez la soirée que vous avez récupérée.",
+          shot: "/screenshots/fr-FR/screens/keepsake.webp",
+          title: "Un souvenir chaque soir",
+          body: "Chaque partie laisse un souvenir près de la planète. Le dimanche, la planète vous écrit la lettre de la semaine.",
         },
       ],
     },

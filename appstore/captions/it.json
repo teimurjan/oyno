@@ -1,12 +1,12 @@
 {
   "default": [
-    { "slug": "low", "source": "02", "callout": "battery", "caption": "Batteria scarica? [Gioca dal divano]" },
-    { "slug": "kidhours", "source": "05", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "[App in pausa] mentre giocate" },
-    { "slug": "unlock", "source": "08", "callout": "unlock", "caption": "Prima giocate, [poi 10 min di telefono]" },
-    { "slug": "find", "source": "09", "caption": "[500 giochi facili], niente da preparare" },
-    { "slug": "together-time", "source": "01", "callout": "totals", "zoom": 1.8, "caption": "[1 ora] in famiglia, senza telefono" },
-    { "slug": "science", "source": "04", "callout": "evidence", "caption": "Ogni gioco [basato sulla ricerca]" },
-    { "slug": "schedule", "source": "06", "callout": "sheet", "caption": "[Limiti di tempo] precisi al minuto" },
-    { "slug": "worlds", "source": "07", "callout": "worlds", "caption": "Ogni partita [fa nascere un mondo]" }
+    { "slug": "low", "source": "01", "callout": "battery", "caption": "Batteria scarica? [Gioca dal divano]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Gioco basato sulla scienza, [bimbi più svegli]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Basta scroll, [investi nel tuo bimbo]" },
+    { "slug": "keepsake", "source": "04", "caption": "Ogni partita lascia [un ricordo]" },
+    { "slug": "home", "source": "05", "caption": "Le vostre serate [fanno crescere un pianeta]" },
+    { "slug": "letter", "source": "06", "caption": "La domenica, [una lettera dal vostro pianeta]" },
+    { "slug": "find", "source": "07", "caption": "[500 giochi facili], niente da preparare" },
+    { "slug": "worlds", "source": "08", "callout": "worlds", "caption": "Ogni partita [fa nascere un mondo]" }
   ]
 }

@@ -25,10 +25,9 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
 
 /** Which seeded screen the capture run photographs, and what it is filed as.
  *
- * The screens behind the listing: the time together today, a game for each battery level, why
- * the games work, Kid hours and one schedule's form, the next world to earn, the apps a round
- * earns back and every game there is. The captions set the frames' order; the numbers here are
- * the order the screens were added in.
+ * The screens behind the listing, numbered in the listing's order: a game for a low battery,
+ * what the games grew, Kid hours, the keepsake a round left, the planet, the Sunday letter,
+ * every game there is and the next world to earn.
  *
  * `nn` is what a caption's `source` points at, which is why adding a screen in the middle
  * renumbers the ones after it *and* every `appstore/captions/<tag>.json`. It lives here
@@ -36,20 +35,16 @@ export const CAPTIONS_DIR = path.join(APPSTORE_DIR, "captions");
  * what to photograph, once for what to composite — and two copies of it would let a screen
  * exist on one of those lists and not the other. */
 export const SCREENS = [
-  // The tally wheel rolls in after the lines, so it needs longer than the default to settle.
-  { nn: "01", screen: "home" },
-  // Named games, so every language shows the three whose translations were reviewed.
-  { nn: "02", screen: "play:cushion-tunnel-toy" },
-  { nn: "03", screen: "play:sock-delivery" },
-  { nn: "04", screen: "play:cup-drum-turns:why" },
-  { nn: "05", screen: "kidhours" },
-  // The sheet slides up over the screen after launch.
-  { nn: "06", screen: "schedule", delay: 6000 },
+  // A named game, so every language shows the one whose translation was reviewed.
+  { nn: "01", screen: "play:cushion-tunnel-toy" },
+  { nn: "02", screen: "growth" },
+  { nn: "03", screen: "kidhours" },
+  { nn: "04", screen: "done:keepsake" },
+  { nn: "05", screen: "home" },
+  { nn: "06", screen: "letter:open" },
+  { nn: "07", screen: "find" },
   // The iPad still shows the splash fading out at the default delay.
-  { nn: "07", screen: "worlds", delay: 6000 },
-  // The round's end, the planet already tapped and the unlock it earned in the sheet.
-  { nn: "08", screen: "done:grown" },
-  { nn: "09", screen: "find" },
+  { nn: "08", screen: "worlds", delay: 6000 },
 ];
 
 /** The store slots the kit fills, one simulator each.
@@ -88,7 +83,7 @@ export const DEVICES = {
     size: { w: 1398, h: 2034 },
     prefix: "duo-outer-",
     closed: true,
-    slugs: ["low", "kidhours", "together-time", "science", "schedule", "worlds"],
+    slugs: ["low", "growth", "kidhours", "home", "letter", "worlds"],
     mockup: { file: path.join(SOURCE_DIR, "duo-frame.png"), w: 525, h: 732, screen: { x: 30, y: 27, w: 465, h: 677, radius: [9, 59, 59, 9] } },
   },
 };

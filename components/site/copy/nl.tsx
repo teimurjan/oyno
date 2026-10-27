@@ -93,9 +93,9 @@ export const nl: SiteCopy = {
           body: "Vertel Oyno hoe vol je batterij nog is. Je krijgt één spelletje van tien minuten, zonder voorbereiding.",
         },
         {
-          shot: "/screenshots/nl-NL/screens/science.webp",
+          shot: "/screenshots/nl-NL/screens/growth.webp",
           title: "Spelen waar ze van groeien",
-          body: "Elk spelletje traint concentratie, geheugen of zelfbeheersing, en noemt het onderzoek en de richtlijn erachter.",
+          body: "Elk spelletje traint concentratie, geheugen of zelfbeheersing. Groei laat zien wat jullie samen oefenden, vaardigheid voor vaardigheid.",
         },
         {
           shot: "/screenshots/nl-NL/screens/worlds.webp",
@@ -103,9 +103,9 @@ export const nl: SiteCopy = {
           body: "Als de timer afloopt, tikt je kind op de planeet. Die bloeit op, en om de paar rondjes gaat er een nieuwe wereld open.",
         },
         {
-          shot: "/screenshots/nl-NL/screens/together-time.webp",
-          title: "Tijd samen, bijgehouden",
-          body: "Home laat zien hoe lang je telefoon vandaag wegbleef, zodat je ziet hoeveel avond je terugkreeg.",
+          shot: "/screenshots/nl-NL/screens/keepsake.webp",
+          title: "Elke avond een aandenken",
+          body: "Een rondje laat een aandenken achter bij de planeet. Op zondag schrijft de planeet jullie de brief van de week.",
         },
       ],
     },

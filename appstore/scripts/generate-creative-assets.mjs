@@ -47,9 +47,9 @@ const PLACEMENTS = {
 };
 
 /** Each asset borrows a caption the listing already has, so nothing new needs translating.
- * Search carries the hook, the header the round's payoff beside the planet it grew. */
+ * Search carries the hook, the header the keepsake a round left beside the planet it grew. */
 const CREATIVES = [
-  { name: "header", placement: "header", caption: "unlock", screen: "done:grown" },
+  { name: "header", placement: "header", caption: "keepsake", screen: "done:keepsake" },
   { name: "search", placement: "search", caption: "low", screen: "play:cushion-tunnel-toy" },
 ];
 
