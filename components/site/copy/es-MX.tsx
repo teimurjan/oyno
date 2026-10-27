@@ -77,37 +77,20 @@ export const esMX: SiteCopy = {
       },
     },
     proof: {
-      heading: "Una tarde con Oyno",
-      sub: "Sin fuerza de voluntad. El celular se pausa antes de que tengas que decidir.",
+      heading: "Juego fácil para papás cansados",
+      sub: "Un juego, un cuento, el baño o cocinar juntos: cada rato en familia hace crecer su planeta.",
       previous: "Pantalla anterior",
       next: "Pantalla siguiente",
-      steps: [
-        {
-          shot: "/screenshots/es-MX/screens/kidhours.webp",
-          title: "Empieza el Tiempo en familia",
-          body: "A la hora que pusiste, las apps que elegiste se pausan. Teléfono, Mensajes y Mapas siguen abiertos.",
-        },
-        {
-          shot: "/screenshots/es-MX/screens/low.webp",
-          title: "Algo fácil",
-          body: "Dile a Oyno cuánta batería te queda. Te da un juego de diez minutos, sin nada que preparar.",
-        },
-        {
-          shot: "/screenshots/es-MX/screens/growth.webp",
-          title: "Juegos que entrenan",
-          body: "Cada juego entrena la atención, la memoria o el autocontrol. Crecimiento muestra lo que practicaron juntos, habilidad por habilidad.",
-        },
-        {
-          shot: "/screenshots/es-MX/screens/worlds.webp",
-          title: "El planeta crece",
-          body: "Cuando suena el temporizador, tu peque toca el planeta. Florece, y cada pocas rondas se abre un mundo nuevo.",
-        },
-        {
-          shot: "/screenshots/es-MX/screens/keepsake.webp",
-          title: "Un recuerdo cada tarde",
-          body: "Cada ronda deja un recuerdo junto al planeta. El domingo, el planeta les escribe la carta de la semana.",
-        },
-      ],
+      bodies: {
+        low: "Dile a Oyno cómo va tu batería: baja, media o llena. Te da un juego de 5 a 15 minutos sin nada que preparar y, con la batería baja, uno para jugar acostado.",
+        growth: "Cada juego entrena la atención, la memoria de trabajo, el autocontrol o la flexibilidad mental, y cita el estudio y la guía que lo respaldan. Crecimiento muestra lo que practicaron juntos, habilidad por habilidad.",
+        kidhours: "Crea horarios para las noches de escuela, las mañanas de fin de semana o el baño y la hora de dormir, cada uno con sus apps en pausa. Las apps que siempre necesitas siguen abiertas.",
+        keepsake: "Al terminar una ronda, tu peque toca el planeta y puede aparecer un pequeño recuerdo a su lado. Hay 24 por encontrar, y algunos son raros.",
+        home: "Juegos, lectura, baño y cocina: todo cuenta. Inicio te guarda una cosa fácil para esta tarde y muestra cuánto falta para el próximo mundo.",
+        letter: "Cada domingo, el planeta les escribe sobre su semana: las tardes juntos, a qué jugaron y las primeras veces que notaste. Agrega una línea y mándasela a la familia.",
+        find: "500 juegos de 0 a 5 años, cada uno en tres pasos cortos. Búscalos todos o deja que Oyno te dé uno.",
+        worlds: "Cada ronda hace florecer el planeta, y se abren 31 mundos mientras juegan. Saltarte un día no cuesta nada: el planeta nunca se marchita.",
+      },
     },
     author: {
       heading: "Por qué hice Oyno",
@@ -126,7 +109,7 @@ export const esMX: SiteCopy = {
     },
     plan: {
       eyebrow: "Un solo plan, todo incluido",
-      pitch: "Tiempo en familia, un juego nuevo cada tarde y todos los mundos que desbloquee tu familia. Cancela cuando quieras.",
+      pitch: "Tiempo en familia, 500 juegos, los recuerdos, la carta del domingo y todos los mundos que desbloquee tu familia. Cancela cuando quieras.",
       monthly: "Mensual",
       yearly: "Anual",
       cta: "Empezar",

@@ -77,37 +77,20 @@ export const ptBR: SiteCopy = {
       },
     },
     proof: {
-      heading: "Uma noite com o Oyno",
-      sub: "Sem depender de força de vontade. O celular já está pausado antes de você ter que decidir.",
+      heading: "Brincadeira fácil para pais cansados",
+      sub: "Uma brincadeira, um livro, o banho ou cozinhar juntos: todo tempo em família faz seu planeta crescer.",
       previous: "Tela anterior",
       next: "Próxima tela",
-      steps: [
-        {
-          shot: "/screenshots/pt-BR/screens/kidhours.webp",
-          title: "Começa o Tempo em família",
-          body: "No horário que você definiu, os apps que você escolheu entram em pausa. Telefone, Mensagens e Mapas continuam liberados.",
-        },
-        {
-          shot: "/screenshots/pt-BR/screens/low.webp",
-          title: "Uma brincadeira fácil",
-          body: "Conte ao Oyno quanta bateria ainda te resta. Ele te dá uma brincadeira de dez minutos, sem nada para preparar.",
-        },
-        {
-          shot: "/screenshots/pt-BR/screens/growth.webp",
-          title: "Brincadeira que desenvolve",
-          body: "Cada brincadeira treina foco, memória ou autocontrole. Crescimento mostra o que vocês praticaram juntos, habilidade por habilidade.",
-        },
-        {
-          shot: "/screenshots/pt-BR/screens/worlds.webp",
-          title: "O planeta cresce",
-          body: "Quando o timer acaba, seu filho toca no planeta. Ele floresce, e a cada poucas rodadas um novo mundo se abre.",
-        },
-        {
-          shot: "/screenshots/pt-BR/screens/keepsake.webp",
-          title: "Uma lembrança por noite",
-          body: "Cada rodada deixa uma lembrança perto do planeta. No domingo, o planeta escreve a carta da semana para vocês.",
-        },
-      ],
+      bodies: {
+        low: "Conte ao Oyno como está sua bateria: baixa, média ou cheia. Você recebe uma brincadeira de 5 a 15 minutos, sem nada para preparar, e com a bateria baixa, uma para fazer deitado.",
+        growth: "Cada brincadeira treina foco, memória de trabalho, autocontrole ou flexibilidade mental, e cita o estudo e o guia por trás dela. Crescimento mostra o que vocês praticaram juntos, habilidade por habilidade.",
+        kidhours: "Crie horários para as noites de aula, as manhãs de fim de semana ou o banho e a hora de dormir, cada um com seus apps em pausa. Os apps de que você sempre precisa continuam liberados.",
+        keepsake: "No fim de uma rodada, seu filho toca no planeta e uma pequena lembrança pode aparecer ao lado dele. São 24 para encontrar, e algumas são raras.",
+        home: "Brincadeiras, leitura, banho e cozinha: tudo conta. O Início guarda uma coisa fácil para hoje à noite e mostra quanto falta para o próximo mundo.",
+        letter: "Todo domingo, o planeta escreve sobre a semana de vocês: as noites juntos, as brincadeiras e as primeiras vezes que você notou. Escreva uma linha e envie para a família.",
+        find: "500 brincadeiras de 0 a 5 anos, cada uma em três passos curtos. Busque entre todas ou deixe o Oyno escolher uma.",
+        worlds: "Cada rodada faz o planeta florescer, e 31 mundos se abrem enquanto vocês brincam. Pular um dia não custa nada: o planeta nunca murcha.",
+      },
     },
     author: {
       heading: "Por que criei o Oyno",
@@ -126,7 +109,7 @@ export const ptBR: SiteCopy = {
     },
     plan: {
       eyebrow: "Um plano, tudo incluído",
-      pitch: "Tempo em família, uma brincadeira nova toda noite e todos os mundos que sua família desbloquear. Cancele quando quiser.",
+      pitch: "Tempo em família, 500 brincadeiras, as lembranças, a carta de domingo e todos os mundos que sua família desbloquear. Cancele quando quiser.",
       monthly: "Mensal",
       yearly: "Anual",
       cta: "Começar",

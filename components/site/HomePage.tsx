@@ -9,12 +9,13 @@ import { LanguageSwitch } from "@/components/site/SiteShell";
 import { BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/paths";
 import { GAMES_PATH } from "@/lib/games/hubs";
 import { funnelPath, pathFor, type Lang } from "@/lib/i18n";
+import { listingFrames } from "@/lib/listingFrames";
 import { formatMoney, planListQuote } from "@/lib/plans";
 import { homeStructuredData } from "@/lib/seo";
 
 /**
- * Hero (the pain in the ad's words, beside the planet), one proof section (an evening with
- * Oyno), then the price. Every call to action goes to `/start`.
+ * Hero (the pain in the ad's words, beside the planet), one proof section (the App Store
+ * listing's screens and captions), then the price. Every call to action goes to `/start`.
  */
 export function HomePage({ lang }: { lang: Lang }) {
   const copy = copyFor(lang);
@@ -92,7 +93,7 @@ export function HomePage({ lang }: { lang: Lang }) {
         <div className="shell py-16">
           <h2 className="text-[30px] font-extrabold tracking-[-0.03em] text-ink">{home.proof.heading}</h2>
           <p className="mt-3 max-w-2xl text-[16px] text-muted">{home.proof.sub}</p>
-          <ScreenSlides proof={home.proof} />
+          <ScreenSlides frames={listingFrames(lang)} proof={home.proof} />
         </div>
       </section>
 

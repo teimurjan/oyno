@@ -77,37 +77,20 @@ export const pl: SiteCopy = {
       },
     },
     proof: {
-      heading: "Wieczór z Oyno",
-      sub: "Silna wola nie jest potrzebna. Telefon milknie, zanim musisz cokolwiek postanowić.",
+      heading: "Łatwa zabawa dla zmęczonych rodziców",
+      sub: "Zabawa, książka, kąpiel czy wspólne gotowanie: każda chwila razem sprawia, że wasza planeta rośnie.",
       previous: "Poprzedni ekran",
       next: "Następny ekran",
-      steps: [
-        {
-          shot: "/screenshots/pl/screens/kidhours.webp",
-          title: "Zaczyna się Czas z dzieckiem",
-          body: "O ustawionej godzinie wybrane aplikacje zostają wstrzymane. Telefon, Wiadomości i Mapy działają dalej.",
-        },
-        {
-          shot: "/screenshots/pl/screens/low.webp",
-          title: "Jedna łatwa zabawa",
-          body: "Powiedz Oyno, ile baterii ci zostało. Dostaniesz jedną zabawę na dziesięć minut, bez żadnych przygotowań.",
-        },
-        {
-          shot: "/screenshots/pl/screens/growth.webp",
-          title: "Zabawa, która rozwija",
-          body: "Każda zabawa ćwiczy skupienie, pamięć lub samokontrolę. Ekran Rozwój pokazuje, co ćwiczyliście razem, umiejętność po umiejętności.",
-        },
-        {
-          shot: "/screenshots/pl/screens/worlds.webp",
-          title: "Planeta rośnie",
-          body: "Gdy minutnik się skończy, dziecko dotyka planety. Planeta rozkwita, a co kilka rund otwiera się nowy świat.",
-        },
-        {
-          shot: "/screenshots/pl/screens/keepsake.webp",
-          title: "Pamiątka co wieczór",
-          body: "Każda runda zostawia pamiątkę przy planecie. W niedzielę planeta pisze do was list podsumowujący tydzień.",
-        },
-      ],
+      bodies: {
+        low: "Powiedz Oyno, ile masz baterii: niska, średnia czy pełna. Dostaniesz jedną zabawę na 5 do 15 minut bez przygotowań, a przy niskiej baterii taką, którą zrobisz na leżąco.",
+        growth: "Każda zabawa ćwiczy skupienie, pamięć roboczą, samokontrolę lub elastyczne myślenie i podaje badanie oraz poradnik, na których się opiera. Ekran Rozwój pokazuje, co ćwiczyliście razem, umiejętność po umiejętności.",
+        kidhours: "Ustaw harmonogramy na szkolne wieczory, weekendowe poranki albo kąpiel i sen, każdy z własnymi aplikacjami do wstrzymania. Aplikacje, których zawsze potrzebujesz, działają dalej.",
+        keepsake: "Po rundzie dziecko dotyka planety, a obok może pojawić się mała pamiątka. Jest ich 24 do znalezienia, a kilka jest rzadkich.",
+        home: "Zabawy, czytanie, kąpiel i gotowanie liczą się tak samo. Ekran główny trzyma jedną łatwą rzecz na dziś wieczór i pokazuje, jak blisko jest następny świat.",
+        letter: "W każdą niedzielę planeta pisze o waszym tygodniu: o wspólnych wieczorach, zabawach i pierwszych razach waszego dziecka. Dopisz zdanie i wyślij list rodzinie.",
+        find: "500 zabaw dla dzieci od 0 do 5 lat, każda w trzech krótkich krokach. Przeszukaj wszystkie albo pozwól, żeby Oyno wybrało jedną.",
+        worlds: "Każda runda sprawia, że planeta rozkwita, a w trakcie zabawy otwiera się 31 światów. Opuszczony dzień nic nie kosztuje: planeta nigdy nie więdnie.",
+      },
     },
     author: {
       heading: "Dlaczego stworzyłem Oyno",
@@ -126,7 +109,7 @@ export const pl: SiteCopy = {
     },
     plan: {
       eyebrow: "Jeden plan, wszystko w środku",
-      pitch: "Czas z dzieckiem, nowa zabawa co wieczór i wszystkie światy, które odblokuje twoja rodzina. Anulujesz w każdej chwili.",
+      pitch: "Czas z dzieckiem, 500 zabaw, pamiątki, niedzielny list i wszystkie światy, które odblokuje twoja rodzina. Anulujesz w każdej chwili.",
       monthly: "Miesięczna",
       yearly: "Roczna",
       cta: "Zacznij",

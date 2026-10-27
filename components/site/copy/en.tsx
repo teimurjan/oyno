@@ -80,37 +80,20 @@ export const en: SiteCopy = {
       },
     },
     proof: {
-      heading: "An evening with Oyno",
-      sub: "No willpower required. The phone is paused before you have to decide.",
+      heading: "Easy play for tired parents",
+      sub: "A game, a book, bath time or cooking dinner: every kind of time together grows your planet.",
       previous: "Previous screen",
       next: "Next screen",
-      steps: [
-        {
-          shot: "/screenshots/en-US/screens/kidhours.webp",
-          title: "Kid hours start",
-          body: "At the time you set, the apps you picked pause. Phone, Messages and Maps stay open.",
-        },
-        {
-          shot: "/screenshots/en-US/screens/low.webp",
-          title: "One easy thing",
-          body: "Tell Oyno how much battery you have left. It hands you one game for ten minutes, with nothing to set up.",
-        },
-        {
-          shot: "/screenshots/en-US/screens/growth.webp",
-          title: "Play that builds",
-          body: "Every game trains focus, memory or self-control. Growth shows what you two practiced, skill by skill.",
-        },
-        {
-          shot: "/screenshots/en-US/screens/worlds.webp",
-          title: "The planet grows",
-          body: "When the timer ends, your kid taps the planet. It blooms, and every few rounds a new world opens.",
-        },
-        {
-          shot: "/screenshots/en-US/screens/keepsake.webp",
-          title: "A keepsake each evening",
-          body: "A round leaves a keepsake by the planet. On Sunday, the planet writes you the week’s letter.",
-        },
-      ],
+      bodies: {
+        low: "Tell Oyno your battery: low, okay or full. You get one game for 5 to 15 minutes with nothing to set up, and a low battery gets one you can play lying down.",
+        growth: "Every game trains focus, working memory, self-control or flexible thinking, and names the study and the guide behind it. Growth shows what you two practiced, skill by skill.",
+        kidhours: "Make a schedule for school nights, weekend mornings or bath and bed, each with its own apps to pause. The apps you always need stay open.",
+        keepsake: "When a round ends, your kid taps the planet and a little keepsake can wash up beside it. There are 24 to find, and a few are rare.",
+        home: "Games, reading, bath time and cooking all count. Home holds tonight’s one easy thing and shows how close the next world is.",
+        letter: "Every Sunday the planet writes about your week: the evenings you came, what you played and the firsts you noticed. Add a line and send it to the family.",
+        find: "500 games for ages 0 to 5, each in three short steps. Search them all, or let Oyno deal you one.",
+        worlds: "Every round helps the planet bloom, and 31 worlds open as you play. A skipped day costs nothing: the planet never wilts.",
+      },
     },
     author: {
       heading: "Why I made Oyno",
@@ -129,7 +112,7 @@ export const en: SiteCopy = {
     },
     plan: {
       eyebrow: "One plan, everything in it",
-      pitch: "Kid hours, a new game every evening and every world your family unlocks. Cancel any time.",
+      pitch: "Kid hours, 500 games, keepsakes, the Sunday letter and every world your family unlocks. Cancel any time.",
       monthly: "Monthly",
       yearly: "Yearly",
       cta: "Get started",

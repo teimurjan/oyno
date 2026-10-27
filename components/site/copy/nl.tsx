@@ -77,37 +77,20 @@ export const nl: SiteCopy = {
       },
     },
     proof: {
-      heading: "Een avond met Oyno",
-      sub: "Geen wilskracht nodig. Je telefoon staat al op pauze voordat je hoeft te kiezen.",
+      heading: "Makkelijk spelen voor vermoeide ouders",
+      sub: "Een spelletje, een boek, in bad of samen koken: elk moment samen laat jullie planeet groeien.",
       previous: "Vorig scherm",
       next: "Volgend scherm",
-      steps: [
-        {
-          shot: "/screenshots/nl-NL/screens/kidhours.webp",
-          title: "Gezinstijd begint",
-          body: "Op het tijdstip dat je instelt, gaan de apps die je koos op pauze. Telefoon, Berichten en Kaarten blijven open.",
-        },
-        {
-          shot: "/screenshots/nl-NL/screens/low.webp",
-          title: "Iets makkelijks",
-          body: "Vertel Oyno hoe vol je batterij nog is. Je krijgt één spelletje van tien minuten, zonder voorbereiding.",
-        },
-        {
-          shot: "/screenshots/nl-NL/screens/growth.webp",
-          title: "Spelen waar ze van groeien",
-          body: "Elk spelletje traint concentratie, geheugen of zelfbeheersing. Groei laat zien wat jullie samen oefenden, vaardigheid voor vaardigheid.",
-        },
-        {
-          shot: "/screenshots/nl-NL/screens/worlds.webp",
-          title: "De planeet groeit",
-          body: "Als de timer afloopt, tikt je kind op de planeet. Die bloeit op, en om de paar rondjes gaat er een nieuwe wereld open.",
-        },
-        {
-          shot: "/screenshots/nl-NL/screens/keepsake.webp",
-          title: "Elke avond een aandenken",
-          body: "Een rondje laat een aandenken achter bij de planeet. Op zondag schrijft de planeet jullie de brief van de week.",
-        },
-      ],
+      bodies: {
+        low: "Vertel Oyno hoe vol je batterij is: laag, half of vol. Je krijgt één spelletje van 5 tot 15 minuten zonder voorbereiding, en bij een lege batterij een dat je liggend speelt.",
+        growth: "Elk spelletje traint concentratie, werkgeheugen, zelfbeheersing of flexibel denken, en noemt het onderzoek en de gids erachter. Groei laat zien wat jullie samen oefenden, vaardigheid voor vaardigheid.",
+        kidhours: "Maak schema’s voor schoolavonden, weekendochtenden of bad en bed, elk met eigen apps om te pauzeren. De apps die je altijd nodig hebt, blijven open.",
+        keepsake: "Na een rondje tikt je kind op de planeet, en soms spoelt er een klein aandenken aan. Er zijn er 24 te vinden, en een paar zijn zeldzaam.",
+        home: "Spelletjes, voorlezen, in bad en koken tellen allemaal mee. Home houdt één makkelijk ding klaar voor vanavond en laat zien hoe dichtbij de volgende wereld is.",
+        letter: "Elke zondag schrijft de planeet over jullie week: de avonden samen, wat jullie speelden en de eerste keren die je opvielen. Voeg een regel toe en stuur hem naar de familie.",
+        find: "500 spelletjes voor 0 tot 5 jaar, elk in drie korte stappen. Zoek ze allemaal door of laat Oyno er een kiezen.",
+        worlds: "Elk rondje laat de planeet bloeien, en al spelend gaan er 31 werelden open. Een dag overslaan kost niets: de planeet verwelkt nooit.",
+      },
     },
     author: {
       heading: "Waarom ik Oyno maakte",
@@ -126,7 +109,7 @@ export const nl: SiteCopy = {
     },
     plan: {
       eyebrow: "Eén abonnement, alles erin",
-      pitch: "Gezinstijd, elke avond een nieuw spelletje en alle werelden die je gezin vrijspeelt. Altijd opzegbaar.",
+      pitch: "Gezinstijd, 500 spelletjes, aandenkens, de zondagse brief en alle werelden die je gezin vrijspeelt. Altijd opzegbaar.",
       monthly: "Maandelijks",
       yearly: "Jaarlijks",
       cta: "Aan de slag",

@@ -77,37 +77,20 @@ export const it: SiteCopy = {
       },
     },
     proof: {
-      heading: "Una serata con Oyno",
-      sub: "Niente forza di volontà. Il telefono va in pausa prima che tu debba decidere.",
+      heading: "Giochi facili per genitori stanchi",
+      sub: "Un gioco, un libro, il bagnetto o cucinare insieme: ogni momento insieme fa crescere il vostro pianeta.",
       previous: "Schermata precedente",
       next: "Schermata successiva",
-      steps: [
-        {
-          shot: "/screenshots/it/screens/kidhours.webp",
-          title: "Inizia il Tempo in famiglia",
-          body: "All’ora che hai scelto, le app che hai selezionato vanno in pausa. Telefono, Messaggi e Mappe restano aperti.",
-        },
-        {
-          shot: "/screenshots/it/screens/low.webp",
-          title: "Un gioco semplice",
-          body: "Di’ a Oyno quanta batteria ti resta. Ti dà un gioco da dieci minuti, senza niente da preparare.",
-        },
-        {
-          shot: "/screenshots/it/screens/growth.webp",
-          title: "Giocare fa crescere",
-          body: "Ogni gioco allena attenzione, memoria o autocontrollo. Progressi mostra cosa avete allenato insieme, abilità per abilità.",
-        },
-        {
-          shot: "/screenshots/it/screens/worlds.webp",
-          title: "Il pianeta cresce",
-          body: "Quando il timer finisce, il tuo bambino tocca il pianeta. Il pianeta fiorisce e, dopo qualche partita, si apre un nuovo mondo.",
-        },
-        {
-          shot: "/screenshots/it/screens/keepsake.webp",
-          title: "Un ricordo ogni sera",
-          body: "Ogni partita lascia un ricordo accanto al pianeta. La domenica, il pianeta vi scrive la lettera della settimana.",
-        },
-      ],
+      bodies: {
+        low: "Di’ a Oyno com’è la tua batteria: bassa, media o carica. Ricevi un gioco da 5 a 15 minuti, senza niente da preparare, e con la batteria bassa uno da fare sdraiati.",
+        growth: "Ogni gioco allena attenzione, memoria di lavoro, autocontrollo o flessibilità mentale, e cita lo studio e la guida su cui si basa. Progressi mostra cosa avete allenato insieme, abilità per abilità.",
+        kidhours: "Crea orari per le sere di scuola, le mattine del weekend o il bagnetto e la nanna, ognuno con le sue app da mettere in pausa. Le app che ti servono sempre restano aperte.",
+        keepsake: "Alla fine di una partita, il tuo bimbo tocca il pianeta e accanto può comparire un piccolo ricordo. Ce ne sono 24 da trovare, e alcuni sono rari.",
+        home: "Giochi, lettura, bagnetto e cucina: conta tutto. La Home ti tiene pronta una cosa facile per stasera e mostra quanto manca al prossimo mondo.",
+        letter: "Ogni domenica il pianeta vi scrive della vostra settimana: le serate insieme, i giochi e le prime volte che hai notato. Aggiungi una riga e mandala alla famiglia.",
+        find: "500 giochi da 0 a 5 anni, ognuno in tre brevi passi. Cercali tutti o lascia che Oyno te ne dia uno.",
+        worlds: "Ogni partita fa fiorire il pianeta, e giocando si aprono 31 mondi. Saltare un giorno non costa nulla: il pianeta non appassisce mai.",
+      },
     },
     author: {
       heading: "Perché ho creato Oyno",
@@ -126,7 +109,7 @@ export const it: SiteCopy = {
     },
     plan: {
       eyebrow: "Un solo piano, con tutto dentro",
-      pitch: "Tempo in famiglia, un gioco nuovo ogni sera e tutti i mondi che la tua famiglia sblocca. Disdici quando vuoi.",
+      pitch: "Tempo in famiglia, 500 giochi, i ricordi, la lettera della domenica e tutti i mondi che la tua famiglia sblocca. Disdici quando vuoi.",
       monthly: "Mensile",
       yearly: "Annuale",
       cta: "Inizia",

@@ -77,37 +77,20 @@ export const fr: SiteCopy = {
       },
     },
     proof: {
-      heading: "Une soirée avec Oyno",
-      sub: "Pas besoin de volonté. Le téléphone est en pause avant même que vous ayez à décider.",
+      heading: "Des jeux faciles pour parents fatigués",
+      sub: "Un jeu, un livre, le bain ou un repas préparé ensemble : chaque moment partagé fait grandir votre planète.",
       previous: "Écran précédent",
       next: "Écran suivant",
-      steps: [
-        {
-          shot: "/screenshots/fr-FR/screens/kidhours.webp",
-          title: "Le Temps en famille commence",
-          body: "À l’heure que vous avez choisie, les apps sélectionnées se mettent en pause. Téléphone, Messages et Plans restent ouverts.",
-        },
-        {
-          shot: "/screenshots/fr-FR/screens/low.webp",
-          title: "Un jeu tout simple",
-          body: "Dites à Oyno combien de batterie il vous reste. Il vous propose un jeu de dix minutes, sans rien à préparer.",
-        },
-        {
-          shot: "/screenshots/fr-FR/screens/growth.webp",
-          title: "Jouer pour grandir",
-          body: "Chaque jeu entraîne l’attention, la mémoire ou la maîtrise de soi. L’onglet Progrès montre ce que vous avez pratiqué ensemble, compétence par compétence.",
-        },
-        {
-          shot: "/screenshots/fr-FR/screens/worlds.webp",
-          title: "La planète grandit",
-          body: "Quand le minuteur sonne, votre enfant touche la planète. Elle fleurit et, au bout de quelques parties, un nouveau monde s’ouvre.",
-        },
-        {
-          shot: "/screenshots/fr-FR/screens/keepsake.webp",
-          title: "Un souvenir chaque soir",
-          body: "Chaque partie laisse un souvenir près de la planète. Le dimanche, la planète vous écrit la lettre de la semaine.",
-        },
-      ],
+      bodies: {
+        low: "Dites à Oyno où en est votre batterie : faible, moyenne ou pleine. Vous recevez un jeu de 5 à 15 minutes, sans rien à préparer, et à batterie faible, un jeu qui se joue allongé.",
+        growth: "Chaque jeu entraîne l’attention, la mémoire de travail, la maîtrise de soi ou la flexibilité mentale, et cite l’étude et le guide qui le fondent. Progrès montre ce que vous avez pratiqué ensemble, compétence par compétence.",
+        kidhours: "Créez des plages pour les soirs d’école, les matins de week-end ou le bain et le coucher, chacune avec ses apps à mettre en pause. Les apps dont vous avez toujours besoin restent ouvertes.",
+        keepsake: "À la fin d’une partie, votre enfant touche la planète et un petit souvenir peut s’échouer à côté. Il y en a 24 à trouver, dont quelques raretés.",
+        home: "Jeux, lecture, bain et cuisine : tout compte. L’accueil vous propose une chose facile pour ce soir et montre où en est le prochain monde.",
+        letter: "Chaque dimanche, la planète vous écrit sur votre semaine : les soirées ensemble, vos jeux et les premières fois que vous avez remarquées. Ajoutez une ligne et envoyez-la à la famille.",
+        find: "500 jeux pour les 0 à 5 ans, chacun en trois étapes courtes. Parcourez-les tous ou laissez Oyno vous en proposer un.",
+        worlds: "Chaque partie fait fleurir la planète, et 31 mondes s’ouvrent au fil du jeu. Un jour sauté ne coûte rien : la planète ne fane jamais.",
+      },
     },
     author: {
       heading: "Pourquoi j’ai créé Oyno",
@@ -126,7 +109,7 @@ export const fr: SiteCopy = {
     },
     plan: {
       eyebrow: "Une formule, tout compris",
-      pitch: "Le Temps en famille, un nouveau jeu chaque soir et tous les mondes que votre famille débloque. Annulable à tout moment.",
+      pitch: "Le Temps en famille, 500 jeux, les souvenirs, la lettre du dimanche et tous les mondes que votre famille débloque. Annulable à tout moment.",
       monthly: "Mensuel",
       yearly: "Annuel",
       cta: "Commencer",

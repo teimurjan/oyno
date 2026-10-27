@@ -77,37 +77,20 @@ export const de: SiteCopy = {
       },
     },
     proof: {
-      heading: "Ein Abend mit Oyno",
-      sub: "Ganz ohne Willenskraft. Das Handy ist pausiert, bevor du dich entscheiden musst.",
+      heading: "Leichtes Spielen für müde Eltern",
+      sub: "Ein Spiel, ein Buch, Baden oder zusammen kochen: Jede gemeinsame Zeit lässt euren Planeten wachsen.",
       previous: "Vorheriger Bildschirm",
       next: "Nächster Bildschirm",
-      steps: [
-        {
-          shot: "/screenshots/de-DE/screens/kidhours.webp",
-          title: "Die Familienzeit beginnt",
-          body: "Zur eingestellten Zeit pausieren die Apps, die du ausgewählt hast. Telefon, Nachrichten und Karten bleiben offen.",
-        },
-        {
-          shot: "/screenshots/de-DE/screens/low.webp",
-          title: "Ein einfaches Spiel",
-          body: "Sag Oyno, wie voll dein Akku noch ist. Du bekommst ein Spiel für zehn Minuten, ganz ohne Vorbereitung.",
-        },
-        {
-          shot: "/screenshots/de-DE/screens/growth.webp",
-          title: "Spielen, das stärkt",
-          body: "Jedes Spiel trainiert Konzentration, Gedächtnis oder Selbstkontrolle. Unter „Entwicklung“ siehst du, was ihr zusammen geübt habt, Fähigkeit für Fähigkeit.",
-        },
-        {
-          shot: "/screenshots/de-DE/screens/worlds.webp",
-          title: "Der Planet wächst",
-          body: "Wenn der Timer abläuft, tippt dein Kind auf den Planeten. Er erblüht, und alle paar Runden öffnet sich eine neue Welt.",
-        },
-        {
-          shot: "/screenshots/de-DE/screens/keepsake.webp",
-          title: "Ein Andenken pro Abend",
-          body: "Eine Runde lässt ein Andenken beim Planeten zurück. Am Sonntag schreibt euch der Planet den Brief der Woche.",
-        },
-      ],
+      bodies: {
+        low: "Sag Oyno, wie voll dein Akku ist: niedrig, mittel oder voll. Du bekommst ein Spiel für 5 bis 15 Minuten ohne Vorbereitung, und bei leerem Akku eins, das du im Liegen spielst.",
+        growth: "Jedes Spiel trainiert Konzentration, Arbeitsgedächtnis, Selbstkontrolle oder flexibles Denken und nennt die Studie und den Leitfaden dahinter. Unter „Entwicklung“ siehst du, was ihr zwei geübt habt, Fähigkeit für Fähigkeit.",
+        kidhours: "Leg Zeitpläne für Schulabende, Wochenendmorgen oder Baden und Schlafen an, jeden mit eigenen Apps zum Pausieren. Die Apps, die du immer brauchst, bleiben offen.",
+        keepsake: "Am Ende einer Runde tippt dein Kind auf den Planeten, und ein kleines Andenken kann angespült werden. Es gibt 24 zu finden, ein paar davon sind selten.",
+        home: "Spiele, Vorlesen, Baden und Kochen zählen alle. Der Startbildschirm hält eine leichte Sache für heute Abend bereit und zeigt, wie nah die nächste Welt ist.",
+        letter: "Jeden Sonntag schreibt euch der Planet über eure Woche: die Abende zusammen, was ihr gespielt habt und die ersten Male, die dir aufgefallen sind. Schreib eine Zeile dazu und schick ihn an die Familie.",
+        find: "500 Spiele für 0 bis 5 Jahre, jedes in drei kurzen Schritten. Durchsuche alle oder lass dir von Oyno eins geben.",
+        worlds: "Jede Runde lässt den Planeten erblühen, und beim Spielen öffnen sich 31 Welten. Ein ausgelassener Tag kostet nichts: Der Planet welkt nie.",
+      },
     },
     author: {
       heading: "Warum ich Oyno gemacht habe",
@@ -126,7 +109,7 @@ export const de: SiteCopy = {
     },
     plan: {
       eyebrow: "Ein Abo, alles drin",
-      pitch: "Familienzeit, jeden Abend ein neues Spiel und jede Welt, die deine Familie freischaltet. Jederzeit kündbar.",
+      pitch: "Familienzeit, 500 Spiele, Andenken, der Brief am Sonntag und jede Welt, die deine Familie freischaltet. Jederzeit kündbar.",
       monthly: "Monatlich",
       yearly: "Jährlich",
       cta: "Loslegen",

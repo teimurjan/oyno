@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { ListingSlug } from "@/lib/listingFrames";
 import type { WorldId } from "@/lib/planet/scene";
 
 /**
@@ -48,13 +49,13 @@ export interface HomeCopy {
   sub: string;
   cta: string;
   planet: PlanetCopy;
-  /** The one proof section: an evening with Oyno, one raw app screen per slide. */
+  /** The one proof section: the listing's screens under its captions, with a body each. */
   proof: {
     heading: string;
     sub: string;
     previous: string;
     next: string;
-    steps: { shot: string; title: string; body: string }[];
+    bodies: Record<ListingSlug, string>;
   };
   /** Why the app exists, in the maker's own voice. */
   author: { heading: string; paragraphs: string[]; name: string; role: string; photoAlt: string };
