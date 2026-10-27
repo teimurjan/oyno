@@ -1,3 +1,11 @@
-- « Pas maintenant » et « Débloquer mes apps » se remplissent en douceur quand vous maintenez. Tant que vos apps sont ouvertes, l’appui ne fait rien.
-- Oyno s’ouvre plus vite.
-- Le bouton de fermeture du profil fonctionne à nouveau.
+Oyno 2.0 est notre plus grande mise à jour. Chaque moment passé ensemble fait désormais grandir votre planète.
+
+- Les moments du quotidien : l’onglet Activité (anciennement Jouer) propose maintenant Lecture, Bain, Cuisine et « L’enfant mène » à côté des 500 jeux. Choisissez-en un, réglez 10, 15 ou 20 minutes, et recevez une petite idée à la fois. Chacun s’appuie sur la recherche, comme les jeux.
+- Les souvenirs : un moment peut laisser un petit souvenir peint sur votre planète. Le premier moment de chaque type en laisse toujours un, puis environ un sur quatre. Il y en a 24 à trouver, et quelques-uns sont rares.
+- Un cadeau à la fin : votre enfant touche la planète, puis vous voyez ce que le moment a fait travailler et le souvenir qu’il a laissé, et vous pouvez noter ce que votre enfant a fait de nouveau.
+- L’accueil suit votre soirée : avant le Temps en famille il attend, pendant il propose une chose facile à lancer, après il résume la soirée.
+- Cette semaine : choisissez un objectif de 2, 3 ou 5 soirées. Un jour de repos ne coûte rien.
+- Une lettre du dimanche : chaque dimanche, votre planète écrit sur votre semaine. Ajoutez une ligne de votre main et envoyez-la à la famille.
+- Progrès : voyez les minutes pratiquées pour chaque compétence et les premières fois que vous avez remarquées, mois après mois.
+- Si vous le souhaitez, ajoutez le prénom de votre enfant dans le profil. Il reste sur votre téléphone.
+- Le temps d’écran du jour et « Pas maintenant » se trouvent désormais dans l’onglet Temps en famille.

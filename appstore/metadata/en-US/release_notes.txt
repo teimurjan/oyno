@@ -1,3 +1,11 @@
-- Holding “Not now” or “Unlock my apps” fills smoothly now. While your apps are open, the hold does nothing.
-- Oyno opens faster.
-- The close button in Profile works again.
+Oyno 2.0 is our biggest update yet. Every kind of time together now grows your planet.
+
+- Everyday moments: the Activity tab (formerly Play) now has Reading, Bath, Cooking and Their lead next to the 500 games. Pick one, choose 10, 15 or 20 minutes, and get one gentle nudge at a time. Each one is backed by research, like the games.
+- Keepsakes: a moment can leave a small painted keepsake on your planet. The first moment of each kind always leaves one, and after that about one in four. There are 24 to find, and a few are rare.
+- A gift at the end: your kid taps the planet, then you see what the moment practiced and the keepsake it left, and you can note anything new your kid did.
+- Home follows your evening: before Kid hours it waits, during them it holds one easy thing to start, and after them it sums up the evening.
+- This week: pick a goal of 2, 3 or 5 evenings. A rest day costs nothing.
+- A Sunday letter: every Sunday your planet writes about your week. Add a line of your own and send it to the family.
+- Growth: see the minutes you practiced for each skill and the firsts you noticed, month by month.
+- Add your kid's name in Profile if you like. It stays on your phone.
+- Today's screen time and "Not now" now live on the Kid hours tab.

@@ -1,3 +1,11 @@
-- “Ahora no” y “Desbloquear mis apps” se llenan con suavidad al mantener. Mientras tus apps están abiertas, no hacen nada.
-- Oyno abre más rápido.
-- El botón para cerrar el perfil vuelve a funcionar.
+Oyno 2.0 es nuestra actualización más grande hasta ahora. Cada rato juntos hace crecer tu planeta.
+
+- Momentos de todos los días: la pestaña Actividad (antes Jugar) ahora tiene Lectura, Baño, Cocina y “Tu peque manda”, junto a los 500 juegos. Elige uno, pon 10, 15 o 20 minutos y recibe una idea suave a la vez. Cada momento se basa en investigación, igual que los juegos.
+- Recuerdos: un momento puede dejar un pequeño recuerdo pintado en tu planeta. El primer momento de cada tipo siempre deja uno, y después más o menos uno de cada cuatro. Hay 24 por encontrar, y algunos son raros.
+- Un regalo al final: tu peque toca el planeta, ves lo que se practicó y el recuerdo que dejó, y puedes anotar algo nuevo que haya hecho tu peque.
+- Inicio sigue tu tarde: antes del Tiempo en familia espera, durante él te deja algo fácil para empezar y después resume la tarde.
+- Esta semana: elige una meta de 2, 3 o 5 tardes. Un día de descanso no cuesta nada.
+- Una carta del domingo: cada domingo tu planeta escribe sobre su semana. Agrega una línea tuya y envíala a la familia.
+- Crecimiento: ve los minutos practicados en cada habilidad y las primeras veces que notaste, mes a mes.
+- Si quieres, agrega el nombre de tu peque en el perfil. Se queda en tu celular.
+- El tiempo en pantalla de hoy y “Ahora no” ahora están en la pestaña Tiempo en familia.

@@ -1,3 +1,11 @@
-- „Nicht jetzt“ und „Apps freigeben“ füllen sich beim Halten jetzt gleichmäßig. Solange deine Apps offen sind, passiert beim Halten nichts.
-- Oyno startet schneller.
-- Der Schließen-Knopf im Profil funktioniert wieder.
+Oyno 2.0 ist unser bisher größtes Update. Jede gemeinsame Zeit lässt jetzt deinen Planeten wachsen.
+
+- Alltagsmomente: Der Tab „Aktivität“ (früher „Spielen“) hat neben den 500 Spielen jetzt auch Lesen, Baden, Kochen und „Kind führt“. Wähl einen Moment, stell 10, 15 oder 20 Minuten ein und bekomm jeweils einen sanften Impuls. Jeder Moment stützt sich auf Forschung, genau wie die Spiele.
+- Andenken: Ein Moment kann ein kleines gemaltes Andenken auf deinem Planeten hinterlassen. Der erste Moment jeder Art hinterlässt immer eines, danach etwa jeder vierte. Es gibt 24 zu finden, ein paar davon sind selten.
+- Ein Geschenk zum Schluss: Dein Kind tippt auf den Planeten, dann siehst du, was geübt wurde und welches Andenken der Moment hinterlassen hat, und kannst festhalten, was dein Kind Neues gemacht hat.
+- Start folgt deinem Abend: Vor der Familienzeit wartet er, währenddessen hält er eine leichte Sache zum Starten bereit, danach fasst er den Abend zusammen.
+- Diese Woche: Wähl ein Ziel von 2, 3 oder 5 Abenden. Ein Ruhetag kostet nichts.
+- Ein Sonntagsbrief: Jeden Sonntag schreibt dein Planet über eure Woche. Füg eine eigene Zeile hinzu und schick ihn an die Familie.
+- Entwicklung: Sieh die geübten Minuten je Fähigkeit und die ersten Male, die du bemerkt hast, Monat für Monat.
+- Wenn du magst, trag im Profil den Namen deines Kindes ein. Er bleibt auf deinem Handy.
+- Die heutige Bildschirmzeit und „Nicht jetzt“ findest du jetzt im Tab „Familienzeit“.
