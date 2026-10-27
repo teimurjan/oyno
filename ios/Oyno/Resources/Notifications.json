@@ -1,0 +1,1619 @@
+{
+  "reminders": [
+    {
+      "id": "letter-at-risk",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "at": 1080
+      }
+    },
+    {
+      "id": "letter-ready",
+      "group": "reminders",
+      "tap": "home",
+      "settings": {
+        "at": 600
+      }
+    },
+    {
+      "id": "world-close",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "within": 2,
+        "at": 1110
+      }
+    },
+    {
+      "id": "first-round",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "after": 1,
+        "again": 3,
+        "at": 1110
+      }
+    },
+    {
+      "id": "comeback",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "after": 3,
+        "again": 7,
+        "at": 1110
+      }
+    },
+    {
+      "id": "practice-milestone",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "every": 30,
+        "at": 1110
+      }
+    },
+    {
+      "id": "keepsake-first-moment",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "every": 4,
+        "at": 1110
+      }
+    },
+    {
+      "id": "keepsakes-waiting",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "every": 5,
+        "at": 1110
+      }
+    },
+    {
+      "id": "low-energy",
+      "group": "reminders",
+      "tap": "play",
+      "settings": {
+        "every": 2,
+        "at": 1140
+      }
+    },
+    {
+      "id": "kid-hours-start",
+      "group": "kid-hours",
+      "tap": "play",
+      "settings": {}
+    },
+    {
+      "id": "kid-hours-end",
+      "group": "kid-hours",
+      "tap": "home",
+      "settings": {}
+    }
+  ],
+  "decks": {
+    "en": {
+      "letter-at-risk": [
+        {
+          "title": "Your letter needs {evenings}",
+          "body": "Play tonight, and on Sunday the planet writes you the week's letter."
+        },
+        {
+          "title": "Still time for this week's letter",
+          "body": "{evenings} to go before Sunday. One easy game tonight keeps it on track."
+        },
+        {
+          "title": "{kid}'s letter depends on tonight",
+          "body": "{evenings} more, and Sunday brings the planet's letter about your week."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "This week's letter is here",
+          "body": "The planet wrote down your {evenings} together. Open it before the week ends."
+        },
+        {
+          "title": "A letter from your planet",
+          "body": "It remembers your week: {evenings} of play. Come and read it."
+        },
+        {
+          "title": "{kid}'s week, in a letter",
+          "body": "Sunday's letter is here, with {evenings} of play in it."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world} is {moments} away",
+          "body": "One more easy evening, and a new world blooms on your planet."
+        },
+        {
+          "title": "Almost at {world}",
+          "body": "{moments} left until it opens. Maybe tonight is the night."
+        },
+        {
+          "title": "{kid} is close to {world}",
+          "body": "{moments} more, and your planet opens a new world."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Your planet is waiting",
+          "body": "Its first moment takes a few easy minutes. Tonight's pick: {game}."
+        },
+        {
+          "title": "One game, and a planet wakes up",
+          "body": "{game} needs no prep. Play it once, and watch your planet grow."
+        },
+        {
+          "title": "Tonight could be {kid}'s first round",
+          "body": "{game} takes a few minutes and nothing but you two."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Your planet misses you",
+          "body": "A few quiet days are fine. {game} is an easy way back tonight."
+        },
+        {
+          "title": "Ready when you are",
+          "body": "{game} takes a few minutes and builds {skill}. No catching up needed."
+        },
+        {
+          "title": "{kid} would love a game",
+          "body": "Pick up where you left off: {game}, a few easy minutes together."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "{minutes} of {skill} this month",
+          "body": "That is real practice. {game} keeps it growing tonight."
+        },
+        {
+          "title": "You two practiced {skill} for {minutes}",
+          "body": "Keep it going with {game}, a few easy minutes."
+        },
+        {
+          "title": "{kid} has {minutes} of {skill}",
+          "body": "This month's practice adds up. Tonight's pick: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Try “{moment}” tonight",
+          "body": "The first one always leaves a keepsake on your planet."
+        },
+        {
+          "title": "A keepsake is waiting",
+          "body": "Your first “{moment}” moment always leaves one. Tonight is a good night."
+        },
+        {
+          "title": "Something new for {kid}'s planet",
+          "body": "The first “{moment}” moment always leaves a keepsake."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Your planet is hiding something",
+          "body": "Still to find: {keepsakes}. About one moment in four leaves one."
+        },
+        {
+          "title": "Keepsakes are waiting",
+          "body": "{keepsakes} still hidden on your planet. Play tonight and look."
+        },
+        {
+          "title": "What will {kid} find next?",
+          "body": "Still to find: {keepsakes}. Play tonight and see."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Running on empty?",
+          "body": "{game} needs almost no energy. A few minutes on the sofa count."
+        },
+        {
+          "title": "Tired is fine tonight",
+          "body": "{game} is made for low-battery evenings. Sit back and play."
+        },
+        {
+          "title": "An easy one for tonight",
+          "body": "{game}: low energy, a few minutes, and {kid} gets all of you."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} starts now",
+          "body": "Your apps are paused until {end}. Tonight's game is ready."
+        },
+        {
+          "title": "Kid hours are on",
+          "body": "{schedule} runs until {end}. Phone down, one easy game up."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} is over",
+          "body": "Your apps are back. Was there something new tonight?"
+        },
+        {
+          "title": "Kid hours are done",
+          "body": "Your apps are open again. Tell the planet what was new tonight."
+        },
+        {
+          "title": "That was {kid}'s time",
+          "body": "{schedule} is over, and your apps are back."
+        }
+      ]
+    },
+    "de": {
+      "letter-at-risk": [
+        {
+          "title": "Dein Brief braucht noch {evenings}",
+          "body": "Spiel heute Abend, dann schreibt dir der Planet am Sonntag den Brief der Woche."
+        },
+        {
+          "title": "Noch Zeit für den Brief dieser Woche",
+          "body": "Bis Sonntag noch: {evenings}. Ein leichtes Spiel heute Abend hält ihn auf Kurs."
+        },
+        {
+          "title": "Der Brief für {kid} hängt an heute Abend",
+          "body": "Noch {evenings}, und am Sonntag kommt der Brief des Planeten über eure Woche."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "Der Brief dieser Woche ist da",
+          "body": "Der Planet hat eure gemeinsame Zeit aufgeschrieben: {evenings}. Öffne ihn, bevor die Woche endet."
+        },
+        {
+          "title": "Ein Brief von deinem Planeten",
+          "body": "Er erinnert sich an eure Woche: {evenings} voller Spiel. Komm und lies ihn."
+        },
+        {
+          "title": "Die Woche mit {kid}, in einem Brief",
+          "body": "Der Sonntagsbrief ist da, mit {evenings} voller Spiel."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world}: nur noch {moments}",
+          "body": "Noch ein leichter Abend, und auf deinem Planeten blüht eine neue Welt auf."
+        },
+        {
+          "title": "Fast bei {world}",
+          "body": "Noch {moments}, dann öffnet sich die neue Welt. Vielleicht ja heute Abend."
+        },
+        {
+          "title": "{kid} ist kurz vor {world}",
+          "body": "Noch {moments}, und dein Planet öffnet eine neue Welt."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Dein Planet wartet",
+          "body": "Sein erster Moment dauert nur ein paar leichte Minuten. Heute Abend: {game}."
+        },
+        {
+          "title": "Ein Spiel, und ein Planet erwacht",
+          "body": "{game} braucht keine Vorbereitung. Spiel es einmal und sieh deinen Planeten wachsen."
+        },
+        {
+          "title": "Heute Abend die erste Runde mit {kid}?",
+          "body": "{game} dauert ein paar Minuten und braucht nur euch zwei."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Dein Planet vermisst dich",
+          "body": "Ein paar ruhige Tage sind okay. {game} ist heute Abend ein leichter Wiedereinstieg."
+        },
+        {
+          "title": "Bereit, wenn du es bist",
+          "body": "{game} dauert ein paar Minuten. Geübt wird: {skill}. Nachholen musst du nichts."
+        },
+        {
+          "title": "{kid} hätte Lust auf ein Spiel",
+          "body": "Mach da weiter, wo ihr aufgehört habt: {game}, ein paar leichte Minuten zusammen."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "{skill}: {minutes} in diesem Monat",
+          "body": "Das ist echtes Üben. Mit {game} geht es heute Abend weiter."
+        },
+        {
+          "title": "Ihr habt {minutes} lang geübt: {skill}",
+          "body": "Mach weiter mit {game}, nur ein paar leichte Minuten."
+        },
+        {
+          "title": "{kid} hat {minutes} geübt: {skill}",
+          "body": "Das Üben in diesem Monat summiert sich. Heute Abend: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Probier heute Abend „{moment}“ aus",
+          "body": "Das erste Mal hinterlässt immer ein Andenken auf deinem Planeten."
+        },
+        {
+          "title": "Ein Andenken wartet",
+          "body": "Dein erster Moment „{moment}“ hinterlässt immer eins. Heute Abend passt gut."
+        },
+        {
+          "title": "Etwas Neues für den Planeten von {kid}",
+          "body": "Der erste Moment „{moment}“ hinterlässt immer ein Andenken."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Dein Planet versteckt etwas",
+          "body": "Noch zu finden: {keepsakes}. Etwa jeder vierte Moment hinterlässt eins."
+        },
+        {
+          "title": "Andenken warten auf dich",
+          "body": "Noch versteckt auf deinem Planeten: {keepsakes}. Spiel heute Abend und schau nach."
+        },
+        {
+          "title": "Was findet {kid} als Nächstes?",
+          "body": "Noch zu finden: {keepsakes}. Spiel heute Abend und sieh selbst."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Akku fast leer?",
+          "body": "{game} braucht kaum Energie. Ein paar Minuten auf dem Sofa zählen auch."
+        },
+        {
+          "title": "Müde sein ist heute okay",
+          "body": "{game} ist für Abende mit leerem Akku gemacht. Lehn dich zurück und spiel."
+        },
+        {
+          "title": "Etwas Leichtes für heute Abend",
+          "body": "{game}: wenig Energie, ein paar Minuten, und {kid} hat dich ganz für sich."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} beginnt jetzt",
+          "body": "Deine Apps sind bis {end} pausiert. Das Spiel für heute Abend ist bereit."
+        },
+        {
+          "title": "Familienzeit läuft",
+          "body": "{schedule} läuft bis {end}. Handy weg, ein leichtes Spiel her."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} ist vorbei",
+          "body": "Deine Apps sind wieder da. Gab es heute Abend etwas Neues?"
+        },
+        {
+          "title": "Familienzeit ist vorbei",
+          "body": "Deine Apps sind wieder offen. Erzähl dem Planeten, was heute Abend neu war."
+        },
+        {
+          "title": "Das war die Zeit mit {kid}",
+          "body": "{schedule} ist vorbei, und deine Apps sind wieder da."
+        }
+      ]
+    },
+    "fr": {
+      "letter-at-risk": [
+        {
+          "title": "Votre lettre a besoin de {evenings}",
+          "body": "Jouez ce soir, et dimanche, la planète vous écrira la lettre de la semaine."
+        },
+        {
+          "title": "Encore le temps pour la lettre de la semaine",
+          "body": "Encore {evenings} d’ici dimanche. Un jeu facile ce soir, et elle reste en bonne voie."
+        },
+        {
+          "title": "La lettre de {kid} se joue ce soir",
+          "body": "Encore {evenings}, et dimanche, la planète vous écrit sur votre semaine."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "La lettre de la semaine est arrivée",
+          "body": "La planète a noté vos moments ensemble : {evenings}. Ouvrez-la avant la fin de la semaine."
+        },
+        {
+          "title": "Une lettre de votre planète",
+          "body": "Elle se souvient de votre semaine : {evenings} de jeu. Venez la lire."
+        },
+        {
+          "title": "La semaine de {kid}, en une lettre",
+          "body": "La lettre du dimanche est arrivée, avec {evenings} de jeu."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world} n’est plus qu’à {moments}",
+          "body": "Encore une soirée facile, et un nouveau monde fleurit sur votre planète."
+        },
+        {
+          "title": "Presque à {world}",
+          "body": "Encore {moments} avant qu’il s’ouvre. Ce soir, peut-être ?"
+        },
+        {
+          "title": "{kid} est tout près de {world}",
+          "body": "Encore {moments}, et votre planète ouvre un nouveau monde."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Votre planète vous attend",
+          "body": "Son premier moment ne prend que quelques minutes faciles. Pour ce soir : {game}."
+        },
+        {
+          "title": "Un jeu, et une planète s’éveille",
+          "body": "{game} ne demande aucune préparation. Jouez-y une fois et regardez votre planète grandir."
+        },
+        {
+          "title": "Ce soir, la première partie de {kid} ?",
+          "body": "{game} prend quelques minutes, et rien d’autre que vous deux."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Votre planète pense à vous",
+          "body": "Quelques jours calmes, ce n’est rien. {game}, c’est un retour en douceur ce soir."
+        },
+        {
+          "title": "Quand vous voulez",
+          "body": "{game} prend quelques minutes. Au programme : {skill}. Rien à rattraper."
+        },
+        {
+          "title": "{kid} adorerait jouer",
+          "body": "Reprenez là où vous en étiez : {game}, quelques minutes faciles ensemble."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "{skill} : {minutes} ce mois-ci",
+          "body": "C’est un vrai entraînement. Ce soir, {game} prend le relais."
+        },
+        {
+          "title": "{minutes} d’entraînement à deux : {skill}",
+          "body": "Continuez avec {game}, quelques minutes faciles."
+        },
+        {
+          "title": "{kid} cumule {minutes} : {skill}",
+          "body": "Les efforts du mois s’additionnent. Pour ce soir : {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Essayez « {moment} » ce soir",
+          "body": "La première fois laisse toujours un souvenir sur votre planète."
+        },
+        {
+          "title": "Un souvenir vous attend",
+          "body": "Votre premier moment « {moment} » en laisse toujours un. Ce soir s’y prête bien."
+        },
+        {
+          "title": "Du nouveau pour la planète de {kid}",
+          "body": "Le premier moment « {moment} » laisse toujours un souvenir."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Votre planète cache quelque chose",
+          "body": "Encore à trouver : {keepsakes}. Environ un moment sur quatre en laisse un."
+        },
+        {
+          "title": "Des souvenirs vous attendent",
+          "body": "Encore cachés sur votre planète : {keepsakes}. Jouez ce soir et cherchez."
+        },
+        {
+          "title": "Que va trouver {kid} ensuite ?",
+          "body": "Encore à trouver : {keepsakes}. Jouez ce soir pour voir."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Plus d’énergie ?",
+          "body": "{game} ne demande presque aucune énergie. Quelques minutes sur le canapé, ça compte."
+        },
+        {
+          "title": "Ce soir, la fatigue est permise",
+          "body": "{game} est fait pour les soirs de batterie faible. Installez-vous et jouez."
+        },
+        {
+          "title": "Un jeu facile pour ce soir",
+          "body": "{game} : peu d’énergie, quelques minutes, et toute votre attention va à {kid}."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} commence maintenant",
+          "body": "Vos apps sont en pause jusqu’à {end}. Le jeu de ce soir est prêt."
+        },
+        {
+          "title": "Le Temps en famille est en cours",
+          "body": "{schedule} dure jusqu’à {end}. Le téléphone de côté, un jeu facile à la place."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} : c’est fini",
+          "body": "Vos apps sont de retour. Il y a eu du nouveau ce soir ?"
+        },
+        {
+          "title": "Le Temps en famille est terminé",
+          "body": "Vos apps sont de nouveau ouvertes. Racontez à la planète ce qui était nouveau ce soir."
+        },
+        {
+          "title": "C’était le moment de {kid}",
+          "body": "{schedule} : c’est fini, et vos apps sont de retour."
+        }
+      ]
+    },
+    "es": {
+      "letter-at-risk": [
+        {
+          "title": "Tu carta necesita {evenings}",
+          "body": "Juega esta noche y el domingo el planeta te escribirá la carta de la semana."
+        },
+        {
+          "title": "Aún hay tiempo para la carta de esta semana",
+          "body": "Antes del domingo: {evenings} más. Un juego fácil esta noche y vas por buen camino."
+        },
+        {
+          "title": "La carta de {kid} depende de esta noche",
+          "body": "{evenings} más y el domingo llega la carta del planeta sobre vuestra semana."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "Ya ha llegado la carta de esta semana",
+          "body": "El planeta ha apuntado vuestro tiempo juntos: {evenings}. Ábrela antes de que acabe la semana."
+        },
+        {
+          "title": "Una carta de tu planeta",
+          "body": "Recuerda vuestra semana: {evenings} de juego. Ven a leerla."
+        },
+        {
+          "title": "La semana de {kid}, en una carta",
+          "body": "Ya está aquí la carta del domingo, con {evenings} de juego."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world} está a {moments}",
+          "body": "Una tarde fácil más y un mundo nuevo florece en tu planeta."
+        },
+        {
+          "title": "Casi en {world}",
+          "body": "Para que se abra: {moments} más. Quizá sea esta noche."
+        },
+        {
+          "title": "{kid} está cerca de {world}",
+          "body": "{moments} más y tu planeta abre un mundo nuevo."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Tu planeta te espera",
+          "body": "Su primer momento lleva unos pocos minutos fáciles. Para esta noche: {game}."
+        },
+        {
+          "title": "Un juego, y un planeta despierta",
+          "body": "{game} no necesita preparación. Juégalo una vez y mira cómo crece tu planeta."
+        },
+        {
+          "title": "Esta noche, ¿la primera ronda de {kid}?",
+          "body": "{game} lleva unos minutos y solo os necesita a vosotros dos."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Tu planeta te echa de menos",
+          "body": "Unos días de calma están bien. {game} es una vuelta fácil esta noche."
+        },
+        {
+          "title": "Cuando tú quieras",
+          "body": "{game} lleva unos minutos y trabaja esto: {skill}. No hay nada que recuperar."
+        },
+        {
+          "title": "A {kid} le encantaría jugar",
+          "body": "Sigue donde lo dejasteis: {game}, unos minutos fáciles juntos."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "{skill}: {minutes} este mes",
+          "body": "Eso es práctica de verdad. Esta noche, {game} la hace crecer."
+        },
+        {
+          "title": "{minutes} practicando juntos: {skill}",
+          "body": "Sigue con {game}, unos minutos fáciles."
+        },
+        {
+          "title": "{kid} lleva {minutes} de práctica: {skill}",
+          "body": "La práctica de este mes suma. Para esta noche: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Prueba «{moment}» esta noche",
+          "body": "La primera vez siempre deja un recuerdo en tu planeta."
+        },
+        {
+          "title": "Te espera un recuerdo",
+          "body": "Tu primer momento «{moment}» siempre deja uno. Esta noche es buena noche."
+        },
+        {
+          "title": "Algo nuevo para el planeta de {kid}",
+          "body": "El primer momento «{moment}» siempre deja un recuerdo."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Tu planeta esconde algo",
+          "body": "Aún por encontrar: {keepsakes}. Más o menos uno de cada cuatro momentos deja uno."
+        },
+        {
+          "title": "Hay recuerdos esperando",
+          "body": "Aún escondidos en tu planeta: {keepsakes}. Juega esta noche y busca."
+        },
+        {
+          "title": "¿Qué encontrará {kid} ahora?",
+          "body": "Aún por encontrar: {keepsakes}. Juega esta noche y verás."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "¿Sin pilas?",
+          "body": "{game} casi no pide energía. Unos minutos en el sofá también cuentan."
+        },
+        {
+          "title": "Hoy el cansancio no importa",
+          "body": "{game} está pensado para tardes sin pilas. Siéntate y juega."
+        },
+        {
+          "title": "Uno fácil para esta noche",
+          "body": "{game}: poca energía, unos minutos y toda tu atención para {kid}."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} empieza ahora",
+          "body": "Tus apps están en pausa hasta las {end}. El juego de esta noche está listo."
+        },
+        {
+          "title": "El Tiempo en familia está activo",
+          "body": "{schedule} dura hasta las {end}. Fuera el móvil, toca un juego fácil."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} ha terminado",
+          "body": "Tus apps han vuelto. ¿Ha habido algo nuevo esta noche?"
+        },
+        {
+          "title": "El Tiempo en familia ha terminado",
+          "body": "Tus apps vuelven a estar abiertas. Cuéntale al planeta qué hubo de nuevo esta noche."
+        },
+        {
+          "title": "Ese fue el rato de {kid}",
+          "body": "{schedule} ha terminado y tus apps han vuelto."
+        }
+      ]
+    },
+    "es-MX": {
+      "letter-at-risk": [
+        {
+          "title": "A tu carta le faltan: {evenings}",
+          "body": "Juega esta noche y el domingo el planeta te escribe la carta de la semana."
+        },
+        {
+          "title": "Aún hay tiempo para la carta de la semana",
+          "body": "Faltan {evenings} antes del domingo. Un juego fácil esta noche la mantiene en camino."
+        },
+        {
+          "title": "La carta de {kid} depende de esta noche",
+          "body": "{evenings} más, y el domingo llega la carta del planeta sobre su semana."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "Ya llegó la carta de esta semana",
+          "body": "El planeta anotó sus {evenings} juntos. Ábrela antes de que termine la semana."
+        },
+        {
+          "title": "Una carta de tu planeta",
+          "body": "Recuerda su semana: {evenings} de juego. Ven a leerla."
+        },
+        {
+          "title": "La semana de {kid}, en una carta",
+          "body": "Ya llegó la carta del domingo, con {evenings} de juego."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world} está a {moments}",
+          "body": "Una noche fácil más, y un mundo nuevo florece en tu planeta."
+        },
+        {
+          "title": "Ya casi llegas a {world}",
+          "body": "Faltan {moments} para que se abra. Quizá esta noche sea la noche."
+        },
+        {
+          "title": "{kid} está cerca de {world}",
+          "body": "{moments} más, y tu planeta abre un mundo nuevo."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Tu planeta te está esperando",
+          "body": "Su primer momento toma unos minutos fáciles. Para esta noche: {game}."
+        },
+        {
+          "title": "Un juego, y un planeta despierta",
+          "body": "{game} no necesita preparación. Juégalo una vez y mira crecer tu planeta."
+        },
+        {
+          "title": "Esta noche puede ser la primera ronda de {kid}",
+          "body": "{game} toma unos minutos y nada más que ustedes dos."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Tu planeta te extraña",
+          "body": "Unos días tranquilos están bien. {game} es una forma fácil de volver esta noche."
+        },
+        {
+          "title": "Listo cuando tú lo estés",
+          "body": "{game} toma unos minutos y desarrolla esto: {skill}. No hay nada que reponer."
+        },
+        {
+          "title": "A {kid} le encantaría jugar",
+          "body": "Sigue donde te quedaste: {game}, unos minutos fáciles juntos."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "Este mes: {minutes} de {skill}",
+          "body": "Eso es práctica de verdad. {game} la hace crecer esta noche."
+        },
+        {
+          "title": "Practicaron {skill} durante {minutes}",
+          "body": "Sigan así con {game}, unos minutos fáciles."
+        },
+        {
+          "title": "{kid} lleva {minutes} de {skill}",
+          "body": "La práctica de este mes va sumando. Para esta noche: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Prueba “{moment}” esta noche",
+          "body": "El primero siempre deja un recuerdo en tu planeta."
+        },
+        {
+          "title": "Te espera un recuerdo",
+          "body": "Tu primer momento de “{moment}” siempre deja uno. Esta noche es buena noche."
+        },
+        {
+          "title": "Algo nuevo para el planeta de {kid}",
+          "body": "El primer momento de “{moment}” siempre deja un recuerdo."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Tu planeta esconde algo",
+          "body": "Aún por encontrar: {keepsakes}. Más o menos uno de cada cuatro momentos deja uno."
+        },
+        {
+          "title": "Hay recuerdos esperando",
+          "body": "Aún escondidos en tu planeta: {keepsakes}. Juega esta noche y busca."
+        },
+        {
+          "title": "¿Qué encontrará {kid} ahora?",
+          "body": "Aún por encontrar: {keepsakes}. Juega esta noche y descúbrelo."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "¿Sin pila?",
+          "body": "{game} casi no pide energía. Unos minutos en el sillón cuentan."
+        },
+        {
+          "title": "Está bien estar cansado hoy",
+          "body": "{game} está hecho para las noches sin pila. Relájate y juega."
+        },
+        {
+          "title": "Uno fácil para esta noche",
+          "body": "{game}: poca energía, unos minutos, y {kid} te tiene por completo."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} empieza ahora",
+          "body": "Tus apps están en pausa hasta las {end}. El juego de esta noche está listo."
+        },
+        {
+          "title": "El Tiempo en familia empezó",
+          "body": "{schedule} dura hasta las {end}. Deja el teléfono y juega algo fácil."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} terminó",
+          "body": "Tus apps están de vuelta. ¿Hubo algo nuevo esta noche?"
+        },
+        {
+          "title": "Terminó el Tiempo en familia",
+          "body": "Tus apps están abiertas otra vez. Cuéntale al planeta qué fue nuevo esta noche."
+        },
+        {
+          "title": "Ese fue el tiempo de {kid}",
+          "body": "{schedule} terminó, y tus apps están de vuelta."
+        }
+      ]
+    },
+    "pt-BR": {
+      "letter-at-risk": [
+        {
+          "title": "Sua carta precisa de: {evenings}",
+          "body": "Jogue hoje à noite, e no domingo o planeta escreve a carta da semana para você."
+        },
+        {
+          "title": "Ainda dá tempo para a carta da semana",
+          "body": "Faltam {evenings} antes do domingo. Um jogo fácil hoje à noite mantém tudo no caminho."
+        },
+        {
+          "title": "A carta de {kid} depende de hoje",
+          "body": "Mais {evenings}, e o domingo traz a carta do planeta sobre a semana de vocês."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "A carta desta semana chegou",
+          "body": "O planeta anotou as {evenings} de vocês juntos. Abra antes que a semana acabe."
+        },
+        {
+          "title": "Uma carta do seu planeta",
+          "body": "Ele lembra a semana de vocês: {evenings} de brincadeira. Vem ler."
+        },
+        {
+          "title": "A semana de {kid}, numa carta",
+          "body": "A carta de domingo chegou, com {evenings} de brincadeira."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world} está a {moments}",
+          "body": "Mais uma noite fácil, e um mundo novo floresce no seu planeta."
+        },
+        {
+          "title": "Quase em {world}",
+          "body": "Faltam {moments} para ele abrir. Talvez seja hoje à noite."
+        },
+        {
+          "title": "{kid} está perto de {world}",
+          "body": "Mais {moments}, e seu planeta abre um mundo novo."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Seu planeta está esperando",
+          "body": "O primeiro momento leva poucos minutos fáceis. A escolha de hoje: {game}."
+        },
+        {
+          "title": "Um jogo, e um planeta acorda",
+          "body": "{game} não precisa de preparo. Jogue uma vez e veja seu planeta crescer."
+        },
+        {
+          "title": "Hoje pode ser a primeira rodada de {kid}",
+          "body": "{game} leva poucos minutos e só precisa de vocês dois."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Seu planeta está com saudade",
+          "body": "Alguns dias de pausa tudo bem. {game} é um jeito fácil de voltar hoje."
+        },
+        {
+          "title": "Quando você quiser",
+          "body": "{game} leva poucos minutos e desenvolve isto: {skill}. Nada para recuperar."
+        },
+        {
+          "title": "{kid} ia adorar um jogo",
+          "body": "Continue de onde parou: {game}, poucos minutos fáceis juntos."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "Este mês: {minutes} de {skill}",
+          "body": "Isso é prática de verdade. {game} faz crescer ainda mais hoje."
+        },
+        {
+          "title": "Vocês praticaram {skill} por {minutes}",
+          "body": "Continuem com {game}, poucos minutos fáceis."
+        },
+        {
+          "title": "{kid} já tem {minutes} de {skill}",
+          "body": "A prática deste mês vai somando. A escolha de hoje: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Experimente “{moment}” hoje",
+          "body": "O primeiro sempre deixa uma lembrança no seu planeta."
+        },
+        {
+          "title": "Uma lembrança está esperando",
+          "body": "Seu primeiro momento de “{moment}” sempre deixa uma. Hoje é uma boa noite."
+        },
+        {
+          "title": "Algo novo para o planeta de {kid}",
+          "body": "O primeiro momento de “{moment}” sempre deixa uma lembrança."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Seu planeta está escondendo algo",
+          "body": "Ainda falta achar: {keepsakes}. Mais ou menos um em cada quatro momentos deixa uma."
+        },
+        {
+          "title": "Tem lembranças esperando",
+          "body": "Ainda escondidas no seu planeta: {keepsakes}. Jogue hoje e procure."
+        },
+        {
+          "title": "O que {kid} vai achar agora?",
+          "body": "Ainda falta achar: {keepsakes}. Jogue hoje e descubra."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Sem bateria?",
+          "body": "{game} quase não pede energia. Poucos minutos no sofá já contam."
+        },
+        {
+          "title": "Cansaço hoje tudo bem",
+          "body": "{game} é feito para noites de bateria fraca. Relaxe e jogue."
+        },
+        {
+          "title": "Um fácil para hoje",
+          "body": "{game}: pouca energia, poucos minutos, e {kid} tem você por inteiro."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} começa agora",
+          "body": "Seus apps estão pausados até {end}. O jogo de hoje está pronto."
+        },
+        {
+          "title": "O Tempo em família começou",
+          "body": "{schedule} vai até {end}. Celular de lado, um jogo fácil na mão."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} acabou",
+          "body": "Seus apps voltaram. Teve alguma novidade hoje?"
+        },
+        {
+          "title": "O Tempo em família acabou",
+          "body": "Seus apps estão abertos de novo. Conte ao planeta o que foi novidade hoje."
+        },
+        {
+          "title": "Esse foi o tempo de {kid}",
+          "body": "{schedule} acabou, e seus apps voltaram."
+        }
+      ]
+    },
+    "it": {
+      "letter-at-risk": [
+        {
+          "title": "Alla tua lettera mancano: {evenings}",
+          "body": "Gioca stasera, e domenica il pianeta ti scrive la lettera della settimana."
+        },
+        {
+          "title": "C'è ancora tempo per la lettera",
+          "body": "Mancano {evenings} prima di domenica. Un gioco facile stasera la tiene in carreggiata."
+        },
+        {
+          "title": "La lettera di {kid} dipende da stasera",
+          "body": "Ancora {evenings}, e domenica arriva la lettera del pianeta sulla vostra settimana."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "È arrivata la lettera della settimana",
+          "body": "Il pianeta ha scritto delle vostre {evenings} insieme. Aprila prima che la settimana finisca."
+        },
+        {
+          "title": "Una lettera dal tuo pianeta",
+          "body": "Ricorda la vostra settimana: {evenings} di gioco. Vieni a leggerla."
+        },
+        {
+          "title": "La settimana di {kid}, in una lettera",
+          "body": "È arrivata la lettera della domenica, con {evenings} di gioco."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "Mancano {moments} a {world}",
+          "body": "Ancora una serata facile, e un nuovo mondo fiorisce sul tuo pianeta."
+        },
+        {
+          "title": "Quasi a {world}",
+          "body": "Mancano {moments} perché si apra. Magari è stasera."
+        },
+        {
+          "title": "{kid} è vicino a {world}",
+          "body": "Ancora {moments}, e il tuo pianeta apre un nuovo mondo."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Il tuo pianeta ti aspetta",
+          "body": "Il suo primo momento richiede pochi minuti facili. La scelta di stasera: {game}."
+        },
+        {
+          "title": "Un gioco, e un pianeta si sveglia",
+          "body": "{game} non richiede preparazione. Giocalo una volta e guarda crescere il tuo pianeta."
+        },
+        {
+          "title": "Stasera può essere il primo giro di {kid}",
+          "body": "{game} richiede pochi minuti e nient'altro che voi due."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Il tuo pianeta sente la tua mancanza",
+          "body": "Qualche giorno di pausa va benissimo. {game} è un modo facile per tornare stasera."
+        },
+        {
+          "title": "Pronto quando vuoi tu",
+          "body": "{game} richiede pochi minuti e allena questo: {skill}. Niente da recuperare."
+        },
+        {
+          "title": "{kid} adorerebbe un gioco",
+          "body": "Riparti da dove eri rimasto: {game}, pochi minuti facili insieme."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "Questo mese: {minutes} di {skill}",
+          "body": "È pratica vera. {game} la fa crescere stasera."
+        },
+        {
+          "title": "Avete allenato {skill} per {minutes}",
+          "body": "Continuate con {game}, pochi minuti facili."
+        },
+        {
+          "title": "{kid} ha già {minutes} di {skill}",
+          "body": "La pratica di questo mese si somma. La scelta di stasera: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Prova “{moment}” stasera",
+          "body": "Il primo lascia sempre un ricordo sul tuo pianeta."
+        },
+        {
+          "title": "Ti aspetta un ricordo",
+          "body": "Il tuo primo momento di “{moment}” ne lascia sempre uno. Stasera è la sera giusta."
+        },
+        {
+          "title": "Qualcosa di nuovo per il pianeta di {kid}",
+          "body": "Il primo momento di “{moment}” lascia sempre un ricordo."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Il tuo pianeta nasconde qualcosa",
+          "body": "Ancora da trovare: {keepsakes}. Circa un momento su quattro ne lascia uno."
+        },
+        {
+          "title": "Ci sono ricordi che ti aspettano",
+          "body": "Ancora nascosti sul tuo pianeta: {keepsakes}. Gioca stasera e cerca."
+        },
+        {
+          "title": "Cosa troverà {kid} adesso?",
+          "body": "Ancora da trovare: {keepsakes}. Gioca stasera e scoprilo."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Batterie scariche?",
+          "body": "{game} non chiede quasi energia. Anche pochi minuti sul divano contano."
+        },
+        {
+          "title": "Stanco stasera? Va bene",
+          "body": "{game} è fatto per le serate a batteria scarica. Mettiti comodo e gioca."
+        },
+        {
+          "title": "Uno facile per stasera",
+          "body": "{game}: poca energia, pochi minuti, e {kid} ha tutto di te."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} inizia ora",
+          "body": "Le tue app sono in pausa fino alle {end}. Il gioco di stasera è pronto."
+        },
+        {
+          "title": "Il Tempo in famiglia è iniziato",
+          "body": "{schedule} dura fino alle {end}. Giù il telefono, su un gioco facile."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} è finito",
+          "body": "Le tue app sono tornate. C'è stato qualcosa di nuovo stasera?"
+        },
+        {
+          "title": "Il Tempo in famiglia è finito",
+          "body": "Le tue app sono di nuovo aperte. Racconta al pianeta cosa c'è stato di nuovo stasera."
+        },
+        {
+          "title": "È stato il tempo di {kid}",
+          "body": "{schedule} è finito, e le tue app sono tornate."
+        }
+      ]
+    },
+    "nl": {
+      "letter-at-risk": [
+        {
+          "title": "Je brief heeft {evenings} nodig",
+          "body": "Speel vanavond, dan schrijft de planeet je op zondag de brief van de week."
+        },
+        {
+          "title": "Nog tijd voor de brief van deze week",
+          "body": "Nog {evenings} te gaan tot zondag. Eén makkelijk spelletje vanavond houdt het op koers."
+        },
+        {
+          "title": "De brief van {kid} hangt af van vanavond",
+          "body": "Nog {evenings}, en op zondag komt de brief van de planeet over jullie week."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "De brief van deze week is er",
+          "body": "De planeet heeft jullie {evenings} samen opgeschreven. Open hem voordat de week om is."
+        },
+        {
+          "title": "Een brief van je planeet",
+          "body": "Je week staat erin: {evenings} samen spelen. Kom hem lezen."
+        },
+        {
+          "title": "De week van {kid}, in een brief",
+          "body": "De zondagsbrief is er, met {evenings} samen spelen erin."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "{world} is nog {moments} weg",
+          "body": "Nog één makkelijke avond, en er bloeit een nieuwe wereld op je planeet."
+        },
+        {
+          "title": "Bijna bij {world}",
+          "body": "Nog {moments} tot hij opengaat. Misschien is het vanavond zover."
+        },
+        {
+          "title": "{kid} is dicht bij {world}",
+          "body": "Nog {moments}, en je planeet opent een nieuwe wereld."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Je planeet wacht op je",
+          "body": "Het eerste moment kost maar een paar makkelijke minuten. Vanavond: {game}."
+        },
+        {
+          "title": "Eén spelletje, en een planeet wordt wakker",
+          "body": "{game} vraagt geen voorbereiding. Speel het één keer en zie je planeet groeien."
+        },
+        {
+          "title": "Vanavond misschien het eerste rondje van {kid}",
+          "body": "{game} duurt een paar minuten en vraagt alleen jullie tweeën."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Je planeet mist je",
+          "body": "Een paar rustige dagen zijn prima. {game} is vanavond een makkelijke weg terug."
+        },
+        {
+          "title": "Klaar wanneer jij het bent",
+          "body": "{game} duurt een paar minuten en oefent {skill}. Je hoeft niets in te halen."
+        },
+        {
+          "title": "{kid} wil vast graag een spelletje",
+          "body": "Ga verder waar je was: {game}, een paar makkelijke minuten samen."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "{minutes} aan {skill} deze maand",
+          "body": "Dat is echt oefenen. Met {game} groeit het vanavond verder."
+        },
+        {
+          "title": "Jullie oefenden {skill} al {minutes}",
+          "body": "Ga door met {game}, een paar makkelijke minuten."
+        },
+        {
+          "title": "{kid} heeft {minutes} aan {skill} geoefend",
+          "body": "De oefening van deze maand telt op. Vanavond: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Probeer vanavond “{moment}”",
+          "body": "De eerste keer laat altijd een aandenken achter op je planeet."
+        },
+        {
+          "title": "Er wacht een aandenken",
+          "body": "Je eerste moment “{moment}” laat er altijd een achter. Vanavond is een goede avond."
+        },
+        {
+          "title": "Iets nieuws voor de planeet van {kid}",
+          "body": "Het eerste moment “{moment}” laat altijd een aandenken achter."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Je planeet verstopt iets",
+          "body": "Nog te vinden: {keepsakes}. Ongeveer één op de vier momenten laat er een achter."
+        },
+        {
+          "title": "Er wachten aandenkens",
+          "body": "Nog verstopt op je planeet: {keepsakes}. Speel vanavond en kijk."
+        },
+        {
+          "title": "Wat vindt {kid} hierna?",
+          "body": "Nog te vinden: {keepsakes}. Speel vanavond en ontdek het."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Helemaal op?",
+          "body": "{game} kost bijna geen energie. Een paar minuten op de bank tellen ook."
+        },
+        {
+          "title": "Moe zijn mag vanavond",
+          "body": "{game} is gemaakt voor avonden met een lege batterij. Leun achterover en speel."
+        },
+        {
+          "title": "Een makkelijke voor vanavond",
+          "body": "{game}: weinig energie, een paar minuten, en {kid} heeft je helemaal."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} begint nu",
+          "body": "Je apps zijn gepauzeerd tot {end}. Het spelletje voor vanavond staat klaar."
+        },
+        {
+          "title": "Gezinstijd staat aan",
+          "body": "{schedule} loopt tot {end}. Telefoon weg, één makkelijk spelletje erbij."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "{schedule} is voorbij",
+          "body": "Je apps zijn terug. Was er vanavond iets nieuws?"
+        },
+        {
+          "title": "Gezinstijd is klaar",
+          "body": "Je apps zijn weer open. Vertel de planeet wat er vanavond nieuw was."
+        },
+        {
+          "title": "Dat was de tijd van {kid}",
+          "body": "{schedule} is voorbij en je apps zijn terug."
+        }
+      ]
+    },
+    "pl": {
+      "letter-at-risk": [
+        {
+          "title": "Do listu potrzeba: {evenings}",
+          "body": "Zagraj dziś wieczorem, a w niedzielę planeta napisze ci list o tym tygodniu."
+        },
+        {
+          "title": "Jeszcze zdążysz z listem na ten tydzień",
+          "body": "Do niedzieli zostało: {evenings}. Jedna łatwa gra dziś wieczorem i wszystko idzie zgodnie z planem."
+        },
+        {
+          "title": "{kid} czeka na list. Dziś wieczór się liczy",
+          "body": "Zostało jeszcze: {evenings}, a w niedzielę przyjdzie list od planety o waszym tygodniu."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "List na ten tydzień już jest",
+          "body": "Planeta zapisała wasze wspólne wieczory: {evenings}. Otwórz go przed końcem tygodnia."
+        },
+        {
+          "title": "List od twojej planety",
+          "body": "Pamięta wasz tydzień: {evenings} zabawy. Przyjdź go przeczytać."
+        },
+        {
+          "title": "{kid} i wasz tydzień w liście",
+          "body": "Niedzielny list już jest, a w nim {evenings} zabawy."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "Do świata {world} zostało: {moments}",
+          "body": "Jeszcze jeden łatwy wieczór, a na twojej planecie rozkwitnie nowy świat."
+        },
+        {
+          "title": "Już prawie świat {world}",
+          "body": "Do otwarcia zostało: {moments}. Może to właśnie dziś?"
+        },
+        {
+          "title": "{kid} jest blisko świata {world}",
+          "body": "Jeszcze {moments}, a twoja planeta otworzy nowy świat."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Twoja planeta czeka",
+          "body": "Pierwsza chwila zajmie kilka łatwych minut. Na dziś: {game}."
+        },
+        {
+          "title": "Jedna gra i planeta się budzi",
+          "body": "{game} nie wymaga przygotowań. Zagraj raz i patrz, jak rośnie twoja planeta."
+        },
+        {
+          "title": "{kid} może dziś zagrać pierwszą rundę",
+          "body": "{game} zajmie kilka minut, a potrzebujecie tylko siebie nawzajem."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Twoja planeta tęskni",
+          "body": "Kilka spokojnych dni to nic złego. {game} to łatwy powrót na dziś wieczór."
+        },
+        {
+          "title": "Gotowe, kiedy ty będziesz",
+          "body": "{game} zajmie kilka minut i rozwija umiejętność: {skill}. Nie musisz nic nadrabiać."
+        },
+        {
+          "title": "{kid} czeka na wspólną grę",
+          "body": "Wróćcie tam, gdzie skończyliście: {game}, kilka łatwych minut razem."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "W tym miesiącu: {skill}, {minutes}",
+          "body": "To prawdziwa praktyka. Dziś wieczorem rozwijaj ją dalej z grą {game}."
+        },
+        {
+          "title": "Wspólne ćwiczenie: {skill}, {minutes}",
+          "body": "Ciągnijcie to dalej: {game}, kilka łatwych minut."
+        },
+        {
+          "title": "{kid} i {skill}: już {minutes}",
+          "body": "Ćwiczenia z tego miesiąca się sumują. Na dziś: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Spróbuj dziś: „{moment}”",
+          "body": "Pierwszy raz zawsze zostawia pamiątkę na twojej planecie."
+        },
+        {
+          "title": "Czeka na ciebie pamiątka",
+          "body": "Pierwsza chwila „{moment}” zawsze ją zostawia. Dziś jest dobry wieczór."
+        },
+        {
+          "title": "{kid} i coś nowego na planecie",
+          "body": "Pierwsza chwila „{moment}” zawsze zostawia pamiątkę."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Twoja planeta coś ukrywa",
+          "body": "Do znalezienia: {keepsakes}. Mniej więcej co czwarta chwila zostawia pamiątkę."
+        },
+        {
+          "title": "Pamiątki czekają",
+          "body": "Wciąż ukryte na twojej planecie: {keepsakes}. Zagraj dziś i poszukaj."
+        },
+        {
+          "title": "Co {kid} znajdzie teraz?",
+          "body": "Do znalezienia: {keepsakes}. Zagrajcie dziś i zobaczcie."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Brak sił?",
+          "body": "{game} prawie nie wymaga energii. Kilka minut na kanapie też się liczy."
+        },
+        {
+          "title": "Dziś zmęczenie jest w porządku",
+          "body": "{game} jest na wieczory z pustą baterią. Usiądź wygodnie i graj."
+        },
+        {
+          "title": "Coś łatwego na dziś",
+          "body": "{game}: mało energii, kilka minut, a {kid} ma cię tylko dla siebie."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "{schedule} zaczyna się teraz",
+          "body": "Twoje aplikacje są wstrzymane do {end}. Dzisiejsza gra czeka."
+        },
+        {
+          "title": "Czas z dzieckiem włączony",
+          "body": "{schedule} trwa do {end}. Telefon odłożony, jedna łatwa gra przed wami."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "Koniec: {schedule}",
+          "body": "Twoje aplikacje wróciły. Czy dziś było coś nowego?"
+        },
+        {
+          "title": "Czas z dzieckiem dobiegł końca",
+          "body": "Aplikacje znów działają. Powiedz planecie, co dziś było nowego."
+        },
+        {
+          "title": "{kid} i ty: to był wasz czas",
+          "body": "Koniec: {schedule}. Twoje aplikacje wróciły."
+        }
+      ]
+    },
+    "ru": {
+      "letter-at-risk": [
+        {
+          "title": "Для письма нужно: {evenings}",
+          "body": "Поиграйте сегодня, и в воскресенье планета напишет вам письмо о неделе."
+        },
+        {
+          "title": "Ещё можно успеть к письму недели",
+          "body": "До воскресенья осталось: {evenings}. Одна лёгкая игра сегодня, и всё идёт по плану."
+        },
+        {
+          "title": "{kid} и письмо: всё решит сегодняшний вечер",
+          "body": "Ещё {evenings}, и в воскресенье придёт письмо от планеты о вашей неделе."
+        }
+      ],
+      "letter-ready": [
+        {
+          "title": "Письмо этой недели пришло",
+          "body": "Планета записала ваши вечера вместе: {evenings}. Откройте его до конца недели."
+        },
+        {
+          "title": "Письмо от вашей планеты",
+          "body": "Она помнит вашу неделю: {evenings} игры. Приходите прочитать."
+        },
+        {
+          "title": "{kid} и неделя в письме",
+          "body": "Воскресное письмо уже пришло, а в нём {evenings} игры."
+        }
+      ],
+      "world-close": [
+        {
+          "title": "До мира {world} осталось: {moments}",
+          "body": "Ещё один лёгкий вечер, и на вашей планете расцветёт новый мир."
+        },
+        {
+          "title": "Мир {world} совсем близко",
+          "body": "До открытия осталось: {moments}. Может, это случится сегодня?"
+        },
+        {
+          "title": "{kid} уже близко к миру {world}",
+          "body": "Ещё {moments}, и ваша планета откроет новый мир."
+        }
+      ],
+      "first-round": [
+        {
+          "title": "Ваша планета ждёт",
+          "body": "Первый момент займёт несколько лёгких минут. На сегодня: {game}."
+        },
+        {
+          "title": "Одна игра, и планета проснётся",
+          "body": "{game}: никакой подготовки. Сыграйте один раз и посмотрите, как растёт ваша планета."
+        },
+        {
+          "title": "{kid} может сегодня сыграть первый раунд",
+          "body": "{game}: несколько минут, и нужны только вы двое."
+        }
+      ],
+      "comeback": [
+        {
+          "title": "Планета скучает по вам",
+          "body": "Пара тихих дней — это нормально. {game}: лёгкий способ вернуться сегодня."
+        },
+        {
+          "title": "Когда будете готовы",
+          "body": "{game} займёт несколько минут. Навык: {skill}. Ничего не нужно навёрстывать."
+        },
+        {
+          "title": "{kid} ждёт игры с вами",
+          "body": "Продолжите с того же места: {game}, несколько лёгких минут вместе."
+        }
+      ],
+      "practice-milestone": [
+        {
+          "title": "{skill}: {minutes} за этот месяц",
+          "body": "Это настоящая практика. {game} поможет продолжить сегодня."
+        },
+        {
+          "title": "Вместе: {skill}, уже {minutes}",
+          "body": "Продолжайте с игрой {game}: несколько лёгких минут."
+        },
+        {
+          "title": "{kid} и {skill}: уже {minutes}",
+          "body": "Практика этого месяца копится. На сегодня: {game}."
+        }
+      ],
+      "keepsake-first-moment": [
+        {
+          "title": "Попробуйте сегодня «{moment}»",
+          "body": "Первый раз всегда оставляет находку на вашей планете."
+        },
+        {
+          "title": "Вас ждёт находка",
+          "body": "Первый момент «{moment}» всегда её оставляет. Сегодня хороший вечер."
+        },
+        {
+          "title": "{kid} и что-то новое на планете",
+          "body": "Первый момент «{moment}» всегда оставляет находку."
+        }
+      ],
+      "keepsakes-waiting": [
+        {
+          "title": "Ваша планета что-то прячет",
+          "body": "Ещё не найдено: {keepsakes}. Примерно каждый четвёртый момент оставляет находку."
+        },
+        {
+          "title": "Находки ждут",
+          "body": "Ещё спрятано на вашей планете: {keepsakes}. Поиграйте сегодня и поищите."
+        },
+        {
+          "title": "Что {kid} найдёт дальше?",
+          "body": "Ещё не найдено: {keepsakes}. Поиграйте сегодня и посмотрите."
+        }
+      ],
+      "low-energy": [
+        {
+          "title": "Сил совсем нет?",
+          "body": "{game} почти не требует сил. Несколько минут на диване тоже считаются."
+        },
+        {
+          "title": "Усталость сегодня не помеха",
+          "body": "{game}: для вечеров на последнем заряде. Устройтесь поудобнее и играйте."
+        },
+        {
+          "title": "Лёгкая игра на вечер",
+          "body": "{game}: мало сил, несколько минут, и {kid} получает вас целиком."
+        }
+      ],
+      "kid-hours-start": [
+        {
+          "title": "Начинается: {schedule}",
+          "body": "Приложения на паузе до {end}. Игра на сегодня готова."
+        },
+        {
+          "title": "Детское время включено",
+          "body": "{schedule}: до {end}. Телефон отложен, впереди одна лёгкая игра."
+        }
+      ],
+      "kid-hours-end": [
+        {
+          "title": "Закончилось: {schedule}",
+          "body": "Приложения снова доступны. Было ли сегодня что-то новое?"
+        },
+        {
+          "title": "Детское время закончилось",
+          "body": "Приложения снова открыты. Расскажите планете, что сегодня было нового."
+        },
+        {
+          "title": "{kid} и вы: это было ваше время",
+          "body": "Закончилось: {schedule}. Приложения снова доступны."
+        }
+      ]
+    }
+  }
+}

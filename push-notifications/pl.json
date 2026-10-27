@@ -1,0 +1,152 @@
+{
+  "letter-at-risk": {
+    "03cccdf487df": {
+      "title": "Do listu potrzeba: {evenings}",
+      "body": "Zagraj dziś wieczorem, a w niedzielę planeta napisze ci list o tym tygodniu."
+    },
+    "c71af1f74103": {
+      "title": "Jeszcze zdążysz z listem na ten tydzień",
+      "body": "Do niedzieli zostało: {evenings}. Jedna łatwa gra dziś wieczorem i wszystko idzie zgodnie z planem."
+    },
+    "655da187e4db": {
+      "title": "{kid} czeka na list. Dziś wieczór się liczy",
+      "body": "Zostało jeszcze: {evenings}, a w niedzielę przyjdzie list od planety o waszym tygodniu."
+    }
+  },
+  "letter-ready": {
+    "253e8e5771c2": {
+      "title": "List na ten tydzień już jest",
+      "body": "Planeta zapisała wasze wspólne wieczory: {evenings}. Otwórz go przed końcem tygodnia."
+    },
+    "a64a22f47c36": {
+      "title": "List od twojej planety",
+      "body": "Pamięta wasz tydzień: {evenings} zabawy. Przyjdź go przeczytać."
+    },
+    "534836ef54c6": {
+      "title": "{kid} i wasz tydzień w liście",
+      "body": "Niedzielny list już jest, a w nim {evenings} zabawy."
+    }
+  },
+  "world-close": {
+    "f6c4299262f3": {
+      "title": "Do świata {world} zostało: {moments}",
+      "body": "Jeszcze jeden łatwy wieczór, a na twojej planecie rozkwitnie nowy świat."
+    },
+    "f3cb9c3731fb": {
+      "title": "Już prawie świat {world}",
+      "body": "Do otwarcia zostało: {moments}. Może to właśnie dziś?"
+    },
+    "1b049e0f8f73": {
+      "title": "{kid} jest blisko świata {world}",
+      "body": "Jeszcze {moments}, a twoja planeta otworzy nowy świat."
+    }
+  },
+  "first-round": {
+    "b74afa8202cb": {
+      "title": "Twoja planeta czeka",
+      "body": "Pierwsza chwila zajmie kilka łatwych minut. Na dziś: {game}."
+    },
+    "437e81073e5a": {
+      "title": "Jedna gra i planeta się budzi",
+      "body": "{game} nie wymaga przygotowań. Zagraj raz i patrz, jak rośnie twoja planeta."
+    },
+    "62151bd27e12": {
+      "title": "{kid} może dziś zagrać pierwszą rundę",
+      "body": "{game} zajmie kilka minut, a potrzebujecie tylko siebie nawzajem."
+    }
+  },
+  "comeback": {
+    "5b98adafd639": {
+      "title": "Twoja planeta tęskni",
+      "body": "Kilka spokojnych dni to nic złego. {game} to łatwy powrót na dziś wieczór."
+    },
+    "95bf3e91acab": {
+      "title": "Gotowe, kiedy ty będziesz",
+      "body": "{game} zajmie kilka minut i rozwija umiejętność: {skill}. Nie musisz nic nadrabiać."
+    },
+    "4fdf0f2e2218": {
+      "title": "{kid} czeka na wspólną grę",
+      "body": "Wróćcie tam, gdzie skończyliście: {game}, kilka łatwych minut razem."
+    }
+  },
+  "practice-milestone": {
+    "2389a60edbac": {
+      "title": "W tym miesiącu: {skill}, {minutes}",
+      "body": "To prawdziwa praktyka. Dziś wieczorem rozwijaj ją dalej z grą {game}."
+    },
+    "e3f36d93940d": {
+      "title": "Wspólne ćwiczenie: {skill}, {minutes}",
+      "body": "Ciągnijcie to dalej: {game}, kilka łatwych minut."
+    },
+    "c2e4a29a46be": {
+      "title": "{kid} i {skill}: już {minutes}",
+      "body": "Ćwiczenia z tego miesiąca się sumują. Na dziś: {game}."
+    }
+  },
+  "keepsake-first-moment": {
+    "2073cb3414b3": {
+      "title": "Spróbuj dziś: „{moment}”",
+      "body": "Pierwszy raz zawsze zostawia pamiątkę na twojej planecie."
+    },
+    "ed00fa052d20": {
+      "title": "Czeka na ciebie pamiątka",
+      "body": "Pierwsza chwila „{moment}” zawsze ją zostawia. Dziś jest dobry wieczór."
+    },
+    "a5cb855874cd": {
+      "title": "{kid} i coś nowego na planecie",
+      "body": "Pierwsza chwila „{moment}” zawsze zostawia pamiątkę."
+    }
+  },
+  "keepsakes-waiting": {
+    "1634d7372a86": {
+      "title": "Twoja planeta coś ukrywa",
+      "body": "Do znalezienia: {keepsakes}. Mniej więcej co czwarta chwila zostawia pamiątkę."
+    },
+    "8ed7b341b521": {
+      "title": "Pamiątki czekają",
+      "body": "Wciąż ukryte na twojej planecie: {keepsakes}. Zagraj dziś i poszukaj."
+    },
+    "f56d70d07b3b": {
+      "title": "Co {kid} znajdzie teraz?",
+      "body": "Do znalezienia: {keepsakes}. Zagrajcie dziś i zobaczcie."
+    }
+  },
+  "low-energy": {
+    "3a59375c2317": {
+      "title": "Brak sił?",
+      "body": "{game} prawie nie wymaga energii. Kilka minut na kanapie też się liczy."
+    },
+    "bce41d94b30f": {
+      "title": "Dziś zmęczenie jest w porządku",
+      "body": "{game} jest na wieczory z pustą baterią. Usiądź wygodnie i graj."
+    },
+    "02f7026f2f3c": {
+      "title": "Coś łatwego na dziś",
+      "body": "{game}: mało energii, kilka minut, a {kid} ma cię tylko dla siebie."
+    }
+  },
+  "kid-hours-start": {
+    "3eb4eeb855d1": {
+      "title": "{schedule} zaczyna się teraz",
+      "body": "Twoje aplikacje są wstrzymane do {end}. Dzisiejsza gra czeka."
+    },
+    "0df53a680df6": {
+      "title": "Czas z dzieckiem włączony",
+      "body": "{schedule} trwa do {end}. Telefon odłożony, jedna łatwa gra przed wami."
+    }
+  },
+  "kid-hours-end": {
+    "c371fdaba534": {
+      "title": "Koniec: {schedule}",
+      "body": "Twoje aplikacje wróciły. Czy dziś było coś nowego?"
+    },
+    "2c6bf0af8399": {
+      "title": "Czas z dzieckiem dobiegł końca",
+      "body": "Aplikacje znów działają. Powiedz planecie, co dziś było nowego."
+    },
+    "2f18c9c07011": {
+      "title": "{kid} i ty: to był wasz czas",
+      "body": "Koniec: {schedule}. Twoje aplikacje wróciły."
+    }
+  }
+}

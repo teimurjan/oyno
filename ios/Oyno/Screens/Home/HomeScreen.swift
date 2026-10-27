@@ -1,22 +1,35 @@
-import DeviceActivity
 import SwiftUI
 
-/// The family on its planet, its bloom level and the totals that grow it, and the phone's
-/// screen time. Pressing the planet or its name shrinks it into the worlds.
+/// D2 on the canvas: Home answers "what now?" and changes with the clock. The family's planet
+/// with the keepsakes on it, the bloom and the next world, then the one card for now: before
+/// Kid hours it waits, during them it holds the thing to start, after them it sums up the
+/// evening and asks what was new. Under it, every number is ours, not the phone's: the week,
+/// the practice and the keepsakes, each a doorway to its own screen.
 struct HomeScreen: View {
     /// Switches to Play.
     let play: () -> Void
+    /// Starts a game or a moment, through the store's gate.
+    let start: (Session) -> Void
 
     @Environment(OynoStore.self) private var oyno
     @Environment(KidHoursStore.self) private var kidHours
+    @Environment(Dealer.self) private var dealer
     @Environment(\.adaptive) private var adaptive
+    @AppStorage("oyno.age") private var age = AgeBand.toddler
+    @AppStorage("oyno.energy") private var energy = Energy.low
+    @AppStorage("oyno.weekGoal") private var goal = Week.defaultGoal
     @State private var worldsOpen: Bool
     @State private var profileOpen = false
+    @State private var weekOpen = false
+    @State private var letterOpen = false
+    @State private var noticing = false
+    @State private var route: HomeRoute?
     /// The world the gallery opens on, when Home appears with it open.
     private let showingWorld: World.ID?
 
-    init(play: @escaping () -> Void, showingWorld: World.ID? = nil) {
+    init(play: @escaping () -> Void, start: @escaping (Session) -> Void, showingWorld: World.ID? = nil) {
         self.play = play
+        self.start = start
         self.showingWorld = showingWorld
         _worldsOpen = State(initialValue: showingWorld != nil)
     }
@@ -37,54 +50,66 @@ struct HomeScreen: View {
                 }
             }
         }
+        .onAppear { dealer.dealIfStale(energy: energy, age: age) }
+        .navigationDestination(item: $route) { route in
+            switch route {
+            case .growth:
+                GrowthScreen { game in
+                    dealer.show(game)
+                    play()
+                }
+                .tracksScreen(.growth)
+            case .keepsakes:
+                KeepsakesScreen().tracksScreen(.keepsakes)
+            }
+        }
         .sheet(isPresented: $profileOpen) { ProfileScreen().tracksScreen(.profile) }
+        .sheet(isPresented: $weekOpen) {
+            WeekSheet { letterOpen = true }.tracksScreen(.week)
+        }
+        .sheet(isPresented: $noticing) { NoticeSheet(kind: oyno.rounds.on(.now).last?.kind ?? .game) }
+        .fullScreenCover(isPresented: $letterOpen) { LetterScreen(week: .containing(.now)).tracksScreen(.letter) }
     }
 
-    /// The phone's: the planet over its totals and the screen time, the start pinned at the foot.
+    /// The phone's: the planet over the bloom, the card for now and the three rows.
     private var column: some View {
         ScrollView {
-            VStack(spacing: Metric.Space.l) {
+            VStack(spacing: 0) {
                 header
-                // Smaller on the closed Duo, so its short screen still shows the totals.
-                planet.frame(maxWidth: adaptive.bars == .side ? 240 : 300)
-                score
-                if kidHours.isAuthorized { screenTime }
+                // Smaller on the closed Duo, so its short screen still shows the card.
+                planet.frame(maxWidth: adaptive.bars == .side ? 200 : 250)
+                bloom.padding(.top, Metric.Space.xs)
+                now.padding(.top, 14)
+                rows.padding(.top, Metric.Space.m)
             }
             .padding(.horizontal, Metric.gutter)
             .padding(.bottom, Metric.Space.l)
             .readableWidth()
         }
         .scrollIndicators(.hidden)
-        .safeAreaInset(edge: .bottom) {
-            startGame.padding(.bottom, Metric.Space.s)
-        }
     }
 
-    /// iPad and the Duo open: the planet to look at on the leading side, the totals on the
-    /// trailing one. The start sits under the planet on iPad, and on the Duo at the foot of the
-    /// trailing side, by the thumb and clear of the fold.
+    /// iPad and the Duo open: the planet and its bloom to look at on the leading side, the card
+    /// and the rows to tap on the trailing one.
     private var split: some View {
         FoldColumns {
             VStack(spacing: Metric.Space.l) {
                 if adaptive.bars != .top { wordmark.frame(maxWidth: .infinity, alignment: .leading) }
                 Spacer(minLength: 0)
                 planet.frame(maxWidth: 435)
-                if adaptive.bars == .top { startGame }
+                bloom
                 Spacer(minLength: 0)
             }
             .padding(.vertical, Metric.Space.xl)
         } trailing: {
-            ScrollView {
+            ScrollsIfNeeded {
                 VStack(spacing: Metric.Space.l) {
-                    Card(padding: Metric.Space.xl, raised: true) { score }
-                    if kidHours.isAuthorized { screenTime }
+                    Spacer(minLength: 0)
+                    now
+                    rows
+                    Spacer(minLength: 0)
                 }
                 .padding(.vertical, Metric.Space.xl)
-            }
-            .scrollIndicators(.hidden)
-            .defaultScrollAnchor(adaptive.bars == .top ? .center : .top)
-            .safeAreaInset(edge: .bottom) {
-                if adaptive.bars != .top { startGame.padding(.bottom, Metric.Space.s) }
             }
         }
     }
@@ -95,23 +120,91 @@ struct HomeScreen: View {
         } onClose: {
             worldsOpen = false
         }
+        .overlay {
+            if !worldsOpen { KeepsakeOrbit(keepsakes: oyno.keepsakesInOrder, tonight: tonightsKeepsake) }
+        }
         .screenshotCallout("worlds")
     }
 
-    private var score: some View {
-        TimelineView(.everyMinute) { context in
-            BloomScore(
-                level: oyno.level,
-                developmentMinutes: oyno.tally.minutes,
-                rounds: oyno.tally.rounds,
-                togetherMinutes: oyno.tally.together + kidHours.pausedMinutesToday(now: context.date)
-            )
-        }
+    private var tonightsKeepsake: Keepsake? {
+        oyno.rounds.on(.now).compactMap(\.keepsakeID).last.flatMap(Keepsake.find)
     }
 
     private func open() {
         Analytics.shared.track(.worldsOpened(bloom: oyno.level))
         worldsOpen = true
+    }
+
+    /// The level and how far the next world is. The world's own name is the caption under the
+    /// planet, which also opens the worlds.
+    private var bloom: some View {
+        VStack(spacing: 6) {
+            HStack(spacing: Metric.Space.s) {
+                Text("Bloom \(oyno.level)")
+                    .font(Typeface.figures(13, .bold, relativeTo: .caption))
+                    .monospacedDigit()
+                    .foregroundStyle(Palette.ink)
+                FillBar(fraction: bloomShare, tint: Palette.good)
+                    .frame(width: 120)
+            }
+            Text(verbatim: bloomNext)
+                .font(Typeface.ui(13, .semibold, relativeTo: .caption))
+                .foregroundStyle(Palette.muted)
+        }
+        .accessibilityElement(children: .combine)
+    }
+
+    private var bloomShare: Double {
+        guard let next = Bloom.nextWorld(after: oyno.points) else { return 1 }
+        let from = oyno.world.unlocksAt
+        return Double(oyno.points - from) / Double(max(1, next.unlocksAt - from))
+    }
+
+    private var bloomNext: String {
+        guard let next = Bloom.nextWorld(after: oyno.points),
+              let moments = Bloom.momentsToNext(points: oyno.points, perMoment: oyno.pointsPerMoment)
+        else { return String(interface: "Every world is yours") }
+        return String(interface: "\(moments) moments to \(next.name)")
+    }
+
+    /// The one card for now, read again every minute so it turns over with Kid hours.
+    private var now: some View {
+        TimelineView(.everyMinute) { _ in
+            let date = kidHours.now
+            NowCard(
+                evening: Evening.at(date, schedules: kidHours.settings.schedules, playedToday: !oyno.rounds.on(date).isEmpty),
+                session: dealer.session(age: age),
+                tonight: oyno.rounds.on(date),
+                asked: oyno.notedFirst(on: date),
+                start: start,
+                play: play,
+                swap: {
+                    dealer.kind = .game
+                    dealer.dealAnother()
+                },
+                notice: { noticing = true }
+            )
+        }
+    }
+
+    // MARK: The rows
+
+    private var rows: some View {
+        HomeRows(
+            openWeek: openWeek,
+            openGrowth: { route = .growth },
+            openKeepsakes: { route = .keepsakes }
+        )
+    }
+
+    /// On Sunday the row opens the letter, every other day the week and its goal.
+    private func openWeek() {
+        let week = Week.containing(.now)
+        if week.letterIsReady(on: .now), oyno.letter(for: week, goal: goal) != nil {
+            letterOpen = true
+        } else {
+            weekOpen = true
+        }
     }
 
     /// The wordmark, and the profile where the system's bar does not hold it. On iPad both sit in that bar.
@@ -133,56 +226,11 @@ struct HomeScreen: View {
     private var wordmark: some View {
         Image("Wordmark").accessibilityLabel(Text(verbatim: "Oyno"))
     }
-
-    private var startGame: some View {
-        Button {
-            Haptics.tap()
-            play()
-        } label: {
-            HStack(spacing: 10) {
-                Glyph(symbol: "play.fill", size: 15, weight: .bold)
-                Text("Start a game")
-                    .font(Typeface.ui(17, .bold, relativeTo: .headline))
-                    .foregroundStyle(Palette.ink)
-                Glyph(symbol: "chevron.right", size: 13, weight: .bold)
-            }
-            .padding(.horizontal, adaptive.roomy ? 28 : 24)
-            .frame(height: adaptive.roomy ? Metric.primaryButtonRoomy : Metric.primaryButton)
-        }
-        .buttonStyle(FloatingGlassStyle())
-    }
-
-    private var screenTime: some View {
-        Group {
-            #if DEBUG
-            if let seeded = kidHours.seededUsage {
-                AppUsageCard(usage: seeded) { TokenTile(item: .placeholder($0.name)) }
-            } else {
-                report
-            }
-            #else
-            report
-            #endif
-        }
-        .frame(height: AppUsageCard<EmptyView>.height)
-        .glassCard()
-    }
-
-    /// Drawn by `OynoReport`: only Screen Time's own process may read what each app took.
-    /// It has nothing to tap, and a hosted report would otherwise keep the drag from the scroll view.
-    private var report: some View {
-        let today = DateInterval(start: Calendar.current.startOfDay(for: .now), duration: 86_400)
-        return DeviceActivityReport(.todayApps, filter: DeviceActivityFilter(segment: .daily(during: today), users: .all, devices: .init([.iPhone])))
-            .allowsHitTesting(false)
-    }
 }
 
-/// The glass under the start, pressed in like the system's own glass buttons.
-private struct FloatingGlassStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .floatingGlass(interactive: false)
-            .scaleEffect(configuration.isPressed ? 0.97 : 1)
-            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
-    }
+/// The screens Home pushes.
+enum HomeRoute: Hashable, Identifiable {
+    case growth, keepsakes
+
+    var id: Self { self }
 }

@@ -38,10 +38,12 @@ struct ScreenHeader<Trailing: View>: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(title).oynoTitle(large: adaptive.roomy)
-                Text(subtitle)
-                    .font(Typeface.ui(adaptive.roomy ? 14 : 13, .regular, relativeTo: .footnote))
-                    .foregroundStyle(Palette.muted)
-                    .fixedSize(horizontal: false, vertical: true)
+                if !subtitle.isEmpty {
+                    Text(subtitle)
+                        .font(Typeface.ui(adaptive.roomy ? 14 : 13, .regular, relativeTo: .footnote))
+                        .foregroundStyle(Palette.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }
             Spacer(minLength: Metric.Space.s)
             trailing
@@ -138,6 +140,11 @@ struct SheetScreen<Content: View>: View {
 }
 
 extension View {
+    /// The swipe back from the screen's left edge, for a pushed screen that draws its own header.
+    func swipesBack() -> some View {
+        background { SwipeBackGesture() }
+    }
+
     /// A partial-height sheet as frosted glass: the system's Liquid Glass from iOS 26, a
     /// material before it.
     @ViewBuilder

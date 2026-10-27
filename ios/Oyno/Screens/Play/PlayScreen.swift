@@ -1,41 +1,34 @@
 import SwiftUI
 
 /// D3 on the canvas: one easy thing, sized to the kid's age and the energy the parent has
-/// left. Starting it is a write, so it asks `OynoStore` first and the paywall answers a lapsed
-/// subscription. A tab, whose back button returns to Home and whose search opens every game.
+/// left, or one of the everyday moments (D11) the family already has, timed with nudges. The
+/// Activity menu picks which. Starting is a write, so `AppRoot` asks `OynoStore` first and the
+/// paywall answers a lapsed subscription. The Activity tab, titled like Kid hours, whose search
+/// opens every game.
 struct PlayScreen: View {
-    let onBack: () -> Void
-    let onStart: (Activity) -> Void
+    let onStart: (Session) -> Void
 
-    @Environment(OynoStore.self) private var oyno
     @Environment(KidHoursStore.self) private var kidHours
+    @Environment(Dealer.self) private var dealer
     @Environment(\.dynamicTypeSize) private var typeSize
     @Environment(\.adaptive) private var adaptive
     @AppStorage("oyno.age") private var age = AgeBand.toddler
     @AppStorage("oyno.energy") private var energy = Energy.low
-    @State private var activity: Activity
-    @State private var holding: CGFloat = 0
     @State private var searching = false
 
-    /// `dealt` opens on that game instead of a random one, for the screenshot harness.
-    init(dealt: Activity? = nil, onBack: @escaping () -> Void, onStart: @escaping (Activity) -> Void) {
-        self.onBack = onBack
-        self.onStart = onStart
-        _activity = State(initialValue: dealt ?? Activity.pick(for: .low, age: .toddler))
-    }
+    private var activity: Activity { dealer.game }
+    /// The everyday moment picked, nil while the Activity menu says Game.
+    private var moment: OpenMoment? { dealer.moment(age: age) }
 
     var body: some View {
         Group {
             if adaptive.columns == .two { split } else { column }
         }
         .animation(.easeInOut(duration: 0.25), value: activity.id)
+        .animation(.easeInOut(duration: 0.25), value: dealer.kind)
         .background(Palette.sky.ignoresSafeArea())
         .systemBar(adaptive)
         .toolbar {
-            if adaptive.bars == .top, let status = kidHoursStatus {
-                // The bar sizes an item to an icon's width unless it keeps its own.
-                ToolbarItem(placement: .topBarLeading) { pill(status).fixedSize() }.bare()
-            }
             if adaptive.barsAreSystem {
                 ToolbarItem(placement: .topBarTrailing) {
                     BarButton(title: "Find an activity", symbol: "magnifyingglass") { searching = true }
@@ -45,7 +38,7 @@ struct PlayScreen: View {
         .navigationDestination(isPresented: $searching) {
             ActivitySearchScreen(onPick: choose) { picked in
                 choose(picked)
-                start()
+                onStart(.game(picked))
             }
         }
         .onAppear(perform: dealIfStale)
@@ -55,14 +48,11 @@ struct PlayScreen: View {
 
     /// A new random game only when the one showing no longer fits the age and energy, so a tab
     /// switch or a game picked in search stays put.
-    private func dealIfStale() {
-        guard activity.energy != energy || activity.age != age else { return }
-        activity = Activity.pick(for: energy, age: age)
-    }
+    private func dealIfStale() { dealer.dealIfStale(energy: energy, age: age) }
 
     /// The game set first, so the age and energy that follow find it already fitting.
     private func choose(_ picked: Activity) {
-        activity = picked
+        dealer.show(picked)
         age = picked.age
         energy = picked.energy
         searching = false
@@ -75,11 +65,19 @@ struct PlayScreen: View {
                 topBar
                 header
                 paintedTitle(paintingWidth: 260)
-                meta.padding(.top, Metric.Space.s)
-                blurb.padding(.top, Metric.Space.m)
-                battery.screenshotCallout("battery").padding(.top, Metric.Space.xl)
-                steps.padding(.top, Metric.Space.l)
-                evidence.screenshotCallout("evidence").padding(.top, Metric.Space.xl)
+                if let moment {
+                    blurb.padding(.top, Metric.Space.m)
+                    orPlay(moment).padding(.top, Metric.Space.xs)
+                    LengthPicker(minutes: Bindable(dealer).momentMinutes).padding(.top, Metric.Space.s)
+                    NudgeCard(moment: moment).padding(.top, Metric.Space.l)
+                    Evidence(skills: moment.skills, references: moment.evidence).padding(.top, Metric.Space.xl)
+                } else {
+                    meta.padding(.top, Metric.Space.s)
+                    blurb.padding(.top, Metric.Space.m)
+                    battery.screenshotCallout("battery").padding(.top, Metric.Space.xl)
+                    steps.padding(.top, Metric.Space.l)
+                    evidence.screenshotCallout("evidence").padding(.top, Metric.Space.xl)
+                }
             }
             .padding(.horizontal, Metric.gutter)
             .padding(.top, Metric.Space.s)
@@ -106,19 +104,34 @@ struct PlayScreen: View {
                     topBar
                     header
                     paintedTitle(paintingWidth: 320)
-                    meta.padding(.top, Metric.Space.m)
-                    blurb.padding(.top, 14)
-                    if adaptive.bars == .top { battery.padding(.top, 28) }
-                    Spacer(minLength: Metric.Space.xl)
-                    evidence
+                    if let moment {
+                        blurb.padding(.top, 14)
+                        orPlay(moment).padding(.top, Metric.Space.s)
+                        if adaptive.bars == .top {
+                            LengthPicker(minutes: Bindable(dealer).momentMinutes).padding(.top, 28)
+                        }
+                        Spacer(minLength: Metric.Space.xl)
+                        Evidence(skills: moment.skills, references: moment.evidence)
+                    } else {
+                        meta.padding(.top, Metric.Space.m)
+                        blurb.padding(.top, 14)
+                        if adaptive.bars == .top { battery.padding(.top, 28) }
+                        Spacer(minLength: Metric.Space.xl)
+                        evidence
+                    }
                 }
                 .padding(.vertical, Metric.Space.xl)
             }
         } trailing: {
             ScrollsIfNeeded {
                 VStack(alignment: .leading, spacing: adaptive.roomy ? Metric.Space.xl : 14) {
-                    if adaptive.bars != .top { battery }
-                    steps
+                    if let moment {
+                        if adaptive.bars != .top { LengthPicker(minutes: Bindable(dealer).momentMinutes) }
+                        NudgeCard(moment: moment, large: adaptive.roomy)
+                    } else {
+                        if adaptive.bars != .top { battery }
+                        steps
+                    }
                     Spacer(minLength: 0)
                     actions
                 }
@@ -127,71 +140,45 @@ struct PlayScreen: View {
         }
     }
 
-    private func start() {
-        guard oyno.requireEntitlement() else { return }
-        Analytics.shared.track(.roundStarted(activity: activity.id, energy: energy.rawValue, age: age.rawValue))
-        onStart(activity)
+    private func start() { onStart(dealer.session(age: age)) }
+
+    /// "Or play Three Splashes · 5 min": the deck's game for the same routine, where it has one.
+    @ViewBuilder
+    private func orPlay(_ moment: OpenMoment) -> some View {
+        if let game = moment.linkedGame {
+            OrPlayLink(game: game) { dealer.show(game) }
+        }
     }
 
-    /// Back, the Kid hours status and search, the status centred between the two buttons. Where
-    /// the system's bar holds search, the tab bar is the way back, and the status leads alone.
-    /// On iPad the status sits in that bar too.
+    /// The title and search, as Kid hours carries its title and Home its wordmark. Where the
+    /// system's bar holds search, there is nothing to draw.
     @ViewBuilder
     private var topBar: some View {
         if !adaptive.barsAreSystem {
             HStack(spacing: Metric.Space.s) {
-                GlassIconButton(symbol: "chevron.left", label: "Back", action: onBack)
-                Spacer(minLength: 0)
-                if let status = kidHoursStatus { pill(status) }
+                Text("Activity")
+                    .oynoTitle()
+                    .accessibilityAddTraits(.isHeader)
                 Spacer(minLength: 0)
                 GlassIconButton(symbol: "magnifyingglass", label: "Find an activity") { searching = true }
             }
             .padding(.bottom, Metric.Space.l)
-        } else if adaptive.bars == .side, let status = kidHoursStatus {
-            pill(status).padding(.bottom, Metric.Space.l)
         }
-    }
-
-    // MARK: Kid hours
-
-    private struct Status {
-        let text: String
-        /// Whether the apps are paused right now, or open on a break.
-        let paused: Bool
-    }
-
-    /// "Kid hours · until 7:30 PM" while the apps are paused, "Apps open until 6:12 PM" during
-    /// an unlock, nothing when Kid hours are off.
-    private var kidHoursStatus: Status? {
-        if let current = kidHours.current {
-            return Status(text: String(interface: "Kid hours · until \(Format.timeOfDay(minutes: current.end))"), paused: true)
-        }
-        if let end = kidHours.unlockEnd {
-            return Status(text: String(interface: "Apps open until \(Format.timeOfDay(date: end))"), paused: false)
-        }
-        return nil
-    }
-
-    private func pill(_ status: Status) -> some View {
-        HStack(spacing: 7) {
-            Circle().fill(status.paused ? Palette.good : Palette.caution).frame(width: 7, height: 7)
-            Text(verbatim: status.text)
-                .font(Typeface.ui(13, .semibold, relativeTo: .caption))
-                .foregroundStyle(Palette.ink)
-        }
-        .padding(.horizontal, 12)
-        .frame(minHeight: 32)
-        .background(Palette.wash, in: .capsule)
-        .accessibilityElement(children: .combine)
     }
 
     // MARK: The game
 
-    /// The game's painting above its title, fading out at its foot where the title overlaps it
-    /// on a glow. Just the title for a game not painted yet.
+    /// The words and painting showing: the everyday moment picked, else the game dealt.
+    private var shownID: String { moment?.id ?? activity.id }
+    private var shownTitle: String { moment?.title ?? activity.title }
+    private var shownBlurb: String { moment?.blurb ?? activity.blurb }
+    private var shownArt: UIImage? { moment.map { Painting.of($0) } ?? Painting.of(activity) }
+
+    /// The painting above the title, fading out at its foot where the title overlaps it on a
+    /// glow, for a game and an everyday moment alike. Just the title for a game not painted yet.
     @ViewBuilder
     private func paintedTitle(paintingWidth width: CGFloat) -> some View {
-        if let art = ActivityArt.painting(for: activity) {
+        if let art = shownArt {
             Image(uiImage: art)
                 .resizable()
                 .scaledToFit()
@@ -200,7 +187,7 @@ struct PlayScreen: View {
                     stops: [.init(color: .black, location: 0.66), .init(color: .clear, location: 0.98)],
                     startPoint: .top, endPoint: .bottom
                 ))
-                .id(activity.id)
+                .id(shownID)
                 .transition(.opacity)
                 .accessibilityHidden(true)
                 .padding(.top, Metric.Space.s)
@@ -213,16 +200,45 @@ struct PlayScreen: View {
         }
     }
 
-    /// The eyebrow, and the kid's age as a quiet menu: it is set once and rarely changes.
+    /// What to do, a game or an everyday moment, and the kid's age, as two quiet menus.
     private var header: some View {
         HStack(spacing: Metric.Space.s) {
-            Text("One easy thing")
-                .font(Typeface.ui(13, .bold, relativeTo: .caption))
-                .foregroundStyle(Palette.muted)
-            // Beside the eyebrow in a column of its own, at the far edge in the phone's full width.
+            activityMenu
+            // Beside the first in a column of its own, at the far edge in the phone's full width.
             if adaptive.columns != .two { Spacer(minLength: 0) }
             ageMenu
         }
+    }
+
+    private var activityMenu: some View {
+        Menu {
+            Picker("Activity", selection: Bindable(dealer).kind) {
+                ForEach(MomentKind.allCases) { kind in
+                    Label {
+                        Text(verbatim: kind.label)
+                        Text(verbatim: kind.line)
+                    } icon: {
+                        Image(systemName: kind.symbol)
+                    }
+                    .tag(kind)
+                }
+            }
+        } label: {
+            HStack(spacing: 5) {
+                Text(verbatim: dealer.kind.label)
+                    .font(Typeface.ui(13, .bold, relativeTo: .caption))
+                    .foregroundStyle(Palette.ink)
+                Glyph.caret(Palette.muted)
+            }
+            .padding(.horizontal, 12)
+            .frame(minHeight: 32)
+            .background(Palette.surface, in: .capsule)
+            .frame(minHeight: Metric.tapTarget)
+            .contentShape(.rect)
+        }
+        .accessibilityLabel(Text("Activity"))
+        .accessibilityValue(Text(verbatim: dealer.kind.label))
+        .screenshotCallout("activity")
     }
 
     private var ageMenu: some View {
@@ -252,7 +268,7 @@ struct PlayScreen: View {
 
     /// As tall as the title runs. A new game's words crossfade while the page eases to its height.
     private var title: some View {
-        Text(verbatim: activity.title)
+        Text(verbatim: shownTitle)
             .lineLimit(typeSize.isAccessibilitySize ? nil : 2)
             .minimumScaleFactor(0.75)
             .fixedSize(horizontal: false, vertical: true)
@@ -284,7 +300,7 @@ struct PlayScreen: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(Text("\(activity.minutes) minutes"))
             ForEach(activity.tags, id: \.id) { tag in
-                Badge(symbol: Self.symbol(for: tag), label: tag.label)
+                Badge(symbol: tag.symbol, label: tag.label)
             }
         }
     }
@@ -293,60 +309,12 @@ struct PlayScreen: View {
     private var blurb: some View {
         ZStack(alignment: .topLeading) {
             Text(verbatim: " \n \n ").hidden().accessibilityHidden(true)
-            Text(verbatim: activity.blurb).fixedSize(horizontal: false, vertical: true)
+            Text(verbatim: shownBlurb).fixedSize(horizontal: false, vertical: true)
         }
         .font(Typeface.ui(15, .regular, relativeTo: .body))
         .foregroundStyle(Palette.muted)
         .lineSpacing(3)
         .frame(maxWidth: adaptive.columns == .two ? 440 : 310, alignment: .leading)
-    }
-
-    /// The icon on a tag's badge, by the tag's id. A tag added to the data later wears a plain
-    /// sparkle until it is given one here.
-    private static func symbol(for tag: Activity.Tag) -> String {
-        switch tag.id {
-        case "lying-down": "sofa"
-        case "sitting": "figure.seated.side"
-        case "standing": "figure.stand"
-        case "on-your-lap": "figure.2.and.child.holdinghands"
-        case "nothing-to-grab": "circle.slash"
-        case "quiet": "speaker.slash"
-        case "one-room": "door.left.hand.open"
-        case "hallway": "arrow.left.and.right"
-        case "bedtime": "moon.stars"
-        case "mealtime": "fork.knife"
-        case "bath": "bathtub"
-        case "on-a-walk": "figure.walk"
-        case "in-the-car": "car"
-        case "stairs": "figure.stairs"
-        case "window": "window.casement"
-        case "socks": "shoe"
-        case "cushions": "rectangle.stack"
-        case "chairs": "chair"
-        case "a-cup": "cup.and.saucer"
-        case "a-cloth": "tshirt"
-        case "a-book": "book"
-        case "a-mirror": "person.crop.square"
-        case "a-ball": "soccerball"
-        case "a-toy": "teddybear"
-        case "stacking": "square.stack.3d.up"
-        case "crayons": "pencil.and.scribble"
-        case "lights": "lightbulb"
-        case "music": "music.note"
-        case "singing": "music.mic"
-        default: "sparkles"
-        }
-    }
-
-    /// The icon on a skill's badge, by the skill's id.
-    private static func symbol(for skill: Activity.Skill) -> String {
-        switch skill.id {
-        case "working-memory": "brain.head.profile"
-        case "inhibitory-control": "hand.raised"
-        case "cognitive-flexibility": "arrow.triangle.2.circlepath"
-        case "attention": "eye"
-        default: "sparkles"
-        }
     }
 
     /// One row where it fits, the label above the picker where a language or type size runs long.
@@ -386,33 +354,7 @@ struct PlayScreen: View {
         }
     }
 
-    /// What the game exercises and who showed it, kept quiet under the steps. A source opens
-    /// in the browser.
-    private var evidence: some View {
-        VStack(alignment: .leading, spacing: Metric.Space.s) {
-            Text("Why it works").oynoEyebrow()
-            FlowLayout(spacing: 6) {
-                ForEach(activity.skills, id: \.id) { skill in
-                    Badge(symbol: Self.symbol(for: skill), label: skill.label)
-                }
-            }
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(activity.evidence, id: \.url) { reference in
-                    Link(destination: reference.url) {
-                        HStack(alignment: .firstTextBaseline, spacing: 4) {
-                            Text(verbatim: reference.short)
-                            Glyph(symbol: "arrow.up.right", size: 10, weight: .bold, color: Palette.muted)
-                        }
-                        .font(Typeface.ui(13, .semibold, relativeTo: .caption))
-                        .foregroundStyle(Palette.muted)
-                        .frame(minHeight: 28)
-                        .contentShape(.rect)
-                    }
-                    .accessibilityLabel(Text(verbatim: reference.title))
-                }
-            }
-        }
-    }
+    private var evidence: some View { Evidence(skills: activity.skills, references: activity.evidence) }
 
     // MARK: Actions
 
@@ -420,130 +362,61 @@ struct PlayScreen: View {
     /// game's length. At the foot of the trailing column on a wide window.
     private var actions: some View {
         VStack(spacing: 2) {
-            PrimaryButton(title: "Start \(activity.minutes)-minute round", symbol: "play.fill") { start() }
+            PrimaryButton(title: startTitle, symbol: "play.fill") { start() }
             HStack {
-                Button {
-                    Haptics.tap()
-                    activity = Activity.next(after: activity)
-                } label: {
-                    HStack(spacing: Metric.Space.s) {
-                        Glyph(symbol: "shuffle", size: 15, weight: .semibold)
-                        Text("Different idea")
-                            .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
-                            .foregroundStyle(Palette.ink)
-                    }
-                    .padding(.horizontal, 6)
-                    .frame(height: Metric.tapTarget)
-                    .contentShape(.rect)
-                }
-                .buttonStyle(.plain)
+                if moment == nil { differentIdea }
                 Spacer()
-                if kidHours.isOnNow { notNow.transition(.opacity) }
+                if kidHours.isOnNow { kidHoursOn.transition(.opacity) }
             }
         }
     }
 
-    /// Held for two seconds, as on Kid hours: the apps open for a break instead of a round.
-    private var notNow: some View {
-        HStack(spacing: 9) {
-            HoldRing(progress: holding)
-            Text("Hold for not now")
+    private var startTitle: LocalizedStringResource {
+        switch dealer.kind {
+        case .game: "Start \(activity.minutes)-minute round"
+        case .reading: "Start \(dealer.momentMinutes) minutes of reading"
+        case .bath: "Start \(dealer.momentMinutes) minutes of bath time"
+        case .cooking: "Start \(dealer.momentMinutes) minutes of cooking"
+        case .lead: "Start \(dealer.momentMinutes) minutes, phone down"
+        }
+    }
+
+    private var differentIdea: some View {
+        Button {
+            Haptics.tap()
+            dealer.dealAnother()
+        } label: {
+            HStack(spacing: Metric.Space.s) {
+                Glyph(symbol: "shuffle", size: 15, weight: .semibold)
+                Text("Different idea")
+                    .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
+                    .foregroundStyle(Palette.ink)
+            }
+            .padding(.horizontal, 6)
+            .frame(height: Metric.tapTarget)
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// That Kid hours are on now, a green dot and their name. "Not now" lives on the Kid hours tab.
+    private var kidHoursOn: some View {
+        HStack(spacing: 7) {
+            Circle().fill(Palette.good).frame(width: 8, height: 8)
+            Text("Kid hours")
                 .font(Typeface.ui(15, .semibold, relativeTo: .subheadline))
                 .foregroundStyle(Palette.muted)
         }
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 6)
         .frame(height: Metric.tapTarget)
-        .contentShape(.rect)
-        .holdToConfirm(progress: $holding, in: .capsule, enabled: kidHours.isOnNow) { kidHours.takeNotNow() }
         .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
-        .accessibilityLabel(Text("Not now"))
-        .accessibilityHint(Text("Opens your apps for \(KidHoursStore.notNowMinutes) minutes"))
-        .accessibilityAction { kidHours.takeNotNow() }
+        .accessibilityLabel(Text("Kid hours are on"))
     }
 }
 
 /// The screens a round pushes over its timer.
 enum PlayRoute: Hashable {
-    case done(minutes: Int)
+    /// The round as recorded, with what it left on the planet.
+    case done(Round)
 }
 
-/// What a game needs or exercises: a glyph and a word or three on a quiet ground. Not a
-/// control, so no capsule and no glass edge.
-private struct Badge: View {
-    let symbol: String
-    let label: String
-
-    var body: some View {
-        HStack(spacing: 5) {
-            Glyph(symbol: symbol, size: 12, weight: .semibold, color: Palette.slate)
-            Text(verbatim: label)
-                .font(Typeface.ui(13, .semibold, relativeTo: .caption))
-                .foregroundStyle(Palette.slate)
-        }
-        .padding(.horizontal, 9)
-        .padding(.vertical, 4)
-        .frame(minHeight: 26)
-        .background(Palette.wash, in: .rect(cornerRadius: 8))
-    }
-}
-
-/// A segmented control: a quiet track, the chosen option lifted onto solid white that slides
-/// to the next choice. Each option's tap area runs the track's full height.
-private struct Segments<Option: Hashable, Face: View>: View {
-    let accessibilityLabel: LocalizedStringResource
-    let options: [Option]
-    @Binding var selection: Option
-    @ViewBuilder let face: (_ option: Option, _ active: Bool) -> Face
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Namespace private var pill
-
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(options, id: \.self) { option in
-                let active = option == selection
-                Button {
-                    Haptics.tap()
-                    selection = option
-                } label: {
-                    face(option, active)
-                        .padding(.horizontal, 10)
-                        .frame(maxWidth: .infinity, minHeight: 36)
-                        .background {
-                            if active {
-                                Capsule()
-                                    .fill(Palette.surface)
-                                    .shadow(color: Palette.glassShadow, radius: 4, y: 2)
-                                    .matchedGeometryEffect(id: "pill", in: pill)
-                            }
-                        }
-                        .padding(.vertical, 4)
-                        .contentShape(.rect)
-                }
-                .buttonStyle(.plain)
-                .accessibilityAddTraits(active ? .isSelected : [])
-            }
-        }
-        .padding(.horizontal, 4)
-        .background(Palette.wash, in: .capsule)
-        .animation(reduceMotion ? nil : .snappy, value: selection)
-        .accessibilityElement(children: .contain)
-        .accessibilityLabel(Text(accessibilityLabel))
-    }
-}
-
-private extension Palette {
-    /// The ground under metadata and a segmented track: a tint of ink, no glass, no edge.
-    static let wash = Palette.ink.opacity(0.06)
-}
-
-private extension Energy {
-    /// How full the battery on the picker is drawn.
-    var symbol: String {
-        switch self {
-        case .low: "battery.25"
-        case .okay: "battery.50"
-        case .full: "battery.100"
-        }
-    }
-}

@@ -16,7 +16,7 @@ enum PlanetLayout {
 
     static let sky = Box(x: 0, y: 0.25, width: 1, depth: 0.15)
     static let planet = Box(x: 0.2, y: 0.486, width: 0.6, depth: 0.5)
-    static let family = Box(x: 0.28, y: 0.061, width: 0.44, depth: 1)
+    static let family = Box(x: 0.28, y: 0.095, width: 0.44, depth: 1)
 
     static let maxOffset: CGFloat = 12
     /// The planet's foot, as a fraction of the stage: where the body scales from, so it stays

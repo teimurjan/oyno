@@ -15,10 +15,11 @@ struct AppRoot: View {
     @State private var oyno: OynoStore
     @State private var purchases: PurchaseStore
     @State private var kidHours: KidHoursStore
+    @State private var dealer = Dealer()
 
     @State private var tab = RootTab.home
-    /// The game being played, over the tabs from its timer to its Done screen.
-    @State private var round: Activity?
+    /// The game or moment being played, over the tabs from its timer to its Done screen.
+    @State private var round: Session?
     @State private var roundPath: [PlayRoute] = []
     @State private var didLoad = false
     @State private var splashDone = false
@@ -30,6 +31,8 @@ struct AppRoot: View {
     @AppStorage("oyno.didOnboard") private var didFinishFirstRun = false
     @AppStorage("oyno.didFunnel") private var didFunnel = false
     @AppStorage("oyno.didAskForReview") private var didAskForReview = false
+    @AppStorage("oyno.age") private var age = AgeBand.toddler
+    @AppStorage("oyno.energy") private var energy = Energy.low
     @AppStorage(InterfaceLanguage.overrideKey, store: InterfaceLanguage.store) private var language = "en"
 
     init() {
@@ -77,8 +80,10 @@ struct AppRoot: View {
                 isRestoring = needsEntitlement
                 didLoad = true
                 openPlayIfShieldAsked()
+                openTabIfReminderAsked()
                 await refreshEntitlement()
                 await oyno.syncBackup()
+                replanReminders()
                 await purchases.loadProducts()
                 if let resolved = await AppConfig.resolveAnalyticsEnvironment() {
                     Analytics.shared.setEnvironment(resolved)
@@ -89,6 +94,7 @@ struct AppRoot: View {
                     adoptedUserID = nil
                     purchases.forgetAccount()
                     kidHours.release()
+                    Reminders.clear()
                     return
                 }
                 Analytics.shared.identify(userID: id)
@@ -102,10 +108,14 @@ struct AppRoot: View {
                     await refreshEntitlement()
                     // A reinstall signs in here: this is where the planet comes back.
                     await oyno.syncBackup()
+                    replanReminders()
                 }
             }
             .onChange(of: scenePhase) { _, phase in
+                // Leaving catches every setting changed while the app was open.
+                if phase == .background { replanReminders() }
                 guard phase == .active else { return }
+                replanReminders()
                 openPlayIfShieldAsked()
                 kidHours.refresh()
                 Task { await purchases.refreshServerEntitlement() }
@@ -118,7 +128,10 @@ struct AppRoot: View {
                 Task { await purchases.refreshServerEntitlement() }
             }
             // The third round together, once: the family has felt the loop by then.
+            .onChange(of: NotificationRouter.shared.requested) { openTabIfReminderAsked() }
+            .onChange(of: kidHours.settings.schedules) { replanReminders() }
             .onChange(of: oyno.rounds.count) { _, count in
+                replanReminders()
                 guard count == 3, !didAskForReview else { return }
                 didAskForReview = true
                 Task {
@@ -134,6 +147,7 @@ struct AppRoot: View {
             .environment(oyno)
             .environment(purchases)
             .environment(kidHours)
+            .environment(dealer)
             .adaptiveLayout()
     }
 
@@ -149,6 +163,18 @@ struct AppRoot: View {
         defer { isRestoring = false }
         guard auth.isSignedIn else { return }
         await purchases.refreshServerEntitlement()
+    }
+
+    /// A tap on a reminder lands on the tab it names.
+    private func openTabIfReminderAsked() {
+        guard didLoad, let tap = NotificationRouter.shared.take() else { return }
+        tab = tap == .play ? .play : .home
+    }
+
+    /// Reminders start once the first run is over, and speak only of a signed-in family.
+    private func replanReminders() {
+        guard didFinishFirstRun, auth.isSignedIn else { return }
+        Reminders.replan(oyno: oyno, kidHours: kidHours, dealer: dealer)
     }
 
     /// A paused app's "Open Oyno" lands on Play, on a cold launch or a return to the foreground.
@@ -187,12 +213,12 @@ struct AppRoot: View {
     private var tabs: some View {
         RootTabs(selection: $tab) {
             NavigationStack {
-                HomeScreen(play: { tab = .play })
+                HomeScreen(play: { tab = .play }, start: begin)
                     .tracksScreen(.home)
             }
         } play: {
             NavigationStack {
-                PlayScreen(onBack: { tab = .home }) { round = $0 }
+                PlayScreen(onStart: begin)
                     .tracksScreen(.play)
             }
         } kidHours: {
@@ -201,12 +227,13 @@ struct AppRoot: View {
             }
         }
         // A cover, not a push: the tab bar stays put under it instead of popping back in late.
-        .fullScreenCover(item: $round, onDismiss: { roundPath = [] }) { activity in
+        .fullScreenCover(item: $round, onDismiss: { roundPath = [] }) { session in
             NavigationStack(path: $roundPath) {
-                TimerScreen(activity: activity) { minutes in
-                    guard oyno.record(Round(activityID: activity.id, startedAt: .now, minutes: minutes)) else { return }
+                TimerScreen(session: session) { minutes in
+                    let started = Date.now.addingTimeInterval(-TimeInterval(minutes * 60))
+                    guard let recorded = oyno.record(session.round(startedAt: started, minutes: minutes)) else { return }
                     kidHours.earn()
-                    roundPath.append(.done(minutes: minutes))
+                    roundPath.append(.done(recorded))
                 }
                 .navigationDestination(for: PlayRoute.self, destination: afterRound)
             }
@@ -219,10 +246,20 @@ struct AppRoot: View {
         inRound == (round != nil) ? $paywall : .constant(nil)
     }
 
+    /// Starting is a write: the store asks for the entitlement, and the paywall answers a refusal.
+    private func begin(_ session: Session) {
+        guard oyno.requireEntitlement() else { return }
+        Analytics.shared.track(.roundStarted(kind: session.kind, activity: session.activityID, energy: energy.rawValue, age: age.rawValue))
+        round = session
+    }
+
     private func afterRound(_ route: PlayRoute) -> some View {
         switch route {
-        case let .done(minutes):
-            DoneScreen(minutes: minutes, onKeepPlaying: { round = nil }) {
+        case let .done(recorded):
+            DoneScreen(round: recorded, onKeepPlaying: {
+                round = nil
+                tab = .play
+            }) {
                 round = nil
                 tab = .home
             }

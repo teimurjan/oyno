@@ -229,7 +229,7 @@ struct FormatTests {
 
 @MainActor
 struct ProgressBackupTests {
-    private func store(backup: Tally? = nil, bankedTogether: Int = 0) -> OynoStore {
+    private func store(backup: Backup? = nil, bankedTogether: Int = 0) -> OynoStore {
         OynoStore(isEntitled: { true },
                   bankedTogether: { bankedTogether },
                   backup: { _ in backup },
@@ -239,7 +239,7 @@ struct ProgressBackupTests {
     private let round = Round(activityID: "whisper", startedAt: .now, minutes: 10)
 
     @Test func aReinstallGetsItsPlanetBack() async {
-        let oyno = store(backup: Tally(rounds: 40, minutes: 420))
+        let oyno = store(backup: Backup(tally: Tally(rounds: 40, minutes: 420)))
         oyno.adopt(userID: "parent")
         await oyno.syncBackup()
         #expect(oyno.tally == Tally(rounds: 40, minutes: 420))
@@ -248,7 +248,7 @@ struct ProgressBackupTests {
     }
 
     @Test func togetherCountsThePhoneAndTheBackupOnce() async {
-        let oyno = store(backup: Tally(rounds: 0, minutes: 0, together: 100), bankedTogether: 30)
+        let oyno = store(backup: Backup(tally: Tally(rounds: 0, minutes: 0, together: 100)), bankedTogether: 30)
         oyno.adopt(userID: "parent")
         await oyno.syncBackup()
         #expect(oyno.tally.together == 100)
@@ -263,17 +263,54 @@ struct ProgressBackupTests {
         let oyno = store()
         oyno.adopt(userID: "parent")
         oyno.record(round)
-        oyno.restore(Tally(rounds: 5, minutes: 50))
-        oyno.restore(.zero)
-        #expect(oyno.tally == Tally(rounds: 5, minutes: 50))
+        oyno.restore(Backup(tally: Tally(rounds: 5, minutes: 50)))
+        oyno.restore(Backup())
+        #expect(oyno.tally.rounds == 5)
+        #expect(oyno.tally.minutes == 50)
     }
 
     @Test func anotherAccountStartsWithAnEmptyPlanet() {
         let oyno = store()
         oyno.adopt(userID: "parent")
-        oyno.restore(Tally(rounds: 40, minutes: 420))
+        oyno.restore(Backup(tally: Tally(rounds: 40, minutes: 420)))
         oyno.adopt(userID: "neighbour")
         #expect(oyno.tally == .zero)
+    }
+
+    @Test func aReinstallGetsItsRoundsAndFirstsBack() async {
+        let played = [round, Round(activityID: "freeze", startedAt: .now, minutes: 15)]
+        let first = First(date: .now, kind: .game, signs: [.triedAgain], words: nil)
+        let oyno = store(backup: Backup(tally: played.tally, rounds: played, firsts: [first]))
+        oyno.adopt(userID: "parent")
+        await oyno.syncBackup()
+        #expect(oyno.rounds.count == 2)
+        #expect(oyno.firsts == [first])
+        #expect(oyno.tally == played.tally)
+    }
+
+    @Test func roundsCountedByAnOldBuildAreNotCountedTwiceWhenTheyArrive() {
+        let played = [round, Round(activityID: "freeze", startedAt: .now, minutes: 15)]
+        let oyno = store()
+        oyno.adopt(userID: "parent")
+        oyno.restore(Backup(tally: played.tally))
+        oyno.restore(Backup(tally: played.tally, rounds: played))
+        #expect(oyno.tally == played.tally)
+    }
+
+    @Test func theParentsWordsNeverLeaveThePhone() throws {
+        let signed = First(date: .now, kind: .bath, signs: [.newWord], words: "Mia said duck")
+        let wordsOnly = First(date: .now, kind: .bath, signs: [], words: "Mia splashed")
+        let body = try JSONCoding.encoder.encode(Backup(firsts: [signed, wordsOnly]))
+        let sent = try JSONCoding.decoder.decode(Backup.self, from: body)
+        #expect(!String(decoding: body, as: UTF8.self).contains("Mia"))
+        #expect(sent.firsts.map(\.id) == [signed.id])
+    }
+
+    @Test func aRoundOfAKindAddedLaterIsSkipped() throws {
+        let reply = #"{"rounds":1,"minutes":10,"history":{"rounds":[{"id":"6F9619FF-8B86-D011-B42D-00C04FC964FF","kind":"nap","startedAt":"2026-10-27T18:00:00.000Z","minutes":10}],"firsts":[]}}"#
+        let backup = try JSONCoding.decoder.decode(Backup.self, from: Data(reply.utf8))
+        #expect(backup.tally.rounds == 1)
+        #expect(backup.rounds.isEmpty)
     }
 }
 

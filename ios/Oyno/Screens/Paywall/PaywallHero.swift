@@ -67,7 +67,7 @@ struct PaywallHero: View {
 
     private var game: some View {
         VStack(alignment: .leading, spacing: 6) {
-            if let painting = Activity.find(Self.gameID).flatMap(ActivityArt.painting(for:)) {
+            if let painting = Activity.find(Self.gameID).flatMap(Painting.of) {
                 Image(uiImage: painting)
                     .resizable()
                     .scaledToFit()

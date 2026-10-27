@@ -170,7 +170,7 @@ struct ActivitySearchScreen: View {
                 let tint = Palette.pastels[game.id.unicodeScalars.reduce(0) { $0 + Int($1.value) } % Palette.pastels.count]
                 // The game's painting where it has one, else its first letter.
                 Group {
-                    if let art = ActivityArt.thumbnail(for: game, pixels: 120) {
+                    if let art = Painting.thumbnail(of: game, pixels: 120) {
                         Image(uiImage: art).resizable().scaledToFit().padding(3)
                     } else {
                         Text(verbatim: String(game.title.prefix(1)))

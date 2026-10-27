@@ -83,4 +83,15 @@ enum Bloom {
     static func nextWorld(after points: Int) -> World? {
         World.all.first { !$0.isUnlocked(at: points) }
     }
+
+    /// What a moment is worth before there is a history: ten, and fifteen minutes.
+    static let typicalMoment = pointsPerRound + 15
+
+    /// About how many moments until the next world, from what this family's moments are worth:
+    /// "2 moments to Lagoon". Nil once every world is open.
+    static func momentsToNext(points: Int, perMoment: Int) -> Int? {
+        guard let next = nextWorld(after: points) else { return nil }
+        let left = next.unlocksAt - points
+        return max(1, (left + max(1, perMoment) - 1) / max(1, perMoment))
+    }
 }

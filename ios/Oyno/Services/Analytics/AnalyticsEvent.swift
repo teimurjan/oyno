@@ -13,7 +13,7 @@ enum PaywallContext: String, Identifiable {
 
 /// The places a parent opens. Reported as `screen_viewed`.
 enum AppScreen: String {
-    case home, play, kidHours = "kid_hours", profile
+    case home, play, kidHours = "kid_hours", profile, growth, keepsakes, week, letter
 }
 
 /// Every product event the app emits, as one typed case. `name`/`properties` map to
@@ -37,10 +37,17 @@ enum AnalyticsEvent {
     case screenViewed(screen: AppScreen)
 
     // The core loop: one easy thing, the timer, the planet.
-    case roundStarted(activity: String, energy: String, age: String)
-    case roundCompleted(activity: String, minutes: Int)
+    case roundStarted(kind: MomentKind, activity: String?, energy: String, age: String)
+    case roundCompleted(kind: MomentKind, activity: String?, minutes: Int)
+    case keepsakeFound(id: String, rare: Bool)
+    case firstNoted(kind: MomentKind, signs: Int, wroteWords: Bool)
+    case weekGoalSet(evenings: Int)
+    case letterOpened(evenings: Int)
+    case letterShared
     case planetTapped(bloom: Int)
     case worldsOpened(bloom: Int)
+    /// A tap on a reminder: which one brought the parent back.
+    case reminderOpened(id: String)
 
     // Kid hours.
     case kidHoursAuthorized(granted: Bool)
@@ -69,8 +76,14 @@ enum AnalyticsEvent {
         case .screenViewed: "screen_viewed"
         case .roundStarted: "round_started"
         case .roundCompleted: "round_completed"
+        case .keepsakeFound: "keepsake_found"
+        case .firstNoted: "first_noted"
+        case .weekGoalSet: "week_goal_set"
+        case .letterOpened: "letter_opened"
+        case .letterShared: "letter_shared"
         case .planetTapped: "planet_tapped"
         case .worldsOpened: "worlds_opened"
+        case .reminderOpened: "reminder_opened"
         case .kidHoursAuthorized: "kid_hours_authorized"
         case .notificationsAuthorized: "notifications_authorized"
         case .kidHoursSaved: "kid_hours_saved"
@@ -94,9 +107,15 @@ enum AnalyticsEvent {
         case let .autoLoggedOut(reason): ["reason": reason]
         case let .settingsChanged(field): ["field": field]
         case let .screenViewed(screen): ["screen": screen.rawValue]
-        case let .roundStarted(activity, energy, age): ["activity": activity, "energy": energy, "age": age]
-        case let .roundCompleted(activity, minutes): ["activity": activity, "minutes": minutes]
+        case let .roundStarted(kind, activity, energy, age):
+            ["kind": kind.rawValue, "activity": activity ?? kind.rawValue, "energy": energy, "age": age]
+        case let .roundCompleted(kind, activity, minutes): ["kind": kind.rawValue, "activity": activity ?? kind.rawValue, "minutes": minutes]
+        case let .keepsakeFound(id, rare): ["keepsake": id, "rare": rare]
+        case let .firstNoted(kind, signs, wroteWords): ["kind": kind.rawValue, "signs": signs, "wrote_words": wroteWords]
+        case let .weekGoalSet(evenings): ["evenings": evenings]
+        case let .letterOpened(evenings): ["evenings": evenings]
         case let .planetTapped(bloom), let .worldsOpened(bloom): ["bloom": bloom]
+        case let .reminderOpened(id): ["reminder": id]
         case let .kidHoursAuthorized(granted), let .notificationsAuthorized(granted): ["granted": granted]
         case let .kidHoursSaved(alwaysAllowed, neverAllowed): ["always_allowed": alwaysAllowed, "never_allowed": neverAllowed]
         case let .kidHoursScheduleSaved(schedules): ["schedules": schedules]
@@ -106,7 +125,7 @@ enum AnalyticsEvent {
         case let .purchaseCompleted(productID, environment):
             ["product_id": productID, "transaction_environment": environment]
         case let .restoreFinished(outcome): ["outcome": outcome]
-        case .signedOut, .accountDeleted, .restoreStarted, .kidHoursLockedEarly: nil
+        case .signedOut, .accountDeleted, .restoreStarted, .kidHoursLockedEarly, .letterShared: nil
         }
     }
 }

@@ -1,5 +1,6 @@
 import GoogleSignIn
 import SwiftUI
+import UserNotifications
 
 @main
 struct OynoApp: App {
@@ -11,6 +12,8 @@ struct OynoApp: App {
         Typeface.assertFontsResolve()
         #endif
         InterfaceLanguage.adoptLaunchLocalization()
+        // Before launch finishes, so a tap that cold-launched the app is not missed.
+        UNUserNotificationCenter.current().delegate = NotificationRouter.shared
     }
 
     var body: some Scene {

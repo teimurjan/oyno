@@ -1,11 +1,16 @@
 import StoreKit
 import SwiftUI
+import UserNotifications
 
-/// The account: who is signed in, the subscription and how to manage it, and the ways out.
+/// The account: who is signed in, the subscription and how to manage it, the kid's name the
+/// app calls them by, the reminders, and the ways out.
 struct ProfileScreen: View {
     @Environment(OynoStore.self) private var oyno
     @Environment(AuthStore.self) private var auth
     @Environment(PurchaseStore.self) private var purchases
+    @Environment(KidHoursStore.self) private var kidHours
+    @Environment(Dealer.self) private var dealer
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
 
@@ -17,13 +22,40 @@ struct ProfileScreen: View {
     @State private var showsManageSheet = false
     @State private var paywall: PaywallContext?
     @AppStorage(InterfaceLanguage.overrideKey, store: InterfaceLanguage.store) private var language = "en"
+    /// Only ever on this phone, and never in analytics.
+    @AppStorage("oyno.kidName") private var kidName = ""
+    @AppStorage(Reminders.remindersKey) private var remindersOn = true
+    @AppStorage(Reminders.kidHoursKey) private var kidHoursNoticesOn = true
+    @State private var notifications = UNAuthorizationStatus.notDetermined
 
     var body: some View {
         SheetScreen(title: "Profile", subtitle: auth.currentUser?.email ?? "") {
             PlanBanner {
                 if purchases.isPaid { manage() } else { paywall = .settings }
             }
+            RowCard(raised: true) {
+                TextFieldRow(label: "Kid's name", text: $kidName, prompt: "Optional")
+                    .textContentType(.givenName)
+                    .submitLabel(.done)
+            }
             RowCard(raised: true) { languageMenu }
+            RowCard(raised: true) {
+                reminderToggle(
+                    "Reminders", caption: "At most one a day: a game for tonight, your letter, a new world.",
+                    isOn: $remindersOn, field: "reminders"
+                )
+                RowDivider(inset: 0)
+                reminderToggle(
+                    "Kid hours start and end", caption: "A note when your apps pause and when they come back.",
+                    isOn: $kidHoursNoticesOn, field: "kid_hours_notices"
+                )
+                if notifications == .denied && (remindersOn || kidHoursNoticesOn) {
+                    RowDivider(inset: 0)
+                    row(String(interface: "Notifications are off. Turn them on in Settings")) {
+                        if let url = URL(string: UIApplication.openNotificationSettingsURLString) { openURL(url) }
+                    }
+                }
+            }
             RowCard(raised: true) {
                 row(String(interface: "Restore purchases"), busy: purchases.isRestoring) {
                     Task { await purchases.restore() }
@@ -32,6 +64,7 @@ struct ProfileScreen: View {
                 row(String(interface: "Sign out")) {
                     Analytics.shared.track(.signedOut)
                     oyno.reset()
+                    kidName = ""
                     auth.signOut()
                     dismiss()
                 }
@@ -71,7 +104,12 @@ struct ProfileScreen: View {
         .manageSubscriptionsSheet(isPresented: $showsManageSheet, subscriptionGroupID: purchases.subscriptionGroupID ?? "")
         .fullScreenCover(item: $paywall) { PaywallScreen(context: $0) }
         .task {
+            notifications = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
             if !purchases.didLoadProducts { await purchases.loadProducts() }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .active else { return }
+            Task { notifications = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus }
         }
     }
 
@@ -112,6 +150,26 @@ struct ProfileScreen: View {
         .buttonStyle(.plain)
     }
 
+    /// Turning one on asks for permission the first time; either way the plan follows at once.
+    private func reminderToggle(_ title: LocalizedStringResource, caption: LocalizedStringResource, isOn: Binding<Bool>, field: String) -> some View {
+        Toggle(isOn: isOn) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title).oynoRowTitle()
+                Text(caption).oynoCaption()
+            }
+        }
+        .toggleStyle(.pill)
+        .padding(Metric.cardPadding)
+        .onChange(of: isOn.wrappedValue) { _, on in
+            Analytics.shared.track(.settingsChanged(field: field))
+            Task {
+                if on { await kidHours.requestNotifications() }
+                notifications = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus
+                Reminders.replan(oyno: oyno, kidHours: kidHours, dealer: dealer)
+            }
+        }
+    }
+
     private func row(_ title: String, busy: Bool = false, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack {
@@ -137,6 +195,7 @@ struct ProfileScreen: View {
             } else {
                 Analytics.shared.track(.accountDeleted)
                 oyno.reset()
+                kidName = ""
                 auth.signOut()
                 dismiss()
             }

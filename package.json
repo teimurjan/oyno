@@ -16,6 +16,8 @@
     "activities:build": "bun scripts/build-activities.ts",
     "activities:check": "bun scripts/check-activities.ts",
     "activities:translate": "bun scripts/translate-activities.ts",
+    "notifications:build": "bun scripts/build-notifications.ts",
+    "notifications:check": "bun scripts/check-notifications.ts",
     "strings:sync": "node scripts/sync-strings.mjs",
     "strings:check": "node scripts/check-strings.mjs",
     "appstore:menu": "node appstore/scripts/menu.mjs",
@@ -27,6 +29,9 @@
     "art:build": "bun scripts/build-art.ts",
     "art:planets": "bun scripts/generate-planets.ts",
     "art:activities": "bun scripts/generate-activity-art.ts",
+    "art:keepsakes": "bun scripts/generate-keepsakes.ts",
+    "art:moments": "bun scripts/generate-moment-art.ts",
+    "art:petals": "bun scripts/generate-petals.ts",
     "chime:build": "bun scripts/build-chime.ts",
     "icons:build": "bun scripts/build-icons.ts"
   },

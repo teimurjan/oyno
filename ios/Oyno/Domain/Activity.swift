@@ -91,6 +91,12 @@ struct Activity: Identifiable, Hashable {
 
     static func find(_ id: String) -> Activity? { all.first { $0.id == id } }
 
+    /// A skill by its id, worded in the interface language.
+    static func skill(_ id: String) -> Skill? {
+        let decks = ActivityCatalogue.bundled.decks
+        return (decks[InterfaceLanguage.current] ?? decks["en"])?.skills[id].map { Skill(id: id, label: $0) }
+    }
+
     /// Every game, worded in the interface language, so a language picked in Profile rewords them.
     static var all: [Activity] {
         let language = InterfaceLanguage.current
@@ -102,15 +108,34 @@ struct Activity: Identifiable, Hashable {
         }
     }
 
+    /// Every everyday moment, worded in the interface language.
+    static var moments: [OpenMoment] {
+        let language = InterfaceLanguage.current
+        return wordedMoments.withLock { cache in
+            if let cache, cache.language == language { return cache.moments }
+            let moments = ActivityCatalogue.bundled.moments(in: language)
+            cache = (language, moments)
+            return moments
+        }
+    }
+
+    /// Another game for the same energy and age that practices `skill`: "Find a game for Focus".
+    static func pick(practicing skill: String, energy: Energy, age: AgeBand) -> Activity {
+        catalogue(for: energy, age: age).filter { $0.skills.contains { $0.id == skill } }.randomElement()
+            ?? pick(for: energy, age: age)
+    }
+
     /// The games in the last language asked for, so a pick does not reword all 500.
     private static let worded = OSAllocatedUnfairLock<(language: String, games: [Activity])?>(initialState: nil)
+    private static let wordedMoments = OSAllocatedUnfairLock<(language: String, moments: [OpenMoment])?>(initialState: nil)
 }
 
-/// `Activities.json` as the phone reads it: `activities/en.json` for the games, the
+/// `Activities.json` as the phone reads it: `activities/en.json` for the games and moments, the
 /// bibliography and their English, `activities/<locale>.json` for the other words, written
 /// into the bundle by `bun run activities:build`. Never edited by hand.
 struct ActivityCatalogue: Decodable {
     let entries: [Entry]
+    let moments: [MomentEntry]
     let sources: [String: Activity.Reference]
     let decks: [String: Deck]
 
@@ -141,16 +166,34 @@ struct ActivityCatalogue: Decodable {
         }
     }
 
+    /// The everyday moments worded in `language`, in English where there is no deck for it.
+    func moments(in language: String) -> [OpenMoment] {
+        let deck = decks[language] ?? decks["en"]!
+        return moments.compactMap { entry in
+            guard let words = deck.moments[entry.id] else { return nil }
+            return OpenMoment(
+                id: entry.id, kind: entry.kind, age: entry.age, title: words.title, blurb: words.blurb, nudges: words.steps,
+                skills: entry.skills.compactMap { id in deck.skills[id].map { Activity.Skill(id: id, label: $0) } },
+                evidence: entry.evidence.compactMap { sources[$0] },
+                gameTag: entry.game
+            )
+        }
+    }
+
     /// Every deck words every game, tag and skill, and every citation is in the bibliography:
     /// what `bun run activities:check` promises.
     private var isComplete: Bool {
         entries.allSatisfy { entry in entry.evidence.allSatisfy { sources[$0] != nil } }
+            && moments.allSatisfy { entry in entry.evidence.allSatisfy { sources[$0] != nil } }
             && decks.values.allSatisfy { deck in
                 entries.allSatisfy { entry in
                     deck.activities[entry.id] != nil
                         && entry.tags.allSatisfy { deck.tags[$0] != nil }
                         && entry.skills.allSatisfy { deck.skills[$0] != nil }
                 }
+                    && moments.allSatisfy { entry in
+                        deck.moments[entry.id] != nil && entry.skills.allSatisfy { deck.skills[$0] != nil }
+                    }
             }
     }
 
@@ -165,11 +208,22 @@ struct ActivityCatalogue: Decodable {
         let evidence: [String]
     }
 
+    /// An everyday moment's shape, the same in every language.
+    struct MomentEntry: Decodable {
+        let id: String
+        let kind: MomentKind
+        let age: AgeBand
+        let game: String?
+        let skills: [String]
+        let evidence: [String]
+    }
+
     /// One language's words, keyed by id.
     struct Deck: Decodable {
         let tags: [String: String]
         let skills: [String: String]
         let activities: [String: Words]
+        let moments: [String: Words]
     }
 
     struct Words: Decodable {
@@ -179,6 +233,6 @@ struct ActivityCatalogue: Decodable {
     }
 
     private enum CodingKeys: String, CodingKey {
-        case entries = "activities", sources, decks
+        case entries = "activities", moments, sources, decks
     }
 }

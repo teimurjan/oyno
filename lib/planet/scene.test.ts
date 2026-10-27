@@ -45,7 +45,7 @@ describe("layout", () => {
   test("the family stands on the planet", () => {
     const familyBottom = LAYERS.family.y + LAYERS.family.width * LAYERS.family.aspect;
     expect(familyBottom).toBeGreaterThan(LAYERS.planet.y);
-    expect(familyBottom - LAYERS.planet.y).toBeLessThan(0.05);
+    expect(familyBottom - LAYERS.planet.y).toBeLessThan(0.08);
   });
 
   test("the gallery shows the promised share of each neighbour's planet", () => {

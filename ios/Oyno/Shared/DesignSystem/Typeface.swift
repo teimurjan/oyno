@@ -8,6 +8,8 @@ import UIKit
 /// Figtree has no Cyrillic, so a language written in it is drawn whole in Onest, a geometric
 /// sans of the same build, rather than letter by letter in the system font.
 ///
+/// The Sunday letter is the one page in a hand: Caveat, which writes Latin and Cyrillic alike.
+///
 /// The faces register themselves rather than going through `UIAppFonts`, so adding a weight
 /// is a file drop with no Info.plist edit. The site and the funnel read the same TTFs.
 enum Typeface {
@@ -22,9 +24,9 @@ enum Typeface {
     private static let families = ["Figtree", "Onest"]
 
     private static let registered: Void = {
-        let urls = families.flatMap { family in
+        let urls = (families.flatMap { family in
             Weight.allCases.compactMap { Bundle.main.url(forResource: "\(family)-\($0.rawValue)", withExtension: "ttf") }
-        } as CFArray
+        } + [Bundle.main.url(forResource: "Caveat", withExtension: "ttf")].compactMap { $0 }) as CFArray
         CTFontManagerRegisterFontURLs(urls, .process, true, nil)
     }()
 
@@ -42,6 +44,12 @@ enum Typeface {
     static func ui(_ size: CGFloat, _ weight: Weight = .regular, relativeTo style: Font.TextStyle = .body) -> Font {
         register()
         return .custom(postScriptName(weight), size: size, relativeTo: style)
+    }
+
+    /// The letter's handwriting. One variable face, so the weight is a variation, not a file.
+    static func hand(_ size: CGFloat, bold: Bool = false, relativeTo style: Font.TextStyle = .body) -> Font {
+        register()
+        return .custom("Caveat-Regular", size: size, relativeTo: style).weight(bold ? .bold : .medium)
     }
 
     /// The interface face for a number. Pair with `.monospacedDigit()` so a changing figure keeps its width.

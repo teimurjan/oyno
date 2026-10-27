@@ -16,7 +16,7 @@ export const STAGE_RATIO = 1.25;
 export const LAYERS: Record<LayerName, { x: number; y: number; width: number; aspect: number }> = {
   sky: { x: 0, y: 0.25, width: 1, aspect: 1 },
   planet: { x: 0.2, y: 0.486, width: 0.6, aspect: 996 / 1041 },
-  family: { x: 0.28, y: 0.061, width: 0.44, aspect: 1206 / 1153 },
+  family: { x: 0.28, y: 0.095, width: 0.44, aspect: 1206 / 1153 },
 };
 
 /** How far each layer travels under the finger, as a share of `MAX_OFFSET`. Nearer layers move more. */

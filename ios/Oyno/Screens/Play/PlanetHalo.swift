@@ -1,9 +1,9 @@
 import SwiftUI
 
-/// The two white rings and the four stars around the planet after a round, laid over
+/// The two white rings and the four painted petals around the planet after a round, laid over
 /// `PlanetScene`. They settle in when the screen appears and answer every bump of `burst`, the
 /// kid's taps: a ripple leaves the inner ring as it lights up, the rings swell as it passes,
-/// and the stars flare and glide on along the orbit.
+/// and the petals flare and glide on along the orbit.
 struct PlanetHalo: View {
     let burst: Int
 
@@ -16,21 +16,26 @@ struct PlanetHalo: View {
         (1.1, 0.95, 0),
         (1.26, 0.5, 0.15),
     ]
-    /// How far along the orbit the stars travel per tap.
+    /// How far along the orbit the petals travel per tap.
     private static let orbitStep = 20.0
 
-    private struct Star {
+    struct Drift {
+        /// The painting, `art/source/petals/<id>.png`.
+        let petal: String
         /// From the body's centre, in stage widths.
         let offset: CGPoint
+        /// The painting's side, in stage widths.
         let size: CGFloat
-        let color: Color
+        /// Each one floats at its own tilt.
+        let tilt: Double
     }
 
-    private static let stars = [
-        Star(offset: CGPoint(x: -0.47, y: -0.38), size: 0.089, color: Palette.amber),
-        Star(offset: CGPoint(x: 0.47, y: -0.22), size: 0.056, color: Palette.lavender),
-        Star(offset: CGPoint(x: -0.53, y: 0.3), size: 0.073, color: Palette.good),
-        Star(offset: CGPoint(x: 0.49, y: 0.39), size: 0.097, color: Palette.amber),
+    /// One of each painted petal, from `art/petals.json`.
+    static let petals = [
+        Drift(petal: "blush-petal", offset: CGPoint(x: -0.47, y: -0.38), size: 0.09, tilt: -35),
+        Drift(petal: "pollen-puff", offset: CGPoint(x: 0.47, y: -0.22), size: 0.065, tilt: 0),
+        Drift(petal: "sage-bud", offset: CGPoint(x: -0.53, y: 0.3), size: 0.075, tilt: 20),
+        Drift(petal: "cream-petal", offset: CGPoint(x: 0.49, y: 0.39), size: 0.095, tilt: -70),
     ]
 
     var body: some View {
@@ -55,12 +60,12 @@ struct PlanetHalo: View {
                         .position(center)
                 }
                 ripple(width: width).position(center)
-                ForEach(Array(Self.stars.enumerated()), id: \.offset) { index, star in
-                    Image(systemName: "star.fill")
+                ForEach(Array(Self.petals.enumerated()), id: \.offset) { index, petal in
+                    Image(uiImage: Painting.petal(petal.petal) ?? UIImage())
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(star.color)
-                        .frame(width: width * star.size, height: width * star.size)
+                        .frame(width: width * petal.size, height: width * petal.size)
+                        .rotationEffect(.degrees(petal.tilt))
                         .scaleEffect(settled ? 1 : 0.2)
                         .opacity(settled ? 1 : 0)
                         .animation(pop?.delay(0.3 + Double(index) * 0.08), value: settled)
@@ -70,7 +75,7 @@ struct PlanetHalo: View {
                             CubicKeyframe(1.35, duration: PlanetLayout.bloomPeak)
                             CubicKeyframe(1, duration: 0.5)
                         }
-                        .modifier(Orbit(offset: CGPoint(x: width * star.offset.x, y: width * star.offset.y), degrees: orbit))
+                        .modifier(Orbit(offset: CGPoint(x: width * petal.offset.x, y: width * petal.offset.y), degrees: orbit))
                         .animation(.smooth(duration: 0.9).delay(0.06 * Double(index)), value: orbit)
                         .position(center)
                 }

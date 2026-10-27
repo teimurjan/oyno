@@ -17,6 +17,10 @@ struct FunnelStepsTests {
 
     @Test func theAccountIsTheLastStep() {
         #expect(FunnelStep.allCases.last == .account)
-        #expect(FunnelStep.allCases.first?.tapsToContinue == true)
+    }
+
+    @Test func theHookMovesOnByItselfAndOnlyTheInterludeWaitsForATap() {
+        #expect(FunnelStep.allCases.first?.tapsToContinue == false)
+        #expect(FunnelStep.allCases.filter(\.tapsToContinue) == [.interlude])
     }
 }

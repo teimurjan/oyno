@@ -7,7 +7,7 @@ enum RootTab: Hashable, CaseIterable {
         switch self {
         // Its own key: "Home" is also the last world, and Russian names the two differently.
         case .home: LocalizedStringResource("Home tab", defaultValue: "Home")
-        case .play: "Play"
+        case .play: "Activity"
         case .kidHours: "Kid hours"
         }
     }

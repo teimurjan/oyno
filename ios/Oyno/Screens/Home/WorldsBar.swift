@@ -48,7 +48,8 @@ private struct BareButton<Label: View>: View {
     }
 }
 
-/// Under the planet at rest: the family's world by name, and a quiet way into the others.
+/// Under the planet at rest: the family's world by name. Tapping it, like the planet, opens the
+/// others, a way in left for the curious rather than offered.
 struct WorldCaption: View {
     let world: World
     let onExplore: () -> Void
@@ -58,22 +59,15 @@ struct WorldCaption: View {
             Haptics.tap()
             onExplore()
         } label: {
-            VStack(spacing: 2) {
-                Text(verbatim: world.name)
-                    .font(Typeface.ui(17, .extrabold, relativeTo: .headline))
-                    .foregroundStyle(Palette.ink)
-                HStack(spacing: 3) {
-                    Text("Explore worlds")
-                    Image(systemName: "arrow.up.right").accessibilityHidden(true)
-                }
-                .font(Typeface.ui(13, .semibold, relativeTo: .caption))
-                .foregroundStyle(Palette.muted)
-            }
-            .frame(minHeight: Metric.tapTarget)
-            .padding(.horizontal, Metric.Space.l)
-            .contentShape(.rect)
+            Text(verbatim: world.name)
+                .font(Typeface.ui(17, .extrabold, relativeTo: .headline))
+                .foregroundStyle(Palette.ink)
+                .frame(minHeight: Metric.tapTarget)
+                .padding(.horizontal, Metric.Space.l)
+                .contentShape(.rect)
         }
         .buttonStyle(.plain)
+        .accessibilityHint(Text("Shows every world"))
     }
 }
 

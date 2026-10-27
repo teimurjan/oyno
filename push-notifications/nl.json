@@ -1,0 +1,152 @@
+{
+  "letter-at-risk": {
+    "03cccdf487df": {
+      "title": "Je brief heeft {evenings} nodig",
+      "body": "Speel vanavond, dan schrijft de planeet je op zondag de brief van de week."
+    },
+    "c71af1f74103": {
+      "title": "Nog tijd voor de brief van deze week",
+      "body": "Nog {evenings} te gaan tot zondag. Eén makkelijk spelletje vanavond houdt het op koers."
+    },
+    "655da187e4db": {
+      "title": "De brief van {kid} hangt af van vanavond",
+      "body": "Nog {evenings}, en op zondag komt de brief van de planeet over jullie week."
+    }
+  },
+  "letter-ready": {
+    "253e8e5771c2": {
+      "title": "De brief van deze week is er",
+      "body": "De planeet heeft jullie {evenings} samen opgeschreven. Open hem voordat de week om is."
+    },
+    "a64a22f47c36": {
+      "title": "Een brief van je planeet",
+      "body": "Je week staat erin: {evenings} samen spelen. Kom hem lezen."
+    },
+    "534836ef54c6": {
+      "title": "De week van {kid}, in een brief",
+      "body": "De zondagsbrief is er, met {evenings} samen spelen erin."
+    }
+  },
+  "world-close": {
+    "f6c4299262f3": {
+      "title": "{world} is nog {moments} weg",
+      "body": "Nog één makkelijke avond, en er bloeit een nieuwe wereld op je planeet."
+    },
+    "f3cb9c3731fb": {
+      "title": "Bijna bij {world}",
+      "body": "Nog {moments} tot hij opengaat. Misschien is het vanavond zover."
+    },
+    "1b049e0f8f73": {
+      "title": "{kid} is dicht bij {world}",
+      "body": "Nog {moments}, en je planeet opent een nieuwe wereld."
+    }
+  },
+  "first-round": {
+    "b74afa8202cb": {
+      "title": "Je planeet wacht op je",
+      "body": "Het eerste moment kost maar een paar makkelijke minuten. Vanavond: {game}."
+    },
+    "437e81073e5a": {
+      "title": "Eén spelletje, en een planeet wordt wakker",
+      "body": "{game} vraagt geen voorbereiding. Speel het één keer en zie je planeet groeien."
+    },
+    "62151bd27e12": {
+      "title": "Vanavond misschien het eerste rondje van {kid}",
+      "body": "{game} duurt een paar minuten en vraagt alleen jullie tweeën."
+    }
+  },
+  "comeback": {
+    "5b98adafd639": {
+      "title": "Je planeet mist je",
+      "body": "Een paar rustige dagen zijn prima. {game} is vanavond een makkelijke weg terug."
+    },
+    "95bf3e91acab": {
+      "title": "Klaar wanneer jij het bent",
+      "body": "{game} duurt een paar minuten en oefent {skill}. Je hoeft niets in te halen."
+    },
+    "4fdf0f2e2218": {
+      "title": "{kid} wil vast graag een spelletje",
+      "body": "Ga verder waar je was: {game}, een paar makkelijke minuten samen."
+    }
+  },
+  "practice-milestone": {
+    "2389a60edbac": {
+      "title": "{minutes} aan {skill} deze maand",
+      "body": "Dat is echt oefenen. Met {game} groeit het vanavond verder."
+    },
+    "e3f36d93940d": {
+      "title": "Jullie oefenden {skill} al {minutes}",
+      "body": "Ga door met {game}, een paar makkelijke minuten."
+    },
+    "c2e4a29a46be": {
+      "title": "{kid} heeft {minutes} aan {skill} geoefend",
+      "body": "De oefening van deze maand telt op. Vanavond: {game}."
+    }
+  },
+  "keepsake-first-moment": {
+    "2073cb3414b3": {
+      "title": "Probeer vanavond “{moment}”",
+      "body": "De eerste keer laat altijd een aandenken achter op je planeet."
+    },
+    "ed00fa052d20": {
+      "title": "Er wacht een aandenken",
+      "body": "Je eerste moment “{moment}” laat er altijd een achter. Vanavond is een goede avond."
+    },
+    "a5cb855874cd": {
+      "title": "Iets nieuws voor de planeet van {kid}",
+      "body": "Het eerste moment “{moment}” laat altijd een aandenken achter."
+    }
+  },
+  "keepsakes-waiting": {
+    "1634d7372a86": {
+      "title": "Je planeet verstopt iets",
+      "body": "Nog te vinden: {keepsakes}. Ongeveer één op de vier momenten laat er een achter."
+    },
+    "8ed7b341b521": {
+      "title": "Er wachten aandenkens",
+      "body": "Nog verstopt op je planeet: {keepsakes}. Speel vanavond en kijk."
+    },
+    "f56d70d07b3b": {
+      "title": "Wat vindt {kid} hierna?",
+      "body": "Nog te vinden: {keepsakes}. Speel vanavond en ontdek het."
+    }
+  },
+  "low-energy": {
+    "3a59375c2317": {
+      "title": "Helemaal op?",
+      "body": "{game} kost bijna geen energie. Een paar minuten op de bank tellen ook."
+    },
+    "bce41d94b30f": {
+      "title": "Moe zijn mag vanavond",
+      "body": "{game} is gemaakt voor avonden met een lege batterij. Leun achterover en speel."
+    },
+    "02f7026f2f3c": {
+      "title": "Een makkelijke voor vanavond",
+      "body": "{game}: weinig energie, een paar minuten, en {kid} heeft je helemaal."
+    }
+  },
+  "kid-hours-start": {
+    "3eb4eeb855d1": {
+      "title": "{schedule} begint nu",
+      "body": "Je apps zijn gepauzeerd tot {end}. Het spelletje voor vanavond staat klaar."
+    },
+    "0df53a680df6": {
+      "title": "Gezinstijd staat aan",
+      "body": "{schedule} loopt tot {end}. Telefoon weg, één makkelijk spelletje erbij."
+    }
+  },
+  "kid-hours-end": {
+    "c371fdaba534": {
+      "title": "{schedule} is voorbij",
+      "body": "Je apps zijn terug. Was er vanavond iets nieuws?"
+    },
+    "2c6bf0af8399": {
+      "title": "Gezinstijd is klaar",
+      "body": "Je apps zijn weer open. Vertel de planeet wat er vanavond nieuw was."
+    },
+    "2f18c9c07011": {
+      "title": "Dat was de tijd van {kid}",
+      "body": "{schedule} is voorbij en je apps zijn terug."
+    }
+  }
+}

@@ -2,7 +2,7 @@ import FamilyControls
 import SwiftUI
 
 /// D7 on the canvas: the schedules Kid hours run on, with what is open right now folded into
-/// the one on top, the apps always and never allowed, and the held "Not now". A schedule opens
+/// the one on top, the apps always and never allowed, the held "Not now", and today's screen time. A schedule opens
 /// as a sheet. Turning one on is gated like any other write; looking is free.
 struct KidHoursScreen: View {
     @Environment(KidHoursStore.self) private var kidHours
@@ -56,6 +56,7 @@ struct KidHoursScreen: View {
                 alwaysAllowed.screenshotCallout("alwaysAllowed")
                 neverAllowed.screenshotCallout("neverAllowed")
                 notNowCard
+                ScreenTimeCard()
             }
         }
     }
@@ -84,6 +85,7 @@ struct KidHoursScreen: View {
                         Card(raised: true) { alwaysAllowed }
                         Card(raised: true) { neverAllowed }
                         notNowCard
+                        ScreenTimeCard()
                     }
                     .padding(.vertical, Metric.Space.xl)
                 }
@@ -96,7 +98,7 @@ struct KidHoursScreen: View {
 
     /// "New" beside the title, except where the Duo's side bar holds it.
     private var header: some View {
-        ScreenHeader(title: "Kid hours", subtitle: status) {
+        ScreenHeader(title: "Kid hours", subtitle: "") {
             if kidHours.isAuthorized, adaptive.bars != .side {
                 GlassPill(title: "New", symbol: "plus") { open = .new }
             }
@@ -119,18 +121,6 @@ struct KidHoursScreen: View {
     }
 
     // MARK: Words
-
-    private var status: String {
-        if let current = kidHours.current {
-            return String(interface: "On now · ends \(Format.timeOfDay(minutes: current.end))")
-        }
-        if let end = kidHours.unlockEnd {
-            return String(interface: "Apps open until \(Format.timeOfDay(date: end))")
-        }
-        guard let schedule = kidHours.featured else { return String(interface: "No schedule yet") }
-        guard schedule.isEnabled, let next = schedule.nextStart(after: kidHours.now) else { return String(interface: "Off") }
-        return String(interface: "Starts \(Format.dayAndTime(next))")
-    }
 
     private var notNowHint: String {
         if let end = kidHours.unlockEnd { return String(interface: "Open until \(Format.timeOfDay(date: end))") }
