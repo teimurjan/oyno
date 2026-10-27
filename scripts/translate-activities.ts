@@ -1,5 +1,5 @@
 /**
- * Fills `activities/<locale>.json` for every language the app ships: each game, tag and skill
+ * Fills `activities/<locale>.json` for every language the app ships: each game, moment, tag and skill
  * the deck is missing, or holds for English that has since been reworded. A unit already
  * translated from the current English is never sent again, and the file is written after
  * every batch, so a run that died halfway picks up where it stopped. Review the diff, then
@@ -65,6 +65,8 @@ const brief = (locale: string) =>
   "A blurb is the one line under the title saying who the game is good for, kept to one sentence. " +
   "A step is one instruction to the parent, exactly one sentence, in the same order and " +
   "about the same length as the English, with the same number of steps. " +
+  "A moment is an everyday routine the parent shares with the kid, like a bath or a book, and its steps are " +
+  "three gentle nudges shown one at a time, each exactly one sentence, in the same order as the English. " +
   "A tag is a chip of one to three words under the title, saying where the game is played or what to grab. " +
   "A skill is the name of a thinking skill the game builds, one to three words, as a parent would say it. " +
   "Translate every item, keep every id exactly as given, and return nothing else.";
@@ -92,12 +94,18 @@ function ordered(deck: Translations, source: Source): Translations {
     activities: Object.fromEntries(
       source.activities.flatMap(({ id }) => (deck.activities[id] ? [[id, deck.activities[id]]] : [])),
     ),
+    moments: Object.fromEntries(source.moments.flatMap(({ id }) => (deck.moments[id] ? [[id, deck.moments[id]]] : []))),
   };
 }
 
 async function translate(locale: string) {
   const own = translations[locale] ?? EMPTY_TRANSLATIONS;
-  const deck: Translations = { tags: { ...own.tags }, skills: { ...own.skills }, activities: { ...own.activities } };
+  const deck: Translations = {
+    tags: { ...own.tags },
+    skills: { ...own.skills },
+    activities: { ...own.activities },
+    moments: { ...own.moments },
+  };
   const save = () => writeFileSync(absolute(translationsFile(locale)), render(ordered(deck, source)));
   const mine = gaps.filter((gap) => gap.locale === locale);
 
@@ -116,25 +124,29 @@ async function translate(locale: string) {
     console.log(`${locale}: ${ids.length} ${kind}s`);
   }
 
-  const byId = new Map(source.activities.map((activity) => [activity.id, activity]));
-  const games = mine.filter((gap) => gap.kind === "activity").flatMap((gap) => byId.get(gap.id) ?? []);
-  for (let at = 0; at < games.length; at += BATCH) {
-    const batch = games.slice(at, at + BATCH);
-    const got = await ask(locale, GameBatch, {
-      games: batch.map(({ id, title, blurb, steps }) => ({ id, title, blurb, steps })),
-    });
-    for (const activity of batch) {
-      const words = got.games.find((game) => game.id === activity.id);
-      const title = words?.title.trim();
-      const blurb = words?.blurb.trim();
-      const steps = words?.steps.map((step) => step.trim()) ?? [];
-      if (!title || !blurb || steps.length !== activity.steps.length || steps.some((step) => !step)) {
-        throw new Error(`${locale}: ${activity.id} came back incomplete`);
+  for (const kind of ["activity", "moment"] as const) {
+    const entries = kind === "activity" ? source.activities : source.moments;
+    const own = kind === "activity" ? deck.activities : deck.moments;
+    const byId = new Map<string, (typeof entries)[number]>(entries.map((entry) => [entry.id, entry]));
+    const units = mine.filter((gap) => gap.kind === kind).flatMap((gap) => byId.get(gap.id) ?? []);
+    for (let at = 0; at < units.length; at += BATCH) {
+      const batch = units.slice(at, at + BATCH);
+      const got = await ask(locale, GameBatch, {
+        [kind === "activity" ? "games" : "moments"]: batch.map(({ id, title, blurb, steps }) => ({ id, title, blurb, steps })),
+      });
+      for (const entry of batch) {
+        const words = got.games.find((game) => game.id === entry.id);
+        const title = words?.title.trim();
+        const blurb = words?.blurb.trim();
+        const steps = words?.steps.map((step) => step.trim()) ?? [];
+        if (!title || !blurb || steps.length !== entry.steps.length || steps.some((step) => !step)) {
+          throw new Error(`${locale}: ${entry.id} came back incomplete`);
+        }
+        own[entry.id] = { source: wordsFingerprint(entry), title, blurb, steps };
       }
-      deck.activities[activity.id] = { source: wordsFingerprint(activity), title, blurb, steps };
+      save();
+      console.log(`${locale}: ${Math.min(at + BATCH, units.length)}/${units.length} ${kind === "activity" ? "games" : "moments"}`);
     }
-    save();
-    console.log(`${locale}: ${Math.min(at + BATCH, games.length)}/${games.length} games`);
   }
 }
 

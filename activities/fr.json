@@ -5135,5 +5135,127 @@
         "Reposez chaque chaussette après son saut pour vérifier, puis c’est à vous de sauter sur les fantômes."
       ]
     }
+  },
+  "moments": {
+    "read-together-0-1": {
+      "source": "4aaaed8ec219",
+      "title": "Lire ensemble",
+      "blurb": "N’importe quel livre de l’étagère, lu à votre façon, pendant qu’on garde l’œil sur le temps.",
+      "steps": [
+        "Montrez une image, dites ce que c’est, et attendez que votre bébé la regarde.",
+        "Laissez-le tapoter, mâchouiller ou tourner les pages, et suivez-le là où il va.",
+        "Relisez le même livre quand il tend la main vers lui, car les répétitions comptent aussi."
+      ]
+    },
+    "read-together-1-3": {
+      "source": "3b9dc6408d1f",
+      "title": "Lire ensemble",
+      "blurb": "N’importe quel livre de l’étagère, lu à votre façon, pendant qu’on garde l’œil sur le temps.",
+      "steps": [
+        "Arrêtez-vous avant de tourner la page et demandez « et après ? »",
+        "Laissez votre enfant montrer du doigt, et gardez votre doigt immobile.",
+        "Relisez-le s’il le demande, car la centième fois compte aussi."
+      ]
+    },
+    "read-together-3-5": {
+      "source": "a13058626b1f",
+      "title": "Lire ensemble",
+      "blurb": "N’importe quel livre de l’étagère, lu à votre façon, pendant qu’on garde l’œil sur le temps.",
+      "steps": [
+        "Arrêtez-vous avant de tourner la page et demandez-lui ce qui va se passer, d’après lui.",
+        "Demandez-lui de vous raconter une page avec ses propres mots.",
+        "Laissez-le choisir le livre suivant et le tenir pendant que vous lisez."
+      ]
+    },
+    "bath-time-0-1": {
+      "source": "80662f167b5c",
+      "title": "L’heure du bain",
+      "blurb": "Le bain a lieu de toute façon, alors restez au bord et profitez-en.",
+      "steps": [
+        "Dites « à vos marques, prêts… » et marquez une pause avant de verser doucement chaque filet d’eau tiède.",
+        "Chantez à chaque fois la même petite chanson du bain, et arrêtez-vous avant le dernier mot.",
+        "Nommez chaque partie du corps en la lavant, puis attendez que votre bébé la regarde."
+      ]
+    },
+    "bath-time-1-3": {
+      "source": "f261dde35a68",
+      "title": "L’heure du bain",
+      "blurb": "Le bain a lieu de toute façon, alors restez au bord et profitez-en.",
+      "steps": [
+        "Versez chacun votre tour : un gobelet pour vous, puis un pour votre enfant.",
+        "Éclaboussez ensemble, puis dites « eau calme » et regardez-la redevenir lisse.",
+        "Dites ce qu’il fait : « Tu as rempli le gobelet jusqu’en haut. »"
+      ]
+    },
+    "bath-time-3-5": {
+      "source": "642218eeab19",
+      "title": "L’heure du bain",
+      "blurb": "Le bain a lieu de toute façon, alors restez au bord et profitez-en.",
+      "steps": [
+        "Comptez trois éclaboussures à voix haute et arrêtez-vous, les mains bien en l’air.",
+        "Dites « eau calme » et voyez qui garde l’eau lisse le plus longtemps.",
+        "Laissez-le dire « stop » et « on y va », et suivez sa règle."
+      ]
+    },
+    "cook-together-0-1": {
+      "source": "381f16dc4eca",
+      "title": "Cuisiner ensemble",
+      "blurb": "Installez votre bébé là où il peut vous regarder préparer le dîner.",
+      "steps": [
+        "Installez-le là où il vous voit, et nommez chaque chose que vous prenez.",
+        "Donnez-lui une cuillère ou un bol sans danger, et laissez-le imiter votre façon de remuer.",
+        "Faites une pause après avoir parlé, et répondez à chaque son qu’il vous renvoie."
+      ]
+    },
+    "cook-together-1-3": {
+      "source": "0c1661918ae4",
+      "title": "Cuisiner ensemble",
+      "blurb": "Confiez à votre enfant une petite tâche avec une fin claire pendant que vous préparez le dîner.",
+      "steps": [
+        "Remuez chacun votre tour, dix fois chacun, en comptant à voix haute.",
+        "Dites l’étape, puis attendez qu’il la fasse.",
+        "Laissez faire si ça salit, car vous essuierez la table après."
+      ]
+    },
+    "cook-together-3-5": {
+      "source": "7fc4203df601",
+      "title": "Cuisiner ensemble",
+      "blurb": "Confiez à votre enfant une petite tâche avec une fin claire pendant que vous préparez le dîner.",
+      "steps": [
+        "Choisissez une tâche avec une fin claire, comme laver trois carottes ou déchirer la salade.",
+        "Demandez-lui d’attendre votre signe de tête avant chaque étape.",
+        "Laissez-le vous dire l’étape suivante avant que vous la fassiez."
+      ]
+    },
+    "let-them-lead-0-1": {
+      "source": "ec77a039e897",
+      "title": "Laissez-le mener",
+      "blurb": "Asseyez-vous tout près, le téléphone rangé, et laissez votre enfant choisir quoi faire.",
+      "steps": [
+        "Remarquez ce que votre bébé regarde, et regardez-le aussi.",
+        "Nommez-le pour lui : « Tu as trouvé le ballon. »",
+        "Attendez, et n’aidez que lorsqu’il tend les bras vers vous."
+      ]
+    },
+    "let-them-lead-1-3": {
+      "source": "1a2bf5aa9074",
+      "title": "Laissez-le mener",
+      "blurb": "Asseyez-vous tout près, le téléphone rangé, et laissez votre enfant choisir quoi faire.",
+      "steps": [
+        "Remarquez ce que votre enfant ramasse, et regardez-le aussi.",
+        "Dites ce que vous voyez : « Tu as mis le rouge en haut. »",
+        "Attendez, et n’aidez que lorsqu’il vous le demande."
+      ]
+    },
+    "let-them-lead-3-5": {
+      "source": "8acc6cbdb686",
+      "title": "Laissez-le mener",
+      "blurb": "Asseyez-vous tout près, le téléphone rangé, et laissez votre enfant choisir quoi faire.",
+      "steps": [
+        "Repérez le jeu que votre enfant lance, et demandez quel rôle vous jouez.",
+        "Dites ce que vous voyez : « Ton nounours est le docteur aujourd’hui. »",
+        "Attendez, et laissez-le changer les règles quand il veut."
+      ]
+    }
   }
 }

@@ -61,7 +61,19 @@ const sources = {
   },
 } as const;
 
-const raw = { tags: { quiet: "Quiet" }, skills, sources, activities: [whisper] };
+const quietBath = {
+  id: "quiet-bath-3-5",
+  kind: "bath",
+  age: "3-5",
+  mechanic: "quiet-voice",
+  skills: ["inhibitory-control"],
+  evidence: ["kochanska-2000", "cdc-guide"],
+  title: "Bath time",
+  blurb: "The bath happens anyway.",
+  steps: ["Whisper to the duck.", "Let them whisper back.", "Say goodnight to the water."],
+} as const;
+
+const raw = { tags: { quiet: "Quiet" }, skills, sources, activities: [whisper], moments: [quietBath] };
 const source = Source.parse(raw);
 
 const french = (madeFrom: string): Translations => ({
@@ -75,12 +87,13 @@ const french = (madeFrom: string): Translations => ({
       steps: ["Chuchote un mot.", "Fais-le passer."],
     },
   },
+  moments: {},
 });
 
 describe("compose", () => {
   test("a translation made from the current English is used as written", () => {
     const { catalogue, gaps } = compose(source, { fr: french(wordsFingerprint(whisper)) }, ["en", "fr"]);
-    expect(gaps.map((gap) => gap.id)).toEqual(["working-memory", "cognitive-flexibility", "attention"]);
+    expect(gaps.map((gap) => gap.id)).toEqual(["working-memory", "cognitive-flexibility", "attention", "quiet-bath-3-5"]);
     expect(catalogue.decks.fr.activities.whisper.title).toBe("Course chuchotée");
     expect(catalogue.decks.fr.tags.quiet).toBe("Calme");
     expect(catalogue.decks.fr.skills["inhibitory-control"]).toBe("Maîtrise de soi");
@@ -104,6 +117,7 @@ describe("compose", () => {
       "skill:cognitive-flexibility:missing",
       "skill:attention:missing",
       "activity:whisper:missing",
+      "moment:quiet-bath-3-5:missing",
     ]);
     expect(catalogue.decks.fr).toEqual(catalogue.decks.en);
   });
@@ -112,6 +126,9 @@ describe("compose", () => {
     const { catalogue } = compose(source, {}, ["en"]);
     expect(catalogue.activities).toEqual([
       { id: "whisper", age: "3-5", energy: "low", minutes: 10, tags: ["quiet"], skills: ["inhibitory-control"], evidence: ["kochanska-2000", "cdc-guide"] },
+    ]);
+    expect(catalogue.moments).toEqual([
+      { id: "quiet-bath-3-5", kind: "bath", age: "3-5", game: undefined, skills: ["inhibitory-control"], evidence: ["kochanska-2000", "cdc-guide"] },
     ]);
     expect(Object.keys(catalogue.sources)).toEqual(["kochanska-2000", "zelazo-2006", "cdc-guide"]);
   });
@@ -168,5 +185,28 @@ describe("Source", () => {
     expect(withGame({ minutes: 4 }).success).toBe(false);
     expect(withGame({ minutes: 16 }).success).toBe(false);
     expect(withGame({ minutes: 5 }).success).toBe(true);
+  });
+});
+
+describe("Source moments", () => {
+  const withMoment = (moment: Record<string, unknown>) =>
+    Source.safeParse({ ...raw, moments: [{ ...quietBath, ...moment }] });
+
+  test("a moment is cited like a game, at its own band", () => {
+    expect(withMoment({}).success).toBe(true);
+    expect(withMoment({ age: "1-3" }).success).toBe(false);
+    expect(withMoment({ age: "1-3", fromMonths: 22 }).success).toBe(true);
+    expect(withMoment({ evidence: ["kochanska-2000", "zelazo-2006"] }).success).toBe(false);
+  });
+
+  test("a moment has exactly three nudges and links only to a known tag", () => {
+    expect(withMoment({ steps: ["One.", "Two."] }).success).toBe(false);
+    expect(withMoment({ game: "quiet" }).success).toBe(true);
+    expect(withMoment({ game: "loud" }).success).toBe(false);
+  });
+
+  test("one moment per kind and band", () => {
+    const second = { ...quietBath, id: "another-bath" };
+    expect(Source.safeParse({ ...raw, moments: [quietBath, second] }).success).toBe(false);
   });
 });

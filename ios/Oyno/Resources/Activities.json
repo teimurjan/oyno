@@ -9465,6 +9465,175 @@
       ]
     }
   ],
+  "moments": [
+    {
+      "id": "read-together-0-1",
+      "kind": "reading",
+      "age": "0-1",
+      "game": "a-book",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "mendelsohn-2018",
+        "aap-play"
+      ]
+    },
+    {
+      "id": "read-together-1-3",
+      "kind": "reading",
+      "age": "1-3",
+      "game": "a-book",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "mendelsohn-2018",
+        "aap-play"
+      ]
+    },
+    {
+      "id": "read-together-3-5",
+      "kind": "reading",
+      "age": "3-5",
+      "game": "a-book",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "mendelsohn-2018",
+        "aap-play"
+      ]
+    },
+    {
+      "id": "bath-time-0-1",
+      "kind": "bath",
+      "age": "0-1",
+      "game": "bath",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "rochat-1999",
+        "cdc-guide"
+      ]
+    },
+    {
+      "id": "bath-time-1-3",
+      "kind": "bath",
+      "age": "1-3",
+      "game": "bath",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "landry-2006",
+        "cdc-guide"
+      ]
+    },
+    {
+      "id": "bath-time-3-5",
+      "kind": "bath",
+      "age": "3-5",
+      "game": "bath",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "kochanska-2000",
+        "cdc-guide"
+      ]
+    },
+    {
+      "id": "cook-together-0-1",
+      "kind": "cooking",
+      "age": "0-1",
+      "game": "mealtime",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "landry-2006",
+        "lind-2017",
+        "cdc-guide"
+      ]
+    },
+    {
+      "id": "cook-together-1-3",
+      "kind": "cooking",
+      "age": "1-3",
+      "game": "mealtime",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "landry-2006",
+        "cdc-guide"
+      ]
+    },
+    {
+      "id": "cook-together-3-5",
+      "kind": "cooking",
+      "age": "3-5",
+      "game": "mealtime",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "kochanska-2000",
+        "cdc-guide"
+      ]
+    },
+    {
+      "id": "let-them-lead-0-1",
+      "kind": "lead",
+      "age": "0-1",
+      "skills": [
+        "attention",
+        "inhibitory-control"
+      ],
+      "evidence": [
+        "cuevas-bell-2014",
+        "serve-return"
+      ]
+    },
+    {
+      "id": "let-them-lead-1-3",
+      "kind": "lead",
+      "age": "1-3",
+      "skills": [
+        "attention",
+        "inhibitory-control"
+      ],
+      "evidence": [
+        "cuevas-bell-2014",
+        "yu-smith-2016",
+        "serve-return"
+      ]
+    },
+    {
+      "id": "let-them-lead-3-5",
+      "kind": "lead",
+      "age": "3-5",
+      "skills": [
+        "attention",
+        "cognitive-flexibility"
+      ],
+      "evidence": [
+        "thibodeau-2016",
+        "cdc-guide"
+      ]
+    }
+  ],
   "sources": {
     "cdc-guide": {
       "short": "Harvard Center on the Developing Child, 2014",
@@ -14811,6 +14980,116 @@
             "Drop each sock back after their jump to check, then it is your turn to jump the ghosts."
           ]
         }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Read together",
+          "blurb": "Any book on the shelf, read your way, while we keep the time.",
+          "steps": [
+            "Point at one picture, name it, and wait for them to look.",
+            "Let them pat, chew or turn the pages, and follow where they go.",
+            "Read the same book again when they reach for it, because repeats count too."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Read together",
+          "blurb": "Any book on the shelf, read your way, while we keep the time.",
+          "steps": [
+            "Stop before a page turn and ask \"what comes next?\"",
+            "Let them do the pointing, and keep your finger still.",
+            "Read it again if they ask, because the hundredth time counts too."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Read together",
+          "blurb": "Any book on the shelf, read your way, while we keep the time.",
+          "steps": [
+            "Stop before a page turn and ask what they think happens next.",
+            "Ask them to tell one page back to you in their own words.",
+            "Let them pick the next book and hold it while you read."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "Bath time",
+          "blurb": "The bath happens anyway, so stay at the side and make it count.",
+          "steps": [
+            "Say \"ready, steady\" and pause before each slow pour of warm water.",
+            "Sing the same short bath song each time, and stop before the last word.",
+            "Name each body part as you wash it, then wait for them to look."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "Bath time",
+          "blurb": "The bath happens anyway, so stay at the side and make it count.",
+          "steps": [
+            "Take turns pouring: one cup for you, then one cup for them.",
+            "Splash together, then say \"still water\" and watch it go flat.",
+            "Say what they do: \"You filled the cup to the top.\""
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "Bath time",
+          "blurb": "The bath happens anyway, so stay at the side and make it count.",
+          "steps": [
+            "Count three splashes out loud and stop with your hands up high.",
+            "Say \"still water\" and see who can keep the water flat the longest.",
+            "Let them call stop and go, and follow their rule."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Cook together",
+          "blurb": "Give them a seat where they can watch you make dinner.",
+          "steps": [
+            "Sit them where they can see you, and name each thing you pick up.",
+            "Let them hold a safe spoon or bowl and copy your stirring.",
+            "Pause after you talk, and answer whatever sound they make back."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Cook together",
+          "blurb": "Give them one small job with a clear end while you make dinner.",
+          "steps": [
+            "Take turns stirring, ten times each, counting out loud.",
+            "Say the step, then wait for them to do it.",
+            "Let it get messy, because you can wipe the table after."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Cook together",
+          "blurb": "Give them one small job with a clear end while you make dinner.",
+          "steps": [
+            "Pick one job with a clear end, like washing three carrots or tearing the lettuce.",
+            "Ask them to wait for your nod before each step.",
+            "Let them tell you the next step before you do it."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Let them lead",
+          "blurb": "Sit close with the phone away, and let them choose what to do.",
+          "steps": [
+            "Notice what they look at, and look at it too.",
+            "Name it for them: \"You found the ball.\"",
+            "Wait, and help only when they reach for you."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Let them lead",
+          "blurb": "Sit close with the phone away, and let them choose what to do.",
+          "steps": [
+            "Notice what they pick up, and look at it too.",
+            "Say what you see: \"You put the red one on top.\"",
+            "Wait, and help only when they ask."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Let them lead",
+          "blurb": "Sit close with the phone away, and let them choose what to do.",
+          "steps": [
+            "Notice the game they start, and ask which part you play.",
+            "Say what you see: \"Your bear is the doctor today.\"",
+            "Wait, and let them change the rules whenever they want."
+          ]
+        }
       }
     },
     "de": {
@@ -19349,6 +19628,116 @@
             "Leg drei Socken in unregelmäßigen Abständen in den Flur und lass dein Kind genau hinschauen, bis fünf gezählt ist.",
             "Heb die Socken auf, und dein Kind springt genau dahin, wo jede Socke lag, ein Sprung pro Geistersocke.",
             "Leg nach jedem Sprung die Socke zur Kontrolle zurück, dann bist du mit den Geistern dran."
+          ]
+        }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Zusammen lesen",
+          "blurb": "Irgendein Buch aus dem Regal, so wie du magst, und wir behalten die Zeit im Blick.",
+          "steps": [
+            "Zeig auf ein Bild, sag, was es ist, und warte, bis dein Baby hinschaut.",
+            "Lass es auf die Seiten patschen, daran knabbern oder umblättern, und folge ihm, wohin es will.",
+            "Lies dasselbe Buch noch mal, wenn es danach greift, denn Wiederholungen zählen auch."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Zusammen lesen",
+          "blurb": "Irgendein Buch aus dem Regal, so wie du magst, und wir behalten die Zeit im Blick.",
+          "steps": [
+            "Halt vor dem Umblättern inne und frag „Was kommt jetzt?“",
+            "Lass dein Kind zeigen, und halt deinen eigenen Finger still.",
+            "Lies es noch mal vor, wenn es danach fragt, denn auch das hundertste Mal zählt."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Zusammen lesen",
+          "blurb": "Irgendein Buch aus dem Regal, so wie du magst, und wir behalten die Zeit im Blick.",
+          "steps": [
+            "Halt vor dem Umblättern inne und frag, was wohl als Nächstes passiert.",
+            "Bitte dein Kind, dir eine Seite mit eigenen Worten nachzuerzählen.",
+            "Lass es das nächste Buch aussuchen und halten, während du vorliest."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "Badezeit",
+          "blurb": "Gebadet wird sowieso, also bleib am Wannenrand und mach was draus.",
+          "steps": [
+            "Sag „Achtung, fertig …“ und halt kurz inne, bevor du jedes Mal langsam warmes Wasser gießt.",
+            "Sing jedes Mal dasselbe kurze Badelied und hör vor dem letzten Wort auf.",
+            "Benenne jeden Körperteil beim Waschen und warte dann, bis dein Baby hinschaut."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "Badezeit",
+          "blurb": "Gebadet wird sowieso, also bleib am Wannenrand und mach was draus.",
+          "steps": [
+            "Gießt abwechselnd: ein Becher für dich, dann einer für dein Kind.",
+            "Planscht zusammen, dann sagst du „Stilles Wasser!“ und ihr schaut, wie es glatt wird.",
+            "Sag, was dein Kind tut: „Du hast den Becher bis oben voll gemacht.“"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "Badezeit",
+          "blurb": "Gebadet wird sowieso, also bleib am Wannenrand und mach was draus.",
+          "steps": [
+            "Zählt laut drei Platscher und hört dann auf, die Hände hoch in der Luft.",
+            "Sag „Stilles Wasser!“, und dann seht ihr, wer das Wasser am längsten glatt hält.",
+            "Lass dein Kind „Stopp“ und „Los“ rufen, und halt dich an seine Regel."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Zusammen kochen",
+          "blurb": "Setz dein Baby so hin, dass es dir beim Kochen zuschauen kann.",
+          "steps": [
+            "Setz dein Baby in deine Sichtweite und benenne alles, was du in die Hand nimmst.",
+            "Gib ihm einen sicheren Löffel oder eine Schüssel und lass es dein Rühren nachmachen.",
+            "Mach nach dem Reden eine Pause und antworte auf jeden Laut, den es zurückgibt."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Zusammen kochen",
+          "blurb": "Gib deinem Kind eine kleine Aufgabe mit klarem Ende, während du kochst.",
+          "steps": [
+            "Rührt abwechselnd, jeder zehnmal, und zählt laut mit.",
+            "Sag den nächsten Schritt und warte, bis dein Kind ihn macht.",
+            "Lass es ruhig kleckern, denn den Tisch kannst du hinterher abwischen."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Zusammen kochen",
+          "blurb": "Gib deinem Kind eine kleine Aufgabe mit klarem Ende, während du kochst.",
+          "steps": [
+            "Such eine Aufgabe mit klarem Ende aus, etwa drei Möhren waschen oder den Salat zupfen.",
+            "Bitte dein Kind, vor jedem Schritt auf dein Nicken zu warten.",
+            "Lass es dir den nächsten Schritt sagen, bevor du ihn machst."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Folg deinem Kind",
+          "blurb": "Setz dich nah dazu, das Handy weg, und lass dein Kind aussuchen, was ihr macht.",
+          "steps": [
+            "Schau, wohin dein Baby schaut, und schau auch dorthin.",
+            "Sag ihm, was es ist: „Du hast den Ball gefunden.“",
+            "Warte, und hilf nur, wenn es nach dir greift."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Folg deinem Kind",
+          "blurb": "Setz dich nah dazu, das Handy weg, und lass dein Kind aussuchen, was ihr macht.",
+          "steps": [
+            "Schau, was dein Kind in die Hand nimmt, und schau es dir auch an.",
+            "Sag, was du siehst: „Du hast den roten Klotz obendrauf gelegt.“",
+            "Warte, und hilf nur, wenn es dich fragt."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Folg deinem Kind",
+          "blurb": "Setz dich nah dazu, das Handy weg, und lass dein Kind aussuchen, was ihr macht.",
+          "steps": [
+            "Schau, welches Spiel dein Kind anfängt, und frag, wen du spielen sollst.",
+            "Sag, was du siehst: „Dein Bär ist heute der Doktor.“",
+            "Warte, und lass es die Regeln ändern, wann immer es will."
           ]
         }
       }
@@ -23891,6 +24280,116 @@
             "Reposez chaque chaussette après son saut pour vérifier, puis c’est à vous de sauter sur les fantômes."
           ]
         }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Lire ensemble",
+          "blurb": "N’importe quel livre de l’étagère, lu à votre façon, pendant qu’on garde l’œil sur le temps.",
+          "steps": [
+            "Montrez une image, dites ce que c’est, et attendez que votre bébé la regarde.",
+            "Laissez-le tapoter, mâchouiller ou tourner les pages, et suivez-le là où il va.",
+            "Relisez le même livre quand il tend la main vers lui, car les répétitions comptent aussi."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Lire ensemble",
+          "blurb": "N’importe quel livre de l’étagère, lu à votre façon, pendant qu’on garde l’œil sur le temps.",
+          "steps": [
+            "Arrêtez-vous avant de tourner la page et demandez « et après ? »",
+            "Laissez votre enfant montrer du doigt, et gardez votre doigt immobile.",
+            "Relisez-le s’il le demande, car la centième fois compte aussi."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Lire ensemble",
+          "blurb": "N’importe quel livre de l’étagère, lu à votre façon, pendant qu’on garde l’œil sur le temps.",
+          "steps": [
+            "Arrêtez-vous avant de tourner la page et demandez-lui ce qui va se passer, d’après lui.",
+            "Demandez-lui de vous raconter une page avec ses propres mots.",
+            "Laissez-le choisir le livre suivant et le tenir pendant que vous lisez."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "L’heure du bain",
+          "blurb": "Le bain a lieu de toute façon, alors restez au bord et profitez-en.",
+          "steps": [
+            "Dites « à vos marques, prêts… » et marquez une pause avant de verser doucement chaque filet d’eau tiède.",
+            "Chantez à chaque fois la même petite chanson du bain, et arrêtez-vous avant le dernier mot.",
+            "Nommez chaque partie du corps en la lavant, puis attendez que votre bébé la regarde."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "L’heure du bain",
+          "blurb": "Le bain a lieu de toute façon, alors restez au bord et profitez-en.",
+          "steps": [
+            "Versez chacun votre tour : un gobelet pour vous, puis un pour votre enfant.",
+            "Éclaboussez ensemble, puis dites « eau calme » et regardez-la redevenir lisse.",
+            "Dites ce qu’il fait : « Tu as rempli le gobelet jusqu’en haut. »"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "L’heure du bain",
+          "blurb": "Le bain a lieu de toute façon, alors restez au bord et profitez-en.",
+          "steps": [
+            "Comptez trois éclaboussures à voix haute et arrêtez-vous, les mains bien en l’air.",
+            "Dites « eau calme » et voyez qui garde l’eau lisse le plus longtemps.",
+            "Laissez-le dire « stop » et « on y va », et suivez sa règle."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Cuisiner ensemble",
+          "blurb": "Installez votre bébé là où il peut vous regarder préparer le dîner.",
+          "steps": [
+            "Installez-le là où il vous voit, et nommez chaque chose que vous prenez.",
+            "Donnez-lui une cuillère ou un bol sans danger, et laissez-le imiter votre façon de remuer.",
+            "Faites une pause après avoir parlé, et répondez à chaque son qu’il vous renvoie."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Cuisiner ensemble",
+          "blurb": "Confiez à votre enfant une petite tâche avec une fin claire pendant que vous préparez le dîner.",
+          "steps": [
+            "Remuez chacun votre tour, dix fois chacun, en comptant à voix haute.",
+            "Dites l’étape, puis attendez qu’il la fasse.",
+            "Laissez faire si ça salit, car vous essuierez la table après."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Cuisiner ensemble",
+          "blurb": "Confiez à votre enfant une petite tâche avec une fin claire pendant que vous préparez le dîner.",
+          "steps": [
+            "Choisissez une tâche avec une fin claire, comme laver trois carottes ou déchirer la salade.",
+            "Demandez-lui d’attendre votre signe de tête avant chaque étape.",
+            "Laissez-le vous dire l’étape suivante avant que vous la fassiez."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Laissez-le mener",
+          "blurb": "Asseyez-vous tout près, le téléphone rangé, et laissez votre enfant choisir quoi faire.",
+          "steps": [
+            "Remarquez ce que votre bébé regarde, et regardez-le aussi.",
+            "Nommez-le pour lui : « Tu as trouvé le ballon. »",
+            "Attendez, et n’aidez que lorsqu’il tend les bras vers vous."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Laissez-le mener",
+          "blurb": "Asseyez-vous tout près, le téléphone rangé, et laissez votre enfant choisir quoi faire.",
+          "steps": [
+            "Remarquez ce que votre enfant ramasse, et regardez-le aussi.",
+            "Dites ce que vous voyez : « Tu as mis le rouge en haut. »",
+            "Attendez, et n’aidez que lorsqu’il vous le demande."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Laissez-le mener",
+          "blurb": "Asseyez-vous tout près, le téléphone rangé, et laissez votre enfant choisir quoi faire.",
+          "steps": [
+            "Repérez le jeu que votre enfant lance, et demandez quel rôle vous jouez.",
+            "Dites ce que vous voyez : « Ton nounours est le docteur aujourd’hui. »",
+            "Attendez, et laissez-le changer les règles quand il veut."
+          ]
+        }
       }
     },
     "es": {
@@ -28429,6 +28928,116 @@
             "Pon tres calcetines a lo largo del pasillo a distancias raras y deja que tu peque los mire bien mientras contáis hasta cinco.",
             "Recoge los calcetines, y tu peque salta para caer justo donde estaba cada uno, un salto por calcetín fantasma.",
             "Vuelve a dejar cada calcetín tras su salto para comprobarlo, y luego te toca saltar los fantasmas a ti."
+          ]
+        }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Leer juntos",
+          "blurb": "Cualquier libro de la estantería, leído a tu manera, mientras nosotros llevamos el tiempo.",
+          "steps": [
+            "Señala un dibujo, di qué es y espera a que tu bebé lo mire.",
+            "Deja que dé palmaditas, muerda o pase las páginas, y síguele allá donde vaya.",
+            "Vuelve a leer el mismo libro cuando lo busque con la mano, porque repetir también cuenta."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Leer juntos",
+          "blurb": "Cualquier libro de la estantería, leído a tu manera, mientras nosotros llevamos el tiempo.",
+          "steps": [
+            "Para antes de pasar la página y pregunta “¿qué viene ahora?”",
+            "Deja que señale tu peque y mantén tu dedo quieto.",
+            "Vuelve a leerlo si te lo pide, porque la vez número cien también cuenta."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Leer juntos",
+          "blurb": "Cualquier libro de la estantería, leído a tu manera, mientras nosotros llevamos el tiempo.",
+          "steps": [
+            "Para antes de pasar la página y pregunta qué cree que pasará después.",
+            "Pídele que te cuente una página con sus propias palabras.",
+            "Deja que elija el siguiente libro y lo sujete mientras lees."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "La hora del baño",
+          "blurb": "El baño toca igual, así que quédate junto a la bañera y aprovéchalo.",
+          "steps": [
+            "Di “preparados, listos…” y haz una pausa antes de echar despacio cada chorrito de agua templada.",
+            "Canta siempre la misma canción corta del baño y para justo antes de la última palabra.",
+            "Nombra cada parte del cuerpo mientras la lavas y espera a que tu bebé la mire."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "La hora del baño",
+          "blurb": "El baño toca igual, así que quédate junto a la bañera y aprovéchalo.",
+          "steps": [
+            "Echad agua por turnos: un vaso tú y luego uno tu peque.",
+            "Chapotead juntos, luego di “agua quieta” y mirad cómo se queda lisa.",
+            "Di en voz alta lo que hace: “Has llenado el vaso hasta arriba.”"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "La hora del baño",
+          "blurb": "El baño toca igual, así que quédate junto a la bañera y aprovéchalo.",
+          "steps": [
+            "Contad tres chapoteos en voz alta y parad con las manos bien arriba.",
+            "Di “agua quieta” y a ver quién mantiene el agua lisa más tiempo.",
+            "Deja que tu peque diga “alto” y “ya”, y sigue su regla."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Cocinar juntos",
+          "blurb": "Sienta a tu bebé donde pueda verte preparar la cena.",
+          "steps": [
+            "Siéntale donde te vea y nombra cada cosa que coges.",
+            "Dale una cuchara o un cuenco seguros y deja que imite cómo remueves.",
+            "Haz una pausa después de hablar y responde a cualquier sonido que te devuelva."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Cocinar juntos",
+          "blurb": "Dale a tu peque una tarea pequeña con un final claro mientras preparas la cena.",
+          "steps": [
+            "Removed por turnos, diez veces cada uno, contando en voz alta.",
+            "Di el paso y espera a que lo haga.",
+            "Deja que se ensucie todo, que la mesa se limpia luego."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Cocinar juntos",
+          "blurb": "Dale a tu peque una tarea pequeña con un final claro mientras preparas la cena.",
+          "steps": [
+            "Elige una tarea con un final claro, como lavar tres zanahorias o trocear la lechuga con las manos.",
+            "Pídele que espere a que asientas con la cabeza antes de cada paso.",
+            "Deja que te diga el siguiente paso antes de que lo hagas tú."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Tu peque manda",
+          "blurb": "Siéntate cerca, sin el móvil, y deja que tu peque elija qué hacer.",
+          "steps": [
+            "Fíjate en lo que mira tu bebé y míralo tú también.",
+            "Ponle nombre: “Has encontrado la pelota.”",
+            "Espera y ayuda solo cuando te busque con los brazos."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Tu peque manda",
+          "blurb": "Siéntate cerca, sin el móvil, y deja que tu peque elija qué hacer.",
+          "steps": [
+            "Fíjate en lo que coge tu peque y míralo tú también.",
+            "Di lo que ves: “Has puesto el rojo arriba.”",
+            "Espera y ayuda solo cuando te lo pida."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Tu peque manda",
+          "blurb": "Siéntate cerca, sin el móvil, y deja que tu peque elija qué hacer.",
+          "steps": [
+            "Fíjate en el juego que empieza y pregúntale qué papel te toca.",
+            "Di lo que ves: “Hoy tu osito es el médico.”",
+            "Espera y deja que cambie las reglas cuando quiera."
           ]
         }
       }
@@ -32971,6 +33580,116 @@
             "Regresa cada calcetín a su lugar después de su brinco para revisar, y luego te toca a ti brincar los fantasmas."
           ]
         }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Leer juntos",
+          "blurb": "Cualquier libro del librero, leído a tu manera, mientras nosotros llevamos el tiempo.",
+          "steps": [
+            "Señala un dibujo, di qué es y espera a que tu bebé lo mire.",
+            "Deja que dé palmaditas, muerda o pase las páginas, y síguele el paso.",
+            "Vuelve a leer el mismo libro cuando estire la mano hacia él, porque repetir también cuenta."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Leer juntos",
+          "blurb": "Cualquier libro del librero, leído a tu manera, mientras nosotros llevamos el tiempo.",
+          "steps": [
+            "Haz una pausa antes de pasar la página y pregunta “¿qué sigue?”",
+            "Deja que tu peque sea quien señale, y tú deja el dedo quieto.",
+            "Léelo otra vez si te lo pide, porque la vez cien también cuenta."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Leer juntos",
+          "blurb": "Cualquier libro del librero, leído a tu manera, mientras nosotros llevamos el tiempo.",
+          "steps": [
+            "Haz una pausa antes de pasar la página y pregúntale qué cree que va a pasar.",
+            "Pídele que te cuente una página con sus propias palabras.",
+            "Deja que escoja el siguiente libro y que lo sostenga mientras lees."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "La hora del baño",
+          "blurb": "El baño va a pasar de todos modos, así que quédate junto a la tina y aprovéchalo.",
+          "steps": [
+            "Di “en sus marcas, listos…” y haz una pausa antes de echar despacio cada chorrito de agua tibia.",
+            "Canta siempre la misma cancioncita del baño y detente antes de la última palabra.",
+            "Nombra cada parte del cuerpo mientras la lavas, y espera a que tu bebé la mire."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "La hora del baño",
+          "blurb": "El baño va a pasar de todos modos, así que quédate junto a la tina y aprovéchalo.",
+          "steps": [
+            "Echen agua por turnos: un vaso tú y luego uno tu peque.",
+            "Chapoteen juntos, luego di “agua quieta” y vean cómo se queda lisa.",
+            "Di lo que hace: “Llenaste el vaso hasta arriba.”"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "La hora del baño",
+          "blurb": "El baño va a pasar de todos modos, así que quédate junto a la tina y aprovéchalo.",
+          "steps": [
+            "Cuenten tres chapoteos en voz alta y paren con las manos bien arriba.",
+            "Di “agua quieta” y a ver quién deja el agua lisa por más tiempo.",
+            "Deja que tu peque diga “alto” y “ya”, y sigue su regla."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Cocinar juntos",
+          "blurb": "Sienta a tu bebé donde pueda verte preparar la cena.",
+          "steps": [
+            "Siéntalo donde te vea, y nombra cada cosa que agarras.",
+            "Dale una cuchara o un tazón seguros y deja que imite cómo revuelves.",
+            "Haz una pausa después de hablar, y contesta cualquier sonido que te haga."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Cocinar juntos",
+          "blurb": "Dale a tu peque una tarea chiquita con un final claro mientras haces la cena.",
+          "steps": [
+            "Revuelvan por turnos, diez veces cada quien, contando en voz alta.",
+            "Di el paso y luego espera a que lo haga.",
+            "Deja que se haga un tiradero, que la mesa se limpia después."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Cocinar juntos",
+          "blurb": "Dale a tu peque una tarea chiquita con un final claro mientras haces la cena.",
+          "steps": [
+            "Escoge una tarea con un final claro, como lavar tres zanahorias o deshojar la lechuga.",
+            "Pídele que espere a que le hagas una seña con la cabeza antes de cada paso.",
+            "Deja que te diga el siguiente paso antes de que lo hagas."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Tu peque manda",
+          "blurb": "Siéntate cerca, con el celular lejos, y deja que tu peque escoja qué hacer.",
+          "steps": [
+            "Fíjate en lo que mira tu bebé y míralo tú también.",
+            "Dile qué es: “Encontraste la pelota.”",
+            "Espera, y ayuda solo cuando estire los brazos hacia ti."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Tu peque manda",
+          "blurb": "Siéntate cerca, con el celular lejos, y deja que tu peque escoja qué hacer.",
+          "steps": [
+            "Fíjate en lo que agarra tu peque y míralo tú también.",
+            "Di lo que ves: “Pusiste el rojo hasta arriba.”",
+            "Espera, y ayuda solo cuando te lo pida."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Tu peque manda",
+          "blurb": "Siéntate cerca, con el celular lejos, y deja que tu peque escoja qué hacer.",
+          "steps": [
+            "Fíjate en el juego que empieza y pregúntale qué papel te toca.",
+            "Di lo que ves: “Hoy tu osito es el doctor.”",
+            "Espera, y deja que cambie las reglas cuando quiera."
+          ]
+        }
       }
     },
     "pt-BR": {
@@ -37509,6 +38228,116 @@
             "Ponha três meias pelo corredor em distâncias diferentes e deixe a criança olhar bem enquanto conta até cinco.",
             "Recolha as meias, e a criança pula para cair exatamente onde cada meia estava, um pulo por meia fantasma.",
             "Ponha cada meia de volta depois do pulo para conferir, depois é a sua vez de pular nos fantasmas."
+          ]
+        }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Ler juntos",
+          "blurb": "Qualquer livro da estante, lido do seu jeito, enquanto a gente marca o tempo.",
+          "steps": [
+            "Aponte para uma figura, diga o nome dela e espere o bebê olhar.",
+            "Deixe o bebê bater, morder ou virar as páginas, e vá atrás de onde ele for.",
+            "Leia o mesmo livro de novo quando ele estender a mão, porque repetir também conta."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Ler juntos",
+          "blurb": "Qualquer livro da estante, lido do seu jeito, enquanto a gente marca o tempo.",
+          "steps": [
+            "Pare antes de virar a página e pergunte “o que vem agora?”",
+            "Deixe a criança apontar e mantenha o seu dedo parado.",
+            "Leia de novo se ela pedir, porque a centésima vez também conta."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Ler juntos",
+          "blurb": "Qualquer livro da estante, lido do seu jeito, enquanto a gente marca o tempo.",
+          "steps": [
+            "Pare antes de virar a página e pergunte o que ela acha que vai acontecer.",
+            "Peça para ela contar uma página com as próprias palavras.",
+            "Deixe a criança escolher o próximo livro e segurar enquanto você lê."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "Hora do banho",
+          "blurb": "O banho vai acontecer de qualquer jeito, então fique do lado e aproveite.",
+          "steps": [
+            "Diga “preparar, apontar…” e faça uma pausa antes de despejar devagar cada pouquinho de água morna.",
+            "Cante sempre a mesma musiquinha curta do banho e pare antes da última palavra.",
+            "Diga o nome de cada parte do corpo enquanto lava, depois espere o bebê olhar."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "Hora do banho",
+          "blurb": "O banho vai acontecer de qualquer jeito, então fique do lado e aproveite.",
+          "steps": [
+            "Revezem para despejar: um copo para você, depois um copo para a criança.",
+            "Batam na água juntos, depois diga “água parada” e vejam ela ficar lisinha.",
+            "Diga o que ela faz: “Você encheu o copo até a boca.”"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "Hora do banho",
+          "blurb": "O banho vai acontecer de qualquer jeito, então fique do lado e aproveite.",
+          "steps": [
+            "Contem três batidas na água em voz alta e parem com as mãos lá no alto.",
+            "Diga “água parada” e vejam quem consegue deixar a água lisinha por mais tempo.",
+            "Deixe a criança dizer “para” e “vai”, e siga a regra dela."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Cozinhar juntos",
+          "blurb": "Coloque o bebê num lugar de onde ele possa ver você fazer o jantar.",
+          "steps": [
+            "Coloque o bebê onde ele veja você e diga o nome de cada coisa que pegar.",
+            "Deixe ele segurar uma colher ou tigela segura e imitar você mexendo.",
+            "Faça uma pausa depois de falar e responda a qualquer som que ele fizer de volta."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Cozinhar juntos",
+          "blurb": "Dê à criança uma tarefinha com um fim bem claro enquanto você faz o jantar.",
+          "steps": [
+            "Revezem para mexer, dez vezes cada um, contando em voz alta.",
+            "Diga o passo e espere ela fazer.",
+            "Deixe a bagunça rolar, porque dá para limpar a mesa depois."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Cozinhar juntos",
+          "blurb": "Dê à criança uma tarefinha com um fim bem claro enquanto você faz o jantar.",
+          "steps": [
+            "Escolha uma tarefa com um fim claro, como lavar três cenouras ou rasgar a alface.",
+            "Peça para ela esperar você fazer que sim com a cabeça antes de cada passo.",
+            "Deixe ela dizer o próximo passo antes de você fazer."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Deixe o bebê guiar",
+          "blurb": "Sente pertinho, com o celular longe, e deixe o bebê escolher o que fazer.",
+          "steps": [
+            "Repare no que o bebê olha e olhe também.",
+            "Diga o nome para ele: “Você achou a bola.”",
+            "Espere e só ajude quando ele estender os braços para você."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Deixe a criança guiar",
+          "blurb": "Sente pertinho, com o celular longe, e deixe a criança escolher o que fazer.",
+          "steps": [
+            "Repare no que a criança pega e olhe também.",
+            "Diga o que você vê: “Você colocou o vermelho em cima.”",
+            "Espere e só ajude quando ela pedir."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Deixe a criança guiar",
+          "blurb": "Sente pertinho, com o celular longe, e deixe a criança escolher o que fazer.",
+          "steps": [
+            "Repare na brincadeira que ela começa e pergunte qual é o seu papel.",
+            "Diga o que você vê: “Hoje o seu ursinho é o médico.”",
+            "Espere e deixe ela mudar as regras quando quiser."
           ]
         }
       }
@@ -42051,6 +42880,116 @@
             "Rimetti giù ogni calzino dopo il salto per controllare, poi tocca a te saltare sui fantasmi."
           ]
         }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Leggiamo insieme",
+          "blurb": "Un libro qualsiasi dallo scaffale, letto a modo tuo, mentre noi teniamo il tempo.",
+          "steps": [
+            "Indica un’immagine, di’ come si chiama e aspetta che il tuo bambino la guardi.",
+            "Lascia che dia colpetti, mordicchi o giri le pagine, e seguilo dove va.",
+            "Rileggi lo stesso libro quando allunga la mano per prenderlo, perché anche le ripetizioni contano."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Leggiamo insieme",
+          "blurb": "Un libro qualsiasi dallo scaffale, letto a modo tuo, mentre noi teniamo il tempo.",
+          "steps": [
+            "Fermati prima di girare pagina e chiedi “e adesso cosa succede?”",
+            "Lascia che sia lui a indicare, e tieni il tuo dito fermo.",
+            "Rileggilo se te lo chiede, perché conta anche la centesima volta."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Leggiamo insieme",
+          "blurb": "Un libro qualsiasi dallo scaffale, letto a modo tuo, mentre noi teniamo il tempo.",
+          "steps": [
+            "Fermati prima di girare pagina e chiedigli cosa pensa che succederà.",
+            "Chiedigli di raccontarti una pagina con parole sue.",
+            "Lascia che scelga lui il prossimo libro e che lo tenga mentre leggi."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "L’ora del bagnetto",
+          "blurb": "Il bagnetto si fa comunque, quindi resta lì accanto e rendilo un momento vostro.",
+          "steps": [
+            "Di’ “pronti, attenti…” e fai una pausa prima di versare piano ogni po’ di acqua tiepida.",
+            "Canta ogni volta la stessa canzoncina del bagnetto e fermati prima dell’ultima parola.",
+            "Nomina ogni parte del corpo mentre la lavi, poi aspetta che il tuo bambino la guardi."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "L’ora del bagnetto",
+          "blurb": "Il bagnetto si fa comunque, quindi resta lì accanto e rendilo un momento vostro.",
+          "steps": [
+            "Versate a turno: un bicchiere per te, poi uno per il tuo bambino.",
+            "Schizzate insieme, poi di’ “acqua ferma” e guardate l’acqua tornare liscia.",
+            "Di’ quello che fa: “Hai riempito il bicchiere fino in cima.”"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "L’ora del bagnetto",
+          "blurb": "Il bagnetto si fa comunque, quindi resta lì accanto e rendilo un momento vostro.",
+          "steps": [
+            "Contate tre schizzi ad alta voce e fermatevi con le mani in alto.",
+            "Di’ “acqua ferma” e vedete chi riesce a tenere l’acqua liscia più a lungo.",
+            "Lascia che sia lui a dire “stop” e “via”, e segui la sua regola."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Cuciniamo insieme",
+          "blurb": "Sistema il tuo bambino dove può guardarti mentre prepari la cena.",
+          "steps": [
+            "Mettilo dove può vederti, e nomina ogni cosa che prendi in mano.",
+            "Dagli un cucchiaio o una ciotola sicuri e lascia che imiti il tuo modo di mescolare.",
+            "Fai una pausa dopo aver parlato, e rispondi a qualsiasi suono ti restituisca."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Cuciniamo insieme",
+          "blurb": "Dai al tuo bambino un piccolo compito con una fine chiara mentre prepari la cena.",
+          "steps": [
+            "Mescolate a turno, dieci volte a testa, contando ad alta voce.",
+            "Di’ il passaggio, poi aspetta che lo faccia lui.",
+            "Lascia che si sporchi tutto, tanto il tavolo lo pulisci dopo."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Cuciniamo insieme",
+          "blurb": "Dai al tuo bambino un piccolo compito con una fine chiara mentre prepari la cena.",
+          "steps": [
+            "Scegli un compito con una fine chiara, come lavare tre carote o spezzettare l’insalata.",
+            "Chiedigli di aspettare il tuo cenno prima di ogni passaggio.",
+            "Lascia che ti dica lui il prossimo passaggio prima che tu lo faccia."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Decide lui",
+          "blurb": "Siediti vicino, con il telefono lontano, e lascia che sia il tuo bambino a scegliere cosa fare.",
+          "steps": [
+            "Nota cosa guarda il tuo bambino, e guardalo anche tu.",
+            "Dillo per lui: “Hai trovato la palla.”",
+            "Aspetta, e aiutalo solo quando ti cerca con le braccia."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Decide lui",
+          "blurb": "Siediti vicino, con il telefono lontano, e lascia che sia il tuo bambino a scegliere cosa fare.",
+          "steps": [
+            "Nota cosa prende in mano il tuo bambino, e guardalo anche tu.",
+            "Di’ quello che vedi: “Hai messo quello rosso in cima.”",
+            "Aspetta, e aiutalo solo quando te lo chiede."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Decide lui",
+          "blurb": "Siediti vicino, con il telefono lontano, e lascia che sia il tuo bambino a scegliere cosa fare.",
+          "steps": [
+            "Nota il gioco che inizia, e chiedigli che parte fai tu.",
+            "Di’ quello che vedi: “Oggi il tuo orsetto fa il dottore.”",
+            "Aspetta, e lascia che cambi le regole quando vuole."
+          ]
+        }
       }
     },
     "nl": {
@@ -46589,6 +47528,116 @@
             "Leg drie sokken op wisselende afstanden in de gang en laat je kind goed kijken terwijl je tot vijf telt.",
             "Raap de sokken op, en je kind springt precies waar elke sok lag, één sprong per spooksok.",
             "Leg na elke sprong de sok terug om te kijken of het klopt, en dan is het jouw beurt om op de spooksokken te springen."
+          ]
+        }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Samen lezen",
+          "blurb": "Elk boek uit de kast, op jouw manier gelezen, terwijl wij de tijd bijhouden.",
+          "steps": [
+            "Wijs één plaatje aan, zeg wat het is en wacht tot je baby kijkt.",
+            "Laat je kleintje op de bladzijden slaan, erop kauwen of ze omslaan, en volg waar het heen wil.",
+            "Lees hetzelfde boek nog een keer als je kleintje ernaar grijpt, want herhalen telt ook."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Samen lezen",
+          "blurb": "Elk boek uit de kast, op jouw manier gelezen, terwijl wij de tijd bijhouden.",
+          "steps": [
+            "Stop vlak voor het omslaan en vraag “wat komt er nu?”",
+            "Laat je kind aanwijzen en houd je eigen vinger stil.",
+            "Lees het nog eens als je kind erom vraagt, want ook de honderdste keer telt."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Samen lezen",
+          "blurb": "Elk boek uit de kast, op jouw manier gelezen, terwijl wij de tijd bijhouden.",
+          "steps": [
+            "Stop vlak voor het omslaan en vraag wat er volgens je kind gaat gebeuren.",
+            "Vraag je kind om één bladzijde in eigen woorden na te vertellen.",
+            "Laat je kind het volgende boek kiezen en vasthouden terwijl jij voorleest."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "Badtijd",
+          "blurb": "In bad gaat je kleintje toch al, dus blijf ernaast en maak er iets moois van.",
+          "steps": [
+            "Zeg “klaar voor de start…” en wacht even voor elk langzaam scheutje warm water.",
+            "Zing elke keer hetzelfde korte badliedje en stop vlak voor het laatste woord.",
+            "Noem elk lichaamsdeel terwijl je het wast, en wacht dan tot je baby kijkt."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "Badtijd",
+          "blurb": "In bad gaat je kleintje toch al, dus blijf ernaast en maak er iets moois van.",
+          "steps": [
+            "Giet om de beurt: één bekertje voor jou, dan één voor je kind.",
+            "Spetter samen, zeg dan “stil water” en kijk hoe het glad wordt.",
+            "Zeg wat je kind doet: “Jij hebt het bekertje tot de rand gevuld.”"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "Badtijd",
+          "blurb": "In bad gaat je kleintje toch al, dus blijf ernaast en maak er iets moois van.",
+          "steps": [
+            "Tel hardop drie spetters en stop met je handen hoog in de lucht.",
+            "Zeg “stil water” en kijk wie het water het langst glad kan houden.",
+            "Laat je kind “stop” en “ga” roepen, en houd je aan die regel."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Samen koken",
+          "blurb": "Zet je baby ergens neer waar het kan zien hoe jij het eten maakt.",
+          "steps": [
+            "Zet je kleintje waar het jou kan zien, en noem alles wat je oppakt.",
+            "Geef een veilige lepel of kom en laat je kleintje je roeren nadoen.",
+            "Wacht even nadat je iets zegt, en antwoord op elk geluidje dat terugkomt."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Samen koken",
+          "blurb": "Geef je kind één klein klusje met een duidelijk einde terwijl jij het eten maakt.",
+          "steps": [
+            "Roer om de beurt, elk tien keer, en tel hardop.",
+            "Zeg de stap en wacht tot je kind hem doet.",
+            "Laat het gerust een knoeiboel worden, want de tafel veeg je straks wel af."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Samen koken",
+          "blurb": "Geef je kind één klein klusje met een duidelijk einde terwijl jij het eten maakt.",
+          "steps": [
+            "Kies één klusje met een duidelijk einde, zoals drie wortels wassen of de sla scheuren.",
+            "Vraag je kind om voor elke stap op jouw knikje te wachten.",
+            "Laat je kind de volgende stap zeggen voordat jij hem doet."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Je kind kiest",
+          "blurb": "Ga dichtbij zitten, telefoon weg, en laat je kind kiezen wat jullie doen.",
+          "steps": [
+            "Kijk waar je baby naar kijkt, en kijk er ook naar.",
+            "Zeg wat het is: “Jij hebt de bal gevonden.”",
+            "Wacht, en help alleen als je kleintje naar je reikt."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Je kind kiest",
+          "blurb": "Ga dichtbij zitten, telefoon weg, en laat je kind kiezen wat jullie doen.",
+          "steps": [
+            "Kijk wat je kind oppakt, en kijk er ook naar.",
+            "Zeg wat je ziet: “Jij hebt de rode bovenop gelegd.”",
+            "Wacht, en help alleen als je kind erom vraagt."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Je kind kiest",
+          "blurb": "Ga dichtbij zitten, telefoon weg, en laat je kind kiezen wat jullie doen.",
+          "steps": [
+            "Kijk welk spel je kind begint, en vraag welke rol jij speelt.",
+            "Zeg wat je ziet: “Jouw beer is vandaag de dokter.”",
+            "Wacht, en laat je kind de regels veranderen wanneer het maar wil."
           ]
         }
       }
@@ -51131,6 +52180,116 @@
             "Po każdym skoku odłóż skarpetkę na miejsce, żeby sprawdzić, a potem twoja kolej skakać po duchach."
           ]
         }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Czytamy razem",
+          "blurb": "Dowolna książka z półki, czytana po twojemu, a my pilnujemy czasu.",
+          "steps": [
+            "Pokaż jeden obrazek, nazwij go i poczekaj, aż maluszek spojrzy.",
+            "Pozwól mu klepać, gryźć albo przewracać kartki i podążaj za nim.",
+            "Czytaj tę samą książkę jeszcze raz, gdy maluszek po nią sięga, bo powtórki też się liczą."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Czytamy razem",
+          "blurb": "Dowolna książka z półki, czytana po twojemu, a my pilnujemy czasu.",
+          "steps": [
+            "Zatrzymaj się przed przewróceniem kartki i zapytaj „co będzie dalej?”",
+            "Pozwól dziecku pokazywać palcem, a swój palec trzymaj nieruchomo.",
+            "Przeczytaj jeszcze raz, jeśli dziecko poprosi, bo setny raz też się liczy."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Czytamy razem",
+          "blurb": "Dowolna książka z półki, czytana po twojemu, a my pilnujemy czasu.",
+          "steps": [
+            "Zatrzymaj się przed przewróceniem kartki i zapytaj, co według dziecka wydarzy się dalej.",
+            "Poproś dziecko, żeby opowiedziało ci jedną stronę własnymi słowami.",
+            "Pozwól mu wybrać następną książkę i trzymać ją, kiedy czytasz."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "Pora kąpieli",
+          "blurb": "Kąpiel i tak będzie, więc zostań przy wannie i niech to będzie wasz czas.",
+          "steps": [
+            "Powiedz „do biegu, gotowi…” i zrób pauzę przed każdym powolnym polaniem ciepłą wodą.",
+            "Śpiewaj za każdym razem tę samą krótką piosenkę do kąpieli i zatrzymaj się przed ostatnim słowem.",
+            "Nazywaj każdą część ciała, którą myjesz, i poczekaj, aż maluszek na nią spojrzy."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "Pora kąpieli",
+          "blurb": "Kąpiel i tak będzie, więc zostań przy wannie i niech to będzie wasz czas.",
+          "steps": [
+            "Polewajcie na zmianę: jeden kubeczek ty, potem jeden dziecko.",
+            "Pochlapcie razem, potem powiedz „cicha woda” i patrzcie, jak się wygładza.",
+            "Mów, co dziecko robi: „Napełniasz kubeczek aż po brzegi.”"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "Pora kąpieli",
+          "blurb": "Kąpiel i tak będzie, więc zostań przy wannie i niech to będzie wasz czas.",
+          "steps": [
+            "Policzcie na głos trzy chlapnięcia i zatrzymajcie się z rękami wysoko w górze.",
+            "Powiedz „cicha woda” i sprawdźcie, kto najdłużej utrzyma gładką wodę.",
+            "Pozwól dziecku wołać „stop” i „start”, i trzymaj się jego zasady."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Gotujemy razem",
+          "blurb": "Posadź maluszka tam, skąd zobaczy, jak robisz kolację.",
+          "steps": [
+            "Posadź go tak, żeby cię widział, i nazywaj każdą rzecz, którą bierzesz do ręki.",
+            "Daj mu bezpieczną łyżkę albo miseczkę i pozwól naśladować twoje mieszanie.",
+            "Zrób pauzę, gdy skończysz mówić, i odpowiedz na każdy dźwięk, jaki wyda."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Gotujemy razem",
+          "blurb": "Daj dziecku jedno małe zadanie z wyraźnym końcem, gdy robisz kolację.",
+          "steps": [
+            "Mieszajcie na zmianę, każde po dziesięć razy, licząc na głos.",
+            "Powiedz, co teraz, i poczekaj, aż dziecko to zrobi.",
+            "Pozwól na bałagan, bo stół wytrzesz potem."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Gotujemy razem",
+          "blurb": "Daj dziecku jedno małe zadanie z wyraźnym końcem, gdy robisz kolację.",
+          "steps": [
+            "Wybierz jedno zadanie z wyraźnym końcem, na przykład umycie trzech marchewek albo rwanie sałaty.",
+            "Poproś dziecko, żeby przed każdym krokiem czekało na twoje skinienie głową.",
+            "Niech dziecko powie ci następny krok, zanim go zrobisz."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Niech prowadzi",
+          "blurb": "Usiądź blisko, odłóż telefon i pozwól maluszkowi wybrać, co robicie.",
+          "steps": [
+            "Zauważ, na co patrzy maluszek, i też na to spójrz.",
+            "Nazwij to za niego: „Widzisz piłkę.”",
+            "Czekaj i pomagaj dopiero, gdy maluszek wyciągnie do ciebie ręce."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Niech prowadzi",
+          "blurb": "Usiądź blisko, odłóż telefon i pozwól dziecku wybrać, co robicie.",
+          "steps": [
+            "Zauważ, co dziecko bierze do ręki, i też na to spójrz.",
+            "Mów, co widzisz: „Czerwony kładziesz na górze.”",
+            "Czekaj i pomagaj dopiero, gdy dziecko poprosi."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Niech prowadzi",
+          "blurb": "Usiądź blisko, odłóż telefon i pozwól dziecku wybrać, co robicie.",
+          "steps": [
+            "Zauważ, jaką zabawę dziecko zaczyna, i zapytaj, kogo ty grasz.",
+            "Mów, co widzisz: „Twój miś jest dziś lekarzem.”",
+            "Czekaj i pozwól dziecku zmieniać zasady, kiedy tylko zechce."
+          ]
+        }
       }
     },
     "ru": {
@@ -55669,6 +56828,116 @@
             "Разложите три носка по коридору на разном расстоянии и дайте ребёнку внимательно посмотреть на счёт до пяти.",
             "Уберите носки, а ребёнок прыгает так, чтобы приземлиться точно туда, где лежал каждый, — по прыжку на каждый носок-привидение.",
             "После каждого прыжка кладите носок обратно для проверки, а потом ваша очередь прыгать по привидениям."
+          ]
+        }
+      },
+      "moments": {
+        "read-together-0-1": {
+          "title": "Читаем вместе",
+          "blurb": "Любая книжка с полки, читайте как вам нравится, а за временем следим мы.",
+          "steps": [
+            "Покажите на одну картинку, назовите её и подождите, пока малыш посмотрит.",
+            "Пусть малыш хлопает по страницам, грызёт их или листает, а вы следуйте за ним.",
+            "Читайте ту же книжку снова, когда малыш к ней тянется, ведь повторы тоже считаются."
+          ]
+        },
+        "read-together-1-3": {
+          "title": "Читаем вместе",
+          "blurb": "Любая книжка с полки, читайте как вам нравится, а за временем следим мы.",
+          "steps": [
+            "Остановитесь перед тем, как перевернуть страницу, и спросите: «А что дальше?»",
+            "Пусть показывает ребёнок, а свой палец держите неподвижно.",
+            "Прочитайте ещё раз, если ребёнок попросит, ведь и сотый раз тоже считается."
+          ]
+        },
+        "read-together-3-5": {
+          "title": "Читаем вместе",
+          "blurb": "Любая книжка с полки, читайте как вам нравится, а за временем следим мы.",
+          "steps": [
+            "Остановитесь перед тем, как перевернуть страницу, и спросите, что, по мнению ребёнка, будет дальше.",
+            "Попросите ребёнка пересказать вам одну страницу своими словами.",
+            "Пусть ребёнок выберет следующую книжку и держит её, пока вы читаете."
+          ]
+        },
+        "bath-time-0-1": {
+          "title": "Время купаться",
+          "blurb": "Купание будет в любом случае, так что останьтесь у ванны и проведите его вместе.",
+          "steps": [
+            "Скажите «На старт, внимание…» и сделайте паузу перед каждым медленным поливом тёплой водой.",
+            "Каждый раз пойте одну и ту же короткую песенку для купания и останавливайтесь перед последним словом.",
+            "Называйте каждую часть тела, пока её моете, а потом подождите, пока малыш на неё посмотрит."
+          ]
+        },
+        "bath-time-1-3": {
+          "title": "Время купаться",
+          "blurb": "Купание будет в любом случае, так что останьтесь у ванны и проведите его вместе.",
+          "steps": [
+            "Поливайте по очереди: один стаканчик вы, потом один ребёнок.",
+            "Побрызгайтесь вместе, потом скажите «Тихая вода» и смотрите, как она успокаивается.",
+            "Говорите, что делает ребёнок: «Ты наливаешь стаканчик до самого верха.»"
+          ]
+        },
+        "bath-time-3-5": {
+          "title": "Время купаться",
+          "blurb": "Купание будет в любом случае, так что останьтесь у ванны и проведите его вместе.",
+          "steps": [
+            "Посчитайте вслух три шлепка по воде и замрите, подняв руки высоко вверх.",
+            "Скажите «Тихая вода» и посмотрите, кто дольше удержит воду гладкой.",
+            "Пусть ребёнок командует «стоп» и «давай», а вы следуйте его правилу."
+          ]
+        },
+        "cook-together-0-1": {
+          "title": "Готовим вместе",
+          "blurb": "Посадите малыша так, чтобы он видел, как вы готовите ужин.",
+          "steps": [
+            "Усадите малыша так, чтобы он вас видел, и называйте всё, что берёте в руки.",
+            "Дайте ему безопасную ложку или миску, и пусть повторяет, как вы мешаете.",
+            "Сделайте паузу после своих слов и отвечайте на любой звук, которым малыш вам ответит."
+          ]
+        },
+        "cook-together-1-3": {
+          "title": "Готовим вместе",
+          "blurb": "Дайте ребёнку одно маленькое дело с понятным концом, пока вы готовите ужин.",
+          "steps": [
+            "Мешайте по очереди, по десять раз каждый, считая вслух.",
+            "Назовите шаг и подождите, пока ребёнок его сделает.",
+            "Пусть будет беспорядок, ведь стол можно вытереть потом."
+          ]
+        },
+        "cook-together-3-5": {
+          "title": "Готовим вместе",
+          "blurb": "Дайте ребёнку одно маленькое дело с понятным концом, пока вы готовите ужин.",
+          "steps": [
+            "Выберите одно дело с понятным концом, например вымыть три морковки или порвать салат.",
+            "Попросите ребёнка перед каждым шагом ждать вашего кивка.",
+            "Пусть ребёнок скажет вам следующий шаг, прежде чем вы его сделаете."
+          ]
+        },
+        "let-them-lead-0-1": {
+          "title": "Ведёт малыш",
+          "blurb": "Сядьте рядом, уберите телефон и дайте малышу выбрать, чем заняться.",
+          "steps": [
+            "Заметьте, куда смотрит малыш, и посмотрите туда же.",
+            "Назовите это вслух: «Ты видишь мячик.»",
+            "Ждите и помогайте, только когда малыш тянется к вам."
+          ]
+        },
+        "let-them-lead-1-3": {
+          "title": "Ведёт ребёнок",
+          "blurb": "Сядьте рядом, уберите телефон и дайте ребёнку выбрать, чем заняться.",
+          "steps": [
+            "Заметьте, что ребёнок берёт в руки, и посмотрите туда же.",
+            "Скажите, что видите: «Ты кладёшь красный наверх.»",
+            "Ждите и помогайте, только когда ребёнок попросит."
+          ]
+        },
+        "let-them-lead-3-5": {
+          "title": "Ведёт ребёнок",
+          "blurb": "Сядьте рядом, уберите телефон и дайте ребёнку выбрать, чем заняться.",
+          "steps": [
+            "Заметьте, в какую игру ребёнок начинает играть, и спросите, кем будете вы.",
+            "Скажите, что видите: «Сегодня твой мишка — доктор.»",
+            "Ждите и дайте ребёнку менять правила, когда ему захочется."
           ]
         }
       }

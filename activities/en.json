@@ -14538,5 +14538,273 @@
         "Drop each sock back after their jump to check, then it is your turn to jump the ghosts."
       ]
     }
+  ],
+  "moments": [
+    {
+      "id": "read-together-0-1",
+      "kind": "reading",
+      "age": "0-1",
+      "mechanic": "reading",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "mendelsohn-2018",
+        "aap-play"
+      ],
+      "game": "a-book",
+      "title": "Read together",
+      "blurb": "Any book on the shelf, read your way, while we keep the time.",
+      "steps": [
+        "Point at one picture, name it, and wait for them to look.",
+        "Let them pat, chew or turn the pages, and follow where they go.",
+        "Read the same book again when they reach for it, because repeats count too."
+      ]
+    },
+    {
+      "id": "read-together-1-3",
+      "kind": "reading",
+      "age": "1-3",
+      "mechanic": "reading",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "mendelsohn-2018",
+        "aap-play"
+      ],
+      "game": "a-book",
+      "title": "Read together",
+      "blurb": "Any book on the shelf, read your way, while we keep the time.",
+      "steps": [
+        "Stop before a page turn and ask \"what comes next?\"",
+        "Let them do the pointing, and keep your finger still.",
+        "Read it again if they ask, because the hundredth time counts too."
+      ]
+    },
+    {
+      "id": "read-together-3-5",
+      "kind": "reading",
+      "age": "3-5",
+      "mechanic": "reading",
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "mendelsohn-2018",
+        "aap-play"
+      ],
+      "game": "a-book",
+      "title": "Read together",
+      "blurb": "Any book on the shelf, read your way, while we keep the time.",
+      "steps": [
+        "Stop before a page turn and ask what they think happens next.",
+        "Ask them to tell one page back to you in their own words.",
+        "Let them pick the next book and hold it while you read."
+      ]
+    },
+    {
+      "id": "bath-time-0-1",
+      "kind": "bath",
+      "age": "0-1",
+      "mechanic": "anticipation-rhyme",
+      "fromMonths": 2,
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "rochat-1999",
+        "cdc-guide"
+      ],
+      "game": "bath",
+      "title": "Bath time",
+      "blurb": "The bath happens anyway, so stay at the side and make it count.",
+      "steps": [
+        "Say \"ready, steady\" and pause before each slow pour of warm water.",
+        "Sing the same short bath song each time, and stop before the last word.",
+        "Name each body part as you wash it, then wait for them to look."
+      ]
+    },
+    {
+      "id": "bath-time-1-3",
+      "kind": "bath",
+      "age": "1-3",
+      "mechanic": "turn-taking",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "landry-2006",
+        "cdc-guide"
+      ],
+      "game": "bath",
+      "title": "Bath time",
+      "blurb": "The bath happens anyway, so stay at the side and make it count.",
+      "steps": [
+        "Take turns pouring: one cup for you, then one cup for them.",
+        "Splash together, then say \"still water\" and watch it go flat.",
+        "Say what they do: \"You filled the cup to the top.\""
+      ]
+    },
+    {
+      "id": "bath-time-3-5",
+      "kind": "bath",
+      "age": "3-5",
+      "mechanic": "stop-go",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "kochanska-2000",
+        "cdc-guide"
+      ],
+      "game": "bath",
+      "title": "Bath time",
+      "blurb": "The bath happens anyway, so stay at the side and make it count.",
+      "steps": [
+        "Count three splashes out loud and stop with your hands up high.",
+        "Say \"still water\" and see who can keep the water flat the longest.",
+        "Let them call stop and go, and follow their rule."
+      ]
+    },
+    {
+      "id": "cook-together-0-1",
+      "kind": "cooking",
+      "age": "0-1",
+      "mechanic": "conversation",
+      "fromMonths": 6,
+      "skills": [
+        "attention",
+        "working-memory"
+      ],
+      "evidence": [
+        "landry-2006",
+        "lind-2017",
+        "cdc-guide"
+      ],
+      "game": "mealtime",
+      "title": "Cook together",
+      "blurb": "Give them a seat where they can watch you make dinner.",
+      "steps": [
+        "Sit them where they can see you, and name each thing you pick up.",
+        "Let them hold a safe spoon or bowl and copy your stirring.",
+        "Pause after you talk, and answer whatever sound they make back."
+      ]
+    },
+    {
+      "id": "cook-together-1-3",
+      "kind": "cooking",
+      "age": "1-3",
+      "mechanic": "turn-taking",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "landry-2006",
+        "cdc-guide"
+      ],
+      "game": "mealtime",
+      "title": "Cook together",
+      "blurb": "Give them one small job with a clear end while you make dinner.",
+      "steps": [
+        "Take turns stirring, ten times each, counting out loud.",
+        "Say the step, then wait for them to do it.",
+        "Let it get messy, because you can wipe the table after."
+      ]
+    },
+    {
+      "id": "cook-together-3-5",
+      "kind": "cooking",
+      "age": "3-5",
+      "mechanic": "waiting",
+      "skills": [
+        "inhibitory-control",
+        "working-memory"
+      ],
+      "evidence": [
+        "kochanska-2000",
+        "cdc-guide"
+      ],
+      "game": "mealtime",
+      "title": "Cook together",
+      "blurb": "Give them one small job with a clear end while you make dinner.",
+      "steps": [
+        "Pick one job with a clear end, like washing three carrots or tearing the lettuce.",
+        "Ask them to wait for your nod before each step.",
+        "Let them tell you the next step before you do it."
+      ]
+    },
+    {
+      "id": "let-them-lead-0-1",
+      "kind": "lead",
+      "age": "0-1",
+      "mechanic": "joint-attention",
+      "fromMonths": 5,
+      "skills": [
+        "attention",
+        "inhibitory-control"
+      ],
+      "evidence": [
+        "cuevas-bell-2014",
+        "serve-return"
+      ],
+      "title": "Let them lead",
+      "blurb": "Sit close with the phone away, and let them choose what to do.",
+      "steps": [
+        "Notice what they look at, and look at it too.",
+        "Name it for them: \"You found the ball.\"",
+        "Wait, and help only when they reach for you."
+      ]
+    },
+    {
+      "id": "let-them-lead-1-3",
+      "kind": "lead",
+      "age": "1-3",
+      "mechanic": "joint-attention",
+      "skills": [
+        "attention",
+        "inhibitory-control"
+      ],
+      "evidence": [
+        "cuevas-bell-2014",
+        "yu-smith-2016",
+        "serve-return"
+      ],
+      "title": "Let them lead",
+      "blurb": "Sit close with the phone away, and let them choose what to do.",
+      "steps": [
+        "Notice what they pick up, and look at it too.",
+        "Say what you see: \"You put the red one on top.\"",
+        "Wait, and help only when they ask."
+      ]
+    },
+    {
+      "id": "let-them-lead-3-5",
+      "kind": "lead",
+      "age": "3-5",
+      "mechanic": "pretend-play",
+      "skills": [
+        "attention",
+        "cognitive-flexibility"
+      ],
+      "evidence": [
+        "thibodeau-2016",
+        "cdc-guide"
+      ],
+      "title": "Let them lead",
+      "blurb": "Sit close with the phone away, and let them choose what to do.",
+      "steps": [
+        "Notice the game they start, and ask which part you play.",
+        "Say what you see: \"Your bear is the doctor today.\"",
+        "Wait, and let them change the rules whenever they want."
+      ]
+    }
   ]
 }

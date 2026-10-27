@@ -5135,5 +5135,127 @@
         "Ponha cada meia de volta depois do pulo para conferir, depois é a sua vez de pular nos fantasmas."
       ]
     }
+  },
+  "moments": {
+    "read-together-0-1": {
+      "source": "4aaaed8ec219",
+      "title": "Ler juntos",
+      "blurb": "Qualquer livro da estante, lido do seu jeito, enquanto a gente marca o tempo.",
+      "steps": [
+        "Aponte para uma figura, diga o nome dela e espere o bebê olhar.",
+        "Deixe o bebê bater, morder ou virar as páginas, e vá atrás de onde ele for.",
+        "Leia o mesmo livro de novo quando ele estender a mão, porque repetir também conta."
+      ]
+    },
+    "read-together-1-3": {
+      "source": "3b9dc6408d1f",
+      "title": "Ler juntos",
+      "blurb": "Qualquer livro da estante, lido do seu jeito, enquanto a gente marca o tempo.",
+      "steps": [
+        "Pare antes de virar a página e pergunte “o que vem agora?”",
+        "Deixe a criança apontar e mantenha o seu dedo parado.",
+        "Leia de novo se ela pedir, porque a centésima vez também conta."
+      ]
+    },
+    "read-together-3-5": {
+      "source": "a13058626b1f",
+      "title": "Ler juntos",
+      "blurb": "Qualquer livro da estante, lido do seu jeito, enquanto a gente marca o tempo.",
+      "steps": [
+        "Pare antes de virar a página e pergunte o que ela acha que vai acontecer.",
+        "Peça para ela contar uma página com as próprias palavras.",
+        "Deixe a criança escolher o próximo livro e segurar enquanto você lê."
+      ]
+    },
+    "bath-time-0-1": {
+      "source": "80662f167b5c",
+      "title": "Hora do banho",
+      "blurb": "O banho vai acontecer de qualquer jeito, então fique do lado e aproveite.",
+      "steps": [
+        "Diga “preparar, apontar…” e faça uma pausa antes de despejar devagar cada pouquinho de água morna.",
+        "Cante sempre a mesma musiquinha curta do banho e pare antes da última palavra.",
+        "Diga o nome de cada parte do corpo enquanto lava, depois espere o bebê olhar."
+      ]
+    },
+    "bath-time-1-3": {
+      "source": "f261dde35a68",
+      "title": "Hora do banho",
+      "blurb": "O banho vai acontecer de qualquer jeito, então fique do lado e aproveite.",
+      "steps": [
+        "Revezem para despejar: um copo para você, depois um copo para a criança.",
+        "Batam na água juntos, depois diga “água parada” e vejam ela ficar lisinha.",
+        "Diga o que ela faz: “Você encheu o copo até a boca.”"
+      ]
+    },
+    "bath-time-3-5": {
+      "source": "642218eeab19",
+      "title": "Hora do banho",
+      "blurb": "O banho vai acontecer de qualquer jeito, então fique do lado e aproveite.",
+      "steps": [
+        "Contem três batidas na água em voz alta e parem com as mãos lá no alto.",
+        "Diga “água parada” e vejam quem consegue deixar a água lisinha por mais tempo.",
+        "Deixe a criança dizer “para” e “vai”, e siga a regra dela."
+      ]
+    },
+    "cook-together-0-1": {
+      "source": "381f16dc4eca",
+      "title": "Cozinhar juntos",
+      "blurb": "Coloque o bebê num lugar de onde ele possa ver você fazer o jantar.",
+      "steps": [
+        "Coloque o bebê onde ele veja você e diga o nome de cada coisa que pegar.",
+        "Deixe ele segurar uma colher ou tigela segura e imitar você mexendo.",
+        "Faça uma pausa depois de falar e responda a qualquer som que ele fizer de volta."
+      ]
+    },
+    "cook-together-1-3": {
+      "source": "0c1661918ae4",
+      "title": "Cozinhar juntos",
+      "blurb": "Dê à criança uma tarefinha com um fim bem claro enquanto você faz o jantar.",
+      "steps": [
+        "Revezem para mexer, dez vezes cada um, contando em voz alta.",
+        "Diga o passo e espere ela fazer.",
+        "Deixe a bagunça rolar, porque dá para limpar a mesa depois."
+      ]
+    },
+    "cook-together-3-5": {
+      "source": "7fc4203df601",
+      "title": "Cozinhar juntos",
+      "blurb": "Dê à criança uma tarefinha com um fim bem claro enquanto você faz o jantar.",
+      "steps": [
+        "Escolha uma tarefa com um fim claro, como lavar três cenouras ou rasgar a alface.",
+        "Peça para ela esperar você fazer que sim com a cabeça antes de cada passo.",
+        "Deixe ela dizer o próximo passo antes de você fazer."
+      ]
+    },
+    "let-them-lead-0-1": {
+      "source": "ec77a039e897",
+      "title": "Deixe o bebê guiar",
+      "blurb": "Sente pertinho, com o celular longe, e deixe o bebê escolher o que fazer.",
+      "steps": [
+        "Repare no que o bebê olha e olhe também.",
+        "Diga o nome para ele: “Você achou a bola.”",
+        "Espere e só ajude quando ele estender os braços para você."
+      ]
+    },
+    "let-them-lead-1-3": {
+      "source": "1a2bf5aa9074",
+      "title": "Deixe a criança guiar",
+      "blurb": "Sente pertinho, com o celular longe, e deixe a criança escolher o que fazer.",
+      "steps": [
+        "Repare no que a criança pega e olhe também.",
+        "Diga o que você vê: “Você colocou o vermelho em cima.”",
+        "Espere e só ajude quando ela pedir."
+      ]
+    },
+    "let-them-lead-3-5": {
+      "source": "8acc6cbdb686",
+      "title": "Deixe a criança guiar",
+      "blurb": "Sente pertinho, com o celular longe, e deixe a criança escolher o que fazer.",
+      "steps": [
+        "Repare na brincadeira que ela começa e pergunte qual é o seu papel.",
+        "Diga o que você vê: “Hoje o seu ursinho é o médico.”",
+        "Espere e deixe ela mudar as regras quando quiser."
+      ]
+    }
   }
 }

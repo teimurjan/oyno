@@ -5135,5 +5135,127 @@
         "Rimetti giù ogni calzino dopo il salto per controllare, poi tocca a te saltare sui fantasmi."
       ]
     }
+  },
+  "moments": {
+    "read-together-0-1": {
+      "source": "4aaaed8ec219",
+      "title": "Leggiamo insieme",
+      "blurb": "Un libro qualsiasi dallo scaffale, letto a modo tuo, mentre noi teniamo il tempo.",
+      "steps": [
+        "Indica un’immagine, di’ come si chiama e aspetta che il tuo bambino la guardi.",
+        "Lascia che dia colpetti, mordicchi o giri le pagine, e seguilo dove va.",
+        "Rileggi lo stesso libro quando allunga la mano per prenderlo, perché anche le ripetizioni contano."
+      ]
+    },
+    "read-together-1-3": {
+      "source": "3b9dc6408d1f",
+      "title": "Leggiamo insieme",
+      "blurb": "Un libro qualsiasi dallo scaffale, letto a modo tuo, mentre noi teniamo il tempo.",
+      "steps": [
+        "Fermati prima di girare pagina e chiedi “e adesso cosa succede?”",
+        "Lascia che sia lui a indicare, e tieni il tuo dito fermo.",
+        "Rileggilo se te lo chiede, perché conta anche la centesima volta."
+      ]
+    },
+    "read-together-3-5": {
+      "source": "a13058626b1f",
+      "title": "Leggiamo insieme",
+      "blurb": "Un libro qualsiasi dallo scaffale, letto a modo tuo, mentre noi teniamo il tempo.",
+      "steps": [
+        "Fermati prima di girare pagina e chiedigli cosa pensa che succederà.",
+        "Chiedigli di raccontarti una pagina con parole sue.",
+        "Lascia che scelga lui il prossimo libro e che lo tenga mentre leggi."
+      ]
+    },
+    "bath-time-0-1": {
+      "source": "80662f167b5c",
+      "title": "L’ora del bagnetto",
+      "blurb": "Il bagnetto si fa comunque, quindi resta lì accanto e rendilo un momento vostro.",
+      "steps": [
+        "Di’ “pronti, attenti…” e fai una pausa prima di versare piano ogni po’ di acqua tiepida.",
+        "Canta ogni volta la stessa canzoncina del bagnetto e fermati prima dell’ultima parola.",
+        "Nomina ogni parte del corpo mentre la lavi, poi aspetta che il tuo bambino la guardi."
+      ]
+    },
+    "bath-time-1-3": {
+      "source": "f261dde35a68",
+      "title": "L’ora del bagnetto",
+      "blurb": "Il bagnetto si fa comunque, quindi resta lì accanto e rendilo un momento vostro.",
+      "steps": [
+        "Versate a turno: un bicchiere per te, poi uno per il tuo bambino.",
+        "Schizzate insieme, poi di’ “acqua ferma” e guardate l’acqua tornare liscia.",
+        "Di’ quello che fa: “Hai riempito il bicchiere fino in cima.”"
+      ]
+    },
+    "bath-time-3-5": {
+      "source": "642218eeab19",
+      "title": "L’ora del bagnetto",
+      "blurb": "Il bagnetto si fa comunque, quindi resta lì accanto e rendilo un momento vostro.",
+      "steps": [
+        "Contate tre schizzi ad alta voce e fermatevi con le mani in alto.",
+        "Di’ “acqua ferma” e vedete chi riesce a tenere l’acqua liscia più a lungo.",
+        "Lascia che sia lui a dire “stop” e “via”, e segui la sua regola."
+      ]
+    },
+    "cook-together-0-1": {
+      "source": "381f16dc4eca",
+      "title": "Cuciniamo insieme",
+      "blurb": "Sistema il tuo bambino dove può guardarti mentre prepari la cena.",
+      "steps": [
+        "Mettilo dove può vederti, e nomina ogni cosa che prendi in mano.",
+        "Dagli un cucchiaio o una ciotola sicuri e lascia che imiti il tuo modo di mescolare.",
+        "Fai una pausa dopo aver parlato, e rispondi a qualsiasi suono ti restituisca."
+      ]
+    },
+    "cook-together-1-3": {
+      "source": "0c1661918ae4",
+      "title": "Cuciniamo insieme",
+      "blurb": "Dai al tuo bambino un piccolo compito con una fine chiara mentre prepari la cena.",
+      "steps": [
+        "Mescolate a turno, dieci volte a testa, contando ad alta voce.",
+        "Di’ il passaggio, poi aspetta che lo faccia lui.",
+        "Lascia che si sporchi tutto, tanto il tavolo lo pulisci dopo."
+      ]
+    },
+    "cook-together-3-5": {
+      "source": "7fc4203df601",
+      "title": "Cuciniamo insieme",
+      "blurb": "Dai al tuo bambino un piccolo compito con una fine chiara mentre prepari la cena.",
+      "steps": [
+        "Scegli un compito con una fine chiara, come lavare tre carote o spezzettare l’insalata.",
+        "Chiedigli di aspettare il tuo cenno prima di ogni passaggio.",
+        "Lascia che ti dica lui il prossimo passaggio prima che tu lo faccia."
+      ]
+    },
+    "let-them-lead-0-1": {
+      "source": "ec77a039e897",
+      "title": "Decide lui",
+      "blurb": "Siediti vicino, con il telefono lontano, e lascia che sia il tuo bambino a scegliere cosa fare.",
+      "steps": [
+        "Nota cosa guarda il tuo bambino, e guardalo anche tu.",
+        "Dillo per lui: “Hai trovato la palla.”",
+        "Aspetta, e aiutalo solo quando ti cerca con le braccia."
+      ]
+    },
+    "let-them-lead-1-3": {
+      "source": "1a2bf5aa9074",
+      "title": "Decide lui",
+      "blurb": "Siediti vicino, con il telefono lontano, e lascia che sia il tuo bambino a scegliere cosa fare.",
+      "steps": [
+        "Nota cosa prende in mano il tuo bambino, e guardalo anche tu.",
+        "Di’ quello che vedi: “Hai messo quello rosso in cima.”",
+        "Aspetta, e aiutalo solo quando te lo chiede."
+      ]
+    },
+    "let-them-lead-3-5": {
+      "source": "8acc6cbdb686",
+      "title": "Decide lui",
+      "blurb": "Siediti vicino, con il telefono lontano, e lascia che sia il tuo bambino a scegliere cosa fare.",
+      "steps": [
+        "Nota il gioco che inizia, e chiedigli che parte fai tu.",
+        "Di’ quello che vedi: “Oggi il tuo orsetto fa il dottore.”",
+        "Aspetta, e lascia che cambi le regole quando vuole."
+      ]
+    }
   }
 }

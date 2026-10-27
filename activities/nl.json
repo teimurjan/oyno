@@ -5135,5 +5135,127 @@
         "Leg na elke sprong de sok terug om te kijken of het klopt, en dan is het jouw beurt om op de spooksokken te springen."
       ]
     }
+  },
+  "moments": {
+    "read-together-0-1": {
+      "source": "4aaaed8ec219",
+      "title": "Samen lezen",
+      "blurb": "Elk boek uit de kast, op jouw manier gelezen, terwijl wij de tijd bijhouden.",
+      "steps": [
+        "Wijs één plaatje aan, zeg wat het is en wacht tot je baby kijkt.",
+        "Laat je kleintje op de bladzijden slaan, erop kauwen of ze omslaan, en volg waar het heen wil.",
+        "Lees hetzelfde boek nog een keer als je kleintje ernaar grijpt, want herhalen telt ook."
+      ]
+    },
+    "read-together-1-3": {
+      "source": "3b9dc6408d1f",
+      "title": "Samen lezen",
+      "blurb": "Elk boek uit de kast, op jouw manier gelezen, terwijl wij de tijd bijhouden.",
+      "steps": [
+        "Stop vlak voor het omslaan en vraag “wat komt er nu?”",
+        "Laat je kind aanwijzen en houd je eigen vinger stil.",
+        "Lees het nog eens als je kind erom vraagt, want ook de honderdste keer telt."
+      ]
+    },
+    "read-together-3-5": {
+      "source": "a13058626b1f",
+      "title": "Samen lezen",
+      "blurb": "Elk boek uit de kast, op jouw manier gelezen, terwijl wij de tijd bijhouden.",
+      "steps": [
+        "Stop vlak voor het omslaan en vraag wat er volgens je kind gaat gebeuren.",
+        "Vraag je kind om één bladzijde in eigen woorden na te vertellen.",
+        "Laat je kind het volgende boek kiezen en vasthouden terwijl jij voorleest."
+      ]
+    },
+    "bath-time-0-1": {
+      "source": "80662f167b5c",
+      "title": "Badtijd",
+      "blurb": "In bad gaat je kleintje toch al, dus blijf ernaast en maak er iets moois van.",
+      "steps": [
+        "Zeg “klaar voor de start…” en wacht even voor elk langzaam scheutje warm water.",
+        "Zing elke keer hetzelfde korte badliedje en stop vlak voor het laatste woord.",
+        "Noem elk lichaamsdeel terwijl je het wast, en wacht dan tot je baby kijkt."
+      ]
+    },
+    "bath-time-1-3": {
+      "source": "f261dde35a68",
+      "title": "Badtijd",
+      "blurb": "In bad gaat je kleintje toch al, dus blijf ernaast en maak er iets moois van.",
+      "steps": [
+        "Giet om de beurt: één bekertje voor jou, dan één voor je kind.",
+        "Spetter samen, zeg dan “stil water” en kijk hoe het glad wordt.",
+        "Zeg wat je kind doet: “Jij hebt het bekertje tot de rand gevuld.”"
+      ]
+    },
+    "bath-time-3-5": {
+      "source": "642218eeab19",
+      "title": "Badtijd",
+      "blurb": "In bad gaat je kleintje toch al, dus blijf ernaast en maak er iets moois van.",
+      "steps": [
+        "Tel hardop drie spetters en stop met je handen hoog in de lucht.",
+        "Zeg “stil water” en kijk wie het water het langst glad kan houden.",
+        "Laat je kind “stop” en “ga” roepen, en houd je aan die regel."
+      ]
+    },
+    "cook-together-0-1": {
+      "source": "381f16dc4eca",
+      "title": "Samen koken",
+      "blurb": "Zet je baby ergens neer waar het kan zien hoe jij het eten maakt.",
+      "steps": [
+        "Zet je kleintje waar het jou kan zien, en noem alles wat je oppakt.",
+        "Geef een veilige lepel of kom en laat je kleintje je roeren nadoen.",
+        "Wacht even nadat je iets zegt, en antwoord op elk geluidje dat terugkomt."
+      ]
+    },
+    "cook-together-1-3": {
+      "source": "0c1661918ae4",
+      "title": "Samen koken",
+      "blurb": "Geef je kind één klein klusje met een duidelijk einde terwijl jij het eten maakt.",
+      "steps": [
+        "Roer om de beurt, elk tien keer, en tel hardop.",
+        "Zeg de stap en wacht tot je kind hem doet.",
+        "Laat het gerust een knoeiboel worden, want de tafel veeg je straks wel af."
+      ]
+    },
+    "cook-together-3-5": {
+      "source": "7fc4203df601",
+      "title": "Samen koken",
+      "blurb": "Geef je kind één klein klusje met een duidelijk einde terwijl jij het eten maakt.",
+      "steps": [
+        "Kies één klusje met een duidelijk einde, zoals drie wortels wassen of de sla scheuren.",
+        "Vraag je kind om voor elke stap op jouw knikje te wachten.",
+        "Laat je kind de volgende stap zeggen voordat jij hem doet."
+      ]
+    },
+    "let-them-lead-0-1": {
+      "source": "ec77a039e897",
+      "title": "Je kind kiest",
+      "blurb": "Ga dichtbij zitten, telefoon weg, en laat je kind kiezen wat jullie doen.",
+      "steps": [
+        "Kijk waar je baby naar kijkt, en kijk er ook naar.",
+        "Zeg wat het is: “Jij hebt de bal gevonden.”",
+        "Wacht, en help alleen als je kleintje naar je reikt."
+      ]
+    },
+    "let-them-lead-1-3": {
+      "source": "1a2bf5aa9074",
+      "title": "Je kind kiest",
+      "blurb": "Ga dichtbij zitten, telefoon weg, en laat je kind kiezen wat jullie doen.",
+      "steps": [
+        "Kijk wat je kind oppakt, en kijk er ook naar.",
+        "Zeg wat je ziet: “Jij hebt de rode bovenop gelegd.”",
+        "Wacht, en help alleen als je kind erom vraagt."
+      ]
+    },
+    "let-them-lead-3-5": {
+      "source": "8acc6cbdb686",
+      "title": "Je kind kiest",
+      "blurb": "Ga dichtbij zitten, telefoon weg, en laat je kind kiezen wat jullie doen.",
+      "steps": [
+        "Kijk welk spel je kind begint, en vraag welke rol jij speelt.",
+        "Zeg wat je ziet: “Jouw beer is vandaag de dokter.”",
+        "Wacht, en laat je kind de regels veranderen wanneer het maar wil."
+      ]
+    }
   }
 }

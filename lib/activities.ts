@@ -15,6 +15,10 @@
  * and the ages it studied them at; a guide lists the mechanics it recommends for each age. The
  * schema refuses a citation that does not speak to the game's mechanic at the game's age, and
  * a game without both a study and a guide behind it. The bibliography is the `sources` block.
+ *
+ * The everyday moments (reading, bath, cooking, their lead) are open timers rather than games:
+ * one per kind and age band, with three nudges where a game has steps. They follow the same
+ * evidence rule, so a band no source speaks to has no moment, and the phone offers none.
  */
 import { createHash } from "node:crypto";
 import { z } from "zod";
@@ -54,6 +58,10 @@ export const MECHANICS = [
   "rule-game", "planning", "quiet-voice",
 ] as const;
 export type Mechanic = (typeof MECHANICS)[number];
+
+/** The everyday moments Play offers beside the games, each an open timer with nudges. */
+export const MOMENT_KINDS = ["reading", "bath", "cooking", "lead"] as const;
+export type MomentKind = (typeof MOMENT_KINDS)[number];
 
 const line = z.string().trim().min(1);
 const identifier = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "kebab-case id");
@@ -120,6 +128,51 @@ export function speaksTo(reference: Reference, mechanic: Mechanic, age: Age): bo
     : (reference.recommends[age] ?? []).includes(mechanic);
 }
 
+/** What a game or a moment practices, and the sources that say so. */
+const evidenced = {
+  mechanic: z.enum(MECHANICS),
+  /** Where it starts above its band, in months: no cited study may have started older. */
+  fromMonths: z.number().int().positive().optional(),
+  skills: z.array(z.enum(SKILLS)).min(1).max(3),
+  /** Source ids: a study that looked at this mechanic at this age, and a guide that recommends it. */
+  evidence: z.array(identifier).min(2).max(3),
+};
+
+interface Evidenced {
+  age: Age;
+  mechanic: Mechanic;
+  fromMonths?: number;
+  evidence: string[];
+}
+
+/** Every citation speaks to the mechanic at the age, a study and a guide both, none started older. */
+function checkEvidence(
+  entry: Evidenced,
+  sources: Record<string, Reference>,
+  issue: (path: (string | number)[], message: string) => void,
+) {
+  const references = entry.evidence.flatMap((id, slot) => {
+    const reference = sources[id];
+    if (!reference) issue(["evidence", slot], `unknown source "${id}"`);
+    else if (!speaksTo(reference, entry.mechanic, entry.age)) {
+      const verb = reference.kind === "study" ? "did not study" : "does not recommend";
+      issue(["evidence", slot], `"${id}" ${verb} ${entry.mechanic} at ${entry.age}`);
+    }
+    return reference ? [reference] : [];
+  });
+  for (const kind of ["study", "guide"] as const) {
+    if (!references.some((reference) => reference.kind === kind && speaksTo(reference, entry.mechanic, entry.age))) {
+      issue(["evidence"], `no ${kind} for ${entry.mechanic} at ${entry.age}`);
+    }
+  }
+  const youngest = entry.fromMonths ?? BAND_START[entry.age];
+  for (const reference of references) {
+    if (reference.kind === "study" && reference.fromMonths > youngest) {
+      issue(["evidence"], `"${reference.short}" started at ${reference.fromMonths} months, this one at ${youngest}`);
+    }
+  }
+}
+
 export const Source = z
   .object({
     /** The chips under a title, one small vocabulary shared by every game. */
@@ -134,47 +187,48 @@ export const Source = z
         energy: z.enum(ENERGIES),
         /** Micro-play: five to fifteen minutes. */
         minutes: z.number().int().min(5).max(15),
-        mechanic: z.enum(MECHANICS),
-        /** Where a game starts above its band, in months: no cited study may have started older. */
-        fromMonths: z.number().int().positive().optional(),
+        ...evidenced,
         /** Three fit beside the minutes chip on the play screen. */
         tags: z.array(identifier).max(3),
-        skills: z.array(z.enum(SKILLS)).min(1).max(3),
-        /** Source ids: a study that looked at this mechanic at this age, and a guide that recommends it. */
-        evidence: z.array(identifier).min(2).max(3),
+      }),
+    ),
+    /** One per kind and band; its `steps` are the nudges, one at a time on the timer. */
+    moments: z.array(
+      Words.extend({
+        id: identifier,
+        kind: z.enum(MOMENT_KINDS),
+        age: z.enum(AGES),
+        ...evidenced,
+        steps: z.array(sentence).length(3),
+        /** The tag of the games "Or play …" offers instead, where the deck has some. */
+        game: identifier.optional(),
       }),
     ),
   })
   .superRefine((source, context) => {
     const seen = new Set<string>();
     const issue = (path: (string | number)[], message: string) => context.addIssue({ code: "custom", path, message });
+    const unique = (at: (string | number)[], id: string) => {
+      if (seen.has(id)) issue([...at, "id"], `duplicate id "${id}"`);
+      seen.add(id);
+    };
     source.activities.forEach((activity, index) => {
       const at = ["activities", index];
-      if (seen.has(activity.id)) issue([...at, "id"], `duplicate id "${activity.id}"`);
-      seen.add(activity.id);
+      unique(at, activity.id);
       activity.tags.forEach((tag, slot) => {
         if (!(tag in source.tags)) issue([...at, "tags", slot], `unknown tag "${tag}"`);
       });
-      const references = activity.evidence.flatMap((id, slot) => {
-        const reference = source.sources[id];
-        if (!reference) issue([...at, "evidence", slot], `unknown source "${id}"`);
-        else if (!speaksTo(reference, activity.mechanic, activity.age)) {
-          const verb = reference.kind === "study" ? "did not study" : "does not recommend";
-          issue([...at, "evidence", slot], `"${id}" ${verb} ${activity.mechanic} at ${activity.age}`);
-        }
-        return reference ? [reference] : [];
-      });
-      for (const kind of ["study", "guide"] as const) {
-        if (!references.some((reference) => reference.kind === kind && speaksTo(reference, activity.mechanic, activity.age))) {
-          issue([...at, "evidence"], `no ${kind} for ${activity.mechanic} at ${activity.age}`);
-        }
-      }
-      const youngest = activity.fromMonths ?? BAND_START[activity.age];
-      for (const reference of references) {
-        if (reference.kind === "study" && reference.fromMonths > youngest) {
-          issue([...at, "evidence"], `"${reference.short}" started at ${reference.fromMonths} months, this game at ${youngest}`);
-        }
-      }
+      checkEvidence(activity, source.sources, (path, message) => issue([...at, ...path], message));
+    });
+    const bands = new Set<string>();
+    source.moments.forEach((moment, index) => {
+      const at = ["moments", index];
+      unique(at, moment.id);
+      const band = `${moment.kind} ${moment.age}`;
+      if (bands.has(band)) issue(at, `a second ${band} moment`);
+      bands.add(band);
+      if (moment.game && !(moment.game in source.tags)) issue([...at, "game"], `unknown tag "${moment.game}"`);
+      checkEvidence(moment, source.sources, (path, message) => issue([...at, ...path], message));
     });
   });
 export type Source = z.infer<typeof Source>;
@@ -185,14 +239,16 @@ export const Translations = z.object({
   tags: Labels,
   skills: Labels,
   activities: z.record(identifier, Words.extend(translated)),
+  moments: z.record(identifier, Words.extend(translated)).default({}),
 });
 export type Translations = z.infer<typeof Translations>;
 
-export const EMPTY_TRANSLATIONS: Translations = { tags: {}, skills: {}, activities: {} };
+export const EMPTY_TRANSLATIONS: Translations = { tags: {}, skills: {}, activities: {}, moments: {} };
 
 /** What the phone decodes: the games and the bibliography once, and the words once per language. */
 export interface Catalogue {
   activities: { id: string; age: Age; energy: Energy; minutes: number; tags: string[]; skills: Skill[]; evidence: string[] }[];
+  moments: { id: string; kind: MomentKind; age: Age; game?: string; skills: Skill[]; evidence: string[] }[];
   sources: Record<string, Reference>;
   decks: Record<string, Deck>;
 }
@@ -201,12 +257,13 @@ export interface Deck {
   tags: Record<string, string>;
   skills: Record<string, string>;
   activities: Record<string, Words>;
+  moments: Record<string, Words>;
 }
 
 /** A unit a deck is missing, or holds for English that has since changed. */
 export interface Gap {
   locale: string;
-  kind: "tag" | "skill" | "activity";
+  kind: "tag" | "skill" | "activity" | "moment";
   id: string;
   reason: "missing" | "stale";
 }
@@ -237,6 +294,26 @@ function labels(
   );
 }
 
+/** Each game's or moment's words in `locale`: the translation where it was made from the current English, else the English. */
+function worded(
+  kind: "activity" | "moment",
+  english: readonly (Words & { id: string })[],
+  own: Translations["activities"],
+  locale: string,
+  gaps: Gap[],
+): Record<string, Words> {
+  return Object.fromEntries(
+    english.map((entry) => {
+      const unit = own[entry.id];
+      const stale = unit && (unit.source !== wordsFingerprint(entry) || unit.steps.length !== entry.steps.length);
+      const reason = !unit ? "missing" : stale ? "stale" : null;
+      if (reason) gaps.push({ locale, kind, id: entry.id, reason });
+      const words = reason || !unit ? entry : unit;
+      return [entry.id, { title: words.title, blurb: words.blurb, steps: words.steps }];
+    }),
+  );
+}
+
 /**
  * The bundle for `locales`, English filling every gap, and the gaps. The source language
  * takes its deck straight from the source.
@@ -250,6 +327,7 @@ export function compose(
     tags: source.tags,
     skills: source.skills,
     activities: Object.fromEntries(source.activities.map(({ id, title, blurb, steps }) => [id, { title, blurb, steps }])),
+    moments: Object.fromEntries(source.moments.map(({ id, title, blurb, steps }) => [id, { title, blurb, steps }])),
   };
   const gaps: Gap[] = [];
   const decks: Record<string, Deck> = {};
@@ -260,23 +338,12 @@ export function compose(
       continue;
     }
     const own = translations[locale] ?? EMPTY_TRANSLATIONS;
-    const deck: Deck = {
+    decks[locale] = {
       tags: labels("tag", source.tags, own.tags, locale, gaps),
       skills: labels("skill", source.skills, own.skills, locale, gaps),
-      activities: {},
+      activities: worded("activity", source.activities, own.activities, locale, gaps),
+      moments: worded("moment", source.moments, own.moments, locale, gaps),
     };
-
-    for (const activity of source.activities) {
-      const unit = own.activities[activity.id];
-      const stale = unit && (unit.source !== wordsFingerprint(activity) || unit.steps.length !== activity.steps.length);
-      const reason = !unit ? "missing" : stale ? "stale" : null;
-      if (reason) gaps.push({ locale, kind: "activity", id: activity.id, reason });
-      deck.activities[activity.id] = reason || !unit
-        ? { title: activity.title, blurb: activity.blurb, steps: activity.steps }
-        : { title: unit.title, blurb: unit.blurb, steps: unit.steps };
-    }
-
-    decks[locale] = deck;
   }
 
   return {
@@ -284,6 +351,7 @@ export function compose(
       activities: source.activities.map(({ id, age, energy, minutes, tags, skills, evidence }) => ({
         id, age, energy, minutes, tags, skills, evidence,
       })),
+      moments: source.moments.map(({ id, kind, age, game, skills, evidence }) => ({ id, kind, age, game, skills, evidence })),
       sources: source.sources,
       decks,
     },

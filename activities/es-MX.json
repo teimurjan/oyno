@@ -5135,5 +5135,127 @@
         "Regresa cada calcetín a su lugar después de su brinco para revisar, y luego te toca a ti brincar los fantasmas."
       ]
     }
+  },
+  "moments": {
+    "read-together-0-1": {
+      "source": "4aaaed8ec219",
+      "title": "Leer juntos",
+      "blurb": "Cualquier libro del librero, leído a tu manera, mientras nosotros llevamos el tiempo.",
+      "steps": [
+        "Señala un dibujo, di qué es y espera a que tu bebé lo mire.",
+        "Deja que dé palmaditas, muerda o pase las páginas, y síguele el paso.",
+        "Vuelve a leer el mismo libro cuando estire la mano hacia él, porque repetir también cuenta."
+      ]
+    },
+    "read-together-1-3": {
+      "source": "3b9dc6408d1f",
+      "title": "Leer juntos",
+      "blurb": "Cualquier libro del librero, leído a tu manera, mientras nosotros llevamos el tiempo.",
+      "steps": [
+        "Haz una pausa antes de pasar la página y pregunta “¿qué sigue?”",
+        "Deja que tu peque sea quien señale, y tú deja el dedo quieto.",
+        "Léelo otra vez si te lo pide, porque la vez cien también cuenta."
+      ]
+    },
+    "read-together-3-5": {
+      "source": "a13058626b1f",
+      "title": "Leer juntos",
+      "blurb": "Cualquier libro del librero, leído a tu manera, mientras nosotros llevamos el tiempo.",
+      "steps": [
+        "Haz una pausa antes de pasar la página y pregúntale qué cree que va a pasar.",
+        "Pídele que te cuente una página con sus propias palabras.",
+        "Deja que escoja el siguiente libro y que lo sostenga mientras lees."
+      ]
+    },
+    "bath-time-0-1": {
+      "source": "80662f167b5c",
+      "title": "La hora del baño",
+      "blurb": "El baño va a pasar de todos modos, así que quédate junto a la tina y aprovéchalo.",
+      "steps": [
+        "Di “en sus marcas, listos…” y haz una pausa antes de echar despacio cada chorrito de agua tibia.",
+        "Canta siempre la misma cancioncita del baño y detente antes de la última palabra.",
+        "Nombra cada parte del cuerpo mientras la lavas, y espera a que tu bebé la mire."
+      ]
+    },
+    "bath-time-1-3": {
+      "source": "f261dde35a68",
+      "title": "La hora del baño",
+      "blurb": "El baño va a pasar de todos modos, así que quédate junto a la tina y aprovéchalo.",
+      "steps": [
+        "Echen agua por turnos: un vaso tú y luego uno tu peque.",
+        "Chapoteen juntos, luego di “agua quieta” y vean cómo se queda lisa.",
+        "Di lo que hace: “Llenaste el vaso hasta arriba.”"
+      ]
+    },
+    "bath-time-3-5": {
+      "source": "642218eeab19",
+      "title": "La hora del baño",
+      "blurb": "El baño va a pasar de todos modos, así que quédate junto a la tina y aprovéchalo.",
+      "steps": [
+        "Cuenten tres chapoteos en voz alta y paren con las manos bien arriba.",
+        "Di “agua quieta” y a ver quién deja el agua lisa por más tiempo.",
+        "Deja que tu peque diga “alto” y “ya”, y sigue su regla."
+      ]
+    },
+    "cook-together-0-1": {
+      "source": "381f16dc4eca",
+      "title": "Cocinar juntos",
+      "blurb": "Sienta a tu bebé donde pueda verte preparar la cena.",
+      "steps": [
+        "Siéntalo donde te vea, y nombra cada cosa que agarras.",
+        "Dale una cuchara o un tazón seguros y deja que imite cómo revuelves.",
+        "Haz una pausa después de hablar, y contesta cualquier sonido que te haga."
+      ]
+    },
+    "cook-together-1-3": {
+      "source": "0c1661918ae4",
+      "title": "Cocinar juntos",
+      "blurb": "Dale a tu peque una tarea chiquita con un final claro mientras haces la cena.",
+      "steps": [
+        "Revuelvan por turnos, diez veces cada quien, contando en voz alta.",
+        "Di el paso y luego espera a que lo haga.",
+        "Deja que se haga un tiradero, que la mesa se limpia después."
+      ]
+    },
+    "cook-together-3-5": {
+      "source": "7fc4203df601",
+      "title": "Cocinar juntos",
+      "blurb": "Dale a tu peque una tarea chiquita con un final claro mientras haces la cena.",
+      "steps": [
+        "Escoge una tarea con un final claro, como lavar tres zanahorias o deshojar la lechuga.",
+        "Pídele que espere a que le hagas una seña con la cabeza antes de cada paso.",
+        "Deja que te diga el siguiente paso antes de que lo hagas."
+      ]
+    },
+    "let-them-lead-0-1": {
+      "source": "ec77a039e897",
+      "title": "Tu peque manda",
+      "blurb": "Siéntate cerca, con el celular lejos, y deja que tu peque escoja qué hacer.",
+      "steps": [
+        "Fíjate en lo que mira tu bebé y míralo tú también.",
+        "Dile qué es: “Encontraste la pelota.”",
+        "Espera, y ayuda solo cuando estire los brazos hacia ti."
+      ]
+    },
+    "let-them-lead-1-3": {
+      "source": "1a2bf5aa9074",
+      "title": "Tu peque manda",
+      "blurb": "Siéntate cerca, con el celular lejos, y deja que tu peque escoja qué hacer.",
+      "steps": [
+        "Fíjate en lo que agarra tu peque y míralo tú también.",
+        "Di lo que ves: “Pusiste el rojo hasta arriba.”",
+        "Espera, y ayuda solo cuando te lo pida."
+      ]
+    },
+    "let-them-lead-3-5": {
+      "source": "8acc6cbdb686",
+      "title": "Tu peque manda",
+      "blurb": "Siéntate cerca, con el celular lejos, y deja que tu peque escoja qué hacer.",
+      "steps": [
+        "Fíjate en el juego que empieza y pregúntale qué papel te toca.",
+        "Di lo que ves: “Hoy tu osito es el doctor.”",
+        "Espera, y deja que cambie las reglas cuando quiera."
+      ]
+    }
   }
 }

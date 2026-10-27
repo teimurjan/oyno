@@ -12,5 +12,5 @@ import { RESOURCE_FILE, absolute, loadSource, loadTranslations, render } from ".
 
 const { catalogue, gaps } = compose(loadSource(), loadTranslations(), LOCALES);
 writeFileSync(absolute(RESOURCE_FILE), render(catalogue));
-console.log(`Wrote ${RESOURCE_FILE}: ${catalogue.activities.length} games, ${Object.keys(catalogue.decks).length} decks`);
+console.log(`Wrote ${RESOURCE_FILE}: ${catalogue.activities.length} games, ${catalogue.moments.length} moments, ${Object.keys(catalogue.decks).length} decks`);
 for (const gap of gaps) console.warn(`  ${gap.locale}: ${gap.kind} ${gap.id} is ${gap.reason}, shipped in English`);

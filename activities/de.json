@@ -5135,5 +5135,127 @@
         "Leg nach jedem Sprung die Socke zur Kontrolle zurück, dann bist du mit den Geistern dran."
       ]
     }
+  },
+  "moments": {
+    "read-together-0-1": {
+      "source": "4aaaed8ec219",
+      "title": "Zusammen lesen",
+      "blurb": "Irgendein Buch aus dem Regal, so wie du magst, und wir behalten die Zeit im Blick.",
+      "steps": [
+        "Zeig auf ein Bild, sag, was es ist, und warte, bis dein Baby hinschaut.",
+        "Lass es auf die Seiten patschen, daran knabbern oder umblättern, und folge ihm, wohin es will.",
+        "Lies dasselbe Buch noch mal, wenn es danach greift, denn Wiederholungen zählen auch."
+      ]
+    },
+    "read-together-1-3": {
+      "source": "3b9dc6408d1f",
+      "title": "Zusammen lesen",
+      "blurb": "Irgendein Buch aus dem Regal, so wie du magst, und wir behalten die Zeit im Blick.",
+      "steps": [
+        "Halt vor dem Umblättern inne und frag „Was kommt jetzt?“",
+        "Lass dein Kind zeigen, und halt deinen eigenen Finger still.",
+        "Lies es noch mal vor, wenn es danach fragt, denn auch das hundertste Mal zählt."
+      ]
+    },
+    "read-together-3-5": {
+      "source": "a13058626b1f",
+      "title": "Zusammen lesen",
+      "blurb": "Irgendein Buch aus dem Regal, so wie du magst, und wir behalten die Zeit im Blick.",
+      "steps": [
+        "Halt vor dem Umblättern inne und frag, was wohl als Nächstes passiert.",
+        "Bitte dein Kind, dir eine Seite mit eigenen Worten nachzuerzählen.",
+        "Lass es das nächste Buch aussuchen und halten, während du vorliest."
+      ]
+    },
+    "bath-time-0-1": {
+      "source": "80662f167b5c",
+      "title": "Badezeit",
+      "blurb": "Gebadet wird sowieso, also bleib am Wannenrand und mach was draus.",
+      "steps": [
+        "Sag „Achtung, fertig …“ und halt kurz inne, bevor du jedes Mal langsam warmes Wasser gießt.",
+        "Sing jedes Mal dasselbe kurze Badelied und hör vor dem letzten Wort auf.",
+        "Benenne jeden Körperteil beim Waschen und warte dann, bis dein Baby hinschaut."
+      ]
+    },
+    "bath-time-1-3": {
+      "source": "f261dde35a68",
+      "title": "Badezeit",
+      "blurb": "Gebadet wird sowieso, also bleib am Wannenrand und mach was draus.",
+      "steps": [
+        "Gießt abwechselnd: ein Becher für dich, dann einer für dein Kind.",
+        "Planscht zusammen, dann sagst du „Stilles Wasser!“ und ihr schaut, wie es glatt wird.",
+        "Sag, was dein Kind tut: „Du hast den Becher bis oben voll gemacht.“"
+      ]
+    },
+    "bath-time-3-5": {
+      "source": "642218eeab19",
+      "title": "Badezeit",
+      "blurb": "Gebadet wird sowieso, also bleib am Wannenrand und mach was draus.",
+      "steps": [
+        "Zählt laut drei Platscher und hört dann auf, die Hände hoch in der Luft.",
+        "Sag „Stilles Wasser!“, und dann seht ihr, wer das Wasser am längsten glatt hält.",
+        "Lass dein Kind „Stopp“ und „Los“ rufen, und halt dich an seine Regel."
+      ]
+    },
+    "cook-together-0-1": {
+      "source": "381f16dc4eca",
+      "title": "Zusammen kochen",
+      "blurb": "Setz dein Baby so hin, dass es dir beim Kochen zuschauen kann.",
+      "steps": [
+        "Setz dein Baby in deine Sichtweite und benenne alles, was du in die Hand nimmst.",
+        "Gib ihm einen sicheren Löffel oder eine Schüssel und lass es dein Rühren nachmachen.",
+        "Mach nach dem Reden eine Pause und antworte auf jeden Laut, den es zurückgibt."
+      ]
+    },
+    "cook-together-1-3": {
+      "source": "0c1661918ae4",
+      "title": "Zusammen kochen",
+      "blurb": "Gib deinem Kind eine kleine Aufgabe mit klarem Ende, während du kochst.",
+      "steps": [
+        "Rührt abwechselnd, jeder zehnmal, und zählt laut mit.",
+        "Sag den nächsten Schritt und warte, bis dein Kind ihn macht.",
+        "Lass es ruhig kleckern, denn den Tisch kannst du hinterher abwischen."
+      ]
+    },
+    "cook-together-3-5": {
+      "source": "7fc4203df601",
+      "title": "Zusammen kochen",
+      "blurb": "Gib deinem Kind eine kleine Aufgabe mit klarem Ende, während du kochst.",
+      "steps": [
+        "Such eine Aufgabe mit klarem Ende aus, etwa drei Möhren waschen oder den Salat zupfen.",
+        "Bitte dein Kind, vor jedem Schritt auf dein Nicken zu warten.",
+        "Lass es dir den nächsten Schritt sagen, bevor du ihn machst."
+      ]
+    },
+    "let-them-lead-0-1": {
+      "source": "ec77a039e897",
+      "title": "Folg deinem Kind",
+      "blurb": "Setz dich nah dazu, das Handy weg, und lass dein Kind aussuchen, was ihr macht.",
+      "steps": [
+        "Schau, wohin dein Baby schaut, und schau auch dorthin.",
+        "Sag ihm, was es ist: „Du hast den Ball gefunden.“",
+        "Warte, und hilf nur, wenn es nach dir greift."
+      ]
+    },
+    "let-them-lead-1-3": {
+      "source": "1a2bf5aa9074",
+      "title": "Folg deinem Kind",
+      "blurb": "Setz dich nah dazu, das Handy weg, und lass dein Kind aussuchen, was ihr macht.",
+      "steps": [
+        "Schau, was dein Kind in die Hand nimmt, und schau es dir auch an.",
+        "Sag, was du siehst: „Du hast den roten Klotz obendrauf gelegt.“",
+        "Warte, und hilf nur, wenn es dich fragt."
+      ]
+    },
+    "let-them-lead-3-5": {
+      "source": "8acc6cbdb686",
+      "title": "Folg deinem Kind",
+      "blurb": "Setz dich nah dazu, das Handy weg, und lass dein Kind aussuchen, was ihr macht.",
+      "steps": [
+        "Schau, welches Spiel dein Kind anfängt, und frag, wen du spielen sollst.",
+        "Sag, was du siehst: „Dein Bär ist heute der Doktor.“",
+        "Warte, und lass es die Regeln ändern, wann immer es will."
+      ]
+    }
   }
 }
