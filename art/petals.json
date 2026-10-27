@@ -1,0 +1,18 @@
+{
+  "blush-petal": {
+    "name": "Blush petal",
+    "piece": "One rounded flower petal in dusty blush felt, a soft teardrop that is wide at the top and narrows to a point, gently cupped so its edge curls up."
+  },
+  "cream-petal": {
+    "name": "Cream petal",
+    "piece": "One long flower petal in warm cream felt, slightly twisted along its length, with its tip curled over like a small wave."
+  },
+  "pollen-puff": {
+    "name": "Pollen puff",
+    "piece": "One small round puff of soft ochre wool, fluffy and slightly uneven, like a ball of pollen, glowing faintly warm from inside."
+  },
+  "sage-bud": {
+    "name": "Sage bud",
+    "piece": "One closed flower bud in muted sage felt, a plump drop shape with two tiny wrapped sepals at its base and no stem."
+  }
+}

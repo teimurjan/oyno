@@ -1,0 +1,122 @@
+{
+  "kite": {
+    "name": "Kite",
+    "kind": "game",
+    "object": "A diamond-shaped kite made of four felt patches in sage, ochre, cream and terracotta, with a short yarn tail tied with three little bows curling below it."
+  },
+  "felt-star": {
+    "name": "Felt star",
+    "kind": "game",
+    "object": "A plump five-pointed star in soft ochre felt, with chunky cream blanket stitches around its edge."
+  },
+  "knitted-ball": {
+    "name": "Knitted ball",
+    "kind": "game",
+    "object": "A round knitted ball with wide stripes of sage, cream and terracotta wool."
+  },
+  "spinning-top": {
+    "name": "Spinning top",
+    "kind": "game",
+    "object": "A wooden spinning top in warm honey wood with two painted rings, one sage and one coral, tilted as if it is still spinning."
+  },
+  "tiny-book": {
+    "name": "Tiny book",
+    "kind": "reading",
+    "object": "A tiny cloth-bound picture book standing half open, with a dusty lavender cover and thick cream pages fanned apart."
+  },
+  "moon-lamp": {
+    "name": "Moon lamp",
+    "kind": "reading",
+    "object": "A small crescent moon night-light in cream clay on a round wooden base, glowing a soft warm gold from inside."
+  },
+  "plush-owl": {
+    "name": "Plush owl",
+    "kind": "reading",
+    "object": "A small plush owl toy in dusty lavender felt with a cream belly, two big round button eyes and a tiny ochre beak."
+  },
+  "paper-crown": {
+    "name": "Paper crown",
+    "kind": "reading",
+    "object": "A paper crown in ochre card with three rounded points, each tipped with a small painted coral dot."
+  },
+  "paper-boat": {
+    "name": "Paper boat",
+    "kind": "bath",
+    "object": "A small folded paper boat in cream paper with one soft blue painted stripe along its hull, sitting upright."
+  },
+  "bath-duck": {
+    "name": "Bath duck",
+    "kind": "bath",
+    "object": "A small yellow felt bath duck toy with an ochre beak and one stitched dot eye, sitting upright."
+  },
+  "spiral-shell": {
+    "name": "Spiral shell",
+    "kind": "bath",
+    "object": "A spiral seashell in pale peach clay with wide, soft ridges and a pearly cream opening."
+  },
+  "star-sponge": {
+    "name": "Star sponge",
+    "kind": "bath",
+    "object": "A soft star-shaped bath sponge in muted coral, with rounded points and large visible pores."
+  },
+  "wooden-spoon": {
+    "name": "Wooden spoon",
+    "kind": "cooking",
+    "object": "A wooden spoon in warm honey wood with a deep round bowl, lying at a gentle diagonal."
+  },
+  "bread-roll": {
+    "name": "Bread roll",
+    "kind": "cooking",
+    "object": "A small round bread roll with a golden crust and a single deep score across its top."
+  },
+  "clay-pear": {
+    "name": "Pear",
+    "kind": "cooking",
+    "object": "A ripe pear in muted green clay with a short brown stem and one small sage felt leaf."
+  },
+  "cupcake": {
+    "name": "Cupcake",
+    "kind": "cooking",
+    "object": "A small cupcake in a terracotta paper case, with a cream frosting swirl and one coral felt cherry on top."
+  },
+  "acorn": {
+    "name": "Acorn",
+    "kind": "lead",
+    "object": "A plump acorn in warm brown clay with a textured, darker cap and a tiny curled stem."
+  },
+  "oak-leaf": {
+    "name": "Oak leaf",
+    "kind": "lead",
+    "object": "A single oak leaf in muted ochre felt with chunky stitched veins and a short stem."
+  },
+  "feather": {
+    "name": "Feather",
+    "kind": "lead",
+    "object": "One soft cream feather with a dusty blue tip, curving gently, its edge slightly fluffed."
+  },
+  "smiling-pebble": {
+    "name": "Smiling pebble",
+    "kind": "lead",
+    "object": "A smooth flat pebble in blue-gray clay with a small, simple painted cream smile and two dot eyes."
+  },
+  "golden-key": {
+    "name": "Golden key",
+    "kind": "rare",
+    "object": "A small old-fashioned key in soft brushed gold, with a round looped handle and two simple teeth."
+  },
+  "paper-lantern": {
+    "name": "Paper lantern",
+    "kind": "rare",
+    "object": "A round paper lantern in warm cream paper with thin ribs, glowing gold from inside, with a short loop on top."
+  },
+  "hot-air-balloon": {
+    "name": "Hot-air balloon",
+    "kind": "rare",
+    "object": "A tiny hot-air balloon made of coral and cream felt panels, with a small woven basket hanging below."
+  },
+  "star-jar": {
+    "name": "Jar of stars",
+    "kind": "rare",
+    "object": "A small glass jar with a cork stopper, holding three tiny glowing golden stars."
+  }
+}
