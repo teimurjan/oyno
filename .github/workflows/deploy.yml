@@ -40,9 +40,11 @@ jobs:
       - name: Build
         run: vercel build --target=${{ inputs.target }} --token=${{ secrets.VERCEL_TOKEN }}
 
+      # One archive rather than a file list: every locale's library pages are prebuilt, and the
+      # list of their files alone is over the API's 10 MB request limit.
       - name: Deploy
         run: |
-          url=$(vercel deploy --prebuilt --target=${{ inputs.target }} --token=${{ secrets.VERCEL_TOKEN }})
+          url=$(vercel deploy --prebuilt --archive=tgz --target=${{ inputs.target }} --token=${{ secrets.VERCEL_TOKEN }})
           echo "Deployed to $url"
           echo "### Deployed ${{ inputs.target }} :rocket:" >> "$GITHUB_STEP_SUMMARY"
           echo "[$url]($url)" >> "$GITHUB_STEP_SUMMARY"
