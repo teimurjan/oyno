@@ -3,7 +3,11 @@ import { Logo } from "@/components/Logo";
 import { copyFor } from "@/components/site/copy";
 import { BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/paths";
 import { GAMES_PATH } from "@/lib/games/hubs";
-import { funnelPath, LOCALE_NAMES, LOCALES, pathFor, type Lang, type SitePage } from "@/lib/i18n";
+import { funnelPath, localePath, LOCALE_NAMES, LOCALES, pathFor, type Lang, type SitePage } from "@/lib/i18n";
+
+/** A page the switcher can carry across: a marketing page by name, or a games, guides or blog
+ * page by its English path. */
+export type Address = SitePage | `/${string}`;
 
 /**
  * The frame every non-funnel page sits in.
@@ -20,7 +24,7 @@ export function SiteShell({
   lang: Lang;
   /** Which page this is, so the language switcher can offer the same page in the other
    * language rather than dumping the reader on the home page. */
-  page: SitePage;
+  page: Address;
   children: React.ReactNode;
 }) {
   const copy = copyFor(lang);
@@ -49,9 +53,7 @@ export function SiteShell({
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-hairline pt-6">
           <Logo />
           <nav className="flex flex-wrap items-center gap-5 text-[13px] text-muted">
-            {copy.nav.games && <Link href={GAMES_PATH} className="hover:text-ink">{copy.nav.games}</Link>}
-            {copy.nav.guides && <Link href={GUIDES_PATH} className="hover:text-ink">{copy.nav.guides}</Link>}
-            {copy.nav.blog && <Link href={BLOG_PATH} className="hover:text-ink">{copy.nav.blog}</Link>}
+            <LibraryLinks lang={lang} />
             <Link href={pathFor(lang, "pricing")} className="hover:text-ink">{copy.nav.pricing}</Link>
             <Link href={pathFor(lang, "support")} className="hover:text-ink">{copy.nav.support}</Link>
             <Link href={pathFor(lang, "privacy")} className="hover:text-ink">{copy.nav.privacy}</Link>
@@ -61,6 +63,18 @@ export function SiteShell({
         </div>
       </footer>
     </div>
+  );
+}
+
+/** The footer's links to the games, guides and blog, which every language has. */
+export function LibraryLinks({ lang }: { lang: Lang }) {
+  const { nav } = copyFor(lang);
+  return (
+    <>
+      <Link href={localePath(lang, GAMES_PATH)} className="hover:text-ink">{nav.games}</Link>
+      <Link href={localePath(lang, GUIDES_PATH)} className="hover:text-ink">{nav.guides}</Link>
+      <Link href={localePath(lang, BLOG_PATH)} className="hover:text-ink">{nav.blog}</Link>
+    </>
   );
 }
 
@@ -79,7 +93,8 @@ export function SiteShell({
  * The summary names the current one, which is also what tells a reader who landed in the
  * wrong language where the way out is.
  */
-export function LanguageSwitch({ lang, page }: { lang: Lang; page: SitePage }) {
+export function LanguageSwitch({ lang, page }: { lang: Lang; page: Address }) {
+  const to = page.startsWith("/") ? `path=${encodeURIComponent(page)}` : `page=${page}`;
   if (LOCALES.length < 2) return null;
   const copy = copyFor(lang);
   return (
@@ -97,7 +112,7 @@ export function LanguageSwitch({ lang, page }: { lang: Lang; page: SitePage }) {
         {LOCALES.filter((other) => other !== lang).map((other) => (
           <li key={other}>
             <a
-              href={`/lang?to=${other}&page=${page}`}
+              href={`/lang?to=${other}&${to}`}
               hrefLang={other}
               lang={other}
               className="block px-3.5 py-2 text-[13px] text-muted hover:bg-ink/5 hover:text-ink"

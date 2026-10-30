@@ -5,9 +5,7 @@ import { copyFor } from "@/components/site/copy";
 import { JsonLd } from "@/components/site/JsonLd";
 import { PlanetHero } from "@/components/site/PlanetHero";
 import { ScreenSlides } from "@/components/site/ScreenSlides";
-import { LanguageSwitch } from "@/components/site/SiteShell";
-import { BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/paths";
-import { GAMES_PATH } from "@/lib/games/hubs";
+import { LanguageSwitch, LibraryLinks } from "@/components/site/SiteShell";
 import { funnelPath, pathFor, type Lang } from "@/lib/i18n";
 import { listingFrames } from "@/lib/listingFrames";
 import { formatMoney, planListQuote } from "@/lib/plans";
@@ -138,9 +136,7 @@ export function HomePage({ lang }: { lang: Lang }) {
         <div className="flex flex-wrap items-center justify-between gap-4">
           <Logo />
           <nav className="flex flex-wrap items-center gap-5 text-[13px] font-semibold text-muted">
-            {copy.nav.games && <Link href={GAMES_PATH} className="hover:text-ink">{copy.nav.games}</Link>}
-            {copy.nav.guides && <Link href={GUIDES_PATH} className="hover:text-ink">{copy.nav.guides}</Link>}
-            {copy.nav.blog && <Link href={BLOG_PATH} className="hover:text-ink">{copy.nav.blog}</Link>}
+            <LibraryLinks lang={lang} />
             <Link href={pathFor(lang, "pricing")} className="hover:text-ink">{copy.nav.pricing}</Link>
             <Link href={pathFor(lang, "support")} className="hover:text-ink">{copy.nav.support}</Link>
             <Link href={pathFor(lang, "privacy")} className="hover:text-ink">{copy.nav.privacy}</Link>

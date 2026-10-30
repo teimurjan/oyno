@@ -79,9 +79,19 @@ const SUFFIX: Record<SitePage, string> = {
 };
 
 export function pathFor(lang: Lang, page: SitePage): string {
-  const suffix = SUFFIX[page];
-  if (lang === DEFAULT_LANG) return suffix || "/";
-  return `/${lang}${suffix}`;
+  return localePath(lang, SUFFIX[page] || "/");
+}
+
+/** Any page's path in a language: as it is for English, under the prefix for the rest. */
+export function localePath(lang: Lang, path: string): string {
+  if (lang === DEFAULT_LANG) return path;
+  return path === "/" ? `/${lang}` : `/${lang}${path}`;
+}
+
+/** A games, guides or blog page without its locale prefix. The switcher may carry one, because
+ * the pattern can only ever name a path on this site, never another origin. */
+export function isLibraryPath(value: unknown): value is string {
+  return typeof value === "string" && /^\/(games|guides|blog)(\/[a-z0-9-]+){0,2}$/.test(value);
 }
 
 /** Where the web funnel lives in a language: `/start` for English, whose URL every live ad
@@ -178,11 +188,16 @@ function siteUrl(): string {
  * you do all the work and Google indexes one language.
  */
 export function alternatesFor(lang: Lang, page: SitePage) {
+  return alternatesForPath(lang, SUFFIX[page] || "/");
+}
+
+/** The same, for a page addressed by its English path. */
+export function alternatesForPath(lang: Lang, path: string) {
   return {
-    canonical: `${SITE_URL}${pathFor(lang, page)}`,
+    canonical: `${SITE_URL}${localePath(lang, path)}`,
     languages: {
-      ...Object.fromEntries(LOCALES.map((l) => [l, `${SITE_URL}${pathFor(l, page)}`])),
-      "x-default": `${SITE_URL}${pathFor(DEFAULT_LANG, page)}`,
+      ...Object.fromEntries(LOCALES.map((l) => [l, `${SITE_URL}${localePath(l, path)}`])),
+      "x-default": `${SITE_URL}${path}`,
     },
   };
 }

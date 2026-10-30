@@ -5,4 +5,4 @@ export const GUIDES_PATH = "/guides";
 export const BLOG_PATH = "/blog";
 
 export const articlePath = (article: Pick<Article, "kind" | "slug">) =>
-  `${article.kind === "guide" ? GUIDES_PATH : BLOG_PATH}/${article.slug}`;
+  `${article.kind === "guide" ? GUIDES_PATH : BLOG_PATH}/${article.slug}` as const;

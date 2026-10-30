@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { appStoreUrl } from "@/lib/appStoreListing";
-import { SITE_URL, type Lang } from "@/lib/i18n";
+import { alternatesForPath, SITE_URL, type Lang } from "@/lib/i18n";
 
 /**
  * What a shared link shows. `app/opengraph-image.tsx` draws the card, named here because Next
@@ -12,11 +12,12 @@ export const OPEN_GRAPH = {
   images: [{ url: "/opengraph-image", width: 1200, height: 630, type: "image/jpeg" }],
 };
 
-/** Metadata for a page that exists in English only: a canonical and a card that match the title.
- * The card is spelled out because a page's `openGraph` replaces the layout's, not merges into it. */
-export function englishPageMetadata({ title, description, path }: { title: string; description: string; path: string }): Metadata {
-  const url = `${SITE_URL}${path}`;
-  return { title, description, alternates: { canonical: url }, openGraph: { ...OPEN_GRAPH, title, description, url } };
+/** Metadata for a games, guides or blog page, addressed by its English path: a canonical, its
+ * `hreflang` in every language, and a card that matches the title. The card is spelled out
+ * because a page's `openGraph` replaces the layout's, not merges into it. */
+export function libraryPageMetadata(lang: Lang, { title, description, path }: { title: string; description: string; path: string }): Metadata {
+  const alternates = alternatesForPath(lang, path);
+  return { title, description, alternates, openGraph: { ...OPEN_GRAPH, title, description, url: alternates.canonical } };
 }
 
 /** The trail Google shows instead of the URL. */
@@ -63,10 +64,11 @@ export function homeStructuredData(lang: Lang, description: string) {
 }
 
 /** A guide or a post, written by the maker. */
-export function articleStructuredData(article: { title: string; description: string; published: string; path: string }) {
+export function articleStructuredData(lang: Lang, article: { title: string; description: string; published: string; path: string }) {
   return {
     "@context": "https://schema.org",
     "@type": "Article",
+    inLanguage: lang,
     headline: article.title,
     description: article.description,
     datePublished: article.published,

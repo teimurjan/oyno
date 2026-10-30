@@ -1,30 +1,26 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { langOfSegment, type RouteProps } from "@/components/site/route";
 import { SiteShell } from "@/components/site/SiteShell";
-import { GAMES, HUBS } from "@/lib/games/catalog";
-import { hubPath, type HubKind } from "@/lib/games/hubs";
+import { GAMES, hubsIn } from "@/lib/games/catalog";
+import { GAMES_PATH, HUB_KINDS, hubPath } from "@/lib/games/hubs";
+import { localePath, type Lang } from "@/lib/i18n";
+import { libraryFor } from "@/lib/library";
+import { libraryPageMetadata } from "@/lib/seo";
 import { AppPitch, Heading, Section } from "./parts";
 
-export const GAMES_TITLE = "Games to play with babies, toddlers and preschoolers";
-export const GAMES_INTRO = `${GAMES.length} games for kids 0 to 5, each 5 to 15 minutes with at most three steps. Every one rests on a published study and a guide from Harvard's Center on the Developing Child or the American Academy of Pediatrics.`;
-
-const SECTIONS: { kind: HubKind; title: string }[] = [
-  { kind: "age", title: "By age" },
-  { kind: "energy", title: "By the energy you have left" },
-  { kind: "skill", title: "By the skill it builds" },
-  { kind: "type", title: "By type of game" },
-  { kind: "tag", title: "By where you are and what you have" },
-];
-
-export function GamesIndex() {
+function GamesIndex({ lang }: { lang: Lang }) {
+  const { games } = libraryFor(lang);
+  const hubs = hubsIn(lang);
   return (
-    <SiteShell lang="en" page="home">
-      <Heading title={GAMES_TITLE} intro={GAMES_INTRO} />
-      {SECTIONS.map((section) => (
-        <Section key={section.kind} title={section.title}>
+    <SiteShell lang={lang} page={GAMES_PATH}>
+      <Heading title={games.title} intro={games.intro(GAMES.length)} />
+      {HUB_KINDS.map((kind) => (
+        <Section key={kind} title={games.sections[kind]}>
           <ul className="mt-5 flex flex-wrap gap-2">
-            {HUBS.filter((hub) => hub.kind === section.kind).map((hub) => (
+            {hubs.filter((hub) => hub.kind === kind).map((hub) => (
               <li key={hub.slug}>
-                <Link href={hubPath(hub)} className="card inline-flex h-11 items-center gap-2 px-4 text-[14px] font-semibold text-ink hover:bg-white/80">
+                <Link href={localePath(lang, hubPath(hub))} className="card inline-flex h-11 items-center gap-2 px-4 text-[14px] font-semibold text-ink hover:bg-white/80">
                   {hub.title}
                   <span className="num font-normal text-faint">{GAMES.filter(hub.includes).length}</span>
                 </Link>
@@ -33,7 +29,21 @@ export function GamesIndex() {
           </ul>
         </Section>
       ))}
-      <AppPitch />
+      <AppPitch lang={lang} />
     </SiteShell>
   );
+}
+
+/** What the games index exports, at the root and under every locale. */
+export function gamesIndexRoute() {
+  type Props = RouteProps<object>;
+  const langOf = async ({ params }: Props) => langOfSegment((await params).locale);
+  return {
+    metadata: async (props: Props): Promise<Metadata> => {
+      const lang = await langOf(props);
+      const { games } = libraryFor(lang);
+      return libraryPageMetadata(lang, { title: `${games.title} | Oyno`, description: games.intro(GAMES.length), path: GAMES_PATH });
+    },
+    Page: async (props: Props) => <GamesIndex lang={await langOf(props)} />,
+  };
 }

@@ -1,10 +1,11 @@
 import { expect, test } from "bun:test";
 import source from "@/activities/en.json";
 import { Source } from "@/lib/activities";
+import { en } from "@/lib/library/en";
 import { hubPath, hubs, relatedGames } from "./hubs";
 
 const games = Source.parse(source).activities;
-const all = hubs(games);
+const all = hubs(games, en.hubs);
 
 test("every game is on exactly one age hub, so the index reaches all of them", () => {
   for (const game of games) {

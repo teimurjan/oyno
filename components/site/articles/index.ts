@@ -24,10 +24,21 @@ import { article as toddlerGamesByEnergy } from "./content/toddler-games-by-ener
 import { article as whyPeekabooMatters } from "./content/why-peekaboo-matters";
 import { article as winterEveningGames } from "./content/winter-evening-games";
 import { article as workingMemoryGames2YearOlds } from "./content/working-memory-games-2-year-olds";
+import type { Lang } from "@/lib/i18n";
+import { articles as de } from "./content/de";
+import { articles as es } from "./content/es";
+import { articles as esMX } from "./content/es-MX";
+import { articles as fr } from "./content/fr";
+import { articles as it } from "./content/it";
+import { articles as nl } from "./content/nl";
+import { articles as pl } from "./content/pl";
+import { articles as ptBR } from "./content/pt-BR";
+import { articles as ru } from "./content/ru";
 import type { Article } from "./types";
 
-/** Every article, newest first. A new one is a file in `content/` and a line here. */
-export const ARTICLES: Article[] = [
+/** Every English article. A new one is a file in `content/` and a line here, and a translation
+ * of it in each `content/<lang>/`, registered in that folder's `index.ts`. */
+const ENGLISH: Article[] = [
   activities18MonthOld,
   activities6MonthOld,
   babyActivitiesByMonth,
@@ -54,9 +65,18 @@ export const ARTICLES: Article[] = [
   whyPeekabooMatters,
   winterEveningGames,
   workingMemoryGames2YearOlds,
-].sort((a, b) => b.published.localeCompare(a.published));
+];
 
-export const articlesOf = (kind: Article["kind"]) => ARTICLES.filter((article) => article.kind === kind);
+const newestFirst = (articles: Article[]) => [...articles].sort((a, b) => b.published.localeCompare(a.published));
 
-export const articleBy = (kind: Article["kind"], slug: string) =>
-  ARTICLES.find((article) => article.kind === kind && article.slug === slug);
+const BY_LANG: Record<Lang, Article[]> = Object.fromEntries(
+  Object.entries({ en: ENGLISH, de, fr, es, "es-MX": esMX, "pt-BR": ptBR, it, nl, pl, ru }).map(([lang, articles]) => [lang, newestFirst(articles)]),
+) as Record<Lang, Article[]>;
+
+/** The English articles, newest first: every language has the same ones at the same paths. */
+export const ARTICLES = BY_LANG.en;
+
+export const articlesOf = (lang: Lang, kind: Article["kind"]) => BY_LANG[lang].filter((article) => article.kind === kind);
+
+export const articleBy = (lang: Lang, kind: Article["kind"], slug: string) =>
+  BY_LANG[lang].find((article) => article.kind === kind && article.slug === slug);

@@ -18,6 +18,9 @@ export const it: SiteCopy = {
     terms: "Termini",
     switchLabel: "Cambia lingua",
     start: "Inizia",
+    games: "Giochi",
+    guides: "Guide",
+    blog: "Blog",
   },
 
   home: {

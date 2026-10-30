@@ -94,10 +94,14 @@ never collected, so they are smaller than a keepsake and have no shadow. `art:bu
 `Resources/Petals/petal-<id>.webp`, and Done's halo floats them. All four painters share `paintMissing` in
 `scripts/lib/imageEdits.ts`.
 The same bytes go to `public/art/activities/` for the site's game pages (`/games`, `lib/games/`), which
-read `activities/en.json` at build and are English only. The guides and posts (`/guides`, `/blog`) are TSX
+read `activities/<locale>.json` at build. The guides and posts (`/guides`, `/blog`) are TSX
 in `components/site/articles/content/`, registered in its `index.ts`. They follow the games' evidence rule:
 every claim is a `<Cite>`, citing a game source or `lib/articles/references.ts`, each checked against Crossref.
-`bun test lib` fails on an unlisted citation, an unknown game or a link to a page that is not built.
+The library (games, guides, blog) is in every language, under the locale's prefix with English paths
+(`/de/games/<id>`). Its hubs, chrome and the bibliography's sentences are `lib/library/<locale>.ts`. Each article's
+translation is `content/<locale>/<slug>.tsx`, spreading the English and linking through `linksIn`. Claude Code
+translates both by hand. `bun test lib` fails on an unlisted citation, an unknown game, a link to a page that is
+not built, an article a locale lacks or a study sentence a deck lacks.
 
 ## Kid hours (Screen Time)
 

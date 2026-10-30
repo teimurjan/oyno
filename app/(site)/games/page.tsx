@@ -1,9 +1,6 @@
-import { GAMES_INTRO, GAMES_TITLE, GamesIndex } from "@/components/site/games/GamesIndex";
-import { GAMES_PATH } from "@/lib/games/hubs";
-import { englishPageMetadata } from "@/lib/seo";
+import { gamesIndexRoute } from "@/components/site/games/GamesIndex";
 
-export const metadata = englishPageMetadata({ title: `${GAMES_TITLE} | Oyno`, description: GAMES_INTRO, path: GAMES_PATH });
+const route = gamesIndexRoute();
 
-export default function Page() {
-  return <GamesIndex />;
-}
+export const generateMetadata = route.metadata;
+export default route.Page;

@@ -18,6 +18,9 @@ export const pl: SiteCopy = {
     terms: "Regulamin",
     switchLabel: "Zmień język",
     start: "Zacznij",
+    games: "Zabawy",
+    guides: "Poradniki",
+    blog: "Blog",
   },
 
   home: {

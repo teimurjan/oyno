@@ -1,10 +1,6 @@
-import { ARTICLE_INDEX, ArticleIndex } from "@/components/site/articles/ArticleIndex";
-import { englishPageMetadata } from "@/lib/seo";
+import { articleIndexRoute } from "@/components/site/articles/ArticleIndex";
 
-const { title, intro, path } = ARTICLE_INDEX.post;
+const route = articleIndexRoute("post");
 
-export const metadata = englishPageMetadata({ title: `${title} | Oyno`, description: intro, path });
-
-export default function Page() {
-  return <ArticleIndex kind="post" />;
-}
+export const generateMetadata = route.metadata;
+export default route.Page;

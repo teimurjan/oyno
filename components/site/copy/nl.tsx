@@ -18,6 +18,9 @@ export const nl: SiteCopy = {
     terms: "Voorwaarden",
     switchLabel: "Taal wijzigen",
     start: "Aan de slag",
+    games: "Spelletjes",
+    guides: "Gidsen",
+    blog: "Blog",
   },
 
   home: {

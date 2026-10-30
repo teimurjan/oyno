@@ -18,6 +18,9 @@ export const ptBR: SiteCopy = {
     terms: "Termos",
     switchLabel: "Mudar idioma",
     start: "Começar",
+    games: "Brincadeiras",
+    guides: "Guias",
+    blog: "Blog",
   },
 
   home: {

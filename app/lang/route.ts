@@ -2,9 +2,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   DEFAULT_LANG,
   isLang,
+  isLibraryPath,
   isSitePage,
   LANG_COOKIE,
   LANG_COOKIE_MAX_AGE,
+  localePath,
   pathFor,
 } from "@/lib/i18n";
 
@@ -17,8 +19,9 @@ import {
  * beats the guess, and doing it here rather than in a `"use client"` component keeps six
  * otherwise static pages free of JavaScript.
  *
- * **Neither parameter is a URL.** `page` is a name from a fixed list and `to` is a
- * language tag, and the path is built here from both. A `?next=` carrying a path would be
+ * **No parameter is a URL.** `page` is a name from a fixed list, `path` a games, guides or
+ * blog path that `isLibraryPath` holds to this site, and `to` a language tag, and the path is
+ * built here from them. A `?next=` carrying a path would be
  * an open redirect on a domain that also runs a checkout — the one place a phishing link
  * that starts on your own origin is worth something.
  */
@@ -26,9 +29,10 @@ export function GET(request: NextRequest) {
   const params = request.nextUrl.searchParams;
   const to = params.get("to");
   const page = params.get("page");
+  const path = params.get("path");
 
   const lang = isLang(to) ? to : DEFAULT_LANG;
-  const target = pathFor(lang, isSitePage(page) ? page : "home");
+  const target = isLibraryPath(path) ? localePath(lang, path) : pathFor(lang, isSitePage(page) ? page : "home");
 
   const response = NextResponse.redirect(new URL(target, request.url));
   response.cookies.set(LANG_COOKIE, lang, {

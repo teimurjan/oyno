@@ -18,6 +18,9 @@ export const esMX: SiteCopy = {
     terms: "Términos",
     switchLabel: "Cambiar idioma",
     start: "Empezar",
+    games: "Juegos",
+    guides: "Guías",
+    blog: "Blog",
   },
 
   home: {

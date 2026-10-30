@@ -1,15 +1,8 @@
-import Link from "next/link";
-import { CATALOG, gameById } from "@/lib/games/catalog";
+import NextLink from "next/link";
+import type { ReactNode } from "react";
+import { gameById, sourceById } from "@/lib/games/catalog";
 import { gamePath } from "@/lib/games/hubs";
-import { REFERENCES } from "@/lib/articles/references";
-
-/** A source by id, from the games' bibliography or the articles' own. Throws on an unknown id, so a
- * typo fails the build instead of shipping a claim with nothing behind it. */
-export function sourceById(id: string) {
-  const source = CATALOG.sources[id] ?? REFERENCES[id];
-  if (!source) throw new Error(`Unknown source "${id}"`);
-  return source;
-}
+import { localePath, type Lang } from "@/lib/i18n";
 
 /** An inline citation: the authors and year, linked to the paper. */
 export function Cite({ id }: { id: string }) {
@@ -17,9 +10,21 @@ export function Cite({ id }: { id: string }) {
   return <a href={source.url}>{source.short}</a>;
 }
 
-/** A link to a game page, named by the game's title unless the sentence needs other words. */
-export function GameLink({ id, children }: { id: string; children?: React.ReactNode }) {
-  const game = gameById(id);
-  if (!game) throw new Error(`Unknown game "${id}"`);
-  return <Link href={gamePath(id)}>{children ?? game.title}</Link>;
+/**
+ * The links an article body uses, in its language. `Link` takes the English path and adds the
+ * locale's prefix, and `GameLink` names a game by its title in that language unless the
+ * sentence needs other words. A translation takes both from here, never from `next/link`.
+ */
+export function linksIn(lang: Lang) {
+  const Link = ({ href, children }: { href: string; children: ReactNode }) => (
+    <NextLink href={localePath(lang, href)}>{children}</NextLink>
+  );
+  const GameLink = ({ id, children }: { id: string; children?: ReactNode }) => {
+    const game = gameById(id, lang);
+    if (!game) throw new Error(`Unknown game "${id}"`);
+    return <NextLink href={localePath(lang, gamePath(id))}>{children ?? game.title}</NextLink>;
+  };
+  return { Link, GameLink };
 }
+
+export const { GameLink } = linksIn("en");
