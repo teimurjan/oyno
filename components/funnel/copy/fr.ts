@@ -16,7 +16,7 @@ export const fr: FunnelCopy = {
   },
 
   openers: {
-    headline: "Déjà dit [« deux secondes »] à votre enfant sans lâcher votre téléphone ?",
+    headline: "La fatigue vous empêche parfois de [jouer avec votre enfant] ?",
     yes: "Oui",
     no: "Pas vraiment",
   },
@@ -114,13 +114,20 @@ export const fr: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "Moi aussi. Mais il existe [des dizaines de jeux] qui se jouent allongés.",
+      body: "Dix minutes au plus, et chacun entraîne une compétence comme la mémoire ou le contrôle de soi.",
+      variants: {
+        none: { headline: "Tant mieux. Et pour les soirs de fatigue, il existe [des dizaines de jeux] qui se jouent allongés." },
+      },
+    },
     why: {
       headline: "Ce n’est pas vous. Les apps sont [faites pour vous retenir].",
       body: "Chaque app de votre téléphone a une équipe payée pour gagner votre prochaine minute. À 18 h, la volonté ne fait pas le poids.",
       variants: {
         ideas: {
-          headline: "Ce n’est pas vous. Après une longue journée, personne n’a [d’idées de jeux].",
-          body: "Alors c’est le plus facile qui gagne. Et le plus facile, c’est l’écran.",
+          headline: "Avec la fatigue, [c’est le téléphone qui gagne].",
+          body: "Quand il ne reste plus rien à 18 h, c’est le plus facile qui gagne. Et le plus facile, c’est l’écran.",
         },
         asks: {
           headline: "Ce n’est pas vous. Les enfants veulent [ce que vous regardez].",
@@ -131,12 +138,6 @@ export const fr: FunnelCopy = {
           body: "Chacun attend que l’autre pose le sien en premier. Plus besoin d’attendre si les deux téléphones se mettent en pause en même temps.",
         },
       },
-    },
-    evening: {
-      headline: "Chaque « deux secondes » [s’additionne].",
-    },
-    promise: {
-      headline: "Et si tous ces « deux secondes » devenaient [des jeux faciles] ?",
     },
     influence: {
       headline: "Plus on scrolle, plus les enfants [réclament un écran].",
@@ -181,22 +182,19 @@ export const fr: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Un soir de semaine",
-    hours: ["16 h", "17 h", "18 h", "19 h", "20 h"],
-    kid: "Temps avec votre enfant",
-    phone: "Téléphone",
-    summary: "{n} « deux secondes » pendant le temps avec votre tout-petit",
-  },
-
-  promise: {
-    caption: "La même soirée, avec Oyno",
-    summary: "Un jeu, toute votre attention",
-    games: [
-      { title: "Petit singe", minutes: "5 min", tag: "Sans matériel" },
-      { title: "Le zoo des ombres", minutes: "8 min", tag: "Allongés" },
-      { title: "Chut au quatre", minutes: "8 min", tag: "Au calme" },
-    ],
+  lying: {
+    caption: "Joués allongés",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "Coucou les mains",
+      "snore-and-wake": "Le gros dormeur",
+      "ceiling-star-spot": "L’étoile au plafond",
+      "tummy-drum-soft-loud": "Le ventre-tambour",
+      "knee-bridge-ball": "Le pont-levis",
+      "ceiling-cinema": "Cinéma au plafond",
+      "back-drawing": "Dessin dans le dos",
+      "belly-boat": "Le bateau sur le ventre",
+    },
   },
 
   influence: {

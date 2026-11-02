@@ -19,7 +19,7 @@ export const en = {
   },
 
   openers: {
-    headline: "Ever told your kid [‘one sec’] and stayed on your phone?",
+    headline: "Ever too tired to [play with your kid]?",
     yes: "Yes",
     no: "Not really",
   },
@@ -117,13 +117,20 @@ export const en = {
   },
 
   steps: {
+    lying: {
+      headline: "Me too. But there are [dozens of games] you can play lying down.",
+      body: "Ten minutes or less, and each one trains a skill like memory or self-control.",
+      variants: {
+        none: { headline: "Good. And for the tired nights, there are [dozens of games] you can play lying down." },
+      },
+    },
     why: {
       headline: "It's not you. Apps are [built to pull you back].",
       body: "Every app on your phone has a team paid to win your next minute. Willpower at 6 PM is not a fair fight.",
       variants: {
         ideas: {
-          headline: "It's not you. Nobody has [game ideas] after a full day.",
-          body: "So the easiest thing in the room wins, and the easiest thing in the room is a screen.",
+          headline: "Tired is when [the phone wins].",
+          body: "With nothing left at 6 PM, the easiest thing in the room wins, and that is a screen.",
         },
         asks: {
           headline: "It's not you. Kids want [what you're looking at].",
@@ -134,12 +141,6 @@ export const en = {
           body: "Each of you waits for the other to put theirs down first. Nobody has to wait if both phones pause at once.",
         },
       },
-    },
-    evening: {
-      headline: "Every ‘one sec’ [adds up].",
-    },
-    promise: {
-      headline: "What if those ‘one secs’ became [easy games]?",
     },
     influence: {
       headline: "Kids [ask for screens] more when we scroll more.",
@@ -184,25 +185,20 @@ export const en = {
     },
   },
 
-  evening: {
-    caption: "A weekday evening",
-    /** One label per hour line, the first at 4 PM. */
-    hours: ["4 PM", "5 PM", "6 PM", "7 PM", "8 PM"],
-    kid: "Time with your kid",
-    phone: "Phone",
-    summary: "{n} ‘one secs’ in time with your kid",
-  },
-
-  /** The calendar's evening again, its phone lines folded into one game. */
-  promise: {
-    caption: "The same evening, with Oyno",
-    summary: "One game, all of your attention",
-    /** "copy-cat-faces", "shadow-zoo-wall" and "countdown-stop": one per age band, all low energy. */
-    games: [
-      { title: "Copy Cat", minutes: "5 min", tag: "Nothing to grab" },
-      { title: "Shadow Zoo", minutes: "8 min", tag: "Lying down" },
-      { title: "Stop at Four", minutes: "8 min", tag: "Quiet" },
-    ],
+  /** The games `LyingStep` drifts past, by id, titled as `activities/<tag>.json` titles them. */
+  lying: {
+    caption: "Played lying down",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "Peekaboo Hands",
+      "snore-and-wake": "Snore and Wake",
+      "ceiling-star-spot": "Ceiling Star",
+      "tummy-drum-soft-loud": "Tummy Drum",
+      "knee-bridge-ball": "Knee Bridge",
+      "ceiling-cinema": "Ceiling Cinema",
+      "back-drawing": "Back Drawing",
+      "belly-boat": "Belly Boat",
+    },
   },
 
   /** Domoff et al. (2021), Table 3: kids 2 to 5, by their parent's daily social media. */

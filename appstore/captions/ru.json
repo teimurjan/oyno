@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "Батарейка на нуле? [Играйте лёжа]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Игры для 0–5 лет, [даже лёжа]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Игры на основе науки, [дети умнее]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Меньше ленты, [больше малыша]" },
     { "slug": "keepsake", "source": "04", "caption": "Каждый раунд оставляет [находку]" },

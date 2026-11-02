@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "Batteria scarica? [Gioca dal divano]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Giochi 0–5 anni, [anche da sdraiati]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Gioco basato sulla scienza, [bimbi più svegli]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Basta scroll, [investi nel tuo bimbo]" },
     { "slug": "keepsake", "source": "04", "caption": "Ogni partita lascia [un ricordo]" },

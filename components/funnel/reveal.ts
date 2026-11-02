@@ -50,28 +50,3 @@ export function useRamp(key: string, delayMs: number, durationMs: number): numbe
 
   return progress;
 }
-
-/** How many of `times` (ms after mount) have passed. Jumps to all of them on a second visit. */
-export function useTimeline(key: string, times: number[]): number {
-  const [passed, setPassed] = useState(() => (played.has(key) ? times.length : 0));
-
-  useEffect(() => {
-    if (skips(key)) {
-      setPassed(times.length);
-      return;
-    }
-    played.add(key);
-    const timers = times.map((at, index) => window.setTimeout(() => setPassed(index + 1), at));
-    return () => timers.forEach(window.clearTimeout);
-  }, []);
-
-  return passed;
-}
-
-/** How many of `count` items have arrived. Jumps to `count` on a second visit. */
-export function useStagger(key: string, count: number, delayMs: number, everyMs: number): number {
-  return useTimeline(
-    key,
-    Array.from({ length: count }, (_, index) => delayMs + index * everyMs),
-  );
-}

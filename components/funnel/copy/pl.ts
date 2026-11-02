@@ -16,7 +16,7 @@ export const pl: FunnelCopy = {
   },
 
   openers: {
-    headline: "Zdarzyło ci się powiedzieć dziecku [„chwileczkę”] i dalej siedzieć w telefonie?",
+    headline: "Bywa, że brakuje ci sił, żeby [pobawić się z dzieckiem]?",
     yes: "Tak",
     no: "Raczej nie",
   },
@@ -114,13 +114,20 @@ export const pl: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "Mam tak samo. Ale są [dziesiątki zabaw] na leżąco.",
+      body: "Każda trwa najwyżej dziesięć minut i ćwiczy coś takiego jak pamięć albo samokontrolę.",
+      variants: {
+        none: { headline: "Świetnie. A na wieczory bez sił są [dziesiątki zabaw] na leżąco." },
+      },
+    },
     why: {
       headline: "To nie twoja wina. Aplikacje są [stworzone, by cię wciągać].",
       body: "Za każdą aplikacją w twoim telefonie stoi zespół, któremu płacą za twoją kolejną minutę. O 18:00 silna wola nie ma szans w tej walce.",
       variants: {
         ideas: {
-          headline: "To nie twoja wina. Po całym dniu nikt nie ma [pomysłów na zabawę].",
-          body: "Wygrywa więc to, co najłatwiejsze. A najłatwiejszy jest ekran.",
+          headline: "Kiedy brak sił, [wygrywa telefon].",
+          body: "Kiedy o 18:00 nie zostało ci już nic, wygrywa to, co najłatwiejsze w pokoju, czyli ekran.",
         },
         asks: {
           headline: "To nie twoja wina. Dzieci chcą [tego, na co patrzysz].",
@@ -131,12 +138,6 @@ export const pl: FunnelCopy = {
           body: "Każde z was czeka, aż to drugie pierwsze odłoży telefon. Nikt nie musi czekać, jeśli oba telefony zamilkną naraz.",
         },
       },
-    },
-    evening: {
-      headline: "Każde „chwileczkę” [się sumuje].",
-    },
-    promise: {
-      headline: "A gdyby te wszystkie „chwileczkę” zamieniły się w [łatwe zabawy]?",
     },
     influence: {
       headline: "Im więcej scrollujemy, tym częściej dzieci [proszą o ekran].",
@@ -181,22 +182,19 @@ export const pl: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Zwykły wieczór w tygodniu",
-    hours: ["16:00", "17:00", "18:00", "19:00", "20:00"],
-    kid: "Z dzieckiem",
-    phone: "Telefon",
-    summary: "„Chwileczkę” w czasie z dzieckiem: {n}",
-  },
-
-  promise: {
-    caption: "Ten sam wieczór, z Oyno",
-    summary: "Jedna zabawa, cała twoja uwaga",
-    games: [
-      { title: "Małpka", minutes: "5 min", tag: "Bez rekwizytów" },
-      { title: "Zoo z cieni", minutes: "8 min", tag: "Na leżąco" },
-      { title: "Cisza na czwórce", minutes: "8 min", tag: "Po cichu" },
-    ],
+  lying: {
+    caption: "Na leżąco",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "A kuku zza dłoni",
+      "snore-and-wake": "Śpioch",
+      "ceiling-star-spot": "Gwiazdka na suficie",
+      "tummy-drum-soft-loud": "Brzuszkowy bęben",
+      "knee-bridge-ball": "Most z kolan",
+      "ceiling-cinema": "Kino na suficie",
+      "back-drawing": "Rysunek na plecach",
+      "belly-boat": "Łódka na brzuchu",
+    },
   },
 
   influence: {

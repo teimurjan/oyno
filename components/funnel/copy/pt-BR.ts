@@ -16,7 +16,7 @@ export const ptBR: FunnelCopy = {
   },
 
   openers: {
-    headline: "Já disse [“só um segundo”] pro seu filho e continuou no celular?",
+    headline: "Às vezes falta energia para [brincar com seu filho]?",
     yes: "Sim",
     no: "Nem tanto",
   },
@@ -114,13 +114,20 @@ export const ptBR: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "Comigo também. Mas existem [dezenas de brincadeiras] para brincar deitados.",
+      body: "Cada uma leva no máximo dez minutos e treina algo como memória ou autocontrole.",
+      variants: {
+        none: { headline: "Que bom. E para as noites sem energia, existem [dezenas de brincadeiras] para brincar deitados." },
+      },
+    },
     why: {
       headline: "A culpa não é sua. Os apps são [feitos para te prender].",
       body: "Cada app no seu celular tem uma equipe paga para ganhar o seu próximo minuto. Força de vontade às 18h não é uma briga justa.",
       variants: {
         ideas: {
-          headline: "A culpa não é sua. Ninguém tem [ideia de brincadeira] depois de um dia cheio.",
-          body: "Aí ganha o que estiver mais à mão, e o que está mais à mão é uma tela.",
+          headline: "Sem energia, [o celular ganha].",
+          body: "Quando não sobra nada às 18h, ganha o que é mais fácil na sala, e isso é uma tela.",
         },
         asks: {
           headline: "A culpa não é sua. Criança quer [o que você está olhando].",
@@ -131,12 +138,6 @@ export const ptBR: FunnelCopy = {
           body: "Cada um espera o outro largar o celular primeiro. Ninguém precisa esperar se os dois celulares pausarem ao mesmo tempo.",
         },
       },
-    },
-    evening: {
-      headline: "Cada “só um segundo” [vai somando].",
-    },
-    promise: {
-      headline: "E se todos esses “só um segundo” virassem [brincadeiras fáceis]?",
     },
     influence: {
       headline: "Quanto mais a gente rola o feed, mais as crianças [pedem tela].",
@@ -181,22 +182,19 @@ export const ptBR: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Uma noite de dia útil",
-    hours: ["16h", "17h", "18h", "19h", "20h"],
-    kid: "Tempo com seu filho",
-    phone: "Celular",
-    summary: "{n} vezes “só um segundo” no tempo com seu pequeno",
-  },
-
-  promise: {
-    caption: "A mesma noite, com o Oyno",
-    summary: "Uma brincadeira, toda a sua atenção",
-    games: [
-      { title: "Macaquinho de imitação", minutes: "5 min", tag: "Sem material" },
-      { title: "Zoológico de sombras", minutes: "8 min", tag: "Deitados" },
-      { title: "Pare no quatro", minutes: "8 min", tag: "Sem barulho" },
-    ],
+  lying: {
+    caption: "Para brincar deitados",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "Cadê? Achou!",
+      "snore-and-wake": "Ronca e acorda",
+      "ceiling-star-spot": "Estrela no teto",
+      "tummy-drum-soft-loud": "Barriga tambor",
+      "knee-bridge-ball": "Ponte de joelhos",
+      "ceiling-cinema": "Cinema no teto",
+      "back-drawing": "Desenho nas costas",
+      "belly-boat": "Barquinho na barriga",
+    },
   },
 
   influence: {

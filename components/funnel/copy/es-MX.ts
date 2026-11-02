@@ -16,7 +16,7 @@ export const esMX: FunnelCopy = {
   },
 
   openers: {
-    headline: "¿Alguna vez le dijiste a tu peque [“un segundo”] y seguiste en el celular?",
+    headline: "¿A veces ya no te quedan fuerzas para [jugar con tu peque]?",
     yes: "Sí",
     no: "La verdad, no",
   },
@@ -114,13 +114,20 @@ export const esMX: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "A mí también me pasa. Pero hay [decenas de juegos] para jugar acostados.",
+      body: "Ninguno dura más de diez minutos, y cada uno entrena algo como la memoria o el autocontrol.",
+      variants: {
+        none: { headline: "Qué bien. Y para las noches sin fuerzas, hay [decenas de juegos] para jugar acostados." },
+      },
+    },
     why: {
       headline: "No eres tú. Las apps están [hechas para engancharte].",
       body: "Cada app de tu celular tiene un equipo al que le pagan por ganarse tu siguiente minuto. A las 6 de la tarde, la fuerza de voluntad no tiene con qué.",
       variants: {
         ideas: {
-          headline: "No eres tú. Después de un día entero, nadie tiene [ideas para jugar].",
-          body: "Así que gana lo más fácil que hay en el cuarto, y lo más fácil siempre es una pantalla.",
+          headline: "Sin fuerzas, [gana el celular].",
+          body: "Cuando a las 6 p.m. ya no te queda nada, gana lo más fácil del cuarto, y eso es una pantalla.",
         },
         asks: {
           headline: "No eres tú. Los niños quieren [lo que tú estás viendo].",
@@ -131,12 +138,6 @@ export const esMX: FunnelCopy = {
           body: "Cada quien espera a que el otro suelte el suyo primero. Nadie tiene que esperar si los dos celulares se pausan al mismo tiempo.",
         },
       },
-    },
-    evening: {
-      headline: "Cada “un segundo” [se va sumando].",
-    },
-    promise: {
-      headline: "¿Y si todos esos “un segundo” se volvieran [juegos fáciles]?",
     },
     influence: {
       headline: "Entre más usamos el celular, más [piden pantalla] los niños.",
@@ -181,22 +182,19 @@ export const esMX: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Una tarde entre semana",
-    hours: ["4 p.m.", "5 p.m.", "6 p.m.", "7 p.m.", "8 p.m."],
-    kid: "Tiempo con tu peque",
-    phone: "Celular",
-    summary: "{n} veces “un segundo” en el tiempo con tu peque",
-  },
-
-  promise: {
-    caption: "La misma tarde, con Oyno",
-    summary: "Un juego, toda tu atención",
-    games: [
-      { title: "Te copio", minutes: "5 min", tag: "Sin materiales" },
-      { title: "Zoológico de sombras", minutes: "8 min", tag: "Acostados" },
-      { title: "Alto en el cuatro", minutes: "8 min", tag: "Tranquilo" },
-    ],
+  lying: {
+    caption: "Para jugar acostados",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "¿Dónde está? ¡Aquí está!",
+      "snore-and-wake": "Ronco y despierto",
+      "ceiling-star-spot": "Estrella en el techo",
+      "tummy-drum-soft-loud": "Tambor de panza",
+      "knee-bridge-ball": "Puente de rodillas",
+      "ceiling-cinema": "Cine en el techo",
+      "back-drawing": "Dibujos en la espalda",
+      "belly-boat": "El barquito en la panza",
+    },
   },
 
   influence: {

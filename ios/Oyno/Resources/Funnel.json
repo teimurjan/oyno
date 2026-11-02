@@ -27,19 +27,18 @@
         }
       },
       {
-        "id": "why",
-        "kind": "apps",
+        "id": "lying",
+        "kind": "lying",
         "branch": {
           "on": "problem"
         }
       },
       {
-        "id": "evening",
-        "kind": "evening"
-      },
-      {
-        "id": "promise",
-        "kind": "promise"
+        "id": "why",
+        "kind": "apps",
+        "branch": {
+          "on": "problem"
+        }
       },
       {
         "id": "pickups",
@@ -286,7 +285,7 @@
         "kind": "account"
       }
     ],
-    "surveyLength": 17,
+    "surveyLength": 16,
     "separator": "|"
   },
   "decks": {
@@ -390,13 +389,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Me too. But there are [dozens of games] you can play lying down.",
+          "body": "Ten minutes or less, and each one trains a skill like memory or self-control.",
+          "variants": {
+            "none": {
+              "headline": "Good. And for the tired nights, there are [dozens of games] you can play lying down."
+            }
+          }
+        },
         "why": {
           "headline": "It's not you. Apps are [built to pull you back].",
           "body": "Every app on your phone has a team paid to win your next minute. Willpower at 6 PM is not a fair fight.",
           "variants": {
             "ideas": {
-              "headline": "It's not you. Nobody has [game ideas] after a full day.",
-              "body": "So the easiest thing in the room wins, and the easiest thing in the room is a screen."
+              "headline": "Tired is when [the phone wins].",
+              "body": "With nothing left at 6 PM, the easiest thing in the room wins, and that is a screen."
             },
             "asks": {
               "headline": "It's not you. Kids want [what you're looking at].",
@@ -407,12 +415,6 @@
               "body": "Each of you waits for the other to put theirs down first. Nobody has to wait if both phones pause at once."
             }
           }
-        },
-        "evening": {
-          "headline": "Every ‘one sec’ [adds up]."
-        },
-        "promise": {
-          "headline": "What if those ‘one secs’ became [easy games]?"
         },
         "influence": {
           "headline": "Kids [ask for screens] more when we scroll more."
@@ -599,13 +601,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Geht mir genauso. Aber es gibt [Dutzende Spiele], die du im Liegen spielen kannst.",
+          "body": "Jedes dauert höchstens zehn Minuten und trainiert etwas wie Gedächtnis oder Selbstkontrolle.",
+          "variants": {
+            "none": {
+              "headline": "Gut so. Und für die müden Abende gibt es [Dutzende Spiele], die du im Liegen spielen kannst."
+            }
+          }
+        },
         "why": {
           "headline": "Es liegt nicht an dir. Apps sind [gemacht, um dich zurückzuholen].",
           "body": "Hinter jeder App auf deinem Handy steckt ein Team, das dafür bezahlt wird, deine nächste Minute zu gewinnen. Gegen die hat deine Willenskraft um 18 Uhr keine faire Chance.",
           "variants": {
             "ideas": {
-              "headline": "Es liegt nicht an dir. Nach einem vollen Tag hat niemand [Spielideen].",
-              "body": "Also gewinnt das Einfachste im Raum, und das Einfachste im Raum ist ein Bildschirm."
+              "headline": "Wenn du müde bist, [gewinnt das Handy].",
+              "body": "Wenn um 18 Uhr nichts mehr übrig ist, gewinnt das Einfachste im Raum, und das ist ein Bildschirm."
             },
             "asks": {
               "headline": "Es liegt nicht an dir. Kinder wollen, [was du anschaust].",
@@ -616,12 +627,6 @@
               "body": "Jeder wartet, dass der andere sein Handy zuerst weglegt. Warten muss niemand, wenn beide Handys gleichzeitig Pause machen."
             }
           }
-        },
-        "evening": {
-          "headline": "Jedes „Moment noch“ [läppert sich]."
-        },
-        "promise": {
-          "headline": "Was, wenn aus all den „Moment noch“ [leichte Spiele] werden?"
         },
         "influence": {
           "headline": "Je mehr wir scrollen, desto öfter [wollen Kinder an den Bildschirm]."
@@ -808,13 +813,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Moi aussi. Mais il existe [des dizaines de jeux] qui se jouent allongés.",
+          "body": "Dix minutes au plus, et chacun entraîne une compétence comme la mémoire ou le contrôle de soi.",
+          "variants": {
+            "none": {
+              "headline": "Tant mieux. Et pour les soirs de fatigue, il existe [des dizaines de jeux] qui se jouent allongés."
+            }
+          }
+        },
         "why": {
           "headline": "Ce n’est pas vous. Les apps sont [faites pour vous retenir].",
           "body": "Chaque app de votre téléphone a une équipe payée pour gagner votre prochaine minute. À 18 h, la volonté ne fait pas le poids.",
           "variants": {
             "ideas": {
-              "headline": "Ce n’est pas vous. Après une longue journée, personne n’a [d’idées de jeux].",
-              "body": "Alors c’est le plus facile qui gagne. Et le plus facile, c’est l’écran."
+              "headline": "Avec la fatigue, [c’est le téléphone qui gagne].",
+              "body": "Quand il ne reste plus rien à 18 h, c’est le plus facile qui gagne. Et le plus facile, c’est l’écran."
             },
             "asks": {
               "headline": "Ce n’est pas vous. Les enfants veulent [ce que vous regardez].",
@@ -825,12 +839,6 @@
               "body": "Chacun attend que l’autre pose le sien en premier. Plus besoin d’attendre si les deux téléphones se mettent en pause en même temps."
             }
           }
-        },
-        "evening": {
-          "headline": "Chaque « deux secondes » [s’additionne]."
-        },
-        "promise": {
-          "headline": "Et si tous ces « deux secondes » devenaient [des jeux faciles] ?"
         },
         "influence": {
           "headline": "Plus on scrolle, plus les enfants [réclament un écran]."
@@ -1017,13 +1025,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "A mí también me pasa. Pero hay [decenas de juegos] para jugar tumbados.",
+          "body": "Ninguno dura más de diez minutos, y cada uno entrena algo como la memoria o el autocontrol.",
+          "variants": {
+            "none": {
+              "headline": "Genial. Y para las noches sin fuerzas, hay [decenas de juegos] para jugar tumbados."
+            }
+          }
+        },
         "why": {
           "headline": "No eres tú. Las apps están [hechas para engancharte].",
           "body": "Cada app de tu móvil tiene un equipo al que pagan por ganarse tu siguiente minuto. A las seis de la tarde, tu fuerza de voluntad juega en desventaja.",
           "variants": {
             "ideas": {
-              "headline": "No eres tú. Tras un día entero, nadie tiene [ideas para jugar].",
-              "body": "Así que gana lo que menos cuesta, y lo que menos cuesta es una pantalla."
+              "headline": "Sin fuerzas, [gana el móvil].",
+              "body": "Cuando a las seis ya no te queda nada, gana lo más fácil de la habitación, y eso es una pantalla."
             },
             "asks": {
               "headline": "No eres tú. Los peques quieren [lo que tú miras].",
@@ -1034,12 +1051,6 @@
               "body": "Cada uno espera a que el otro suelte el suyo primero. Nadie tiene que esperar si los dos móviles se pausan a la vez."
             }
           }
-        },
-        "evening": {
-          "headline": "Cada «un segundo» [suma]."
-        },
-        "promise": {
-          "headline": "¿Y si todos esos «un segundo» se convirtieran en [juegos fáciles]?"
         },
         "influence": {
           "headline": "Cuanto más scroll hacemos, más [piden pantallas] los peques."
@@ -1226,13 +1237,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "A mí también me pasa. Pero hay [decenas de juegos] para jugar acostados.",
+          "body": "Ninguno dura más de diez minutos, y cada uno entrena algo como la memoria o el autocontrol.",
+          "variants": {
+            "none": {
+              "headline": "Qué bien. Y para las noches sin fuerzas, hay [decenas de juegos] para jugar acostados."
+            }
+          }
+        },
         "why": {
           "headline": "No eres tú. Las apps están [hechas para engancharte].",
           "body": "Cada app de tu celular tiene un equipo al que le pagan por ganarse tu siguiente minuto. A las 6 de la tarde, la fuerza de voluntad no tiene con qué.",
           "variants": {
             "ideas": {
-              "headline": "No eres tú. Después de un día entero, nadie tiene [ideas para jugar].",
-              "body": "Así que gana lo más fácil que hay en el cuarto, y lo más fácil siempre es una pantalla."
+              "headline": "Sin fuerzas, [gana el celular].",
+              "body": "Cuando a las 6 p.m. ya no te queda nada, gana lo más fácil del cuarto, y eso es una pantalla."
             },
             "asks": {
               "headline": "No eres tú. Los niños quieren [lo que tú estás viendo].",
@@ -1243,12 +1263,6 @@
               "body": "Cada quien espera a que el otro suelte el suyo primero. Nadie tiene que esperar si los dos celulares se pausan al mismo tiempo."
             }
           }
-        },
-        "evening": {
-          "headline": "Cada “un segundo” [se va sumando]."
-        },
-        "promise": {
-          "headline": "¿Y si todos esos “un segundo” se volvieran [juegos fáciles]?"
         },
         "influence": {
           "headline": "Entre más usamos el celular, más [piden pantalla] los niños."
@@ -1435,13 +1449,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Comigo também. Mas existem [dezenas de brincadeiras] para brincar deitados.",
+          "body": "Cada uma leva no máximo dez minutos e treina algo como memória ou autocontrole.",
+          "variants": {
+            "none": {
+              "headline": "Que bom. E para as noites sem energia, existem [dezenas de brincadeiras] para brincar deitados."
+            }
+          }
+        },
         "why": {
           "headline": "A culpa não é sua. Os apps são [feitos para te prender].",
           "body": "Cada app no seu celular tem uma equipe paga para ganhar o seu próximo minuto. Força de vontade às 18h não é uma briga justa.",
           "variants": {
             "ideas": {
-              "headline": "A culpa não é sua. Ninguém tem [ideia de brincadeira] depois de um dia cheio.",
-              "body": "Aí ganha o que estiver mais à mão, e o que está mais à mão é uma tela."
+              "headline": "Sem energia, [o celular ganha].",
+              "body": "Quando não sobra nada às 18h, ganha o que é mais fácil na sala, e isso é uma tela."
             },
             "asks": {
               "headline": "A culpa não é sua. Criança quer [o que você está olhando].",
@@ -1452,12 +1475,6 @@
               "body": "Cada um espera o outro largar o celular primeiro. Ninguém precisa esperar se os dois celulares pausarem ao mesmo tempo."
             }
           }
-        },
-        "evening": {
-          "headline": "Cada “só um segundo” [vai somando]."
-        },
-        "promise": {
-          "headline": "E se todos esses “só um segundo” virassem [brincadeiras fáceis]?"
         },
         "influence": {
           "headline": "Quanto mais a gente rola o feed, mais as crianças [pedem tela]."
@@ -1644,13 +1661,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Anche a me. Ma ci sono [decine di giochi] da fare da sdraiati.",
+          "body": "Durano al massimo dieci minuti e ognuno allena qualcosa come la memoria o l’autocontrollo.",
+          "variants": {
+            "none": {
+              "headline": "Bene. E per le sere senza forze ci sono [decine di giochi] da fare da sdraiati."
+            }
+          }
+        },
         "why": {
           "headline": "Non è colpa tua. Le app sono [fatte per risucchiarti].",
           "body": "Dietro ogni app sul tuo telefono c’è un team pagato per conquistare il tuo prossimo minuto. Alle sei di sera la forza di volontà parte già sconfitta.",
           "variants": {
             "ideas": {
-              "headline": "Non è colpa tua. Dopo una giornata piena nessuno ha [idee per giocare].",
-              "body": "Così vince la cosa più facile nella stanza, e la cosa più facile nella stanza è uno schermo."
+              "headline": "Senza forze, [vince il telefono].",
+              "body": "Quando alle 18 non ti è rimasto niente, vince la cosa più facile nella stanza, ed è uno schermo."
             },
             "asks": {
               "headline": "Non è colpa tua. I bambini vogliono [quello che guardi tu].",
@@ -1661,12 +1687,6 @@
               "body": "Ognuno aspetta che l’altro metta giù il telefono per primo. Nessuno deve aspettare se entrambi i telefoni vanno in pausa insieme."
             }
           }
-        },
-        "evening": {
-          "headline": "Ogni “un attimo” [si accumula]."
-        },
-        "promise": {
-          "headline": "E se tutti quegli “un attimo” diventassero [giochi facili]?"
         },
         "influence": {
           "headline": "Più scorriamo noi, più i bambini [chiedono schermi]."
@@ -1853,13 +1873,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Ik ook. Maar er zijn [tientallen spelletjes] die je liggend kunt spelen.",
+          "body": "Elk duurt hooguit tien minuten en traint iets als geheugen of zelfbeheersing.",
+          "variants": {
+            "none": {
+              "headline": "Mooi. En voor de moeie avonden zijn er [tientallen spelletjes] die je liggend kunt spelen."
+            }
+          }
+        },
         "why": {
           "headline": "Het ligt niet aan jou. Apps zijn [gemaakt om je vast te houden].",
           "body": "Achter elke app op je telefoon zit een team dat betaald wordt om je volgende minuut te winnen. Met alleen wilskracht is dat om zes uur ’s avonds geen eerlijke strijd.",
           "variants": {
             "ideas": {
-              "headline": "Het ligt niet aan jou. Na een lange dag heeft niemand [ideeën voor spelletjes].",
-              "body": "Dus wint het makkelijkste in de kamer, en het makkelijkste in de kamer is een scherm."
+              "headline": "Als je moe bent, [wint de telefoon].",
+              "body": "Als er om zes uur niets meer over is, wint het makkelijkste in de kamer, en dat is een scherm."
             },
             "asks": {
               "headline": "Het ligt niet aan jou. Kinderen willen [waar jij naar kijkt].",
@@ -1870,12 +1899,6 @@
               "body": "Jullie wachten allebei tot de ander als eerste de telefoon weglegt. Niemand hoeft te wachten als beide telefoons tegelijk op pauze gaan."
             }
           }
-        },
-        "evening": {
-          "headline": "Elk ‘momentje’ [telt op]."
-        },
-        "promise": {
-          "headline": "Wat als al die ‘momentjes’ [makkelijke spelletjes] werden?"
         },
         "influence": {
           "headline": "Kinderen [vragen vaker om een scherm] als wij meer scrollen."
@@ -2062,13 +2085,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "Mam tak samo. Ale są [dziesiątki zabaw] na leżąco.",
+          "body": "Każda trwa najwyżej dziesięć minut i ćwiczy coś takiego jak pamięć albo samokontrolę.",
+          "variants": {
+            "none": {
+              "headline": "Świetnie. A na wieczory bez sił są [dziesiątki zabaw] na leżąco."
+            }
+          }
+        },
         "why": {
           "headline": "To nie twoja wina. Aplikacje są [stworzone, by cię wciągać].",
           "body": "Za każdą aplikacją w twoim telefonie stoi zespół, któremu płacą za twoją kolejną minutę. O 18:00 silna wola nie ma szans w tej walce.",
           "variants": {
             "ideas": {
-              "headline": "To nie twoja wina. Po całym dniu nikt nie ma [pomysłów na zabawę].",
-              "body": "Wygrywa więc to, co najłatwiejsze. A najłatwiejszy jest ekran."
+              "headline": "Kiedy brak sił, [wygrywa telefon].",
+              "body": "Kiedy o 18:00 nie zostało ci już nic, wygrywa to, co najłatwiejsze w pokoju, czyli ekran."
             },
             "asks": {
               "headline": "To nie twoja wina. Dzieci chcą [tego, na co patrzysz].",
@@ -2079,12 +2111,6 @@
               "body": "Każde z was czeka, aż to drugie pierwsze odłoży telefon. Nikt nie musi czekać, jeśli oba telefony zamilkną naraz."
             }
           }
-        },
-        "evening": {
-          "headline": "Każde „chwileczkę” [się sumuje]."
-        },
-        "promise": {
-          "headline": "A gdyby te wszystkie „chwileczkę” zamieniły się w [łatwe zabawy]?"
         },
         "influence": {
           "headline": "Im więcej scrollujemy, tym częściej dzieci [proszą o ekran]."
@@ -2271,13 +2297,22 @@
         }
       },
       "steps": {
+        "lying": {
+          "headline": "У меня тоже. Но есть [десятки игр], в которые можно играть лёжа.",
+          "body": "Каждая не дольше десяти минут и тренирует навык вроде памяти или самоконтроля.",
+          "variants": {
+            "none": {
+              "headline": "Отлично. А на вечера без сил есть [десятки игр], в которые можно играть лёжа."
+            }
+          }
+        },
         "why": {
           "headline": "Дело не в вас. Приложения [созданы, чтобы затягивать].",
           "body": "У каждого приложения в телефоне есть команда, которой платят за вашу следующую минуту. В шесть вечера у силы воли нет шансов.",
           "variants": {
             "ideas": {
-              "headline": "Дело не в вас. После долгого дня [идей для игр] нет ни у кого.",
-              "body": "Поэтому побеждает то, что проще всего. А проще всего — экран."
+              "headline": "Когда нет сил, [побеждает телефон].",
+              "body": "Когда к шести вечера сил не осталось, побеждает то, что проще всего. А проще всего — экран."
             },
             "asks": {
               "headline": "Дело не в вас. Детям интересно [то, на что смотрите вы].",
@@ -2288,12 +2323,6 @@
               "body": "Каждый ждёт, что другой отложит телефон первым. Ждать не придётся, если оба телефона встанут на паузу разом."
             }
           }
-        },
-        "evening": {
-          "headline": "Каждое «секунду» [складывается]."
-        },
-        "promise": {
-          "headline": "А если все эти «секунду» превратить в [лёгкие игры]?"
         },
         "influence": {
           "headline": "Чем больше мы листаем, тем чаще дети [просят экран]."

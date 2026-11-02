@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "Too tired to play? [Play lying down]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Play for ages 0–5, [even lying down]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Science-backed play, [smarter kids]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop doomscrolling, [invest in your kid]" },
     { "slug": "keepsake", "source": "04", "caption": "Every round leaves [a keepsake]" },

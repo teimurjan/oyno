@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "À plat ? [Jouez depuis le canapé]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Des jeux de 0 à 5 ans, [même allongé]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Des jeux validés par la science, [des enfants plus malins]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop au scroll, [place à l’enfant]" },
     { "slug": "keepsake", "source": "04", "caption": "Chaque partie laisse [un souvenir]" },

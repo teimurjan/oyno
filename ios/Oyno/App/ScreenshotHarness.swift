@@ -127,6 +127,7 @@ struct ScreenshotHarness: View {
             TimerScreen(session: dealer.session(age: .toddler)) { _ in }
         // `done:grown` is the planet already tapped, the unlock the round earned in its sheet.
         // `done:keepsake` is the keepsake a bath left, `done:noticed` the question after it.
+        // `done:practiced` is what Cushion Tunnel, the store's cover game, practiced.
         case let name where name.hasPrefix("done"):
             let step: DoneScreen.Step = switch name {
             case "done:keepsake": .keepsake
@@ -134,7 +135,8 @@ struct ScreenshotHarness: View {
             case "done:grown": .unlock
             default: .practiced
             }
-            DoneScreen(round: ScreenshotFixtures.bath, grown: name != "done", step: step, onKeepPlaying: {}, onLeave: {})
+            let round = name == "done:practiced" ? ScreenshotFixtures.cushionTunnel : ScreenshotFixtures.bath
+            DoneScreen(round: round, grown: name != "done", step: step, onKeepPlaying: {}, onLeave: {})
         case "growth": GrowthScreen { _ in }
         case "keepsakes": KeepsakesScreen()
         case "week": HomeScreen(play: {}, start: { _ in }).sheet(isPresented: .constant(true)) { WeekSheet {} }
@@ -199,6 +201,10 @@ enum ScreenshotFixtures {
     /// The round Done celebrates in the store screenshots: a bath that left a paper boat.
     static var bath: Round {
         Round(kind: .bath, activityID: nil, startedAt: .now, minutes: 15, skills: ["inhibitory-control", "working-memory"], keepsakeID: "paper-boat")
+    }
+
+    static var cushionTunnel: Round {
+        Round(kind: .game, activityID: "cushion-tunnel-toy", startedAt: .now, minutes: 5, skills: ["attention", "working-memory"], keepsakeID: nil)
     }
 
     /// The clock Kid hours reads for a frame: before them, during, or after.

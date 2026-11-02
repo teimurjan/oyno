@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "Padasz z nóg? [Baw się na leżąco]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Zabawy 0–5 lat, [nawet na leżąco]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Zabawa oparta na nauce, [mądrzejsze dzieci]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Koniec doomscrollingu, [czas dla dziecka]" },
     { "slug": "keepsake", "source": "04", "caption": "Każda runda zostawia [pamiątkę]" },

@@ -264,6 +264,7 @@ struct PlayScreen: View {
         }
         .accessibilityLabel(Text("Kid's age"))
         .accessibilityValue(Text(verbatim: age.label))
+        .screenshotCallout("age")
     }
 
     /// As tall as the title runs. A new game's words crossfade while the page eases to its height.
@@ -299,8 +300,9 @@ struct PlayScreen: View {
             .padding(.trailing, Metric.Space.xs)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(Text("\(activity.minutes) minutes"))
-            ForEach(activity.tags, id: \.id) { tag in
-                Badge(symbol: tag.symbol, label: tag.label)
+            .screenshotCallout("meta.time")
+            ForEach(Array(activity.tags.enumerated()), id: \.element.id) { index, tag in
+                Badge(symbol: tag.symbol, label: tag.label).screenshotCallout("meta.tag\(index)")
             }
         }
     }
@@ -332,7 +334,7 @@ struct PlayScreen: View {
     }
 
     private var batteryLabel: some View {
-        Text("Your battery").oynoEyebrow()
+        Text("Your battery").oynoEyebrow().screenshotCallout("battery.label")
     }
 
     private var energyPicker: some View {
@@ -346,6 +348,7 @@ struct PlayScreen: View {
                     .foregroundStyle(active ? Palette.ink : Palette.muted)
             }
         }
+        .screenshotCallout("energy")
     }
 
     private var steps: some View {
@@ -362,7 +365,7 @@ struct PlayScreen: View {
     /// game's length. At the foot of the trailing column on a wide window.
     private var actions: some View {
         VStack(spacing: 2) {
-            PrimaryButton(title: startTitle, symbol: "play.fill") { start() }
+            PrimaryButton(title: startTitle, symbol: "play.fill") { start() }.screenshotCallout("start")
             HStack {
                 if moment == nil { differentIdea }
                 Spacer()

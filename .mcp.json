@@ -10,11 +10,7 @@
     },
     "dodopayments": {
       "command": "npx",
-      "args": [
-        "-y",
-        "mcp-remote@latest",
-        "https://mcp.dodopayments.com/sse"
-      ]
+      "args": ["-y", "mcp-remote@latest", "https://mcp.dodopayments.com/sse"]
     },
     "appeeky": {
       "command": "sh",

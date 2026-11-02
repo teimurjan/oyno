@@ -20,10 +20,8 @@ export type FunnelStepKind =
   | "question"
   /** A headline and a line or two, read rather than answered. */
   | "statement"
-  /** An example evening as a calendar, the phone interrupting the kid's hours. Self-running. */
-  | "evening"
-  /** The same evening, its phone lines folding into one game. Self-running. */
-  | "promise"
+  /** Real games played lying down, drifting past in two rows: proof a tired parent can play. */
+  | "lying"
   /** The feeds the apps are built around, drifting and knocking at the reader. */
   | "apps"
   /** What a parent's scrolling does to a kid's asking for screens, as a bar chart. */
@@ -124,18 +122,18 @@ const PROBLEM: QuestionShape = {
 };
 
 /** The opener's "Not really". Not a problem, so the account step has no card for it; a branching
- * step falls back to the opener's own problem rather than to the default copy. */
+ * step reads its variant under this value if it has one, else the opener's own problem's. */
 const OPENER_DECLINED = "none";
 
-/** The problem the one opener asks about: "one sec" to the kid, and still on the phone. */
-const OPENER_PROBLEM: Problem = "scroll";
+/** The problem the one opener asks about: too tired after work to play. */
+const OPENER_PROBLEM: Problem = "ideas";
 
 /** Names the opener in Amplitude's `opener` user property. */
-export const OPENER_ID = "evening";
+export const OPENER_ID = "tired";
 
 /**
- * Step 0 for every web visit: one yes/no on telling the kid "one sec". Same `key` as
- * `PROBLEM` and "Yes" is `scroll`, so the branch and the Amplitude join read
+ * Step 0 for every web visit: one yes/no on being too tired to play. Same `key` as
+ * `PROBLEM` and "Yes" is `ideas`, so the branch and the Amplitude join read
  * as a four-way answer would. The app's first run keeps the four-way question.
  */
 function opener(copy: FunnelCopy): FunnelQuestion {
@@ -232,9 +230,8 @@ export const FUNNEL: { id: string; steps: StepShape[] } = {
   id: "evenings",
   steps: [
     { id: "problem", kind: "question", question: PROBLEM },
+    { id: "lying", kind: "lying", branch: { on: "problem" } },
     { id: "why", kind: "apps", branch: { on: "problem" } },
-    { id: "evening", kind: "evening" },
-    { id: "promise", kind: "promise" },
     { id: "pickups", kind: "question", question: PICKUPS },
     { id: "hardest", kind: "question", question: HARDEST },
     { id: "apps", kind: "question", question: APPS },

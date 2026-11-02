@@ -50,7 +50,7 @@ const CANVAS_IMAGES: Record<string, string> = {
 };
 
 /** The steps that run a demo or build something before they settle. */
-const SETTLE_MS: Record<string, number> = { evening: 4500, plan: 7000, influence: 2500 };
+const SETTLE_MS: Record<string, number> = { lying: 2500, plan: 7000, influence: 2500 };
 const DEFAULT_SETTLE_MS = 1500;
 
 interface Board {

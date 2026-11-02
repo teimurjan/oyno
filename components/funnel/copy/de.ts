@@ -16,7 +16,7 @@ export const de: FunnelCopy = {
   },
 
   openers: {
-    headline: "Schon mal zu deinem Kind [„Moment noch“] gesagt und weiter aufs Handy geschaut?",
+    headline: "Schon mal zu müde, um [mit deinem Kind zu spielen]?",
     yes: "Ja",
     no: "Eher nicht",
   },
@@ -114,13 +114,20 @@ export const de: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "Geht mir genauso. Aber es gibt [Dutzende Spiele], die du im Liegen spielen kannst.",
+      body: "Jedes dauert höchstens zehn Minuten und trainiert etwas wie Gedächtnis oder Selbstkontrolle.",
+      variants: {
+        none: { headline: "Gut so. Und für die müden Abende gibt es [Dutzende Spiele], die du im Liegen spielen kannst." },
+      },
+    },
     why: {
       headline: "Es liegt nicht an dir. Apps sind [gemacht, um dich zurückzuholen].",
       body: "Hinter jeder App auf deinem Handy steckt ein Team, das dafür bezahlt wird, deine nächste Minute zu gewinnen. Gegen die hat deine Willenskraft um 18 Uhr keine faire Chance.",
       variants: {
         ideas: {
-          headline: "Es liegt nicht an dir. Nach einem vollen Tag hat niemand [Spielideen].",
-          body: "Also gewinnt das Einfachste im Raum, und das Einfachste im Raum ist ein Bildschirm.",
+          headline: "Wenn du müde bist, [gewinnt das Handy].",
+          body: "Wenn um 18 Uhr nichts mehr übrig ist, gewinnt das Einfachste im Raum, und das ist ein Bildschirm.",
         },
         asks: {
           headline: "Es liegt nicht an dir. Kinder wollen, [was du anschaust].",
@@ -131,12 +138,6 @@ export const de: FunnelCopy = {
           body: "Jeder wartet, dass der andere sein Handy zuerst weglegt. Warten muss niemand, wenn beide Handys gleichzeitig Pause machen.",
         },
       },
-    },
-    evening: {
-      headline: "Jedes „Moment noch“ [läppert sich].",
-    },
-    promise: {
-      headline: "Was, wenn aus all den „Moment noch“ [leichte Spiele] werden?",
     },
     influence: {
       headline: "Je mehr wir scrollen, desto öfter [wollen Kinder an den Bildschirm].",
@@ -181,22 +182,19 @@ export const de: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Ein Abend unter der Woche",
-    hours: ["16 Uhr", "17 Uhr", "18 Uhr", "19 Uhr", "20 Uhr"],
-    kid: "Zeit mit deinem Kind",
-    phone: "Handy",
-    summary: "{n}-mal „Moment noch“ in der Zeit mit deinem Kind",
-  },
-
-  promise: {
-    caption: "Derselbe Abend, mit Oyno",
-    summary: "Ein Spiel, deine ganze Aufmerksamkeit",
-    games: [
-      { title: "Grimassen-Echo", minutes: "5 Min.", tag: "Ohne Material" },
-      { title: "Schattenzoo", minutes: "8 Min.", tag: "Im Liegen" },
-      { title: "Stopp bei vier", minutes: "8 Min.", tag: "Ruhig" },
-    ],
+  lying: {
+    caption: "Im Liegen gespielt",
+    minutes: "{n} Min.",
+    games: {
+      "hands-peekaboo": "Hände-Kuckuck",
+      "snore-and-wake": "Schnarchbär",
+      "ceiling-star-spot": "Stern an der Decke",
+      "tummy-drum-soft-loud": "Bauchtrommel",
+      "knee-bridge-ball": "Kniebrücke",
+      "ceiling-cinema": "Deckenkino",
+      "back-drawing": "Rückenbild",
+      "belly-boat": "Bauchboot",
+    },
   },
 
   influence: {

@@ -30,7 +30,7 @@ struct AppRoot: View {
     @State private var paywall: PaywallContext?
     @AppStorage("oyno.didOnboard") private var didFinishFirstRun = false
     @AppStorage("oyno.didFunnel") private var didFunnel = false
-    @AppStorage("oyno.didAskForReview") private var didAskForReview = false
+    @AppStorage("oyno.reviewAskedAtRound") private var reviewAskedAtRound = 0
     @AppStorage("oyno.age") private var age = AgeBand.toddler
     @AppStorage("oyno.energy") private var energy = Energy.low
     @AppStorage(InterfaceLanguage.overrideKey, store: InterfaceLanguage.store) private var language = "en"
@@ -127,18 +127,9 @@ struct AppRoot: View {
                 // The client's belief may be stale; ask the authority while the page is up.
                 Task { await purchases.refreshServerEntitlement() }
             }
-            // The third round together, once: the family has felt the loop by then.
             .onChange(of: NotificationRouter.shared.requested) { openTabIfReminderAsked() }
             .onChange(of: kidHours.settings.schedules) { replanReminders() }
-            .onChange(of: oyno.rounds.count) { _, count in
-                replanReminders()
-                guard count == 3, !didAskForReview else { return }
-                didAskForReview = true
-                Task {
-                    try? await Task.sleep(for: .seconds(1))
-                    requestReview()
-                }
-            }
+            .onChange(of: oyno.rounds.count) { replanReminders() }
             .fullScreenCover(item: paywall(inRound: false)) { PaywallScreen(context: $0) }
             // Below the cover on purpose: a presented view inherits the environment of the
             // view its modifier is attached to, so stores installed above it would not reach it.
@@ -227,7 +218,11 @@ struct AppRoot: View {
             }
         }
         // A cover, not a push: the tab bar stays put under it instead of popping back in late.
-        .fullScreenCover(item: $round, onDismiss: { roundPath = [] }) { session in
+        .fullScreenCover(item: $round, onDismiss: {
+            let finished = !roundPath.isEmpty
+            roundPath = []
+            if finished { askForReviewIfDue() }
+        }) { session in
             NavigationStack(path: $roundPath) {
                 TimerScreen(session: session) { minutes in
                     let started = Date.now.addingTimeInterval(-TimeInterval(minutes * 60))
@@ -244,6 +239,18 @@ struct AppRoot: View {
     /// The paywall rises from the topmost cover: a round's while one is up, else the root's.
     private func paywall(inRound: Bool) -> Binding<PaywallContext?> {
         inRound == (round != nil) ? $paywall : .constant(nil)
+    }
+
+    /// Asked once the round's cover closes, never while the kid holds the phone. The system
+    /// shows it at most three times a year, so each milestone only offers the chance.
+    private func askForReviewIfDue() {
+        let count = oyno.rounds.count
+        guard let milestone = [1, 5, 15].last(where: { $0 <= count }), milestone > reviewAskedAtRound else { return }
+        reviewAskedAtRound = milestone
+        Task {
+            try? await Task.sleep(for: .seconds(1))
+            requestReview()
+        }
     }
 
     /// Starting is a write: the store asks for the entitlement, and the paywall answers a refusal.

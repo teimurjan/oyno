@@ -103,7 +103,9 @@ export function validateCopy(tag: string, copy: FunnelCopy, spine: FunnelSpine):
     if (!on) continue;
     const asked = spine.steps.find((other) => other.question?.key === on)?.question;
     for (const value of Object.keys(steps[step.id]?.variants ?? {})) {
-      if (asked && !answers(asked, value)) {
+      // The opener's "not really" is no answer to the problem question, but a reader can give it.
+      const declined = on === spine.problem.key && value === spine.declined;
+      if (asked && !answers(asked, value) && !declined) {
         fail(`step "${step.id}" has a variant for "${value}", which "${on}" never answers`);
       }
     }

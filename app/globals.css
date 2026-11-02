@@ -248,6 +248,24 @@
   }
 }
 
+/* The funnel's lying-down games (`LyingStep`). Each row holds its games twice, so sliding it
+   by half its width lands on the same picture. The second row runs the other way. */
+@keyframes lying-drift {
+  to {
+    translate: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lying-row {
+    animation: lying-drift 32s linear infinite;
+  }
+
+  .lying-row[data-reverse="true"] {
+    animation-direction: reverse;
+  }
+}
+
 /* The paywall's own surface, the full sky behind the offer. On `main` rather than the
    step's column so it reaches the edges of the phone. */
 .paywall-page {

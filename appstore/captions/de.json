@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "Akku leer? [Spielen im Liegen]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Spiele von 0–5, [sogar im Liegen]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Spielen mit Wissenschaft, [klügere Kinder]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Schluss mit Doomscrolling, [Zeit fürs Kind]" },
     { "slug": "keepsake", "source": "04", "caption": "Jede Runde hinterlässt [ein Andenken]" },

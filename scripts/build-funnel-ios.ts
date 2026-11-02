@@ -19,8 +19,7 @@ const OUT = "ios/Oyno/Resources/Funnel.json";
 const IOS_KINDS = new Set([
   "question",
   "statement",
-  "evening",
-  "promise",
+  "lying",
   "apps",
   "influence",
   "alternative",

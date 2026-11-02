@@ -16,7 +16,7 @@ export const it: FunnelCopy = {
   },
 
   openers: {
-    headline: "Hai mai detto [“un attimo”] al tuo bambino e sei rimasto sul telefono?",
+    headline: "Ti capita di non avere la forza di [giocare con il tuo bambino]?",
     yes: "Sì",
     no: "Non proprio",
   },
@@ -114,13 +114,20 @@ export const it: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "Anche a me. Ma ci sono [decine di giochi] da fare da sdraiati.",
+      body: "Durano al massimo dieci minuti e ognuno allena qualcosa come la memoria o l’autocontrollo.",
+      variants: {
+        none: { headline: "Bene. E per le sere senza forze ci sono [decine di giochi] da fare da sdraiati." },
+      },
+    },
     why: {
       headline: "Non è colpa tua. Le app sono [fatte per risucchiarti].",
       body: "Dietro ogni app sul tuo telefono c’è un team pagato per conquistare il tuo prossimo minuto. Alle sei di sera la forza di volontà parte già sconfitta.",
       variants: {
         ideas: {
-          headline: "Non è colpa tua. Dopo una giornata piena nessuno ha [idee per giocare].",
-          body: "Così vince la cosa più facile nella stanza, e la cosa più facile nella stanza è uno schermo.",
+          headline: "Senza forze, [vince il telefono].",
+          body: "Quando alle 18 non ti è rimasto niente, vince la cosa più facile nella stanza, ed è uno schermo.",
         },
         asks: {
           headline: "Non è colpa tua. I bambini vogliono [quello che guardi tu].",
@@ -131,12 +138,6 @@ export const it: FunnelCopy = {
           body: "Ognuno aspetta che l’altro metta giù il telefono per primo. Nessuno deve aspettare se entrambi i telefoni vanno in pausa insieme.",
         },
       },
-    },
-    evening: {
-      headline: "Ogni “un attimo” [si accumula].",
-    },
-    promise: {
-      headline: "E se tutti quegli “un attimo” diventassero [giochi facili]?",
     },
     influence: {
       headline: "Più scorriamo noi, più i bambini [chiedono schermi].",
@@ -181,22 +182,19 @@ export const it: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Una sera qualunque in settimana",
-    hours: ["16:00", "17:00", "18:00", "19:00", "20:00"],
-    kid: "Tempo con il bambino",
-    phone: "Telefono",
-    summary: "{n} volte “un attimo” mentre sei con il tuo piccolo",
-  },
-
-  promise: {
-    caption: "La stessa serata, con Oyno",
-    summary: "Un gioco, tutta la tua attenzione",
-    games: [
-      { title: "Il pappagallo", minutes: "5 min", tag: "Senza oggetti" },
-      { title: "Lo zoo delle ombre", minutes: "8 min", tag: "Da sdraiati" },
-      { title: "Zitti al quattro", minutes: "8 min", tag: "Tranquillo" },
-    ],
+  lying: {
+    caption: "Da sdraiati",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "Cucù con le mani",
+      "snore-and-wake": "Il dormiglione",
+      "ceiling-star-spot": "La stella sul soffitto",
+      "tummy-drum-soft-loud": "La pancia tamburo",
+      "knee-bridge-ball": "Il ponte di ginocchia",
+      "ceiling-cinema": "Il cinema sul soffitto",
+      "back-drawing": "Disegni sulla schiena",
+      "belly-boat": "La barchetta sulla pancia",
+    },
   },
 
   influence: {

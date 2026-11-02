@@ -42,6 +42,7 @@ struct LetterScreen: View {
                 if stage == .sealed { opening } else if stage == .open, isWritten { finished }
             }
             .padding(.horizontal, Metric.gutter)
+            .zIndex(2)
         }
         .alert("Add a line in your words", isPresented: $writing) {
             TextField(text: $draft) { Text("Your line") }

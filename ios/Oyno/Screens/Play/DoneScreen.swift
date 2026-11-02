@@ -322,27 +322,30 @@ struct DoneScreen: View {
     /// What the minutes exercised, revealed with the bloom once the kid has tapped.
     private var practiced: some View {
         VStack(alignment: .leading, spacing: Metric.Space.m) {
-            Text("What it practiced").oynoEyebrow()
-            ForEach(Array(skills.enumerated()), id: \.element.id) { index, skill in
-                let tint = Palette.pastels[index % Palette.pastels.count]
-                HStack(spacing: Metric.Space.m) {
-                    Glyph(symbol: skill.symbol, size: 19, weight: .semibold, color: tint.ink)
-                        .frame(width: 40, height: 40)
-                        .background(tint.fill, in: .rect(cornerRadius: 13))
-                    Text(verbatim: skill.label).oynoRowTitle()
-                    Spacer(minLength: 0)
-                    Text("+\(minutes) min")
-                        .font(Typeface.figures(14, .extrabold, relativeTo: .subheadline))
-                        .monospacedDigit()
-                        .foregroundStyle(tint.ink)
+            VStack(alignment: .leading, spacing: Metric.Space.m) {
+                Text("What it practiced").oynoEyebrow()
+                ForEach(Array(skills.enumerated()), id: \.element.id) { index, skill in
+                    let tint = Palette.pastels[index % Palette.pastels.count]
+                    HStack(spacing: Metric.Space.m) {
+                        Glyph(symbol: skill.symbol, size: 19, weight: .semibold, color: tint.ink)
+                            .frame(width: 40, height: 40)
+                            .background(tint.fill, in: .rect(cornerRadius: 13))
+                        Text(verbatim: skill.label).oynoRowTitle()
+                        Spacer(minLength: 0)
+                        Text("+\(minutes) min")
+                            .font(Typeface.figures(14, .extrabold, relativeTo: .subheadline))
+                            .monospacedDigit()
+                            .foregroundStyle(tint.ink)
+                    }
+                    .opacity(tapped ? 1 : 0)
+                    .offset(y: tapped || reduceMotion ? 0 : 6)
+                    .background { SkillSkeleton().opacity(tapped ? 0 : 1) }
+                    .animation(reduceMotion ? nil : .smooth(duration: 0.4).delay(PlanetLayout.bloomPeak + 0.15 * Double(index)), value: tapped)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityHidden(!tapped)
                 }
-                .opacity(tapped ? 1 : 0)
-                .offset(y: tapped || reduceMotion ? 0 : 6)
-                .background { SkillSkeleton().opacity(tapped ? 0 : 1) }
-                .animation(reduceMotion ? nil : .smooth(duration: 0.4).delay(PlanetLayout.bloomPeak + 0.15 * Double(index)), value: tapped)
-                .accessibilityElement(children: .combine)
-                .accessibilityHidden(!tapped)
             }
+            .screenshotCallout("practiced")
             progress
             PrimaryButton(title: "Continue", action: advance)
         }

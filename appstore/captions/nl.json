@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "Batterij leeg? [Speel vanaf de bank]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Spelletjes 0–5 jaar, [zelfs liggend]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Spelen met wetenschap, [slimmere kinderen]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop met doomscrollen, [investeer in je kind]" },
     { "slug": "keepsake", "source": "04", "caption": "Elk rondje laat [een aandenken] achter" },

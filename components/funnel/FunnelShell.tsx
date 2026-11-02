@@ -8,11 +8,10 @@ import { AccountStep } from "./AccountStep";
 import { AlternativeStep } from "./AlternativeStep";
 import { AppsStep } from "./AppsStep";
 import { CompareStep } from "./CompareStep";
-import { EveningStep } from "./EveningStep";
 import { FunnelHeader } from "./FunnelChrome";
 import { InfluenceStep } from "./InfluenceStep";
+import { LyingStep } from "./LyingStep";
 import { PlanStep } from "./PlanStep";
-import { PromiseStep } from "./PromiseStep";
 import { prewarmOffer } from "./prewarm";
 import { QuestionCard } from "./QuestionCard";
 import { StatementStep } from "./StatementStep";
@@ -39,8 +38,7 @@ const CheckoutStep = lazy(() => import("./CheckoutStep").then((m) => ({ default:
 const DEMOS: Partial<
   Record<FunnelStepKind, ComponentType<{ step: FunnelStep; answers: FunnelAnswers }>>
 > = {
-  evening: EveningStep,
-  promise: PromiseStep,
+  lying: LyingStep,
   apps: AppsStep,
   influence: InfluenceStep,
   alternative: AlternativeStep,

@@ -16,7 +16,7 @@ export const nl: FunnelCopy = {
   },
 
   openers: {
-    headline: "Ooit [‘momentje’] tegen je kind gezegd en op je telefoon gebleven?",
+    headline: "Weleens te moe om [met je kind te spelen]?",
     yes: "Ja",
     no: "Niet echt",
   },
@@ -114,13 +114,20 @@ export const nl: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "Ik ook. Maar er zijn [tientallen spelletjes] die je liggend kunt spelen.",
+      body: "Elk duurt hooguit tien minuten en traint iets als geheugen of zelfbeheersing.",
+      variants: {
+        none: { headline: "Mooi. En voor de moeie avonden zijn er [tientallen spelletjes] die je liggend kunt spelen." },
+      },
+    },
     why: {
       headline: "Het ligt niet aan jou. Apps zijn [gemaakt om je vast te houden].",
       body: "Achter elke app op je telefoon zit een team dat betaald wordt om je volgende minuut te winnen. Met alleen wilskracht is dat om zes uur ’s avonds geen eerlijke strijd.",
       variants: {
         ideas: {
-          headline: "Het ligt niet aan jou. Na een lange dag heeft niemand [ideeën voor spelletjes].",
-          body: "Dus wint het makkelijkste in de kamer, en het makkelijkste in de kamer is een scherm.",
+          headline: "Als je moe bent, [wint de telefoon].",
+          body: "Als er om zes uur niets meer over is, wint het makkelijkste in de kamer, en dat is een scherm.",
         },
         asks: {
           headline: "Het ligt niet aan jou. Kinderen willen [waar jij naar kijkt].",
@@ -131,12 +138,6 @@ export const nl: FunnelCopy = {
           body: "Jullie wachten allebei tot de ander als eerste de telefoon weglegt. Niemand hoeft te wachten als beide telefoons tegelijk op pauze gaan.",
         },
       },
-    },
-    evening: {
-      headline: "Elk ‘momentje’ [telt op].",
-    },
-    promise: {
-      headline: "Wat als al die ‘momentjes’ [makkelijke spelletjes] werden?",
     },
     influence: {
       headline: "Kinderen [vragen vaker om een scherm] als wij meer scrollen.",
@@ -181,22 +182,19 @@ export const nl: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Een doordeweekse avond",
-    hours: ["16:00", "17:00", "18:00", "19:00", "20:00"],
-    kid: "Tijd met je kind",
-    phone: "Telefoon",
-    summary: "{n} keer ‘momentje’ tegen je kleintje",
-  },
-
-  promise: {
-    caption: "Dezelfde avond, met Oyno",
-    summary: "Eén spelletje, al je aandacht",
-    games: [
-      { title: "Na-aapje", minutes: "5 min", tag: "Niks nodig" },
-      { title: "Schaduwdierentuin", minutes: "8 min", tag: "Liggend" },
-      { title: "Stop bij vier", minutes: "8 min", tag: "Rustig" },
-    ],
+  lying: {
+    caption: "Liggend gespeeld",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "Kiekeboe-handjes",
+      "snore-and-wake": "Slapende reus",
+      "ceiling-star-spot": "Ster op het plafond",
+      "tummy-drum-soft-loud": "Buiktrommel",
+      "knee-bridge-ball": "Knieënbrug",
+      "ceiling-cinema": "Bioscoop op het plafond",
+      "back-drawing": "Tekenen op je rug",
+      "belly-boat": "Buikbootje",
+    },
   },
 
   influence: {

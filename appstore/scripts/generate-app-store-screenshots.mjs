@@ -34,7 +34,6 @@ import { existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from "no
 import path from "node:path";
 import { localeFor, SITE_TAGS } from "./lib/locales.mjs";
 import {
-  backgroundCss,
   captionHtml,
   captionsFor,
   dataUri,
@@ -43,7 +42,6 @@ import {
   ensureDir,
   FACES,
   fontFaceCss,
-  HIGHLIGHT_CSS,
   pad2,
   PALETTE,
   phoneMockupHtml,
@@ -63,9 +61,11 @@ const CANVAS = deviceFor("iphone").canvas;
  * single directory — none of the theme/site fan-out the sister project needs. */
 const outDirFor = (tag) => path.join(SCREENSHOTS_DIR, localeFor(tag).asc);
 
-/** The store canvas: the app's own off-white with a faint engineering grid. A grid rather
- * than the app's flat ground because a store frame has to read at thumbnail size, and the
- * ruled surface is what says "measuring instrument" before a single word is read. */
+/** The store ground: the planet's blue, so a frame stands apart from the white store page
+ * and from the cream app inside it. Captions are white on it and the emphasis is gold. */
+const GROUND = `background: linear-gradient(180deg, ${PALETTE.sheen} 0%, ${PALETTE.accent} 100%);`;
+const CAPTION_CSS = `.hl { color: ${PALETTE.gold}; }`;
+
 const DEVICE_WIDTH = 1130;
 const CAPTION_TOP = 120;
 
@@ -84,48 +84,145 @@ const CAPTION_TOP = 120;
 const DEVICE_TOP = 560;
 
 /** A callout lifts one widget off the screen: the same capture, cropped to the widget the app
- * reported, drawn larger over it with the phone's shadow while a veil quiets the rest. */
-const CALLOUT = { zoom: 1.3, padPt: 12, radiusPt: 28, margin: 48, veil: 0.35 };
+ * reported, drawn larger over it with the phone's shadow while a light veil quiets the rest. */
+const CALLOUT = { zoom: 1.3, padPt: 12, radiusPt: 28, margin: 48, veil: 0.12 };
 
-function calloutHtml(frame, sourceDir, shotDataUri) {
-  const reportPath = path.join(sourceDir, `${frame.source}.json`);
-  const report = existsSync(reportPath) ? JSON.parse(readFileSync(reportPath, "utf8")) : null;
-  // Several ids lift as one: the box that holds them all.
-  const rects = [frame.callout].flat().map((id) => {
+/** A capture with the widget positions it reported, keyed by its `nn`. */
+function loadSource(sourceDir, nn) {
+  const shotPath = path.join(sourceDir, `${nn}.png`);
+  if (!existsSync(shotPath)) return null;
+  const reportPath = path.join(sourceDir, `${nn}.json`);
+  return {
+    nn,
+    shot: dataUri(shotPath, "image/png"),
+    capture: pixelSize(shotPath),
+    report: existsSync(reportPath) ? JSON.parse(readFileSync(reportPath, "utf8")) : null,
+  };
+}
+
+/** The widgets reported for `ids`, in points and padded so a card's edge comes along.
+ * Several ids are the box that holds them all. */
+function paddedRect({ nn, report }, ids, pad = { x: CALLOUT.padPt, y: CALLOUT.padPt }) {
+  const rects = [ids].flat().map((id) => {
     const found = report?.callouts?.[id];
-    if (!found) throw new Error(`Frame "${frame.slug}": capture ${frame.source} reported no "${id}" callout — recapture it`);
+    if (!found) throw new Error(`Capture ${nn} reported no "${id}" callout — recapture it`);
     return found;
   });
-  const minX = Math.min(...rects.map((r) => r.x));
-  const minY = Math.min(...rects.map((r) => r.y));
-  const rect = {
-    x: minX,
-    y: minY,
-    w: Math.max(...rects.map((r) => r.x + r.w)) - minX,
-    h: Math.max(...rects.map((r) => r.y + r.h)) - minY,
+  const x = Math.min(...rects.map((r) => r.x)) - pad.x;
+  const y = Math.min(...rects.map((r) => r.y)) - pad.y;
+  return {
+    x,
+    y,
+    w: Math.max(...rects.map((r) => r.x + r.w)) + pad.x - x,
+    h: Math.max(...rects.map((r) => r.y + r.h)) + pad.y - y,
   };
+}
 
-  const capture = pixelSize(path.join(sourceDir, `${frame.source}.png`));
+/** The capture cut to `from` (points), drawn at `scale` canvas pixels per capture pixel. */
+function liftedHtml({ shot, capture, report }, from, scale, style) {
+  const px = report.scale * scale;
+  return `
+    <div style="width:${from.w * px}px; height:${from.h * px}px; border-radius:${CALLOUT.radiusPt * px}px; overflow:hidden; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.28)); background-image:url('${shot}'); background-repeat:no-repeat; background-size:${capture.width * scale}px ${capture.height * scale}px; background-position:${-from.x * px}px ${-from.y * px}px; ${style}"></div>`;
+}
+
+function calloutHtml(frame, source) {
+  const { capture, report } = source;
+  const from = paddedRect(source, frame.callout);
   const { SCREEN } = deviceGeometry(DEVICE_WIDTH);
   const k = SCREEN.w / capture.width;
   const screenLeft = (CANVAS.w - DEVICE_WIDTH) / 2 + SCREEN.x;
   const screenTop = DEVICE_TOP + SCREEN.y;
   const toCanvas = (pt) => pt * report.scale * k;
 
-  // The widget where the phone draws it, padded so its card's edge comes along.
-  const pad = CALLOUT.padPt;
-  const from = { x: rect.x - pad, y: rect.y - pad, w: rect.w + 2 * pad, h: rect.h + 2 * pad };
   const zoom = Math.min(frame.zoom ?? CALLOUT.zoom, (CANVAS.w - 2 * CALLOUT.margin) / toCanvas(from.w));
   const w = toCanvas(from.w) * zoom;
   const h = toCanvas(from.h) * zoom;
   const clamp = (value, max) => Math.min(Math.max(value, CALLOUT.margin), max - CALLOUT.margin);
   const left = clamp(screenLeft + toCanvas(from.x + from.w / 2) - w / 2, CANVAS.w - w);
   const top = clamp(screenTop + toCanvas(from.y + from.h / 2) - h / 2, CANVAS.h - h);
-  const scale = k * zoom;
 
   return `
     <div style="position:absolute; left:${screenLeft}px; top:${screenTop}px; width:${SCREEN.w}px; height:${SCREEN.h}px; border-radius:${SCREEN.r}px; background:${PALETTE.canvas}; opacity:${CALLOUT.veil};"></div>
-    <div style="position:absolute; left:${left}px; top:${top}px; width:${w}px; height:${h}px; border-radius:${toCanvas(CALLOUT.radiusPt) * zoom}px; overflow:hidden; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.28)); background-image:url('${shotDataUri}'); background-repeat:no-repeat; background-size:${capture.width * scale}px ${capture.height * scale}px; background-position:${-from.x * report.scale * scale}px ${-from.y * report.scale * scale}px;"></div>`;
+    ${liftedHtml(source, from, k * zoom, `position:absolute; left:${left}px; top:${top}px;`)}`;
+}
+
+/** A frame with `art` is the listing's cover, read top to bottom: the game's painting with
+ * its age pinned to it, the low battery it is for, what it asks, and what it practiced. The
+ * widgets come from the game's capture and its Done screen. Each one is tilted a little, so
+ * the column reads as things picked up off the screen rather than a form. */
+const HERO = { artTop: 380, artSize: 1000, rug: 0.86, bottom: 100, margin: 64, arrow: 96 };
+
+/** Sizes as multiples of the practiced card's, which spans the margins. */
+const ZOOM = { sticker: 1.5, low: 1.35, chip: 1.6 };
+
+/** The Done screen's capture, which has no frame of its own. */
+const PRACTICED = "09";
+
+/** The time and the first two things the game needs, each its own card. The edges stay inside
+ * the 6pt gaps between them. */
+const NEEDS = [
+  { id: "meta.time", tilt: -6, lift: -12 },
+  { id: "meta.tag0", tilt: 4, lift: 18 },
+  { id: "meta.tag1", tilt: -3, lift: 0 },
+];
+const NEEDS_PAD = { x: 5, y: 5 };
+
+/** The age menu reports its 44pt tap area. Its pill is the 32pt inside it. */
+const PILL_INSET = 6;
+
+/** "Low" is the first of the picker's three equal options, inside its 4pt track inset. */
+function lowRect({ x, y, w, h }) {
+  const track = 4;
+  return { x, y, w: track + (w - 2 * track) / 3, h };
+}
+
+/** Under the 10pt before the next option's icon, so none of "Okay" comes along. */
+const LOW_PAD = { x: 8, y: 6 };
+
+function unionRect(rects, pad) {
+  const x = Math.min(...rects.map((r) => r.x)) - pad.x;
+  const y = Math.min(...rects.map((r) => r.y)) - pad.y;
+  return {
+    x,
+    y,
+    w: Math.max(...rects.map((r) => r.x + r.w)) + pad.x - x,
+    h: Math.max(...rects.map((r) => r.y + r.h)) + pad.y - y,
+  };
+}
+
+const arrowHtml = () => `
+  <svg width="64" height="${HERO.arrow}" viewBox="0 0 64 ${HERO.arrow}" style="flex:none;">
+    <path d="M32 10 V${HERO.arrow - 14} M12 ${HERO.arrow - 36} L32 ${HERO.arrow - 12} L52 ${HERO.arrow - 36}" stroke="${PALETTE.gold}" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+
+function heroHtml(frame, source, sourceDir) {
+  const done = loadSource(sourceDir, PRACTICED);
+  if (!done) throw new Error(`Frame "${frame.slug}" needs capture ${PRACTICED} — capture it first`);
+  const { callouts } = source.report;
+  for (const id of ["age", "battery.label", "energy"]) {
+    if (!callouts[id]) throw new Error(`Capture ${source.nn} reported no "${id}" callout — recapture it`);
+  }
+  const pill = { x: callouts.age.x, y: callouts.age.y + PILL_INSET, w: callouts.age.w, h: callouts.age.h - 2 * PILL_INSET };
+  const low = unionRect([callouts["battery.label"], lowRect(callouts.energy)], LOW_PAD);
+  const practiced = paddedRect(done, "practiced", { x: 16, y: 16 });
+  // Canvas pixels per point at zoom 1: the practiced card spans the margins.
+  const perPt = (CANVAS.w - 2 * HERO.margin) / practiced.w;
+  const lift = (from, rect, zoom, style) => liftedHtml(from, rect, (perPt * zoom) / from.report.scale, `flex:none; ${style}`);
+  const chips = NEEDS.map(({ id, tilt, lift: dy }) => lift(source, paddedRect(source, id, NEEDS_PAD), ZOOM.chip, `transform:translateY(${dy}px) rotate(${tilt}deg);`)).join("");
+  const art = dataUri(path.join(ROOT, "art", "source", "activities", `${frame.art}.png`), "image/png");
+
+  return `
+    <img src="${art}" style="position:absolute; left:${(CANVAS.w - HERO.artSize) / 2}px; top:${HERO.artTop}px; width:${HERO.artSize}px; height:${HERO.artSize}px;">
+    ${lift(source, pill, ZOOM.sticker, `position:absolute; right:${HERO.margin}px; top:${HERO.artTop + 170}px; transform:rotate(-4deg); border-radius:9999px;`)}
+    <div style="position:absolute; left:0; right:0; top:${HERO.artTop + HERO.rug * HERO.artSize}px; bottom:${HERO.bottom}px; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;">
+      ${lift(source, low, ZOOM.low, "transform:rotate(-2deg);")}
+      ${arrowHtml()}
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:28px 40px; padding:0 ${HERO.margin}px;">
+        ${chips}
+      </div>
+      ${arrowHtml()}
+      ${lift(done, practiced, 1, "transform:rotate(1.5deg);")}
+    </div>`;
 }
 
 /** iPad and the closed iPhone Duo sit under a caption lined up with them, running off the foot like
@@ -164,8 +261,8 @@ function slateFrameHtml(frame, sourceDir, canvas, mockup) {
   const left = (canvas.w - device.width) / 2;
 
   return `
-  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; ${backgroundCss()}">
-    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:${left}px; right:${left}px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+  <div style="width:${canvas.w}px; height:${canvas.h}px; position:relative; overflow:hidden; ${GROUND}">
+    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:${left}px; right:${left}px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.surface};">
       ${captionHtml(frame.caption)}
     </div>
     <div style="position:absolute; left:${left}px; top:${SLATE.top}px; filter:drop-shadow(0 40px 70px rgba(10,10,10,0.22));">
@@ -177,26 +274,27 @@ function slateFrameHtml(frame, sourceDir, canvas, mockup) {
 function frameHtml(frame, sourceDir, device) {
   const { canvas, mockup } = deviceFor(device);
   if (device !== "iphone") return slateFrameHtml(frame, sourceDir, canvas, mockup);
-  const sourcePath = path.join(sourceDir, `${frame.source}.png`);
-  const shotDataUri = existsSync(sourcePath) ? dataUri(sourcePath, "image/png") : null;
-  const callout = frame.callout && shotDataUri ? calloutHtml(frame, sourceDir, shotDataUri) : "";
+  const source = loadSource(sourceDir, frame.source);
+  const body = frame.art && source
+    ? heroHtml(frame, source, sourceDir)
+    : `<div style="position:absolute; left:50%; top:${DEVICE_TOP}px; transform:translateX(-50%); filter:drop-shadow(0 40px 70px rgba(10,10,10,0.22));">
+      ${phoneMockupHtml(source?.shot ?? null, DEVICE_WIDTH)}
+    </div>
+    ${frame.callout && source ? calloutHtml(frame, source) : ""}`;
 
   return `
-  <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; ${backgroundCss()}">
-    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.ink};">
+  <div style="width:${CANVAS.w}px; height:${CANVAS.h}px; position:relative; overflow:hidden; ${GROUND}">
+    <div class="caption" style="position:absolute; top:${CAPTION_TOP}px; left:88px; right:88px; font-family:${FACES.heading}; font-size:${CAPTION_SIZES[0]}px; line-height:1.06; letter-spacing:-0.03em; color:${PALETTE.surface};">
       ${captionHtml(frame.caption)}
     </div>
-    <div style="position:absolute; left:50%; top:${DEVICE_TOP}px; transform:translateX(-50%); filter:drop-shadow(0 40px 70px rgba(10,10,10,0.22));">
-      ${phoneMockupHtml(shotDataUri, DEVICE_WIDTH)}
-    </div>
-    ${callout}
+    ${body}
   </div>`;
 }
 
 function pageHtml(frame, { sourceDir, device }) {
   return `<!doctype html><html><head><meta charset="utf-8"><style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    ${HIGHLIGHT_CSS}
+    ${CAPTION_CSS}
     ${fontFaceCss()}
   </style></head><body>${frameHtml(frame, sourceDir, device)}</body></html>`;
 }

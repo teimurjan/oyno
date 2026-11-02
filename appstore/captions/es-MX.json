@@ -1,6 +1,6 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "callout": "battery", "caption": "¿Sin pila? [Juega desde el sillón]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Juegos 0–5 años, [hasta acostado]" },
     { "slug": "growth", "source": "02", "callout": "practice", "caption": "Juego con base científica, [niños más listos]" },
     { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Deja el scroll, [invierte en tu hijo]" },
     { "slug": "keepsake", "source": "04", "caption": "Cada ronda deja [un recuerdo]" },

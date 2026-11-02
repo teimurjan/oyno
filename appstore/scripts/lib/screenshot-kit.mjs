@@ -45,6 +45,8 @@ export const SCREENS = [
   { nn: "07", screen: "find" },
   // The iPad still shows the splash fading out at the default delay.
   { nn: "08", screen: "worlds", delay: 6000 },
+  // No frame of its own: the cover lifts what the game practiced from it.
+  { nn: "09", screen: "done:practiced" },
 ];
 
 /** The store slots the kit fills, one simulator each.
@@ -143,6 +145,8 @@ export const PALETTE = {
   surface: "#FFFFFF",
   canvas: "#FFF8EF",
   accent: "#2F5E9E",
+  sheen: "#3F70A8",
+  gold: "#F7C46C",
   alert: "#C2412D",
 };
 
@@ -240,9 +244,8 @@ export const HIGHLIGHT_CSS = `
   .hl { color: ${PALETTE.accent}; }
 `;
 
-/** The ground every frame sits on: the warm canvas with a faint engineering grid. A canvas
- * shown smaller than a screenshot frame wants a coarser grid and heavier rules, or it reads
- * as noise. */
+/** The creatives' ground: the warm canvas with a faint grid. A canvas shown smaller than a
+ * screenshot frame wants a coarser grid and heavier rules, or it reads as noise. */
 export function backgroundCss({ cell = 64, rule = 1 } = {}) {
   return `
     background-color: ${PALETTE.canvas};

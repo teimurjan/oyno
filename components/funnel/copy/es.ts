@@ -16,7 +16,7 @@ export const es: FunnelCopy = {
   },
 
   openers: {
-    headline: "¿Alguna vez le has dicho a tu peque [«un segundo»] y has seguido con el móvil?",
+    headline: "¿A veces no te quedan fuerzas para [jugar con tu peque]?",
     yes: "Sí",
     no: "No mucho",
   },
@@ -114,13 +114,20 @@ export const es: FunnelCopy = {
   },
 
   steps: {
+    lying: {
+      headline: "A mí también me pasa. Pero hay [decenas de juegos] para jugar tumbados.",
+      body: "Ninguno dura más de diez minutos, y cada uno entrena algo como la memoria o el autocontrol.",
+      variants: {
+        none: { headline: "Genial. Y para las noches sin fuerzas, hay [decenas de juegos] para jugar tumbados." },
+      },
+    },
     why: {
       headline: "No eres tú. Las apps están [hechas para engancharte].",
       body: "Cada app de tu móvil tiene un equipo al que pagan por ganarse tu siguiente minuto. A las seis de la tarde, tu fuerza de voluntad juega en desventaja.",
       variants: {
         ideas: {
-          headline: "No eres tú. Tras un día entero, nadie tiene [ideas para jugar].",
-          body: "Así que gana lo que menos cuesta, y lo que menos cuesta es una pantalla.",
+          headline: "Sin fuerzas, [gana el móvil].",
+          body: "Cuando a las seis ya no te queda nada, gana lo más fácil de la habitación, y eso es una pantalla.",
         },
         asks: {
           headline: "No eres tú. Los peques quieren [lo que tú miras].",
@@ -131,12 +138,6 @@ export const es: FunnelCopy = {
           body: "Cada uno espera a que el otro suelte el suyo primero. Nadie tiene que esperar si los dos móviles se pausan a la vez.",
         },
       },
-    },
-    evening: {
-      headline: "Cada «un segundo» [suma].",
-    },
-    promise: {
-      headline: "¿Y si todos esos «un segundo» se convirtieran en [juegos fáciles]?",
     },
     influence: {
       headline: "Cuanto más scroll hacemos, más [piden pantallas] los peques.",
@@ -181,22 +182,19 @@ export const es: FunnelCopy = {
     },
   },
 
-  evening: {
-    caption: "Una tarde entre semana",
-    hours: ["16:00", "17:00", "18:00", "19:00", "20:00"],
-    kid: "Tiempo con tu peque",
-    phone: "Móvil",
-    summary: "{n} veces «un segundo» en el rato con tu peque",
-  },
-
-  promise: {
-    caption: "La misma tarde, con Oyno",
-    summary: "Un juego, toda tu atención",
-    games: [
-      { title: "Copiones", minutes: "5 min", tag: "Sin material" },
-      { title: "Zoo de sombras", minutes: "8 min", tag: "Tumbados" },
-      { title: "Alto en el cuatro", minutes: "8 min", tag: "Tranquilo" },
-    ],
+  lying: {
+    caption: "Para jugar tumbados",
+    minutes: "{n} min",
+    games: {
+      "hands-peekaboo": "Cucú con las manos",
+      "snore-and-wake": "El dormilón",
+      "ceiling-star-spot": "La estrella del techo",
+      "tummy-drum-soft-loud": "Tambor de barriga",
+      "knee-bridge-ball": "El puente de rodillas",
+      "ceiling-cinema": "Cine en el techo",
+      "back-drawing": "Dibujos en la espalda",
+      "belly-boat": "Barquito en la barriga",
+    },
   },
 
   influence: {
