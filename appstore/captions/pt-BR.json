@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Brincadeiras de 0 a 5 anos, [até deitado]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Brincadeira com ciência, [crianças mais espertas]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Chega de doomscrolling, [invista no seu filho]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Sem pique? [Brinque sem sair do sofá]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Toda brincadeira [com base científica]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Chega de doomscrolling, [esteja presente]" },
     { "slug": "keepsake", "source": "04", "caption": "Cada rodada deixa [uma lembrança]" },
     { "slug": "home", "source": "05", "caption": "Suas noites [fazem crescer um planeta]" },
     { "slug": "letter", "source": "06", "caption": "No domingo, [uma carta do seu planeta]" },

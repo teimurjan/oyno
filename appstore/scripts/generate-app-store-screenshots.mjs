@@ -146,14 +146,15 @@ function calloutHtml(frame, source) {
     ${liftedHtml(source, from, k * zoom, `position:absolute; left:${left}px; top:${top}px;`)}`;
 }
 
-/** A frame with `art` is the listing's cover, read top to bottom: the game's painting with
- * its age pinned to it, the low battery it is for, what it asks, and what it practiced. The
- * widgets come from the game's capture and its Done screen. Each one is tilted a little, so
- * the column reads as things picked up off the screen rather than a form. */
+/** A frame with `art` is the listing's cover, read top to bottom: the game's painting, the
+ * low battery it is for, what it asks, and what it practiced. The widgets come from the
+ * game's capture and its Done screen. Each one is tilted a little, so the column reads as
+ * things picked up off the screen rather than a form. No age pill: App Review reads an age
+ * on the listing as a Kids category app. */
 const HERO = { artTop: 380, artSize: 1000, rug: 0.86, bottom: 100, margin: 64, arrow: 96 };
 
 /** Sizes as multiples of the practiced card's, which spans the margins. */
-const ZOOM = { sticker: 1.5, low: 1.35, chip: 1.6 };
+const ZOOM = { low: 1.35, chip: 1.6 };
 
 /** The Done screen's capture, which has no frame of its own. */
 const PRACTICED = "09";
@@ -166,9 +167,6 @@ const NEEDS = [
   { id: "meta.tag1", tilt: -3, lift: 0 },
 ];
 const NEEDS_PAD = { x: 5, y: 5 };
-
-/** The age menu reports its 44pt tap area. Its pill is the 32pt inside it. */
-const PILL_INSET = 6;
 
 /** "Low" is the first of the picker's three equal options, inside its 4pt track inset. */
 function lowRect({ x, y, w, h }) {
@@ -199,10 +197,9 @@ function heroHtml(frame, source, sourceDir) {
   const done = loadSource(sourceDir, PRACTICED);
   if (!done) throw new Error(`Frame "${frame.slug}" needs capture ${PRACTICED} — capture it first`);
   const { callouts } = source.report;
-  for (const id of ["age", "battery.label", "energy"]) {
+  for (const id of ["battery.label", "energy"]) {
     if (!callouts[id]) throw new Error(`Capture ${source.nn} reported no "${id}" callout — recapture it`);
   }
-  const pill = { x: callouts.age.x, y: callouts.age.y + PILL_INSET, w: callouts.age.w, h: callouts.age.h - 2 * PILL_INSET };
   const low = unionRect([callouts["battery.label"], lowRect(callouts.energy)], LOW_PAD);
   const practiced = paddedRect(done, "practiced", { x: 16, y: 16 });
   // Canvas pixels per point at zoom 1: the practiced card spans the margins.
@@ -213,7 +210,6 @@ function heroHtml(frame, source, sourceDir) {
 
   return `
     <img src="${art}" style="position:absolute; left:${(CANVAS.w - HERO.artSize) / 2}px; top:${HERO.artTop}px; width:${HERO.artSize}px; height:${HERO.artSize}px;">
-    ${lift(source, pill, ZOOM.sticker, `position:absolute; right:${HERO.margin}px; top:${HERO.artTop + 170}px; transform:rotate(-4deg); border-radius:9999px;`)}
     <div style="position:absolute; left:0; right:0; top:${HERO.artTop + HERO.rug * HERO.artSize}px; bottom:${HERO.bottom}px; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;">
       ${lift(source, low, ZOOM.low, "transform:rotate(-2deg);")}
       ${arrowHtml()}

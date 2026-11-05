@@ -182,6 +182,9 @@ export const nl: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Een Zwitserse studie volgde 493 kinderen van de geboorte tot 16 jaar; 96,4% deed op 18 maanden nog een dutje en 35,4% op 4 jaar.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "Voor 6 tot 18 maanden: schootspelletjes met een verwachte verrassing, verstopspelletjes, nadoe- en naapspelletjes, eenvoudig rollenspel, vingerspelletjes en praten over wat de baby opmerkt.",

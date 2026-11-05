@@ -19,6 +19,7 @@ export const fr: SiteCopy = {
     switchLabel: "Changer de langue",
     start: "Commencer",
     games: "Jeux",
+    tools: "Outils gratuits",
     guides: "Guides",
     blog: "Blog",
   },

@@ -1,1 +1,1 @@
-screen,time,tempo,schermo,bambini,neonato,famiglia,genitori,social,telefono,sviluppo,attività,limite
+screen,time,tempo,blocco,app,bambini,bimbi,neonato,genitori,social,telefono,sviluppo,attività,limite

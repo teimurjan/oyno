@@ -184,6 +184,9 @@ export const de: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Eine Schweizer Studie begleitete 493 Kinder von der Geburt bis 16 Jahre; mit 18 Monaten schliefen noch 96,4 % tagsüber, mit 4 Jahren 35,4 %.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "Für 6 bis 18 Monate: Schoßspiele mit einer erwarteten Überraschung, Versteckspiele, Nachahm- und Nachmachspiele, einfaches Rollenspiel, Fingerspiele und Gespräche über das, was dem Baby auffällt.",

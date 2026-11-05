@@ -15,6 +15,24 @@ export interface Cited {
 }
 
 export const REFERENCES: Record<string, Cited> = {
+  "paruthi-2016": {
+    kind: "guide",
+    short: "Paruthi et al., 2016",
+    title: "Recommended Amount of Sleep for Pediatric Populations: A Consensus Statement of the American Academy of Sleep Medicine",
+    published: "Journal of Clinical Sleep Medicine, 12(6), 785–786",
+    year: 2016,
+    url: "https://doi.org/10.5664/jcsm.5866",
+  },
+  "iglowstein-2003": {
+    kind: "study",
+    short: "Iglowstein et al., 2003",
+    title: "Sleep Duration From Infancy to Adolescence: Reference Values and Generational Trends",
+    published: "Pediatrics, 111(2), 302–307",
+    year: 2003,
+    url: "https://doi.org/10.1542/peds.111.2.302",
+    design: "longitudinal",
+    studied: "A Swiss study followed 493 children from birth to 16 years; 96.4% still napped at 18 months and 35.4% at 4 years.",
+  },
   "tronick-1978": {
     kind: "study",
     short: "Tronick et al., 1978",

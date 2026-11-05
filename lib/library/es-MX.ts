@@ -194,6 +194,9 @@ export const esMX: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Un estudio suizo siguió a 493 niños desde el nacimiento hasta los 16 años; el 96.4 % aún tomaba siesta a los 18 meses y el 35.4 % a los 4 años.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "De 6 a 18 meses: juegos en las piernas con una sorpresa esperada, juegos de esconder, juegos de imitar y copiar, juegos de roles sencillos, juegos de manitas y plática sobre lo que el bebé nota.",

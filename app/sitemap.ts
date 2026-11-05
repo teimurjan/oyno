@@ -4,15 +4,18 @@ import { articlePath, BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/
 import { GAMES, hubsIn } from "@/lib/games/catalog";
 import { gamePath, GAMES_PATH, hubPath } from "@/lib/games/hubs";
 import { alternatesFor, alternatesForPath, LOCALES, SITE_PAGES } from "@/lib/i18n";
+import { TOOL_SLUGS, toolPath, TOOLS_PATH } from "@/lib/tools";
 
-/** Every indexable page in every language, with its `hreflang`: the marketing pages, the games
- * and the articles. The funnel is `noindex` and stays out. */
+/** Every indexable page in every language, with its `hreflang`: the marketing pages, the games,
+ * the free tools and the articles. The funnel is `noindex` and stays out. */
 export default function sitemap(): MetadataRoute.Sitemap {
   const marketing = SITE_PAGES.flatMap((page) => LOCALES.map((lang) => alternatesFor(lang, page)));
   const library = [
     GAMES_PATH,
     ...hubsIn("en").map(hubPath),
     ...GAMES.map((game) => gamePath(game.id)),
+    TOOLS_PATH,
+    ...TOOL_SLUGS.map(toolPath),
     GUIDES_PATH,
     BLOG_PATH,
     ...ARTICLES.map(articlePath),

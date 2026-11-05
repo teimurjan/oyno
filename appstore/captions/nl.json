@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Spelletjes 0–5 jaar, [zelfs liggend]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Spelen met wetenschap, [slimmere kinderen]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop met doomscrollen, [investeer in je kind]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Batterij leeg? [Speel vanaf de bank]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Elk spelletje [wetenschappelijk onderbouwd]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop met doomscrollen, [wees erbij]" },
     { "slug": "keepsake", "source": "04", "caption": "Elk rondje laat [een aandenken] achter" },
     { "slug": "home", "source": "05", "caption": "Jullie avonden [laten een planeet groeien]" },
     { "slug": "letter", "source": "06", "caption": "Op zondag [een brief van jullie planeet]" },

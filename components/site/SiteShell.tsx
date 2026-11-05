@@ -3,9 +3,10 @@ import { Logo } from "@/components/Logo";
 import { copyFor } from "@/components/site/copy";
 import { BLOG_PATH, GUIDES_PATH } from "@/components/site/articles/paths";
 import { GAMES_PATH } from "@/lib/games/hubs";
+import { TOOLS_PATH } from "@/lib/tools";
 import { funnelPath, localePath, LOCALE_NAMES, LOCALES, pathFor, type Lang, type SitePage } from "@/lib/i18n";
 
-/** A page the switcher can carry across: a marketing page by name, or a games, guides or blog
+/** A page the switcher can carry across: a marketing page by name, or a games, tools, guides or blog
  * page by its English path. */
 export type Address = SitePage | `/${string}`;
 
@@ -66,12 +67,13 @@ export function SiteShell({
   );
 }
 
-/** The footer's links to the games, guides and blog, which every language has. */
+/** The footer's links to the games, tools, guides and blog, which every language has. */
 export function LibraryLinks({ lang }: { lang: Lang }) {
   const { nav } = copyFor(lang);
   return (
     <>
       <Link href={localePath(lang, GAMES_PATH)} className="hover:text-ink">{nav.games}</Link>
+      <Link href={localePath(lang, TOOLS_PATH)} className="hover:text-ink">{nav.tools}</Link>
       <Link href={localePath(lang, GUIDES_PATH)} className="hover:text-ink">{nav.guides}</Link>
       <Link href={localePath(lang, BLOG_PATH)} className="hover:text-ink">{nav.blog}</Link>
     </>

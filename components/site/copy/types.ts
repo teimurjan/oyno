@@ -23,6 +23,7 @@ export interface NavCopy {
   start: string;
   /** The footer links to the games and articles. */
   games: string;
+  tools: string;
   guides: string;
   blog: string;
 }

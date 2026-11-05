@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Play for ages 0–5, [even lying down]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Science-backed play, [smarter kids]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop doomscrolling, [invest in your kid]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Too tired to play? [Play lying down]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Every game [backed by research]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop doomscrolling, [be present]" },
     { "slug": "keepsake", "source": "04", "caption": "Every round leaves [a keepsake]" },
     { "slug": "home", "source": "05", "caption": "Your evenings [grow a little planet]" },
     { "slug": "letter", "source": "06", "caption": "On Sunday, [a letter from your planet]" },

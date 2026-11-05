@@ -200,6 +200,9 @@ export const pl: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Szwajcarskie badanie śledziło 493 dzieci od urodzenia do 16. roku życia; w wieku 18 miesięcy drzemało jeszcze 96,4%, a w wieku 4 lat 35,4%.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "Dla dzieci od 6 do 18 miesięcy: zabawy na kolanach z oczekiwaną niespodzianką, zabawy w chowanie, zabawy w naśladowanie i powtarzanie, proste odgrywanie ról, zabawy paluszkowe i rozmowa o tym, co zauważa niemowlę.",

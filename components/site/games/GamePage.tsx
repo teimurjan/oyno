@@ -8,6 +8,8 @@ import { findHub, gamePath, hubPath, relatedGames, type Game, type Hub } from "@
 import { localePath, type Lang } from "@/lib/i18n";
 import { libraryFor } from "@/lib/library";
 import { libraryPageMetadata } from "@/lib/seo";
+import { TOOL_OF_MECHANIC, toolPath } from "@/lib/tools";
+import { toolsFor } from "@/lib/tools/copy";
 import { AppPitch, capitalized, gamesCrumb, GameList, Research, Section, Trail } from "./parts";
 
 const Chip = ({ lang, hub, label }: { lang: Lang; hub: Hub | undefined; label: string }) => {
@@ -23,6 +25,7 @@ function GamePage({ lang, game }: { lang: Lang; game: Game }) {
   const age = findHub(hubs, "age", game.age)!;
   const type = findHub(hubs, "type", game.mechanic);
   const path = gamePath(game.id);
+  const tool = TOOL_OF_MECHANIC[game.mechanic];
 
   return (
     <SiteShell lang={lang} page={path}>
@@ -53,6 +56,12 @@ function GamePage({ lang, game }: { lang: Lang; game: Game }) {
             {game.skills.map((skill) => <Chip key={skill} lang={lang} hub={findHub(hubs, "skill", skill)} label={labels.skills[skill]} />)}
             {game.tags.map((tag) => <Chip key={tag} lang={lang} hub={findHub(hubs, "tag", tag)} label={labels.tags[tag]} />)}
           </div>
+          {tool && (
+            <p className="mt-5 text-[14px] text-muted">
+              {toolsFor(lang).gameLink}{" "}
+              <Link href={localePath(lang, toolPath(tool))} className="font-semibold text-ink underline underline-offset-4">{toolsFor(lang).pages[tool].name}</Link>
+            </p>
+          )}
         </div>
         {art && (
           // eslint-disable-next-line @next/next/no-img-element

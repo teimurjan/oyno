@@ -197,6 +197,9 @@ export const it: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Uno studio svizzero ha seguito 493 bambini dalla nascita ai 16 anni; il 96,4% faceva ancora il sonnellino a 18 mesi e il 35,4% a 4 anni.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "Dai 6 ai 18 mesi: giochi in braccio con una sorpresa attesa, giochi del nascondere, giochi di imitazione e di copia, semplici giochi di ruolo, giochi con le dita e conversazione su ciò che il bambino nota.",

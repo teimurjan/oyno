@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Giochi 0–5 anni, [anche da sdraiati]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Gioco basato sulla scienza, [bimbi più svegli]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Basta scroll, [investi nel tuo bimbo]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Batteria scarica? [Gioca dal divano]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Ogni gioco [basato sulla ricerca]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Basta scroll, [vivi il momento]" },
     { "slug": "keepsake", "source": "04", "caption": "Ogni partita lascia [un ricordo]" },
     { "slug": "home", "source": "05", "caption": "Le vostre serate [fanno crescere un pianeta]" },
     { "slug": "letter", "source": "06", "caption": "La domenica, [una lettera dal vostro pianeta]" },

@@ -19,6 +19,7 @@ export const nl: SiteCopy = {
     switchLabel: "Taal wijzigen",
     start: "Aan de slag",
     games: "Spelletjes",
+    tools: "Gratis tools",
     guides: "Gidsen",
     blog: "Blog",
   },

@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Juegos 0–5 años, [hasta acostado]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Juego con base científica, [niños más listos]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Deja el scroll, [invierte en tu hijo]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "¿Sin pila? [Juega desde el sillón]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Cada juego, [respaldado por la ciencia]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Deja el scroll, [vive el momento]" },
     { "slug": "keepsake", "source": "04", "caption": "Cada ronda deja [un recuerdo]" },
     { "slug": "home", "source": "05", "caption": "Sus tardes [hacen crecer un planeta]" },
     { "slug": "letter", "source": "06", "caption": "Cada domingo, [una carta de su planeta]" },

@@ -190,6 +190,9 @@ export const ptBR: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Um estudo suíço acompanhou 493 crianças do nascimento aos 16 anos; 96,4% ainda tiravam soneca aos 18 meses e 35,4% aos 4 anos.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "De 6 a 18 meses: brincadeiras de colo com uma surpresa esperada, brincadeiras de esconder, brincadeiras de imitar e copiar, faz de conta simples, músicas com gestos e conversa sobre o que o bebê nota.",

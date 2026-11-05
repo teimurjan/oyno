@@ -19,6 +19,7 @@ export const ru: SiteCopy = {
     switchLabel: "Сменить язык",
     start: "Начать",
     games: "Игры",
+    tools: "Бесплатные инструменты",
     guides: "Гайды",
     blog: "Блог",
   },

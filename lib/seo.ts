@@ -79,5 +79,22 @@ export function articleStructuredData(lang: Lang, article: { title: string; desc
   };
 }
 
+/** A free tool in the browser. `path` already carries the locale's prefix. */
+export function toolStructuredData(lang: Lang, tool: { name: string; description: string; path: string }) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    inLanguage: lang,
+    name: tool.name,
+    description: tool.description,
+    url: `${SITE_URL}${tool.path}`,
+    applicationCategory: "LifestyleApplication",
+    operatingSystem: "Any",
+    isAccessibleForFree: true,
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    publisher: ORGANIZATION,
+  };
+}
+
 /** The byline every article carries: the founder story on the home page is his. */
 export const AUTHOR = { name: "Tim", role: "Maker of Oyno" };

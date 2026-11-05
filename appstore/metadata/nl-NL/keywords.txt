@@ -1,1 +1,1 @@
-screen,time,spelletjes,kleuter,dreumes,baby,ouders,gezin,telefoon,apps,blokkeren,ontwikkeling,spelen
+screen,time,spelletjes,kleuter,peuter,dreumes,baby,gezin,telefoon,apps,blokkeren,ontwikkeling,spelen

@@ -19,6 +19,7 @@ export const ptBR: SiteCopy = {
     switchLabel: "Mudar idioma",
     start: "Começar",
     games: "Brincadeiras",
+    tools: "Ferramentas grátis",
     guides: "Guias",
     blog: "Blog",
   },

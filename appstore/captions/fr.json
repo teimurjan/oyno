@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Des jeux de 0 à 5 ans, [même allongé]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Des jeux validés par la science, [des enfants plus malins]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop au scroll, [place à l’enfant]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "À plat ? [Jouez depuis le canapé]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Chaque jeu [fondé sur la recherche]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Stop au scroll, [place au présent]" },
     { "slug": "keepsake", "source": "04", "caption": "Chaque partie laisse [un souvenir]" },
     { "slug": "home", "source": "05", "caption": "Vos soirées [font pousser une planète]" },
     { "slug": "letter", "source": "06", "caption": "Le dimanche, [une lettre de votre planète]" },

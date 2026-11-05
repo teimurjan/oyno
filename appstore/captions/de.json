@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Spiele von 0–5, [sogar im Liegen]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Spielen mit Wissenschaft, [klügere Kinder]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Schluss mit Doomscrolling, [Zeit fürs Kind]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Akku leer? [Spielen im Liegen]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Jedes Spiel [wissenschaftlich fundiert]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Schluss mit Doomscrolling, [sei ganz da]" },
     { "slug": "keepsake", "source": "04", "caption": "Jede Runde hinterlässt [ein Andenken]" },
     { "slug": "home", "source": "05", "caption": "Eure Abende [lassen einen Planeten wachsen]" },
     { "slug": "letter", "source": "06", "caption": "Sonntags [ein Brief von eurem Planeten]" },

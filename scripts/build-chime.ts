@@ -1,12 +1,12 @@
 /**
- * Writes the bell that ends a round, `ios/Oyno/Resources/Chime.wav`: two soft struck notes,
- * a fifth apart, synthesised from a few decaying partials. Generated and committed, never
- * edited, so the sound in the bundle has a source and a diff.
+ * Writes the bell that ends a round, `ios/Oyno/Resources/Chime.wav` and the web timer's
+ * `public/sounds/chime.wav`: two soft struck notes, a fifth apart, synthesised from a few
+ * decaying partials. Generated and committed, never edited, so the sound has a source and a diff.
  */
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 
-const OUT = path.resolve(import.meta.dir, "../ios/Oyno/Resources/Chime.wav");
+const OUTS = ["../ios/Oyno/Resources/Chime.wav", "../public/sounds/chime.wav"].map((out) => path.resolve(import.meta.dir, out));
 const RATE = 44_100;
 const SECONDS = 1.8;
 const PEAK = 0.6;
@@ -68,5 +68,7 @@ header.writeUInt16LE(16, 34);
 header.write("data", 36);
 header.writeUInt32LE(data.length, 40);
 
-writeFileSync(OUT, Buffer.concat([header, data]));
-console.log(`Wrote ${path.relative(process.cwd(), OUT)}: ${SECONDS}s, ${(header.length + data.length) / 1024 | 0} KB`);
+for (const out of OUTS) {
+  writeFileSync(out, Buffer.concat([header, data]));
+  console.log(`Wrote ${path.relative(process.cwd(), out)}: ${SECONDS}s, ${(header.length + data.length) / 1024 | 0} KB`);
+}

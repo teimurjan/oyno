@@ -88,10 +88,10 @@ export function localePath(lang: Lang, path: string): string {
   return path === "/" ? `/${lang}` : `/${lang}${path}`;
 }
 
-/** A games, guides or blog page without its locale prefix. The switcher may carry one, because
+/** A games, tools, guides or blog page without its locale prefix. The switcher may carry one, because
  * the pattern can only ever name a path on this site, never another origin. */
 export function isLibraryPath(value: unknown): value is string {
-  return typeof value === "string" && /^\/(games|guides|blog)(\/[a-z0-9-]+){0,2}$/.test(value);
+  return typeof value === "string" && /^\/(games|tools|guides|blog)(\/[a-z0-9-]+){0,2}$/.test(value);
 }
 
 /** Where the web funnel lives in a language: `/start` for English, whose URL every live ad

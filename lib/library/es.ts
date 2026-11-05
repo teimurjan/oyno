@@ -192,6 +192,9 @@ export const es: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Un estudio suizo siguió a 493 niños desde el nacimiento hasta los 16 años; el 96,4 % aún dormía siesta a los 18 meses y el 35,4 % a los 4 años.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "De 6 a 18 meses: juegos en el regazo con una sorpresa esperada, juegos de esconder, juegos de imitar y copiar, juego de roles sencillo, juegos de dedos y conversación sobre lo que el bebé observa.",

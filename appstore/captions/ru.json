@@ -1,8 +1,8 @@
 {
   "default": [
-    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Игры для 0–5 лет, [даже лёжа]" },
-    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Игры на основе науки, [дети умнее]" },
-    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Меньше ленты, [больше малыша]" },
+    { "slug": "low", "source": "01", "art": "cushion-tunnel-toy", "caption": "Батарейка на нуле? [Играйте лёжа]" },
+    { "slug": "growth", "source": "02", "callout": "practice", "caption": "Каждая игра — [с опорой на науку]" },
+    { "slug": "kidhours", "source": "03", "callout": ["schedules", "alwaysAllowed", "neverAllowed"], "caption": "Меньше ленты, [больше жизни]" },
     { "slug": "keepsake", "source": "04", "caption": "Каждый раунд оставляет [находку]" },
     { "slug": "home", "source": "05", "caption": "Ваши вечера [растят планету]" },
     { "slug": "letter", "source": "06", "caption": "По воскресеньям [письмо от вашей планеты]" },

@@ -7,6 +7,7 @@ import { GAMES_PATH, HUB_KINDS, hubPath } from "@/lib/games/hubs";
 import { localePath, type Lang } from "@/lib/i18n";
 import { libraryFor } from "@/lib/library";
 import { libraryPageMetadata } from "@/lib/seo";
+import { HubGamePicker } from "@/components/site/tools/ToolPage";
 import { AppPitch, Heading, Section } from "./parts";
 
 function GamesIndex({ lang }: { lang: Lang }) {
@@ -15,6 +16,7 @@ function GamesIndex({ lang }: { lang: Lang }) {
   return (
     <SiteShell lang={lang} page={GAMES_PATH}>
       <Heading title={games.title} intro={games.intro(GAMES.length)} />
+      <HubGamePicker lang={lang} />
       {HUB_KINDS.map((kind) => (
         <Section key={kind} title={games.sections[kind]}>
           <ul className="mt-5 flex flex-wrap gap-2">

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { langOfSegment, type RouteProps } from "@/components/site/route";
 import { SiteShell } from "@/components/site/SiteShell";
-import { AGES, ENERGIES } from "@/lib/activities";
+import { AGES, ENERGIES, type Age, type Energy } from "@/lib/activities";
 import { gamesIn, hubsIn, sourceById } from "@/lib/games/catalog";
 import { audience, hubPath, type Game, type Hub, type HubKind } from "@/lib/games/hubs";
 import type { Lang } from "@/lib/i18n";
 import { libraryFor } from "@/lib/library";
 import { libraryPageMetadata } from "@/lib/seo";
+import { HubGamePicker } from "@/components/site/tools/ToolPage";
 import { AppPitch, capitalized, gamesCrumb, GameList, Heading, Research, Section, Trail } from "./parts";
 
 /** The age hubs already say who they are for; every other hub adds it from its games. */
@@ -38,6 +39,8 @@ function HubPage({ lang, hub }: { lang: Lang; hub: Hub }) {
     <SiteShell lang={lang} page={path}>
       <Trail lang={lang} crumbs={[gamesCrumb(lang)]} current={{ name: hub.title, path }} />
       <Heading title={headingOf(lang, hub, games)} intro={hub.intro} />
+      {hub.kind === "age" && <HubGamePicker lang={lang} age={hub.key as Age} />}
+      {hub.kind === "energy" && <HubGamePicker lang={lang} energy={hub.key as Energy} />}
 
       {groups(lang, hub, games)
         .filter((group) => group.games.length > 0)

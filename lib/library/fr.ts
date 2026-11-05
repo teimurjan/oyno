@@ -186,6 +186,9 @@ export const fr: LibraryCopy = {
   },
 
   sources: {
+    "iglowstein-2003": {
+      studied: "Une étude suisse a suivi 493 enfants de la naissance à 16 ans ; 96,4 % faisaient encore la sieste à 18 mois et 35,4 % à 4 ans.",
+    },
     "cdc-guide": {
       says: {
         "0-1": "De 6 à 18 mois : jeux sur les genoux avec une surprise attendue, jeux de cachette, jeux d’imitation et de copie, petits jeux de rôle simples, jeux de doigts, et conversation sur ce que le bébé remarque.",
