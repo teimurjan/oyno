@@ -193,6 +193,24 @@
   .anim-step > *:nth-child(n + 10) { animation-delay: 1770ms; }
 }
 
+/* The web twin of `PlanBanner.swift`: the sky, a shade deeper at the top so the planet reads. */
+.plan-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #b9d4f1 0%, #dcebf9 42%, #fff3e1 100%);
+  border: 1px solid var(--glass-edge);
+  border-radius: 24px;
+  box-shadow: var(--glass-shadow);
+}
+
+.plan-card-planet {
+  position: absolute;
+  top: -74px;
+  right: -56px;
+  width: 140px;
+  max-width: none;
+}
+
 /* The funnel's floating apps (`AppsStep`). Drift moves `translate` and the knock moves
    `scale` and `rotate`, so the two run on one element without fighting over `transform`.
    Each tile knocks at 86% of a shared twelve-second cycle, shifted by its own `--knock`. */

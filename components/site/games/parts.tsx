@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { AppStoreBadge } from "@/components/AppStoreBadge";
 import type { Age } from "@/lib/activities";
+import { ART } from "@/lib/art/manifest";
+import { fallbackSrc, srcSet } from "@/lib/art/srcSet";
 import { JsonLd } from "@/components/site/JsonLd";
 import { gamePath, GAMES_PATH, type Game } from "@/lib/games/hubs";
 import { funnelPath, localePath, type Lang } from "@/lib/i18n";
@@ -97,14 +99,30 @@ export function Research({ lang, references, age }: { lang: Lang; references: re
   );
 }
 
+/** The app's plan card from Profile (`PlanBanner.swift`): the sky, the planet in its corner, the tile and the pill. */
 export function AppPitch({ lang }: { lang: Lang }) {
   const { title, body, cta } = libraryFor(lang).pitch;
   return (
-    <section className="card mt-14 p-6 sm:p-8">
-      <h2 className="text-[22px] font-extrabold tracking-[-0.02em] text-ink">{title}</h2>
-      <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">{body}</p>
-      <div className="mt-6 flex flex-wrap items-center gap-4">
-        <Link href={funnelPath(lang)} className="btn w-auto px-7 text-[16px]">{cta}</Link>
+    <section className="plan-card mt-14 max-w-3xl p-[18px]">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        className="plan-card-planet"
+        src={fallbackSrc(ART.planets.earth)}
+        srcSet={srcSet(ART.planets.earth)}
+        sizes="140px"
+        alt=""
+        loading="lazy"
+      />
+      <div className="relative flex items-start gap-3">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/ico/icon-96.png" alt="" width={40} height={40} className="size-10 shrink-0 rounded-[10px] ring-[0.5px] ring-ink/12" />
+        <div>
+          <h2 className="pr-[68px] text-[17px] font-extrabold leading-snug text-ink">{title}</h2>
+          <p className="mt-1 text-[14px] font-medium leading-relaxed text-slate sm:pr-[68px]">{body}</p>
+        </div>
+      </div>
+      <div className="relative mt-5 flex flex-col items-center gap-3 sm:flex-row">
+        <Link href={funnelPath(lang)} className="btn text-[16px] sm:flex-1">{cta}</Link>
         <AppStoreBadge />
       </div>
     </section>
